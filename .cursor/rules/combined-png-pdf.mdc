@@ -1,0 +1,13 @@
+---
+description: Review PDFs for generated PNGs, without duplicates
+alwaysApply: true
+---
+
+# Combined PDF with PNGs
+
+When this project generates PNG files, also leave a single review PDF in the same folder. Do not write a second PDF of the same pages.
+
+- Anchor review: `anchor.pdf` (already written by preprocess). Do not also stitch `pageNN.png` into `combined.pdf`.
+- Question crops (`qN.png`): write `combined.pdf` from the original paper (no blue dots). Overwrite that PDF when the PNGs are regenerated. Crop the left edge at the anchor.
+- Prefer `scripts/png_pdf.py` (`combine_pngs_to_pdf`) for question crops. It skips an existing output PDF.
+- Point the user at the existing review PDF, not a list of PNGs.

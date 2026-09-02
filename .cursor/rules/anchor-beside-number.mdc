@@ -1,0 +1,13 @@
+---
+description: Every anchor must sit immediately next to its question number
+alwaysApply: true
+---
+
+# Anchor next to question number
+
+After placing MC anchors, check every blue dot in `anchor.pdf` before splitting.
+
+- Leave a clear gap between the dot and the number. The dot must not overlap the digits or a leading `*` / `#`.
+- A dot next to `A.`/`B.`/`C.`/`D.`, a diagram, option text, or empty margin is wrong.
+- Do not run step 2 until every question passes. Name the failures (e.g. Q4, Q24) and fix those anchors.
+- First question on a page is the usual failure: crop top sits on the number so the dot looks orphaned. Keep a real pad above that number; do not treat this as OK because later questions on the page look fine.

@@ -1,0 +1,362 @@
+#!/usr/bin/env python3
+"""Segment an HKDSE Physics exam PDF into per-question PNGs (q1.png, q2.png, ...).
+
+Paper 1A (MC) two-step workflow:
+  Step 1 - place anchors (blue dots) for review:
+    ./segment paper.pdf output/2012-intermediate --step anchors
+    Review output/2012-intermediate/anchor.pdf
+  Step 2 - split into clean PNGs from the original PDF:
+    ./segment paper.pdf output/2012 --step split --intermediate output/2012-intermediate
+
+Paper 1B (LQ): OCR question numbers and crop each long question directly.
+
+Usage:
+  ./segment paper.pdf output_dir/
+  ./segment paper.pdf output_dir/ --type mc
+  ./segment paper.pdf output_dir/ --type lq --max-questions 12
+"""
+from __future__ import annotations
+
+import argparse
+import io
+import json
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+SCRIPTS = ROOT / "scripts"
+
+
+def ensure_venv() -> None:
+    venv_dir = (ROOT / ".venv").resolve()
+    venv_py = venv_dir / "bin" / "python3"
+    if not venv_py.is_file():
+        return
+    if Path(sys.prefix).resolve() != venv_dir:
+        os.execv(str(venv_py), [str(venv_py), *sys.argv])
+
+
+ensure_venv()
+sys.path.insert(0, str(SCRIPTS))
+
+import pymupdf as fitz  # noqa: E402
+from PIL import Image  # noqa: E402
+
+from png_pdf import combine_pngs_to_pdf  # noqa: E402
+from preprocess_lq import process_one as segment_lq  # noqa: E402
+
+
+def python_executable() -> str:
+    venv = ROOT / ".venv" / "bin" / "python3"
+    return str(venv) if venv.is_file() else sys.executable
+
+
+def render_page_text(page: fitz.Page, scale: float = 1.5) -> str:
+    pixmap = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False)
+    image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
+    buf = io.BytesIO()
+    image.save(buf, format="PNG")
+    result = subprocess.run(
+        ["tesseract", "stdin", "stdout", "--psm", "6"],
+        input=buf.getvalue(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return result.stdout.decode("utf-8", errors="ignore").lower()
+
+
+def detect_paper_type(pdf: Path, *, cover_pages: int = 1) -> str:
+    """Return 'mc', 'lq', or raise SystemExit if unknown."""
+    name = pdf.name.lower()
+    if re.search(r"ans(?:wer)?s?\.pdf$|marking|scheme|key", name):
+        raise SystemExit(
+            f"{pdf.name} looks like a marking scheme / answer key, not an exam paper.\n"
+            "Use scripts/extract_answer_keys.py for answer PDFs."
+        )
+    if re.search(r"1b|paper_?1b|\blq\b|long", name):
+        return "lq"
+    if re.search(r"1a|paper_?1a|\bmc\b|multiple", name):
+        return "mc"
+
+    doc = fitz.open(pdf)
+    try:
+        if doc.needs_pass:
+            doc.authenticate("")
+        probe_index = min(cover_pages, len(doc) - 1)
+        text = render_page_text(doc[probe_index])
+    finally:
+        doc.close()
+
+    if re.search(r"paper\s*1\s*b|section\s*b|long\s+question", text):
+        return "lq"
+    if re.search(r"paper\s*1\s*a|section\s*a|multiple\s+choice", text):
+        return "mc"
+    raise SystemExit(
+        "Could not detect paper type (MC vs LQ). Pass --type mc or --type lq explicitly."
+    )
+
+
+def find_mc_overrides(pdf: Path) -> Path | None:
+    match = re.search(r"(20\d{2})", pdf.stem)
+    if not match:
+        return None
+    path = SCRIPTS / f"overrides_{match.group(1)}.json"
+    return path if path.is_file() else None
+
+
+def resolve_anchor_files(intermediate_dir: Path) -> tuple[Path, Path]:
+    """Return (anchor.pdf, sidecar meta). Accepts the older anchored.pdf name."""
+    pdf = intermediate_dir / "anchor.pdf"
+    if not pdf.is_file():
+        pdf = intermediate_dir / "anchored.pdf"
+    meta = pdf.with_suffix(".meta.json")
+    if not meta.is_file():
+        fallback = intermediate_dir / "anchor.meta.json"
+        if not fallback.is_file():
+            fallback = intermediate_dir / "anchored.meta.json"
+        meta = fallback
+    return pdf, meta
+
+
+def export_anchor_previews(anchored_pdf: Path, dest: Path, scale: float = 2.0) -> int:
+    """Render anchored PDF pages to pageNN.png for visual review."""
+    doc = fitz.open(anchored_pdf)
+    try:
+        for index, page in enumerate(doc):
+            pixmap = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False)
+            image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
+            out = dest / f"page{index + 1:02d}.png"
+            image.save(out, format="PNG")
+        return len(doc)
+    finally:
+        doc.close()
+
+
+def anchor_mc(
+    source: Path,
+    intermediate_dir: Path,
+    *,
+    questions: int = 36,
+    cover_pages: int = 1,
+    overrides: Path | None = None,
+) -> int:
+    """Step 1: OCR question numbers and write anchor.pdf with blue dots."""
+    intermediate_dir.mkdir(parents=True, exist_ok=True)
+    anchored = intermediate_dir / "anchor.pdf"
+
+    py = python_executable()
+    pre_cmd = [
+        py,
+        str(SCRIPTS / "preprocess_mc.py"),
+        str(source),
+        str(anchored),
+        "--questions",
+        str(questions),
+        "--cover-pages",
+        str(cover_pages),
+    ]
+    if overrides is not None:
+        pre_cmd.extend(["--overrides", str(overrides)])
+
+    print("=== MC step 1/2: place anchors (blue dots) ===")
+    subprocess.run(pre_cmd, check=True)
+
+    anchored, meta = resolve_anchor_files(intermediate_dir)
+    count = questions
+    if meta.is_file():
+        count = int(json.loads(meta.read_text()).get("questions", questions))
+
+    pages = export_anchor_previews(anchored, intermediate_dir)
+    (intermediate_dir / "source.txt").write_text(str(source.resolve()) + "\n")
+    print(f"Wrote {anchored}")
+    print(f"Wrote {meta}")
+    print(f"Wrote {pages} preview PNGs (page01.png, ...) in {intermediate_dir}")
+    print("Review anchor.pdf (blue dots next to each question number), then run step 2.")
+    return count
+
+
+def split_mc(
+    source: Path,
+    intermediate_dir: Path,
+    output_dir: Path,
+    *,
+    questions: int = 36,
+) -> int:
+    """Step 2: split from original PDF using anchors in intermediate_dir."""
+    anchored, meta = resolve_anchor_files(intermediate_dir)
+    if not anchored.is_file():
+        raise SystemExit(f"Missing {intermediate_dir / 'anchor.pdf'}. Run --step anchors first.")
+    if not meta.is_file():
+        raise SystemExit(f"Missing {intermediate_dir / 'anchor.meta.json'}. Run --step anchors first.")
+
+    question_count = int(json.loads(meta.read_text()).get("questions", questions))
+    py = python_executable()
+    split_cmd = [
+        py,
+        str(SCRIPTS / "split_mc.py"),
+        str(anchored),
+        str(output_dir),
+        "--source",
+        str(source),
+        "--meta",
+        str(meta),
+        "--questions",
+        str(questions),
+        "--left-margin",
+        "0",
+    ]
+    print("=== MC step 2/2: split into PNGs (no blue dots) ===")
+    subprocess.run(split_cmd, check=True)
+    return len(list(output_dir.glob("q*.png"))) or question_count
+
+
+def segment_mc(
+    source: Path,
+    output_dir: Path,
+    *,
+    intermediate_dir: Path | None,
+    step: str,
+    questions: int = 36,
+    cover_pages: int = 1,
+    overrides: Path | None = None,
+) -> int:
+    if step == "anchors":
+        dest = intermediate_dir or output_dir
+        return anchor_mc(
+            source,
+            dest,
+            questions=questions,
+            cover_pages=cover_pages,
+            overrides=overrides,
+        )
+    if step == "split":
+        if intermediate_dir is None:
+            raise SystemExit("--intermediate DIR is required for --step split")
+        return split_mc(source, intermediate_dir, output_dir, questions=questions)
+
+    # step == "all"
+    inter = intermediate_dir or output_dir / "intermediate"
+    anchor_mc(
+        source,
+        inter,
+        questions=questions,
+        cover_pages=cover_pages,
+        overrides=overrides,
+    )
+    return split_mc(source, inter, output_dir, questions=questions)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument("pdf", type=Path, help="Input exam paper PDF")
+    parser.add_argument("dest", type=Path, help="Output directory")
+    parser.add_argument(
+        "--step",
+        choices=("all", "anchors", "split"),
+        default="all",
+        help="MC: anchors=step1 review PDF only, split=step2 PNGs, all=both (default)",
+    )
+    parser.add_argument(
+        "--intermediate",
+        type=Path,
+        default=None,
+        help="MC: folder for anchor.pdf (step 1 output / step 2 input)",
+    )
+    parser.add_argument(
+        "--type",
+        choices=("auto", "mc", "lq"),
+        default="auto",
+        help="Paper type (default: auto-detect from filename or first page OCR)",
+    )
+    parser.add_argument(
+        "--questions",
+        type=int,
+        default=None,
+        help="Question count (default: 36 for MC, 12 for LQ)",
+    )
+    parser.add_argument(
+        "--cover-pages",
+        type=int,
+        default=1,
+        help="Number of front-matter pages to skip (default: 1)",
+    )
+    parser.add_argument(
+        "--overrides",
+        type=Path,
+        default=None,
+        help="MC overrides JSON: {question: [page, x, y], ...} (auto for 2015/2016 if present)",
+    )
+    parser.add_argument(
+        "--max-scale",
+        type=float,
+        default=9.0,
+        help="LQ render scale cap (default: 9.0)",
+    )
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    pdf = args.pdf.expanduser().resolve()
+    dest = args.dest.expanduser().resolve()
+    intermediate = args.intermediate.expanduser().resolve() if args.intermediate else None
+
+    if not pdf.is_file():
+        raise SystemExit(f"PDF not found: {pdf}")
+
+    paper_type = detect_paper_type(pdf, cover_pages=args.cover_pages) if args.type == "auto" else args.type
+    print(f"Paper type: {paper_type.upper()} ({pdf.name})")
+
+    if paper_type == "mc":
+        if args.step != "all" and args.step != "anchors" and args.step != "split":
+            raise SystemExit(f"Unknown step: {args.step}")
+        questions = args.questions if args.questions is not None else 36
+        overrides = args.overrides
+        if overrides is None:
+            overrides = find_mc_overrides(pdf)
+            if overrides is not None:
+                print(f"Using MC overrides: {overrides.name}")
+        count = segment_mc(
+            pdf,
+            dest,
+            intermediate_dir=intermediate,
+            step=args.step,
+            questions=questions,
+            cover_pages=args.cover_pages,
+            overrides=overrides,
+        )
+        if args.step == "anchors":
+            print(f"Anchor review PDF -> {dest / 'anchor.pdf'}")
+        else:
+            print(f"Wrote {count} questions -> {dest}")
+            print(f"Review PDF -> {dest / 'combined.pdf'}")
+        return
+
+    if args.step != "all":
+        raise SystemExit("--step anchors/split only applies to MC papers")
+
+    max_questions = args.questions if args.questions is not None else 12
+    print("=== LQ: detect and crop questions ===")
+    count = segment_lq(
+        pdf,
+        dest,
+        cover_pages=args.cover_pages,
+        scale=0.0,
+        max_questions=max_questions,
+        max_scale=args.max_scale,
+        pages_dir=None,
+    )
+    combine_pngs_to_pdf(dest)
+    print(f"Wrote {count} questions -> {dest}")
+    print(f"Review PDF -> {dest / 'combined.pdf'}")
+
+
+if __name__ == "__main__":
+    main()
