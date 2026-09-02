@@ -112,43 +112,7 @@ def find_end_of_section_top(image: Image.Image, pad: int = 10) -> int | None:
         i = j if j > i else i + 1
     if best is not None:
         return max(1, best - pad)
-
-    # Fallback: short centered ink band at the bottom, separated by a large gap.
-    arr = np.asarray(image.convert("L"))
-    h, w = arr.shape
-    ink = arr < 235
-    row_frac = ink.mean(axis=1)
-    content = row_frac >= 0.008
-    last = h - 1
-    while last > 0 and not content[last]:
-        last -= 1
-    first = last
-    while first > 0 and content[first]:
-        first -= 1
-    banner_h = last - first
-    if banner_h < 6 or banner_h > 55:
-        return None
-    gap = 0
-    y = first
-    while y > 0 and not content[y]:
-        gap += 1
-        y -= 1
-    if gap < 40:
-        return None
-    banner = ink[first + 1 : last + 1]
-    if banner.size == 0:
-        return None
-    cols = np.where(banner.any(axis=0))[0]
-    if len(cols) == 0:
-        return None
-    left, right = int(cols[0]), int(cols[-1])
-    width_frac = (right - left + 1) / float(w)
-    centre = (left + right) / 2.0
-    if width_frac > 0.72 or not (0.22 * w <= centre <= 0.78 * w):
-        return None
-    if left < w * 0.08:
-        return None
-    return max(1, first - pad)
+    return None
 
 
 def trim_end_of_section(image: Image.Image) -> Image.Image:
@@ -340,7 +304,8 @@ def split_from_source(
                 raise SystemExit(f"Question {number} produced an empty crop.")
 
             combined = stitch_vertical(parts)
-            combined = trim_end_of_section(combined)
+            if index + 1 >= len(anchors):
+                combined = trim_end_of_section(combined)
             combined = trim_question_image(combined, preserve_left=True)
             out_path = output_dir / f"q{number}.png"
             combined.save(out_path, format="PNG")
@@ -419,7 +384,8 @@ def split_from_anchored(
             raise SystemExit(f"Question {number} produced an empty crop.")
 
         combined = stitch_vertical(parts)
-        combined = trim_end_of_section(combined)
+        if number >= questions:
+            combined = trim_end_of_section(combined)
         combined = trim_question_image(combined)
         out_path = output_dir / f"q{number}.png"
         combined.save(out_path, format="PNG")

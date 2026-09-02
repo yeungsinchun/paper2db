@@ -511,9 +511,7 @@ def detect_footer_top(page: fitz.Page, scale: float, left: float, right: float, 
     for line_y, parts in line_groups:
         line = " ".join(parts)
         if not FOOTER_RE.search(line) and not FOOTER_RE.search(parts[0] if parts else ""):
-            lower = line.lower()
-            if "dse" not in lower and "phy" not in lower and "1a" not in lower:
-                continue
+            continue
         footer_y = line_y if footer_y is None else min(footer_y, line_y)
     del result, crop, image, pixmap
     gc.collect()
