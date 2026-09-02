@@ -28,7 +28,7 @@ RIGHT_PAD = 18.0  # keep this much whitespace past detected content ink
 FIRST_LABEL_PAD = 20.0  # crop starts this far above the first question number on a page
 MARKER_LEFT_PAD = 8.0  # keep this much crop to the left of the marker centre
 FOOTER_GAP = 2.0  # crop bottom this far above detected footer text
-FOOTER_RE = re.compile(r"(dse[- ]?phy|phy\s*1a|section\s*a)", re.I)
+FOOTER_RE = re.compile(r"(dse[- ]?phy|phy\s*1a|end\s*of\s*section|end\s*of\s*paper)", re.I)
 LABEL_RE = re.compile(r"[#*]?(\d{1,2})([.,])?")
 SUBPART_RE = re.compile(r"^[A-Za-z]\d")
 Q1_CONFUSION_RE = re.compile(r"^[lIi|\|][.,]$")
@@ -471,8 +471,8 @@ def detect_footer_top(page: fitz.Page, scale: float, left: float, right: float, 
     """Return approximate y of footer text if found near the bottom."""
     pixmap = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False)
     image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
-    # Search a band just above bottom_limit; keep it tall enough for scanned footers.
-    search_top = max(0.0, bottom_limit - 120.0)
+    # Search a band just above bottom_limit; keep it tall enough for "END OF SECTION A".
+    search_top = max(0.0, bottom_limit - 220.0)
     crop = image.crop(
         (
             int(left * scale),
@@ -492,16 +492,29 @@ def detect_footer_top(page: fitz.Page, scale: float, left: float, right: float, 
         check=True,
     )
     footer_y: float | None = None
-    rows = csv.DictReader(result.stdout.decode("utf-8").splitlines(), delimiter="\t")
+    rows = list(csv.DictReader(result.stdout.decode("utf-8").splitlines(), delimiter="\t"))
+    line_groups: list[tuple[float, list[str]]] = []
     for row in rows:
         text = row["text"].strip()
-        if not text or not FOOTER_RE.search(text):
-            # Also catch bare year-DSE style tokens split across cells.
-            lower = text.lower()
+        if not text:
+            continue
+        y = search_top + float(row["top"]) / scale
+        placed = False
+        for index, (line_y, parts) in enumerate(line_groups):
+            if abs(y - line_y) <= 8.0 / max(scale, 0.1):
+                parts.append(text)
+                line_groups[index] = (min(line_y, y), parts)
+                placed = True
+                break
+        if not placed:
+            line_groups.append((y, [text]))
+    for line_y, parts in line_groups:
+        line = " ".join(parts)
+        if not FOOTER_RE.search(line) and not FOOTER_RE.search(parts[0] if parts else ""):
+            lower = line.lower()
             if "dse" not in lower and "phy" not in lower and "1a" not in lower:
                 continue
-        y = search_top + float(row["top"]) / scale
-        footer_y = y if footer_y is None else min(footer_y, y)
+        footer_y = line_y if footer_y is None else min(footer_y, line_y)
     del result, crop, image, pixmap
     gc.collect()
     return footer_y

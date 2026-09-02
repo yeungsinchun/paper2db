@@ -8,8 +8,12 @@ PDF at anchor positions (no blue dots). Without --source, crops the anchored PDF
 from __future__ import annotations
 
 import argparse
+import csv
 import gc
+import io
 import json
+import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -21,6 +25,7 @@ from png_pdf import combine_pngs_to_pdf
 
 # Extra space above the anchor so the first line (e.g. the top of "m") is not clipped.
 TOP_PAD_PX = 10
+END_SECTION_RE = re.compile(r"end\s*of\s*(section|paper)", re.I)
 
 
 def trim_question_image(
@@ -60,6 +65,98 @@ def trim_question_image(
     if bottom <= top or right <= left:
         return image
     return image.crop((left, top, right, bottom))
+
+
+def _image_bytes(image: Image.Image) -> bytes:
+    buffer = io.BytesIO()
+    image.save(buffer, format="PNG")
+    return buffer.getvalue()
+
+
+def find_end_of_section_top(image: Image.Image, pad: int = 10) -> int | None:
+    """Y of a trailing 'END OF SECTION A' / 'END OF PAPER' line, or None."""
+    if image.height < 40 or image.width < 40:
+        return None
+    band_top = max(0, image.height - min(280, max(80, image.height // 2)))
+    crop = image.crop((0, band_top, image.width, image.height))
+    result = subprocess.run(
+        ["tesseract", "stdin", "stdout", "--psm", "6", "tsv"],
+        input=_image_bytes(crop),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    words: list[tuple[int, str]] = []
+    rows = csv.DictReader(result.stdout.decode("utf-8").splitlines(), delimiter="\t")
+    for row in rows:
+        text = (row.get("text") or "").strip()
+        if not text:
+            continue
+        words.append((int(float(row.get("top") or 0)), text))
+    words.sort()
+    best: int | None = None
+    i = 0
+    while i < len(words):
+        j = i
+        line_top = words[i][0]
+        parts = [words[i][1]]
+        j = i + 1
+        while j < len(words) and abs(words[j][0] - line_top) <= 10:
+            parts.append(words[j][1])
+            line_top = min(line_top, words[j][0])
+            j += 1
+        line = " ".join(parts)
+        if END_SECTION_RE.search(line):
+            y = band_top + line_top
+            best = y if best is None else min(best, y)
+        i = j if j > i else i + 1
+    if best is not None:
+        return max(1, best - pad)
+
+    # Fallback: short centered ink band at the bottom, separated by a large gap.
+    arr = np.asarray(image.convert("L"))
+    h, w = arr.shape
+    ink = arr < 235
+    row_frac = ink.mean(axis=1)
+    content = row_frac >= 0.008
+    last = h - 1
+    while last > 0 and not content[last]:
+        last -= 1
+    first = last
+    while first > 0 and content[first]:
+        first -= 1
+    banner_h = last - first
+    if banner_h < 6 or banner_h > 55:
+        return None
+    gap = 0
+    y = first
+    while y > 0 and not content[y]:
+        gap += 1
+        y -= 1
+    if gap < 40:
+        return None
+    banner = ink[first + 1 : last + 1]
+    if banner.size == 0:
+        return None
+    cols = np.where(banner.any(axis=0))[0]
+    if len(cols) == 0:
+        return None
+    left, right = int(cols[0]), int(cols[-1])
+    width_frac = (right - left + 1) / float(w)
+    centre = (left + right) / 2.0
+    if width_frac > 0.72 or not (0.22 * w <= centre <= 0.78 * w):
+        return None
+    if left < w * 0.08:
+        return None
+    return max(1, first - pad)
+
+
+def trim_end_of_section(image: Image.Image) -> Image.Image:
+    """Drop a trailing end-of-section / end-of-paper line from a question crop."""
+    cut = find_end_of_section_top(image)
+    if cut is None or cut >= image.height - 4:
+        return image
+    return image.crop((0, 0, image.width, cut))
 
 
 def parse_args() -> argparse.Namespace:
@@ -243,6 +340,7 @@ def split_from_source(
                 raise SystemExit(f"Question {number} produced an empty crop.")
 
             combined = stitch_vertical(parts)
+            combined = trim_end_of_section(combined)
             combined = trim_question_image(combined, preserve_left=True)
             out_path = output_dir / f"q{number}.png"
             combined.save(out_path, format="PNG")
@@ -321,6 +419,7 @@ def split_from_anchored(
             raise SystemExit(f"Question {number} produced an empty crop.")
 
         combined = stitch_vertical(parts)
+        combined = trim_end_of_section(combined)
         combined = trim_question_image(combined)
         out_path = output_dir / f"q{number}.png"
         combined.save(out_path, format="PNG")
