@@ -1,0 +1,10 @@
+*9. Marbles P and Q of the same mass are shot horizontally. They hit the horizontal ground at points R
+and S respectively as shown. Neglect air resistance.
+P
+Q
+R Ss
+Which of the following statements is INCORRECT ?
+A. The initial speed of marble P is smaller than that of marble Q.
+B. The time of flight of marble P is shorter than that of marble Q.
+Cc. The potential energy loss of marble P is greater than that of marble Q.
+D. The acceleration of marbles P and Q is the same during the flight.

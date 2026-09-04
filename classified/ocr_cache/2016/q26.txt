@@ -1,0 +1,10 @@
+26. Two filament light bulbs X and Y are connected in parallel to a dry cell. X is brighter than Y. Which
+statements are correct ?
+(1) In | s, the number of charges flowing through X is greater than that flowing through Y.
+(2) In 1 s, the electrical energy dissipated by X is greater than that dissipated by Y.
+(3) For every unit charge passing, the electrical energy dissipated by X is equal to that dissipated
+by Y.
+A. (1) and (2) only
+B. (1) and (3) only
+[on (2) and (3) only
+D. (1), (2) and (3)

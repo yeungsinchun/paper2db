@@ -1,0 +1,15 @@
+31. A radioactive source contains a radioactive nuclide X which decays to become a stable nuclide Y.
+Besides X there is no other radioactive nuclides in this source. Which of the following statements
+must be correct after a time of one half-life of X has elapsed ?
+
+(1) The number of nuclides of X decreases to about half of its initial value.
+(2) The number of nuclides of Y increases to about twice of its initial value.
+(3) The activity of the radioactive source falls to about half of its initial value.
+
+A. (1) only
+
+B. (2) only
+
+Cc. (1) and (3) only
+
+D. (2) and (3) only

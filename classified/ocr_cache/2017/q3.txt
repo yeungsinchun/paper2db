@@ -1,0 +1,12 @@
+3. Which of the following statements about the internal energy of a substance are correct ?
+
+() When a solid melts, the latent heat of fusion absorbed becomes potential energy of the
+molecules in the substance.
+
+(2) When a vapour condenses, its internal energy decreases.
+
+(3) When a liquid evaporates, the internal energy of the remaining liquid increases.
+A. (1) and (2) only
+B. (1) and (3) only
+Cc. (2) and (3) only
+D. (1), (2) and (3)

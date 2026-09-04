@@ -1,0 +1,12 @@
+25.
+10Q 0-10MQ
+(AZ)
+“ fo | a
+{}
+10kQ
+In the above circuit, the variable resistor R can be adjusted over its full range from 0 to 10 MQ. What
+is the approximate range of resistance between a and b ?
+A. Oto 10kQ
+B. 10 Qto 10kQ
+Cc. 10 Qto 10 MQ
+D. 10 kQ to 10 MQ

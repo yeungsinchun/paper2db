@@ -1,0 +1,19 @@
+*28. A metal rod PQ of length / is moving along smooth horizontal metal rails Y and Y with constant
+speed v in a uniform magnetic field of magnetic field strength B pointing into the paper. The metal
+rails X and Y are separated by a distance of d and are connected to a resistor of resistance R as shown.
+
+P
+x x XxX X
+x
+x x XxX xX
+R | a 1 »
+x x -K xX
+¥
+x x -* X
+Q
+Which of the following descriptions about the induced current is correct ?
+magnitude direction
+A. a from X to Y through R
+B. a from Y to X through R
+Cc. a from X to Y through R
+Dz. “ from Y to X through R

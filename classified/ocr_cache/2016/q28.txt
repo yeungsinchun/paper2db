@@ -1,0 +1,7 @@
+28. A television set in stand-by mode consumes 1.5 W. If it is in this mode for 16 hours a day, estimate the
+carbon dioxide (CO,) emission due to the electricity consumed in stand-by mode in a 30-day month.
+Given: 1 kWh of electricity consumed corresponds to 0.8 kg CO, emission from the power station.
+A. 0.576 kg
+B. 0.720 kg
+C. 576 kg
+Dz 720 kg

@@ -1,0 +1,7 @@
+*10. The diameter of Neptune is about 4 times that of the Earth and its mass is about 17 times that of the
+Earth. Estimate the acceleration due to gravity on Neptune’s surface.
+Given: acceleration due to gravity on Earth’s surface g= 9.81 ms”
+A. 2.3ms*
+B. 9.2ms*
+c. 10.4ms*
+D. 41.7ms*

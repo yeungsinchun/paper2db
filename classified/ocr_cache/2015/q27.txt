@@ -1,0 +1,6 @@
+*27. A copper wire of uniform cross-section carries a current of 0.5 A. Each metre of the wire contains
+10” free electrons. Find the magnitude of the drift velocity of the electrons in the wire.
+A. 2.5x 10° ms"
+B. 7.8 x 10° ms"
+c. 3.1x10%ms"
+D. 9.7 x10 ms"

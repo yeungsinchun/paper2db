@@ -1,0 +1,17 @@
+14, A light beam consisting of monochromatic light beam_X and Y is incident on a rectangular glass block.
+It splits into two beams as shown.
+glass block
+x
+
+Which of the following comparisons of beam_X and Y is/are correct ?
+(ly X has a higher frequency.
+(2) X has a larger speed in glass.
+@) In the glass block, the critical angle for X is greater.
+
+A. (1) only
+
+B. (3) only
+
+Cc. (1) and (2) only
+
+D. (2) and (3) only

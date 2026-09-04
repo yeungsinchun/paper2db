@@ -1,0 +1,15 @@
+*3. A fixed mass of an ideal gas expands from state X to state Y through a process as represented in the
+pressure-volume graph below.
+pressure,
+BP P-----
+H
+i
+Hl
+Pprrrrrarn OY
+too
+0 v 2v volume
+If the temperature of the gas at state Y is 25 °C, what is its temperature at state X ?
+A. -74.3°C
+B. 16.7°C
+c. 37.5°C
+D. 174°C

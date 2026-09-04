@@ -1,0 +1,13 @@
+M7. 2.0 em
+The solid curve in the diagram shows a transverse wave at a certain instant. After 0.05 s, the wave has
+travelled a distance of 2.0 cm and is indicated by the dashed curve. Find the wavelength and frequency
+of the wave.
+Wavelength/cem Frequency/Hz
+
+A. 8 2.5
+
+B. 16 2.5
+
+Cc. 8 5
+
+D. 16 5

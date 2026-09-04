@@ -1,0 +1,12 @@
+24.
+22
+P Q
+1Q 22
+Ss R
+1Q
+Four resistors are connected to terminals PORS of a circuit board as shown. Across which pair o
+terminals below is the equivalent resistance smallest ?
+A. PQ
+B. PR
+Cc. PS
+D. os

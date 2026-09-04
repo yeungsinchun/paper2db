@@ -1,0 +1,10 @@
+6. Two small identical blocks slide down from rest on smooth incline planes from the same height H as
+shown in Figure (1) and Figure (2) below. Their respective speeds at the bottom of the incline planes
+are denoted by v; and v, and the respective times taken to reach the bottom are 4; and 4. Which of the
+following is correct ? Neglect air resistance.
+
+Figure (1) Figure (2)
+A. vy, >v, and 4=h
+B. vy>v2 and 4 <h
+[on vy =v. and 4 =h
+Dz y= and th <h

@@ -1,0 +1,20 @@
+*9, A trolley with a spring-loaded launcher in Figure (1) can project a ball vertically upward. The trolley
+travels on the ground at a constant speed in a horizontal circle (with centre O) as shown in Figure (2).
+Figure (2) p--7 777s y.
+“ ae
+‘ “ ‘
+i \
+‘ \
+H oO \
+\ + '
+Figure (1) \ /
+ii ‘Top view #2
+‘ ’
+ir Ss
+Side view cylinder a . a
+The ball is projected when the trolley is at point P. After some time, the ball falls back to the ground z
+the trolley just reaches point Q. Neglecting air resistance, where would the ball land 2
+A. oO
+B. P
+c. Q
+D. R

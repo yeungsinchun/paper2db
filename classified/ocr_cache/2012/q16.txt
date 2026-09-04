@@ -1,0 +1,6 @@
+16. A pulse on a string propagates towards the right end which is fixed.
+a
+Which of the following represents the reflected pulse ?
+A. 7 \
+————
+=

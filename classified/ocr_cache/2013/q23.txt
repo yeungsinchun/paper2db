@@ -1,0 +1,14 @@
+*23. first-order bright fringe
+G 7
+0 central bright fringe
+incident beam diffraction
+grating
+first-order bright fringe
+When monochromatic light passes through a diffraction grating, a pattern of bright fringes is formed.
+Which arrangement would produce the greatest angle @ between the central and first-order bright
+fringes ?
+grating (lines per mm) colour of light
+A. 400 green
+B. 400 blue
+Cc. 200 green
+D. 200 blue

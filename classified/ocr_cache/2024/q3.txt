@@ -1,0 +1,6 @@
+#3. The best vacuum attained in the laboratory has a pressure of about 10~* Pa. Estimate the order of
+magnitude of the number of air molecules in | cm’ of such ‘vacuum’ at room temperature.
+A. 10¢
+B. 106
+c. 108
+D. 10”

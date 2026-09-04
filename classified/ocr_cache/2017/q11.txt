@@ -1,0 +1,17 @@
+Il. A machine is fixed at the top of a smooth inclined plane. Two methods, (I) and (II), are used to lift a
+block from the ground to the top of the inclined plane by the machine.
+() Pull the block vertically upward at a uniform speed v.
+db Pull the block up along the inclined plane at the same uniform speed v.
+machine machine
+light light string
+string y
+vf} ~
+() ap
+Which of the following statements correctly compare(s) the two methods ?
+(ld) The tension in the string is the same.
+(2) The average output power of the machine is the same.
+(3) The work done by the machine on the block is the same.
+A. (1) only
+B. (3) only
+Cc. (1) and (2) only
+Dz. (2) and (3) only

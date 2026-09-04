@@ -1,0 +1,11 @@
+27. ' '
+P-- o-
+o-- --
+Ri is
+In the figure, four long straight wires P, Q, R and S in the same plane carry equal currents in the
+directions shown. The wires are insulated from each other. O is a point on the same plane and is
+equidistant from each wire. Removing which wire would increase the magnetic field strength at O ?
+A. wire P
+B. wire 0
+Cc. wire R
+D. wire S

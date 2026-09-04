@@ -1,0 +1,6 @@
+26. Ifa 15 A fuse is installed in the plug of an electric kettle of rating ‘220 V, 900 W’, state what happens
+when the kettle is plugged in and switched on.
+A. The kettle will not operate.
+B. The kettle will be short-circuited.
+C. The output power of the kettle will be increased.
+D. The chance of the kettle being damaged by an excessive current will be increase

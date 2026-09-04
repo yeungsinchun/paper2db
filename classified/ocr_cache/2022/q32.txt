@@ -1,0 +1,8 @@
+#32, Radioactive sources X and Y have initial activities 100 kBq and 200 kBgq respectively. One day later,
+their activities are found to be equal. After another day, the activity of X becomes 80 kBq. Deduce the
+corresponding activity of Y.
+
+A. 40 kBq
+B. 50kBq
+C. 89 kBq
+D. 160 kBq

@@ -1,0 +1,18 @@
+2. temperature
+Q R ;
+time
+
+A substance undergoes the fusion process. The figure shows how the substance’s temperature varies
+with time. Its temperature remains constant during the period from @ to R. Which of the following
+deductions within this period is/are correct ?
+(dd) The substance does not absorb heat.
+(2) The mass ratio of the substance in solid and liquid states remains constant throughout.
+(3) The average potential energy of the molecules of the substance increases with time.
+
+A. (1) only
+
+B. (3) only
+
+Cc. (1) and (2) only
+
+D. (2) and (3) only

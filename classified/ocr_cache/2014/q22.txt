@@ -1,0 +1,12 @@
+22.
+P Q
+0°
+force on
+electron
+Two parallel metal plates P and Q are maintained at a certain p.d. by a battery (not shown in the figure).
+An electron placed between the plates would experience an electrostatic force of 8.0 x 107'® N towards P.
+Which of the following descriptions about the electric field Z between the plates is correct ?
+A. E=0.02 NC" from Q to P.
+B. E=0.02 NC" from P to Q.
+c. E=50NC" from Q to P.
+D. E=50NC" from P to Q.

@@ -1,0 +1,18 @@
+*13. Two identical particles X and Y are projected from point P simultaneously with the same initial speed
+but with different angles as shown. They finally hit the ground at the same point via different paths.
+xX
+PR
+ground
+
+Which of the following statements is/are correct ? Neglect air resistance.
+(1) They hit the ground at the same time.
+(2) They hit the ground with the same speed.
+(3) The kinetic energy of Y is greater than that of X at their respective maximum heights.
+
+A. (1) only
+
+B. (3) only
+
+Cc. (1) and (2) only
+
+D. (2) and (3) only

@@ -1,0 +1,7 @@
+33. What is the value of x for the fission reaction below ?
+238U + dn > $2Kr + 144Ba + xr
+A. 1
+B. 2
+Cc. 3
+D. 4
+END OF SECTION A

@@ -1,0 +1,11 @@
+7. A uniform rod of weight W hinged at its upper end is at rest under a horizontal force F applied at its lower
+end. Which figure correctly shows the force R acting on the rod at the hinge ?
+R
+A. B.
+R
+Ww Ww
+F F
+c R Dz R
+Ww
+W F
+F

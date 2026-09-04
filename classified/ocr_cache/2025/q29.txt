@@ -1,0 +1,6 @@
+*29. A student uses a search coil to measure the magnetic field of a permanent magnet. However, no reading
+is observed on the CRO connected to the search coil. Which of the following is the possible reason ?
+A. The magnet is not strong enough.
+B. The magnetic field produced by the magnet is constant.
+Cc. The sensitivity of the CRO is too low.
+Dz The size of the search coil is not large enough to pick up sufficient magnetic flux.

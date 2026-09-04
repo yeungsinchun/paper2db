@@ -1,0 +1,14 @@
+31. The figure below shows a current of 1.0 A flowing in a metal rod of length 0.5 m. _ The rod is plac
+inside a region with a uniform magnetic field of strength 5 mT. | What is the direction and the magnitu
+of the magnetic force acting on the rod ?
+
+ee?
+30°
+10A 5 mT uniform
+magnetic field
+ee
+Direction Magnitude
+A into the paper 1.25x 107N
+B. out of the paper 1.25x 107N
+Cc into the paper 217x 1073N
+D. out of the paper 2.17 x 107 N

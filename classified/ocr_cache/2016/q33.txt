@@ -1,0 +1,9 @@
+33. Two radionuclides X and Y are of half-lives 3 hours and 4 hours respectively and initially there are Nx
+and Ny undecayed nuclei respectively. After 24 hours, the number of undecayed nuclei of both
+nuclides becomes the same. Find Nx : Ny.
+
+A. 8:1
+B. 4:3
+Cc. 4:1
+Dz. 2:1
+END OF SECTION A

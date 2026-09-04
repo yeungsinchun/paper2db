@@ -1,0 +1,14 @@
+*14. In the figure, X is an object resting on the Earth’s equator. Y is a geostationary satellite moving in a
+circular orbit above the equator such that it always appears stationary to an observer on Earth.
+a at.
+“ X ~*.. NOT drawn to scale
+' \
+'
+Which descriptions about the motion of X and Y are correct ?
+qd) The motion of X and Y takes the same period.
+(2) X is moving with a slower speed.
+(3) Xhas a greater acceleration.
+A. (1) and (2) only
+B. (1) and (3) only
+Cc. (2) and (3) only
+D. (1), (2) and (3)

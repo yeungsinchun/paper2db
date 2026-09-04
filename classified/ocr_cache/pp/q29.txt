@@ -1,0 +1,13 @@
+29. In the circuit below, three identical light bulbs are connected to a cell. Under what conditions will li
+bulb P have the maximum brightness ?
+——
+x Yy
+P
+Switch X Switch Y
+
+AL closed open
+
+B. closed closed
+Cc open open
+
+Dz open closed

@@ -1,0 +1,11 @@
+*22. |
+light source |
+screen
+double slit
+In a Young’s double slit experiment, a monochromatic light source of wavelength 600 nm is used. T
+fringe separation is 5 mm on the screen. If the slit separation is halved and a monochromatic light soul
+of wavelength 450 nm is used instead, what is the new fringe separation ?
+A. 1.9mm
+B. 3.3mm
+Cc 7.5mm
+D. 13.3 mm

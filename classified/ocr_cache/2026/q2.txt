@@ -1,0 +1,6 @@
+2. The resistance of a resistance thermometer is 100.0 Q in pure melting ice. Its resistance increases linearly
+with temperature by 0.385 Q °C"!. Find the temperature when the resistance is 117.2 Q.
+A. 6.62 °C
+B. 11.5 °C
+c. 44.7 °C
+Dz. 45.1 °C

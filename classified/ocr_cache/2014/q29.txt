@@ -1,0 +1,12 @@
+*29,
+Li AS
+H P current
+R
+Q
+The figure shows a current flowing from right to left in a metal block with cross-section PORS. When a
+uniform magnetic field is applied to the block, the electric potential of the side PQ is found to be higher
+than that of the side SR. In which direction can the magnetic field be applied ?
+A. from P to O
+B. from Q to P
+c. from P to S
+D. from S to P

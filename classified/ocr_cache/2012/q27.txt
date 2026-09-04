@@ -1,0 +1,5 @@
+27. What will happen if the variable resistor is set to zero in the circuit below ?
+A. The light bulb will burn out.
+B. The light bulb will not light up.
+Cc. The brightness of the light bulb will increase.
+D. The brightness of the light bulb will remain unchanged.

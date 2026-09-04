@@ -1,0 +1,16 @@
+33.
+electric
+Neutral x iron
+Live
+¥
+Z
+Earth
+The figure shows a simple domestic circuit for an electric iron. The fuse will blow when which of th
+following points are short-circuited ?
+qd) Xand Y
+(2) Yand Z
+(3) X and Z
+A. (1) only
+B. (3) only
+Cc. (1) and (2) only
+D. (2) and (3) only

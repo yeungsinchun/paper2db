@@ -1,0 +1,15 @@
+24. The figure shows the field lines of an electric field. Arrange the respective electric field strength Ep, Eq
+and Ep of regions P, Q and R in ascending order.
+1 1 1
+1 ‘ y
+H H
+A i> iy
+H H
+es wee
+H H
+P Q R
+A. Ep < Eq < Er
+B. Eq < Ex< Ep
+Cc. Ex < Ep < Eq
+D. Eq < Ep < Ex
+N

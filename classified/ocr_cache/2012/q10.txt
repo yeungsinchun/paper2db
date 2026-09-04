@@ -1,0 +1,11 @@
+10. A block of mass m resting on a 30° incline is given a slight push and slides down the incline with a
+uniform speed. Which of the following statements about the block’s motion on the incline is/are
+correct ?
+qd) There is no net force acting on the block.
+
+(2) The frictional force acting on the block is 0.5 mg.
+(3) If the block is given a greater initial speed, it will slide down the incline with acceleration.
+A. (1) only
+B. (3) only
+Cc. (1) and (2) only
+: D. (2) and (3) only

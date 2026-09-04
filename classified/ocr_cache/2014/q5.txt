@@ -1,0 +1,6 @@
+5. A particle is moving along a straight line with uniform acceleration. It takes 4 s to travel a distance of
+36 m and then 2 s to travel the next 36 m. What is its acceleration ?
+A. 2.5ms?
+B.  3.0ms?
+Cc. 4.0ms*
+D = 45ms*

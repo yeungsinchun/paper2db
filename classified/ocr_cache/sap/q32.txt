@@ -1,0 +1,12 @@
+32.
+| fe | |
+mes
+FQ 360 40
+The figure shows the location of an isolated charge of size +Q. The size (in an arbitrary unit) of the
+electric field strength is marked at certain points. What is the size (in the same arbitrary unit) of the
+electric field strength at X and Y ?
+electric field strength at X electric field strength at Y
+A. 72 30
+B. 72 36
+Cc. 90 30
+D. 90 36

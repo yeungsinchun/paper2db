@@ -1,0 +1,578 @@
+[
+  {
+    "Year": 2018,
+    "Question": 13,
+    "sections": [
+      12
+    ],
+    "reason": "Satellite in circular orbit; angular velocity depends on gravitation (G, M, r)."
+  },
+  {
+    "Year": 2018,
+    "Question": 14,
+    "sections": [
+      13
+    ],
+    "reason": "General properties of waves: energy transfer, sound as wave, EM nature of IR."
+  },
+  {
+    "Year": 2018,
+    "Question": 15,
+    "sections": [
+      13
+    ],
+    "reason": "Particle motion on a transverse travelling wave from displacement-time graphs."
+  },
+  {
+    "Year": 2018,
+    "Question": 16,
+    "sections": [
+      14
+    ],
+    "reason": "Diffraction of light around an obstacle; how diffraction angle depends on wavelength/width."
+  },
+  {
+    "Year": 2018,
+    "Question": 17,
+    "sections": [
+      18
+    ],
+    "reason": "Snell's law / refractive index for a light ray at a glass-air boundary."
+  },
+  {
+    "Year": 2018,
+    "Question": 18,
+    "sections": [
+      15
+    ],
+    "reason": "Stationary wave on a string; find frequency from wavelength and wave speed."
+  },
+  {
+    "Year": 2018,
+    "Question": 19,
+    "sections": [
+      19
+    ],
+    "reason": "Thin-lens formula: object/image distances to identify lens type and focal length."
+  },
+  {
+    "Year": 2018,
+    "Question": 20,
+    "sections": [
+      17
+    ],
+    "reason": "Image in a plane mirror; reconstruct the object design from the reflected image."
+  },
+  {
+    "Year": 2018,
+    "Question": 21,
+    "sections": [
+      16
+    ],
+    "reason": "Typical sound intensity levels (dB) in daily life."
+  },
+  {
+    "Year": 2018,
+    "Question": 22,
+    "sections": [
+      20
+    ],
+    "reason": "Charged oil droplet in equilibrium in a uniform electric field (electrostatics)."
+  },
+  {
+    "Year": 2018,
+    "Question": 23,
+    "sections": [
+      21
+    ],
+    "reason": "I-V characteristic of a conductor; Ohm's law and resistance from the graph."
+  },
+  {
+    "Year": 2018,
+    "Question": 24,
+    "sections": [
+      21
+    ],
+    "reason": "Electrical power dissipation limit for resistors in a series-parallel arrangement."
+  },
+  {
+    "Year": 2018,
+    "Question": 25,
+    "sections": [
+      21
+    ],
+    "reason": "Resistivity ratio of parallel wires carrying equal current from the same supply."
+  },
+  {
+    "Year": 2018,
+    "Question": 26,
+    "sections": [
+      21
+    ],
+    "reason": "Battery capacity (mA h) and remaining charge after delivering current over time."
+  },
+  {
+    "Year": 2018,
+    "Question": 27,
+    "sections": [
+      23
+    ],
+    "reason": "Magnetic field of a current-carrying wire superimposed on a uniform field; null point."
+  },
+  {
+    "Year": 2018,
+    "Question": 28,
+    "sections": [
+      23
+    ],
+    "reason": "Charged particles moving in a uniform magnetic field; circular paths and charge sign."
+  },
+  {
+    "Year": 2018,
+    "Question": 29,
+    "sections": [
+      24
+    ],
+    "reason": "Falling magnet induces eddy currents in aluminium tubing (Lenz/EM induction)."
+  },
+  {
+    "Year": 2018,
+    "Question": 30,
+    "sections": [
+      24
+    ],
+    "reason": "Comparing transformer voltage ratio with a non-transformer a.c. divider circuit."
+  },
+  {
+    "Year": 2018,
+    "Question": 31,
+    "sections": [
+      27
+    ],
+    "reason": "Which nuclear reactions can sustain a fission chain reaction."
+  },
+  {
+    "Year": 2018,
+    "Question": 32,
+    "sections": [
+      26
+    ],
+    "reason": "Half-lives and undecayed nuclei ratio after a given time for two nuclides."
+  },
+  {
+    "Year": 2018,
+    "Question": 33,
+    "sections": [
+      27
+    ],
+    "reason": "Mass defect / binding energy when forming a He nucleus from nucleons."
+  },
+  {
+    "Year": 2019,
+    "Question": 1,
+    "sections": [
+      2
+    ],
+    "reason": "Thermal mixing of block and water; compare heat capacities from temperature changes."
+  },
+  {
+    "Year": 2019,
+    "Question": 2,
+    "sections": [
+      3
+    ],
+    "reason": "Fusion heating-curve plateau; latent heat and molecular PE during change of state."
+  },
+  {
+    "Year": 2019,
+    "Question": 3,
+    "sections": [
+      4
+    ],
+    "reason": "Heating gas in open container; kinetic theory of molecules (KE, number, separation)."
+  },
+  {
+    "Year": 2019,
+    "Question": 4,
+    "sections": [
+      7
+    ],
+    "reason": "Locate centre of gravity of a non-uniform plate from suspension equilibrium."
+  },
+  {
+    "Year": 2019,
+    "Question": 5,
+    "sections": [
+      7
+    ],
+    "reason": "Resolve forces: horizontal F keeps a block at rest on a smooth incline."
+  },
+  {
+    "Year": 2019,
+    "Question": 6,
+    "sections": [
+      10
+    ],
+    "reason": "Projectile under gravity only; find speed 1 s earlier from given velocity."
+  },
+  {
+    "Year": 2019,
+    "Question": 7,
+    "sections": [
+      7
+    ],
+    "reason": "Rope-and-tree support arrangements; tension / force geometry (moments/resolution)."
+  },
+  {
+    "Year": 2019,
+    "Question": 8,
+    "sections": [
+      6
+    ],
+    "reason": "Free-body diagram of forces on a swinging sphere on a taut string."
+  },
+  {
+    "Year": 2019,
+    "Question": 9,
+    "sections": [
+      8
+    ],
+    "reason": "Minimum work done to stack blocks (raising centres of mass / PE)."
+  },
+  {
+    "Year": 2019,
+    "Question": 10,
+    "sections": [
+      9
+    ],
+    "reason": "Short-duration force (impulse) changes the ball's momentum and subsequent path."
+  },
+  {
+    "Year": 2019,
+    "Question": 11,
+    "sections": [
+      9
+    ],
+    "reason": "Head-on collision; possible post-collision speeds from momentum (and energy) limits."
+  },
+  {
+    "Year": 2019,
+    "Question": 12,
+    "sections": [
+      8
+    ],
+    "reason": "Atwood-like pulley system; speed from mechanical energy conservation."
+  },
+  {
+    "Year": 2019,
+    "Question": 13,
+    "sections": [
+      10
+    ],
+    "reason": "Horizontal projections; compare flight time, projection speed, and landing speed."
+  },
+  {
+    "Year": 2019,
+    "Question": 14,
+    "sections": [
+      13
+    ],
+    "reason": "Longitudinal travelling wave: compression, particle velocity from displacement graph."
+  },
+  {
+    "Year": 2019,
+    "Question": 15,
+    "sections": [
+      16
+    ],
+    "reason": "Direct and reflected sound paths; time delay and relative loudness (echo)."
+  },
+  {
+    "Year": 2019,
+    "Question": 16,
+    "sections": [
+      15
+    ],
+    "reason": "Two coherent water-wave sources; count nodal lines (interference minima)."
+  },
+  {
+    "Year": 2019,
+    "Question": 17,
+    "sections": [
+      14
+    ],
+    "reason": "Hearing around a door but not seeing: diffraction of longer-wavelength sound."
+  },
+  {
+    "Year": 2019,
+    "Question": 18,
+    "sections": [
+      13
+    ],
+    "reason": "Wave speed on a string depends on tension and linear density (v=sqrt(T/mu))."
+  },
+  {
+    "Year": 2019,
+    "Question": 19,
+    "sections": [
+      14
+    ],
+    "reason": "Identify diffraction-grating fringe pattern for green laser light."
+  },
+  {
+    "Year": 2019,
+    "Question": 20,
+    "sections": [
+      19
+    ],
+    "reason": "Convex-lens imaging; adjust focal length/screen when object distance changes."
+  },
+  {
+    "Year": 2019,
+    "Question": 21,
+    "sections": [
+      15
+    ],
+    "reason": "Two loudspeakers interference; path difference to next maximum (lambda)."
+  },
+  {
+    "Year": 2019,
+    "Question": 22,
+    "sections": [
+      16
+    ],
+    "reason": "Properties of infra-red as EM radiation (refraction, speed, uses)."
+  },
+  {
+    "Year": 2019,
+    "Question": 23,
+    "sections": [
+      20
+    ],
+    "reason": "Equilibrium of point charges; motion after slightly displacing the middle charge."
+  },
+  {
+    "Year": 2019,
+    "Question": 24,
+    "sections": [
+      21
+    ],
+    "reason": "Series-parallel resistor circuit; ideal voltmeter reading."
+  },
+  {
+    "Year": 2019,
+    "Question": 25,
+    "sections": [
+      21
+    ],
+    "reason": "Bulb circuit faults (short/open) and effect on brightness of another bulb."
+  },
+  {
+    "Year": 2019,
+    "Question": 26,
+    "sections": [
+      23
+    ],
+    "reason": "Magnetic forces between parallel current-carrying wires; resultant on middle wire."
+  },
+  {
+    "Year": 2019,
+    "Question": 27,
+    "sections": [
+      23
+    ],
+    "reason": "d.c. motor structure; behaviour if battery replaced by sinusoidal a.c."
+  },
+  {
+    "Year": 2019,
+    "Question": 28,
+    "sections": [
+      24
+    ],
+    "reason": "Induced currents in aluminium ring above a coil; float with a.c. (induction/Lenz)."
+  },
+  {
+    "Year": 2019,
+    "Question": 29,
+    "sections": [
+      24
+    ],
+    "reason": "Transformer turns ratio for bulbs at rated voltage/power."
+  },
+  {
+    "Year": 2019,
+    "Question": 30,
+    "sections": [
+      22
+    ],
+    "reason": "a.c. mains heater power; depends on r.m.s. voltage, not frequency or higher R."
+  },
+  {
+    "Year": 2019,
+    "Question": 31,
+    "sections": [
+      25
+    ],
+    "reason": "Penetration of alpha, beta, gamma through cardboard, Al, and lead absorbers."
+  },
+  {
+    "Year": 2019,
+    "Question": 32,
+    "sections": [
+      26
+    ],
+    "reason": "Half-lives, decay constants, and activity after several half-lives."
+  },
+  {
+    "Year": 2019,
+    "Question": 33,
+    "sections": [
+      27
+    ],
+    "reason": "Energy released from mass defect in neutron beta decay (nuclear energy)."
+  },
+  {
+    "Year": 2020,
+    "Question": 1,
+    "sections": [
+      1
+    ],
+    "reason": "Heater in water tank; convection causes largest top-bottom temperature difference."
+  },
+  {
+    "Year": 2020,
+    "Question": 2,
+    "sections": [
+      2
+    ],
+    "reason": "Heating water with known specific heat capacity; energy and related electrical checks."
+  },
+  {
+    "Year": 2020,
+    "Question": 3,
+    "sections": [
+      4
+    ],
+    "reason": "Ideal-gas process on a p-V graph; find temperature using gas law."
+  },
+  {
+    "Year": 2020,
+    "Question": 4,
+    "sections": [
+      5
+    ],
+    "reason": "Average velocity from displacement over time along a horizontal path."
+  },
+  {
+    "Year": 2020,
+    "Question": 5,
+    "sections": [
+      9
+    ],
+    "reason": "Car headrest safety: impulse/momentum and whiplash from rear impact."
+  },
+  {
+    "Year": 2020,
+    "Question": 6,
+    "sections": [
+      5
+    ],
+    "reason": "Vertical throw under gravity; acceleration is always downward (kinematics/free fall)."
+  },
+  {
+    "Year": 2020,
+    "Question": 7,
+    "sections": [
+      7
+    ],
+    "reason": "Scissors as lever; moments about pivot relate handle force to cut force."
+  },
+  {
+    "Year": 2020,
+    "Question": 8,
+    "sections": [
+      9
+    ],
+    "reason": "String suddenly taut: inelastic impulse; conserve momentum for the two blocks."
+  },
+  {
+    "Year": 2020,
+    "Question": 9,
+    "sections": [
+      11
+    ],
+    "reason": "Centripetal acceleration ratio for points on a rotating sphere."
+  },
+  {
+    "Year": 2020,
+    "Question": 10,
+    "sections": [
+      12
+    ],
+    "reason": "Surface gravity on Neptune from mass and radius relative to Earth."
+  },
+  {
+    "Year": 2020,
+    "Question": 11,
+    "sections": [
+      13
+    ],
+    "reason": "Longitudinal travelling wave: amplitude and speed from particle displacements."
+  },
+  {
+    "Year": 2020,
+    "Question": 12,
+    "sections": [
+      13
+    ],
+    "reason": "Particle KE vs time on a travelling wave from displacement-distance graph."
+  },
+  {
+    "Year": 2020,
+    "Question": 13,
+    "sections": [
+      18
+    ],
+    "reason": "Refraction into medium Z; compare refractive indices and light speeds in X and Y."
+  },
+  {
+    "Year": 2020,
+    "Question": 14,
+    "sections": [
+      14
+    ],
+    "reason": "Diffraction grating: coinciding orders to find the other wavelength."
+  },
+  {
+    "Year": 2020,
+    "Question": 15,
+    "sections": [
+      15
+    ],
+    "reason": "Young's double-slit set-up parameters for an observable interference pattern."
+  },
+  {
+    "Year": 2020,
+    "Question": 16,
+    "sections": [
+      13
+    ],
+    "reason": "Wave speed on a string is independent of frequency (v vs f graph)."
+  },
+  {
+    "Year": 2020,
+    "Question": 17,
+    "sections": [
+      17
+    ],
+    "reason": "Periscope with plane mirrors; image orientation seen by observer."
+  },
+  {
+    "Year": 2020,
+    "Question": 18,
+    "sections": [
+      19
+    ],
+    "reason": "Ray diagram through L; identify convex/concave lens and which point is the focus."
+  }
+]

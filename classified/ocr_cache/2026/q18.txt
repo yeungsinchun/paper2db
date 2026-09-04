@@ -1,0 +1,9 @@
+*18. A convex lens is used to project sharp images of an object onto a screen at different object distances u.
+For each value of wu, the corresponding image distance v and the linear magnification m are recorded.
+Which of the following best represents the graph of m against v ?
+A. m B. m
+v v
+0 0
+c. - D. m
+v v
+0 0

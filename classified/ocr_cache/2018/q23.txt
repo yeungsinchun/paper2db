@@ -1,0 +1,17 @@
+23, The graph below shows the current-voltage (J-V) relationship of a conductor.
+IA
+
+7 )
+
+3 |-----------2 t
+
+0 i
+
+12 14 VIN
+Which statement below is INCORRECT ?
+A. When the voltage across the conductor is less than 12 V, it obeys Ohm’s law.
+B. When the voltage across the conductor exceeds 12 V, its resistance begins to
+decrease.
+
+c. The resistance of the conductor is 0.5 when the current flowing through it is 5 A.
+D. The resistance of the conductor is 2 Q when the voltage across it is 14 V.

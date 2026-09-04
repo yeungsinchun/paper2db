@@ -1,0 +1,13 @@
+13.
+P N Q
+; J
+glass block
+04
+Ss R
+The figure shows the cross-section of a rectangular glass block PORS. A light ray is incident from air
+at M on face PS and the refracted ray strikes face PQ at N. Find the critical angle for the glass-air
+interface.
+A. 37°
+B. 44°
+Cc. 53°
+D. 60°

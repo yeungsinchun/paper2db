@@ -1,0 +1,14 @@
+25. Two cells of negligible internal resistance are connected to two resistors as shown.
+3V
+22 1Q
+15V
+Which of the following is correct ?
+direction of current current in the circuit
+
+A. anticlockwise O5A
+
+B. clockwise OSA
+
+Cc. anticlockwise 15A
+
+Dz. clockwise LSA

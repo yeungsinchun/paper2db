@@ -1,0 +1,14 @@
+3. “
+P Q R
+
+POR is a composite rod having a uniform cross-section but with portions PQ and OR made of different
+materials, each of uniform density. The ratio of the length of PQ to that of QR is 2: 3. When the rod is
+suspended at Q, it remains horizontal as shown. What is the ratio of the mass of PQ to that of OR?
+
+A. 2:3
+
+B. lel
+
+c. 3:2
+
+D. Answer cannot be found as the ratio of their densities is not given.

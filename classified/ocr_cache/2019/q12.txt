@@ -1,0 +1,13 @@
+12. Two blocks of respective masses 2 kg and 5 kg are connected by a light inextensible string which
+passes over a smooth fixed light pulley as shown. The system is released from rest when the 5-kg
+block is 3 m above the ground. What is the speed of the 5-kg block just when reaching the ground ?
+Neglect air resistance. (g = 9.81 ms)
+
+f Skg
+3m
+2ks
+s und
+A. 5.0ms* ,
+B. 6.0ms"
+Cc. 65ms
+D. 17ms'

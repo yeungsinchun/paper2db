@@ -1,0 +1,10 @@
+*29, A transformer is connected to a.c. mains of 220 V r.m.s. value. The peak value of the output voltage
+displayed on a CRO is found to be 11 V. If the transformer has 2000 turns in its primary coil, find the
+number of turns in the secondary coil.
+
+220 V To
+- - A
+A. 71
+B. 100
+Cc 141
+D. 200

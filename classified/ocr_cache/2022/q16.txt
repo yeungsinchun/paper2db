@@ -1,0 +1,10 @@
+16. Referring to the set-up below, which of the following combinations would give the highest speed of wave
+propagation along the string when the string is plucked ?
+string
+| weight
+tension of the string _ radius of the cross-section of the string
+A. T r
+B. T 2r
+Cc. 2T r
+D. 2T 2r
+N

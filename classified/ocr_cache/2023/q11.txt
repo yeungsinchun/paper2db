@@ -1,0 +1,19 @@
+ll. A trolley moves with a constant velocity along a smooth horizontal surface. When the trolley reaches
+point X, a plasticine falls vertically onto it. After the collision, they stick together and continue to move
+forward.
+
+plasticine falls
+onto a trolley
+Cees All
+“ d
+[sams =a oS,
+' i——» —,
+Haas out
+a coe smooth horizontal surface
+Which description about the total linear momentum of the trolley and the plasticine just before and
+just after collision is correct ?
+along the horizontal direction along the vertical direction
+A. conserved conserved
+B. conserved not conserved
+Cc. not conserved conserved
+D. not conserved not conserved

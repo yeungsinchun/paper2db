@@ -1,0 +1,11 @@
+24, In the circuit, all resistors are identical. The internal resistance of the battery can be neglected.
+9Vv
+r
+Y
+x
+What is the potential difference between X and Y?
+
+A. 15V
+B. 3.0V
+Cc. 45V
+D. 6.0 V

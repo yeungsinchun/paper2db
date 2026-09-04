@@ -1,0 +1,12 @@
+28. In Figure (a), two identical resistors are connected in series to a cell of e.m.f. V and negligible inter
+resistance. The power dissipated by each resistor is P. If the two resistors are now connected in parallel
+shown in Figure (b), what is the power dissipated by each resistor ?
+
+4 Vv
+R
+R R
+Figure (a) Figure (b)
+A. 2P.
+B. 4P
+Cc 8P
+D. 16P

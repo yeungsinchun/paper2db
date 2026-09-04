@@ -1,0 +1,16 @@
+20. The figure shows an enlarged sharp image of an object O formed on a screen S by a convex len
+object O lens L
+es, screen S |
+
+Which of the following can give a diminished sharp image on the screen ?
+(1) Keeping the positions of O and L unchanged, move S suitably closer to L.
+(2) Keeping the positions of L and S unchanged, move O suitably farther away from L.
+(3) Keeping the positions of O and S unchanged, move L suitably closer to S.
+
+A. (1) only
+
+B. (3) only
+
+(on (1) and (2) only
+
+D. (2) and (3) only

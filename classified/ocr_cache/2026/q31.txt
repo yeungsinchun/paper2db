@@ -1,0 +1,18 @@
+*31. Coil A and coil B are placed close and facing each other with the number of turns of coil B being doubled
+that of coil A. Coil 4 is connected to an a.c. source while coil B is connected to an ideal a.c. voltmeter
+as shown. The voltmeter shows a reading after the a.c. source is turned on.
+
+we coil B
+coil A Z o
+\ to an ideal
+a.c. voltmeter
+to ana.c.
+source
+Which of the following will increase the voltmeter reading ?
+(1) The voltage of the a.c. source is increased.
+(2) A thicker wire is used in coil B.
+(3) A thin and large plastic sheet is placed between the two coils and parallel to them.
+A. (1) only
+B. (3) only
+c. (1) and (2) only
+Dz (2) and (3) only

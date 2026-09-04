@@ -1,0 +1,20 @@
+*29. Charged particles P and Q are moving in a region with mutually perpendicular uniform electric and
+magnetic fields as shown.
+es
+PAT TTTTTT LE
+x xX Xx x xX xX X KX xX x x . .
+metal plates x x OR x x x x lnlform magnetic field
+(into the paper)
+xX KX XK XX KX KX K KX XK XK XK
+o—_—_—-—- +
+xx x x2Q8a Ke kK x x
+xX X KX KX X X KX K KX KX KX XK
+If both particles are not deflected by the fields, which of the following statements must be correct ?
+Neglect the effects of gravity.
+(1) They are positively charged.
+(2) They are moving with the same velocity.
+(3) They have the same charge to mass ratio.
+A. (1) only
+B. (2) only
+c. (1) and (3) only
+D. (2) and (3) only

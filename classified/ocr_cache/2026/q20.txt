@@ -1,0 +1,15 @@
+*20. A beam of monochromatic light is incident normally on a diffraction grating. Second-order diffracted
+beams are found at 48° to the incident direction as shown in the figure. Find the highest order of
+diffracted beam that can be observed,
+
+_ second-order diffracted beam
+0
+— |] #.--- central beam
+incident beam... UX 48°
+diffraction *s,
+grating NS
+~ second-order diffracted beam
+A. 2"4 order
+B. 3" order
+c. 4" order
+D. 5" order

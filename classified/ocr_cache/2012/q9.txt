@@ -1,0 +1,7 @@
+9. An object of mass 0.5 kg is raised vertically from the ground by a motor. The object is raised 2.5 m in
+1.5 s with uniform speed. Estimate the output power of the motor. Neglect air resistance.
+(g= 9.81 ms”)
+A. 5.5 W
+B. 82W
+c. 11.0W
+D. 16.4W

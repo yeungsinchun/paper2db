@@ -1,0 +1,13 @@
+*30. The figure shows two charged particles Y (mass mx) and Y (mass my) which enter a region of uniform
+magnetic field pointing out of the paper. X and Y, having the same speed and charge, move along the
+paths in the plane of the paper as shown below.
+
+uniform magnetic field
+pointing out of the paper
+charged
+particles yx Y
+X and Y are
+A. positively charged and mx > my.
+B. positively charged and mx < my.
+on negatively charged and mx > my.
+D. negatively charged and mx < my.

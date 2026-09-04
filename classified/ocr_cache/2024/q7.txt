@@ -1,0 +1,25 @@
+7. In an experiment, a horizontal force F acts on a block placed on a rough horizontal surface as shown in
+Figure (a). Figure (b) shows the variation of the block’s kinetic energy Zz with the distance s it travelled.
+Neglect air resistance and assume frictional force unchanged.
+
+Ex
+F rough horizontal
+surface
+X 0 s
+Figure (a) Figure (b)
+If the experiment is repeated with force F doubled, which of the following graphs represents the expected
+result (in dotted line) ?
+A. B.
+Ex Ex
+Y
+oo" “
+0 's 0 s
+Cc. dD.
+Ex . Ex
+,
+“
+“
+“ wee
+“ ye
+B
+0 s 0 s

@@ -1,0 +1,11 @@
+#3, Identical closed vessels X and Y contain carbon dioxide (CO2) and oxygen (Oz) respectively.
+vessel X vessel Y
+Both gases are at room temperature and atmospheric pressure. Which of the following physical
+quantities of the gas molecules in the two vessels is/are the same ?
+(1) root-mean-square speed
+(2) average kinetic energy
+(3) frequency of collision with the walls of the vessel
+A. (1) only
+B. (2) only
+Cc (1) and (3) only
+D. (2) and (3) only

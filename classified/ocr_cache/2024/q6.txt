@@ -1,0 +1,11 @@
+6. An object of weight w is placed inside an elevator of weight W. T
+A force T pulls the elevator upward. A supporting force X acts
+on the object while the floor of the elevator experiences a
+force Y due to the presence of the object. Which of the
+following is an action and reaction pair ? elevator of
+weight W
+A. Tand (W+w) object of
+B. wand X weight w
+Cc. Xand Y
+D. It cannot be determined as the direction of
+acceleration of the elevator is unknown. he

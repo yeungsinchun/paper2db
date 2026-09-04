@@ -1,0 +1,14 @@
+15. An experiment is set up to measure the speed of sound in air as shown. P and Q are two microphones
+connected to a timer. A sound is produced at .X. The timer starts when P receives the sound, and stops
+when Q receives the sound. The timer shows the time taken for the sound to travel from P to Q. The
+distance PQ and the time shown can be used to calculate the speed of sound.
+
+X @----------Ppet------------ EY --
+P Q
+Which of the following statements is INCORRECT ?
+A. , P and Q must be along the same straight line.
+B. The percentage error in the time measured will increase if the distance PQ is reduced.
+Cc. The speed of sound determined should be independent of the distance between X and
+P.
+D. The distance PQ must be equal to an integral multiple of wavelengths of the sound
+produced at X.

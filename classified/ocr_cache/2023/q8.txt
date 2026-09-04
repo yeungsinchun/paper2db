@@ -1,0 +1,14 @@
+8. In an amusement park ride, a boy of weight W undergoes free fall vertically in a chair at first and then
+decelerates uniformly. Which graph below correctly shows the time variation of the reaction force R
+acting on the boy by the chair ? Neglect air resistance.
+
+A. B.
+
+R R
+
+. time 0 time
+CR D.
+
+fa —
+
+0 time 0 time

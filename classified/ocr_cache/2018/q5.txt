@@ -1,0 +1,19 @@
+5. A block of weight 8 N is suspended from a horizontal ceiling by light inextensible strings to |
+different points P and Q as shown. The strings are equal in length.
+ss 5
+P Q
+Ty Tr,
+8N
+
+Which of the following descriptions about the tensions 7, and 7; in the two strings is/are correct ?
+() The magnitude of 7, must be greater than 4 N.
+(2) The maximum value of 7, would not exceed 8 N.
+(GB) The resultant force of 7; and 7; is zero.
+
+A. (1) only
+
+B. (3) only
+
+c. (1) and (2) only
+
+Dz. (2) and (3) only

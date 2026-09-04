@@ -1,0 +1,18 @@
+25. In the figure below, POR is a straight line with PQ = 10 cm and OR= 5 cm. A long straight wire carrying
+a current of 0.3 A (directed into the paper) is placed at P. When another long straight wire carrying a
+current / is placed at Q, the resultant magnetic field at R becomes zero, Determine the direction and
+magnitude of /.
+
+P Q R
+
+Qe -O-- -«
+
+<——
+
+10cm Sem
+direction of J magnitude of J
+
+A. into the paper OLA
+B, into the paper 09A
+Cc. out of the paper O1A
+Dz out of the paper 0.9A

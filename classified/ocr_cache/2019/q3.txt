@@ -1,0 +1,18 @@
+53: The figure shows an inexpansible container with an opening.
+\—— opening
+gas container
+heat
+
+When the gas inside the container is being heated slowly by a heater, which statements about the gas
+molecules in the container are correct ?
+ql) The number of molecules decreases.
+(2) The average kinetic energy of molecules increases.
+(3) The average separation between molecules remains unchanged.
+
+A. (1) and (2) only
+
+B. (1) and (3) only
+
+c. (2) and (3) only
+
+D. (1), (2) and (3)

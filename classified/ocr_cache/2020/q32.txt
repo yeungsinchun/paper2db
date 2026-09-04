@@ -1,0 +1,5 @@
+*32. The decay constant of a radioisotope of an element
+A. is random.
+B. depends on pressure and temperature.
+Cc. is directly proportional to the number of nucleons in the isotope.
+D. is an identifying characteristic of that isotope.

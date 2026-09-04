@@ -1,0 +1,6 @@
+4, A particle travels at 2.0 m s~' due east for 1.5 s and then travels at 4.0 m s“! due north for 1.0 s.. What is
+the magnitude of its average velocity for the whole journey ?
+A. 2.0mst
+B. 2.8ms"
+c. 3.0mst
+D. 5.0ms"

@@ -1,0 +1,434 @@
+[
+  {
+    "Year": 2022,
+    "Question": 25,
+    "text": "An electrical device is charged with a steady d.c. of 60 mA for 30 minutes. Find the number of electrons\nthat pass through the device during charging.\nA. 108 | B. 1800 | C. 3.75 x 10!” | D. 6.75 x 10°",
+    "PNG": "output/2022/q25.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 26,
+    "text": "6V\n|\nSs\nIn the above circuit, the resistors are identical and the 6 V battery has negligible internal resistance.\nWhich of the following is the set of readings on the voltmeter when (1) S is open; (2) S is closed ?\nSopen S closed\nA. OV 6V | B. 3V 6V | C. 6V OV . D. 6V 3V",
+    "PNG": "output/2022/q26.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 27,
+    "text": "The figure below shows three parallel wires carrying currents in the directions shown.\nIf one of the wires experiences zero resultant magnetic force, that wire\nA. must be X. | B. must be ¥. | C. must be Z. | D. may be Yor Z.",
+    "PNG": "output/2022/q27.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 28,
+    "text": "direction\nof rotation\nTN\n“8B\n| S Ip ;\n} _\nLS coil\nLT B48\nOe\n(Cae\nload\nThe figure shows the structure of a simple generator. Which of the following statements is/are correct ?\n(1) The magnetic force acting on side AB of the coil is upward at the instant shown,\n(2) The commutator would reverse the direction of current in the coil whenever the coil passes its\nvertical position.\n(3) The current flowing through the load is an unsteady d.c.\nA. (1) only | B. (2) only [on (3) only Dz (1) and (3) only",
+    "PNG": "output/2022/q28.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 29,
+    "text": "Charged particles P and Q are moving in a region with mutually perpendicular uniform electric and\nmagnetic fields as shown.\nes\nPAT TTTTTT LE\nx xX Xx x xX xX X KX xX x x . .\nmetal plates x x OR x x x x lnlform magnetic field\n(into the paper)\nxX KX XK XX KX KX K KX XK XK XK\no—_—_—-—- +\nxx x x2Q8a Ke kK x x\nxX X KX KX X X KX K KX KX KX XK\nIf both particles are not deflected by the fields, which of the following statements must be correct ?\nNeglect the effects of gravity.\n(1) They are positively charged.\n(2) They are moving with the same velocity.\n(3) They have the same charge to mass ratio.\nA. (1) only | B. (2) only | C. (1) and (3) only | D. (2) and (3) only",
+    "PNG": "output/2022/q29.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 30,
+    "text": "Arrange the following in ascending order of power delivered when each of them is connected to the same\nresistor.\nql) a 100 Hz sinusoidal a.c. of peak voltage 2 V\n(2) a 50 Hz sinusoidal a.c. of r.m.s. voltage 2 V\n(3) a steady d.c. of voltage 1.5 V\nA. (1) B) 2) | B. (2) B) (1) | C. (2) GB) | D. 2) (1) 6)",
+    "PNG": "output/2022/q30.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 31,
+    "text": "Which of the following statements about X-rays is INCORRECT ?\nA. X-rays can be produced by high-speed electrons hitting a metal target. | B. X-rays are a kind of electromagnetic waves. [on X-rays can be deflected by an el | D. Although X-rays do not carry charges, they can cause ionization.",
+    "PNG": "output/2022/q31.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 32,
+    "text": "#32, Radioactive sources X and Y have initial activities 100 kBq and 200 kBgq respectively. One day later,\ntheir activities are found to be equal. After another day, the activity of X becomes 80 kBq. Deduce the\ncorresponding activity of Y.\nA. 40 kBq | B. 50kBq | C. 89 kBq | D. 160 kBq",
+    "PNG": "output/2022/q32.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 33,
+    "text": "What is the value of x for the fission reaction below ?\n238U + dn > $2Kr + 144Ba + xr\nA. 1 | B. 2 | C. 3 | D. 4 END OF SECTION A",
+    "PNG": "output/2022/q33.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 1,
+    "text": "Which of the following statements involving heat transfer via radiation is/are correct ?\n\n(1) Objects hotter than the surroundings do not absorb heat by radiation.\n\n(2) The silvery surfaces of survival blankets help the body absorb heat from the surroundings by\nradiation.\n\n(3) The cooling fins of a car engine should preferably be black in colour.\nA. (1) only | B. (3) only Cc, (1) and (2) only Dz. (2) and (3) only",
+    "PNG": "output/2023/q1.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 2,
+    "text": "temperature\n—_——\ni 20 min. fl\ni '\n0 time\nA hot liquid substance of mass 0.3 kg and with heat capacity 600 J °C\"! is left to cool in air. Its\ntemperature falls at a rate of 2 °C per minute just before it begins to solidify. Then its temperature\nremains steady for 20 minutes until all the liquid just solidifies. Estimate the specific latent heat of fusion\nof the substance,\nA. 20000 J kg\" | B. 24000 J kg | C. 48000 J kg\"! | D. 80000 J kg!",
+    "PNG": "output/2023/q2.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 3,
+    "text": "#3, A fixed mass of an ideal gas contained in a closed vessel X of volume V is heated. Line Y in the figure\nshows the variation of pressure p with temperature 7 of the gas. The experiment is repeated with another\nclosed vessel Y containing the same amount of this ideal gas and line Y represents the result.\n\nP x\nY\naa\ni H\nt '\ni '\ni i\ni 300 600 TIK\nFind the volume of vessel Y.\nA. 0.25 V | B. 0.5 V | C. 2V | D. 4V",
+    "PNG": "output/2023/q3.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 4,
+    "text": "Which of the following are vector quantities ?\n(ql) acceleration\n(2) momentum\n(3) work done\nA. (1) and (2) only | B. (1) and (3) only | C. (2) and (3) only | D. (1), 2) and (3)",
+    "PNG": "output/2023/q4.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 5,
+    "text": "Two blocks, each of weight W, are hung by three identical light strings as shown. Each string has a\nlimiting tension of 2, i.e. it will break for a tension larger than this value.\nS\nF\n\nForce F acts vertically on the lower block. What is the largest value of F without breaking any of the\nstrings ?\nA. 0.5W | B. Ww | C. 15W Dz. 3W",
+    "PNG": "output/2023/q5.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 6,
+    "text": "On a smooth incline, a block of weight 120 N is kept stationary by a string with tension 50 N parallel to\nthe incline.\nSON ;\nString\nSMooy, .\n_ MNeling\nThe string is then cut and the block accelerates down the incline. What is the net force acting on the\nblock before and after the string is cut ?\nbefore the string is cut _after the string is cut\nA. SON TON | B. SON SON | C. ON TON Dz. ON 5ON",
+    "PNG": "output/2023/q6.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 7,
+    "text": "A bob is suspended from the ceiling of a train moving along a horizontal east-west rail.\ni west east\n| <5\n\\\n120°\n\"'O bob\n'\nThe bob slants towards east and makes an angle of 20° with the vertical as shown. What is the direction\nand magnitude of the acceleration of the train? (g=9.81 m s~)\ndirection magnitude\nA. due west 3.36 ms? | B. due west 3.57ms* | C. due east 3.36 ms? Dz due east 3.57m s*",
+    "PNG": "output/2023/q7.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 8,
+    "text": "In an amusement park ride, a boy of weight W undergoes free fall vertically in a chair at first and then\ndecelerates uniformly. Which graph below correctly shows the time variation of the reaction force R\nacting on the boy by the chair ? Neglect air resistance.\nA. B. R R . time 0 time CR D. fa — 0 time 0 time",
+    "PNG": "output/2023/q8.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 9,
+    "text": "The figure shows a set-up in which a weight of mass m is attached to two trolleys stacked together, each\ntrolley of mass m, via a light inextensible string.\nlow”_o fixed light\nbench top Llo”_9 J =—Of DS) pulley\nweight\nAfter the weight is released from rest, which of the following is correct ? Assume that all contact surfaces\nare smooth and neglect air resistance. g is the acceleration due to gravity.\nmagnitude of the acceleration tension in the string\nA. gl2 smaller than mg | B. gl2 equal to mg | C. g/3 smaller than mg Dz. g/3 equal to mg",
+    "PNG": "output/2023/q9.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 10,
+    "text": "A block is projected upwards along a rough incline which has a constant frictional force acting on the\nblock.\nne\nspo\not\nZz\nWhich of the following correctly shows the variation of potential energy , and kinetic energy E with\ndistance s that the block travelled up the incline ? Neglect air resistance.\nA. B. Energy Energy Ey Ep E Ex 0 id 0 5 | C. D. Energy Energy Ep Ep Ex Ex 0 * 9 ig N",
+    "PNG": "output/2023/q10.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 11,
+    "text": "ll. A trolley moves with a constant velocity along a smooth horizontal surface. When the trolley reaches\npoint X, a plasticine falls vertically onto it. After the collision, they stick together and continue to move\nforward.\n\nplasticine falls\nonto a trolley\nCees All\n“ d\n[sams =a oS,\n' i——» —,\nHaas out\na coe smooth horizontal surface\nWhich description about the total linear momentum of the trolley and the plasticine just before and\njust after collision is correct ?\nalong the horizontal direction along the vertical direction\nA. conserved conserved | B. conserved not conserved | C. not conserved conserved | D. not conserved not conserved",
+    "PNG": "output/2023/q11.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 12,
+    "text": "A uniform metre rule of a certain weight is hung by a string at X such that it is kept in equilibrium with\nweights hanging at both ends as shown. If the 1.0-kg weight is shifted 0.1 m towards X, what distance\nshould the 0.4-kg weight be shifted towards X in order to restore equilibrium ?\n\nx\nic N\nA. 0.1m | B. 0.2m | C. 0.25 m | D. 3m ~} 0.7m 1.0 kg : 0.4 kg",
+    "PNG": "output/2023/q12.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 13,
+    "text": "Two identical particles X and Y are projected from point P simultaneously with the same initial speed\nbut with different angles as shown. They finally hit the ground at the same point via different paths.\nxX\nPR\nground\n\nWhich of the following statements is/are correct ? Neglect air resistance.\n(1) They hit the ground at the same time.\n(2) They hit the ground with the same speed.\n(3) The kinetic energy of Y is greater than that of X at their respective maximum heights.\nA. (1) only | B. (3) only | C. (1) and (2) only | D. (2) and (3) only",
+    "PNG": "output/2023/q13.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 14,
+    "text": "14,\ndisplacement\n0 os A 5 AN distance / m\nThe above figure shows the displacement-distance graph of a wave travelling at a speed of 10 m s~\nWhat is the period of this wave ?\nA. 0.10 | B. 0.15 s | C. 0.20s | D. 0.25s",
+    "PNG": "output/2023/q14.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 15,
+    "text": "Earthquakes produce P-waves (longitudinal) and S-waves (transverse) which travel at 7.0 km s! and\n4.0 km s™ respectively. On a given day, a seismometer detected the P- and S- waves from a shallow\nearthquake (see the figure below) with its quake centre located at a distance D from the seismometer.\n\nx Yy\n(\n{\n{\ni\ntN femmvatvravin,\n{\na ee se\ntime / minutes\nWhich deduction below is correct ?\nY in the figure denotes the arrival of D/km\nA. P-waves 225 | B. P-waves 700 | C. S-waves 225 | D. S-waves 700",
+    "PNG": "output/2023/q15.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 16,
+    "text": "The figure shows a light ray passing through the horizontal boundaries between media W, X, Y and Z.\nThe light ray in W is parallel to that entered into Y from.X. Total internal reflection occurs at the boundary\nbetween Y and Z.\n\nWw\nx\nY\nZ\nWhich medium has the highest refractive index ?\nA. Ww | B. x | C. Yy | D. Zz",
+    "PNG": "output/2023/q16.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 17,
+    "text": "*17,\n4.0 mm bright\nisaiee\n\nIn Young’s double-slit experiment, monochromatic light of wavelength A is used and the slit separation\nis a. On a screen placed at a distance of 1.8 m from the double slits, the separation between five\nconsecutive bright fringes is 4.0 mm. Which relationship below is correct ?\nA. a= 18002 | B. a=22504 | C. a=72004 | D. a=112504",
+    "PNG": "output/2023/q17.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 18,
+    "text": "A diffraction grating is used to observe the @ (656 nm) and (486 nm) lines emitted from a gas discharge\ntube. Which of the following best represents the pattern observed ?\n2™ order “order zeroth order\nB a@ Ba spectral line a £p a B\n“\na B a £B Ba B a\n\"LE | Tt} ft tt ft\nBa Boa a B a £B\na £p a £p Ba Bia",
+    "PNG": "output/2023/q18.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 19,
+    "text": "Two loudspeakers separated by 1.00 m along the y-axis emit coherent sound waves which are in phase.\nWhen a microphone is moved along the x-axis, only one maximum is detected at a distance of 0.53 m as\nshown. Find the wavelength of the sound waves.\n\ny\naN\nHl\n1\n1.00 m {|\ni\ni\n<I>\nmicrophone\nA. 0.60 m | B. 0.75 m on 1.00 m Dz 1.20m",
+    "PNG": "output/2023/q19.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 20,
+    "text": "Virtual images of an object formed by a single lens are always\n(1) erect.\n(2) onthe opposite side of the lens to the object.\n(3) smaller than the object.\nA. (1) only | B. (3) only | C. (2) and (3) only | D. (1), (2) and (3)",
+    "PNG": "output/2023/q20.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 21,
+    "text": "L 10m\ni\nEEESEEEE EEE EEE SSG ERIE EEETTEREEH FEES\na\na\nCe\nSE snimn\na\nSe Oe Sa\nee\nLOTUS) |\nThe ray diagram shows the refraction of two parallel light rays through a lens L. What is the type and\nthe focal length of L ?\ntype focal length\nA. convex lens 20 cm | B. convex lens 36cm | C. concave lens 20 cm | D. concave lens 36cm",
+    "PNG": "output/2023/q21.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 22,
+    "text": "When measuring electromagnetic waves from outer space on the Earth’s surface, the percentage of\nabsorption by the atmosphere for various wavelengths of electromagnetic waves is shown below.\npercentage of absorption visible light\noo\n100%\n50%\n0% wavelength\nOtnm tnm 10m 100nm 1pm 10pm 100pm 1mm tem 10cm 1m 10m 100m\nReferring to this absorption graph, determine which statement below is correct.\nA. Gamma rays from galaxies can be observed on Earth’s surface. | B. Nearly all ultra-violet radiation can reach Earth’s surface. on Infra-red radiat | D. GHz radio waves (wavelength about 0.5 m) are the best for communications between",
+    "PNG": "output/2023/q22.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 23,
+    "text": "Positive point charges X, Y and Z are placed along a straight line with Y at the mid-point between X and Z.\nAssume that the only interaction among them is the electrostatic force.\n4N IN.\n\nAt the instant shown, the net forces acting on X and Y respectively are 4 N and | N both towards the\nleft. At that instant, which statements about Z are correct ?\n(dl) The net force acting on Z is towards the right.\n(2) The net force acting on Z is 5 N in magnitude.\n(3) The charge of Z must be larger than that of X.\nA. (1) and (2) only | B. (1) and (3) only (on (2) and (3) only | D. (1), (2) and (3)",
+    "PNG": "output/2023/q23.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 24,
+    "text": "The figure shows the field lines of an electric field. Arrange the respective electric field strength Ep, Eq\nand Ep of regions P, Q and R in ascending order.\n1 1 1\n1 ‘ y\nH H\nA i> iy\nH H\nes wee\nH H\nP Q R\nA. Ep < Eq < Er | B. Eq < Ex< Ep | C. Ex < Ep < Eq | D. Eq < Ep < Ex N",
+    "PNG": "output/2023/q24.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 25,
+    "text": "Two cells of negligible internal resistance are connected to two resistors as shown.\n3V\n22 1Q\n15V\nWhich of the following is correct ?\ndirection of current current in the circuit\nA. anticlockwise O5A | B. clockwise OSA | C. anticlockwise 15A Dz. clockwise LSA",
+    "PNG": "output/2023/q25.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 26,
+    "text": "The figure shows an electrical appliance connected to a potential difference of 12 V.\nP\n+0 electrical\nes\nQ\nWhen a charge of +2 C passes from P to Q in the circuit, how much electrical energy is supplied to the\nappliance ?\nA. 2J | B. 6s | C. 125 | D. 244",
+    "PNG": "output/2023/q26.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 27,
+    "text": "A solenoid is tightly wound around a smooth horizontal glass tube as shown. A movable aluminium ring\nis threaded on the right side of the tube.\nglass tube\nA. aluminium ot ring Ss o—| Q) Initially the ring is at rest and the 2-way switch S | B. to the right to the right Lon to the right to the left Dz to the left to the rig",
+    "PNG": "output/2023/q27.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 28,
+    "text": "Which of the following statements about domestic circuits is/are correct ?\n\n(1) The live (L) wire is sometimes positive and sometimes negative with respect to the neutral (N)\nwire.\n\n(2) The kilowatt-hour meter measures the total power consumed by the domestic electrical\nappliances.\n\n(3) With more electrical appliances connected, the total resistance of the domestic circuit becomes\nsmaller,\nA (1) only\nB. (2) only con (1) and (3) only Dz. (2) and (3) only",
+    "PNG": "output/2023/q28.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 29,
+    "text": "*29, A transformer is connected to a.c. mains of 220 V r.m.s. value. The peak value of the output voltage\ndisplayed on a CRO is found to be 11 V. If the transformer has 2000 turns in its primary coil, find the\nnumber of turns in the secondary coil.\n\n220 V To\n- - A\nA. 71 | B. 100 Cc 141 | D. 200",
+    "PNG": "output/2023/q29.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 30,
+    "text": "The figure shows two charged particles Y (mass mx) and Y (mass my) which enter a region of uniform\nmagnetic field pointing out of the paper. X and Y, having the same speed and charge, move along the\npaths in the plane of the paper as shown below.\n\nuniform magnetic field\npointing out of the paper\ncharged\nparticles yx Y\nX and Y are\nA. positively charged and mx > my. | B. positively charged and mx < my. on negatively charged and mx > my. | D. negatively charged and mx < my.",
+    "PNG": "output/2023/q30.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 31,
+    "text": "A radioactive source contains a radioactive nuclide X which decays to become a stable nuclide Y.\nBesides X there is no other radioactive nuclides in this source. Which of the following statements\nmust be correct after a time of one half-life of X has elapsed ?\n\n(1) The number of nuclides of X decreases to about half of its initial value.\n(2) The number of nuclides of Y increases to about twice of its initial value.\n(3) The activity of the radioactive source falls to about half of its initial value.\nA. (1) only | B. (2) only | C. (1) and (3) only | D. (2) and (3) only",
+    "PNG": "output/2023/q31.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 32,
+    "text": "When a proton ({H ) bombards a lithium nucleus (Li), two a particles ($He ) are produced.\n‘H+ 2Li +2 $He\nThe energy released in this nuclear reaction is 17.32 MeV. Find the mass of a lithium nucleus.\nGiven: mass of |H = 1.0078 u\nmass of $He = 4.0026 u\nA. 6.9788 u | B. 6.9974 u | C. 7.0017 u | D. 7.0160 u",
+    "PNG": "output/2023/q32.png"
+  },
+  {
+    "Year": 2023,
+    "Question": 33,
+    "text": "Which statement about nuclear fission is correct ?\nA. It involves two nuclei combined together. | B. All nuclear fission reactions are spontaneous. | C. Rate of fission reaction is temperature dependent. | D. Fission of heavy nuclei yields products that are more stable in terms of energy.",
+    "PNG": "output/2023/q33.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 1,
+    "text": "lL. Substance P and Q are of the same mass and both are solids at temperature 7). The graph below shows\nthe variation of temperature of the substances with energy transferred.\n\ntemperature\n\ntht\n\n,\n,\n\nYP\n\nTN\nenergy transferred",
+    "PNG": "output/2024/q1.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 2,
+    "text": "Which statement below is correct ?\nA. P has a higher melting point than Q. | B. The specific latent heat of fusion of P is smaller than that of Q. | C. The specific heat capacity of solid P is greater than that of solid Q. | D. At temperature 72, P is gas while Q is solid. 2. If 0.5 kg of water at 50 °C is",
+    "PNG": "output/2024/q2.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 3,
+    "text": "#3. The best vacuum attained in the laboratory has a pressure of about 10~* Pa. Estimate the order of\nmagnitude of the number of air molecules in | cm’ of such ‘vacuum’ at room temperature.\nA. 10¢ | B. 106 | C. 108 | D. 10”",
+    "PNG": "output/2024/q3.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 4,
+    "text": "v\nLA. ;\nWhat physical quantity does the shaded area represent in the above velocity-time (v-t) graph ?\nA. acceleration | B. change of velocity | C. momentum | D. displacement",
+    "PNG": "output/2024/q4.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 5,
+    "text": "a0 an\noe oon\n0 horizontal\n\nA block of mass m slides down along a fixed rough incline with constant velocity as shown. The incline\nmakes an angle 6 with the horizontal. What is the magnitude of the force exerted on the incline by the\nblock ?\n\nA zero\nB. mg | C. mg sin@ | D. mg cosO",
+    "PNG": "output/2024/q5.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 6,
+    "text": "An object of weight w is placed inside an elevator of weight W. T\nA force T pulls the elevator upward. A supporting force X acts\non the object while the floor of the elevator experiences a\nforce Y due to the presence of the object. Which of the\nfollowing is an action and reaction pair ? elevator of\nweight W\nA. Tand (W+w) object of | B. wand X weight w | C. Xand Y | D. It cannot be determined as the direction of acceleration of the elevator is unkn",
+    "PNG": "output/2024/q6.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 7,
+    "text": "In an experiment, a horizontal force F acts on a block placed on a rough horizontal surface as shown in\nFigure (a). Figure (b) shows the variation of the block’s kinetic energy Zz with the distance s it travelled.\nNeglect air resistance and assume frictional force unchanged.\n\nEx\nF rough horizontal\nsurface\nX 0 s\nFigure (a) Figure (b)\nIf the experiment is repeated with force F doubled, which of the following graphs represents the expected\nresult (in dotted line) ?\nA. B. Ex Ex Y oo\" “ 0 's 0 s | C. dD. Ex . Ex , “ “ “ wee “ ye B 0 s 0 s",
+    "PNG": "output/2024/q7.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 8,
+    "text": "Block X and Y of mass 3.0 kg and 1.0 kg respectively are connected by a light inextensible string passing\nover a smooth light pulley fixed to the ceiling as shown. The blocks are released from rest. Find the\ntime taken for block X to reach the ground. Neglect air resistance.\n\nceiling & pulley\nx\n3.0 kg|\n1.5m\nYy\n1.0 kg] ground\nA. 0.55 s | B. 0.645 | C. 0.68 s | D. 0.78 s",
+    "PNG": "output/2024/q8.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 9,
+    "text": "A person thought that when he pulls his hair with a large enough force, eventually he will be able to pull\nhimself off the ground. This is a misconception because\nA. the pulling force is acting internally within that person but it is not an exter | B. it is impossible to generate a pulling force larger than a person’s weight. | C. the pulling force is balanced by the person’s weight. | D. it is impossible for the pulling force to overcome the force due to atmospheric",
+    "PNG": "output/2024/q9.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 10,
+    "text": "A child tries to push a 150 kg (sumo) wrestler in order to topple him backwards in a game. The simplified\ndiagram indicates the weight W of the wrestler and the horizontal pushing force F acting on the wrestler\nby the child. P is the wrestler’s contact point on the ground.\n\n> QO\n7 1.00m\n‘\nPy ) Q 080m A )\n*. é 0\noe Secs es 0.50 m.\nWe —\nFind the minimum value of F required.\nA. 368N | B. 736N | C. 1177N | D. 2354N",
+    "PNG": "output/2024/q10.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 11,
+    "text": "ll. On a billiard table, a billiard ball of mass 0.16 kg and moving with a uniform speed of 1.20 ms“ collides\nelastically with the cushion. It rebounds with the same speed normal to the cushion as shown. If the\nimpact time is 0.0003 s, find the average force acting on the ball by the cushion during collision.\n\nTop view\n1.20ms? .\n© —=—— | cushion\nA. ON | B. 640 N | C. 1280N Dz. 2560 N",
+    "PNG": "output/2024/q11.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 12,
+    "text": "H\ni\nThe figure shows a particle performing uniform circular motion. Which of the following correctly\nindicates the directions of its velocity and acceleration at the instant shown ?\nvelocity acceleration",
+    "PNG": "output/2024/q12.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 13,
+    "text": "A satellite orbits the Earth in a circular orbit of radius r with a period of 24 hours. The period of another\nsatellite which orbits the Earth in a circular orbit of radius 2r is\nA. less than 24 hours. | B. 24 hours. | C. between 24 hours and 48 hours. | D. more than 48 hours.",
+    "PNG": "output/2024/q13.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 14,
+    "text": "14, A light beam consisting of monochromatic light beam_X and Y is incident on a rectangular glass block.\nIt splits into two beams as shown.\nglass block\nx\n\nWhich of the following comparisons of beam_X and Y is/are correct ?\n(ly X has a higher frequency.\n(2) X has a larger speed in glass.\n@) In the glass block, the critical angle for X is greater.\nA. (1) only | B. (3) only | C. (1) and (2) only | D. (2) and (3) only",
+    "PNG": "output/2024/q14.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 15,
+    "text": "Top view .\nL-shaped barrier\n| 45°\nIn a ripple tank, a series of plane water waves approach an L-shaped barrier as shown above. Whic\ndiagram below best shows the wave pattern reflected from the barrier ?\nA. ® < | C. D. : — N",
+    "PNG": "output/2024/q15.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 16,
+    "text": "abe d e t ghijk\nSOE Cece) Figure (a)\na b ce def g h i i\nPERE EEE ee Pee Pee eeeees’) Figure (b)\nSom direction of wave propagation\n—— >\nA series of particles is uniformly distributed along a slinky spring initially. Figure (a) and (b) show their\npositions at two instants when a travelling wave of frequency 10 Hz propagates along the spring from\nleft to right. Which statement below is correct ?\nA. Particle a is always stationary. | B. Particle b and c vibrate with different amplitudes. | C. The wavelength of the wave is 16 cm. | D. The smallest time interval for obtaining these two figures is 0.05 s.",
+    "PNG": "output/2024/q16.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 17,
+    "text": "Two identical loudspeakers S; and S2 connected to a signal generator produce sounds of\nwavelength 0.10 m which are in anti-phase.\nP\n2.5m '\nSi 3.0m '\nOn norm nn nnn neon enn nnn nnn nnn nn nl\nSr\nOX is the perpendicular bisector of the line joining S; and S). What type of interference occurs at Y and P\nrespectively ?\nx P\nA. destructive constructive | B. constructive constructive | C. destructive destructive Dz constructive destructive",
+    "PNG": "output/2024/q17.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 18,
+    "text": "A string is tied to a vibrator at one end while the other end is fixed to a wall. The figure shows the\nstationary wave formed at a certain frequency of the vibrator.\nwall\nx,\nY\nvibrator\n\nWhich statement is correct when the frequency is doubled ?\nA. The amplitude of the wave will double. | B. The wavelength will double. | C. The speed of the wave will double. | D. Particle X and Y will become in phase.",
+    "PNG": "output/2024/q18.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 19,
+    "text": "X is a light ray from an object O placed on the principal axis of a convex Jens as shown. F and F’ are\nthe foci of the lens. Which light ray best represents the emergent ray ?\nP\nQ\ny R\nprincipal axis\nF oO F\nS\nA. P | B. Q | C. R | D. Ss",
+    "PNG": "output/2024/q19.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 20,
+    "text": "An object of height 10 cm placed at 20 cm in front of a concave fens forms an image of height 8 cm.\nFind the focal length of the concave lens.\nA. 4.4m | B. 8.9 cm | C. 40 cm | D. 80 cm",
+    "PNG": "output/2024/q20.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 21,
+    "text": "Which description below is INCORRECT ?\nA. Microwaves are a kind of electromagnetic waves. | B. Microwaves can be observed with the naked eye. | C. Microwaves propagate with the speed of light in a vacuum. | D. Microwaves are used in radar to detect the position of an aeroplane.",
+    "PNG": "output/2024/q21.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 22,
+    "text": "Figure (a) and (b) are the CRO displays of musical note X and Y using the same time axis and intensity\naxis.\nCOO\nFigure (a) zw] | et note X\nTINY SY\nLTT ETE tert\n[ATA TIA TAT\nvive) Ap AATF ner\nPie ae\nLT] W¥ TT | MY |\nWhich comparison of these two notes must be correct ?\npitch loudness\nA. the same the same | B. the same not the same | C. higher for ¥ the same Dz. higher for Y not the same",
+    "PNG": "output/2024/q22.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 23,
+    "text": "Charges +Q and —2Q are fixed at X and Y as shown.\n+2 522\neS aaa\nXx Yy\nWhich description(s) about the electric field along the dotted line is/are correct ?\n(1) Between_X and Y, the respective electric fields due to the two charges are in the same direction.\n(2) To the right of Y, the resultant electric field is always directed to the left.\n(3) On the dotted line, there exist two points where the resultant electric field is zero.\nA. (2) only | B. (3) only | C. (1) and (2) only | D. (1) and (3) only",
+    "PNG": "output/2024/q23.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 24,
+    "text": "22\nP Q\n1Q 22\nSs R\n1Q\nFour resistors are connected to terminals PORS of a circuit board as shown. Across which pair o\nterminals below is the equivalent resistance smallest ?\nA. PQ | B. PR | C. PS | D. os",
+    "PNG": "output/2024/q24.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 25,
+    "text": "In the circuit below, the two resistors are identical. When S is closed, how would the readings of th\nammeter and voltmeter change ?\nC+) ——\nLo Ss\nammeter reading _ voltmeter reading\nA. increase increase | B. increase decrease | C. decrease increase Dz. decrease decrease",
+    "PNG": "output/2024/q25.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 26,
+    "text": "P\nh\nit} M—*—Nn\nQ\n\nPQ in the figure is a section of a fixed long straight wire carrying a current /). MN is a section of another\nlong straight wire carrying a current J2. MN is perpendicular to PQ and both wires are in the same plane.\nWhat is the direction of the magnetic force acting on MN due to PQ ? Neglect the effects of the Earth’s\nmagnetic field.\nA. pointing out of the paper | C. pointing into the paper » ft",
+    "PNG": "output/2024/q26.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 27,
+    "text": "A coil of radius 2 cm is placed inside a square region of uniform magnetic field pointing out of the paper\nas shown.\n10 cm\na\ncoil ee oe ee ew ew ow\na square region of .*\nuniform magnetic field ve coe 10cm\n\n‘The magnetic field decreases uniformly from a strength of 5.0 T to 3.0 T in 0.8 s. What is the magnitude\nof the e.m.f. induced in the coil ?\nA. 2.5x 107 V | B. 3.1107 V | C. 3.1x 107 V | D. 6.2x 103 V",
+    "PNG": "output/2024/q27.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 28,
+    "text": "Which of the following current against time (/- £) graphs represent an a.c. ?\na Q) (3)\nI | I | I\n0 t 0 t 0 t\nA. (1) and (2) only | B. (1) and (3) only | C. (2)and (3) only | D. (1), (2) and (3)",
+    "PNG": "output/2024/q28.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 29,
+    "text": "uniform magnetic field of\nA. 3.2 x 10°C | B. 43.2 x 10°C | C. -6.4x 10°C | D. 97 T out of the paper aS. 30°07 © charged particle A charged particle enters and",
+    "PNG": "output/2024/q29.png"
+  },
+  {
+    "Year": 2024,
+    "Question": 30,
+    "text": "A power station generates 217 MW of power for transmission to downtown under a voltage of 132 kV\nvia a transmission cable which has an effective resistance of 0.02 Q km™'. The power loss for a total\ncable length of 40 km is about\nA. 2.16 MW. | B. 6.49 MW. | C. 13.0 MW. | D. 21.6 MW. NN",
+    "PNG": "output/2024/q30.png"
+  }
+]

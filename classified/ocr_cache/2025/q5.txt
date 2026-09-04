@@ -1,0 +1,10 @@
+5. A block, initially at rest, is pulled along a horizontal surface by a force of 10 N making an angle of 60°
+with the horizontal. There is a constant friction of 2 N between the block and the horizontal surface.
+What is the gain in kinetic energy of the block after moving 5 m ?
+10N.
+60°
+we rough horizontal surface
+A. 335
+B. 255
+Cc. 15J
+D. 10J

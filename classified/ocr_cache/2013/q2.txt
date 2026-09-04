@@ -1,0 +1,10 @@
+2 In an experiment to measure the specific latent heat of vaporization of water, a beaker of water is
+boiled off using an electric heater. Which of the following sources of error would lead to an
+experimental result smaller than the standard value ?
+
+A. Energy is lost to the surroundings.
+
+B. Water splashes out of the beaker.
+
+Cc. Steam condenses on the cooler part of the heater and drops back to the beaker.
+D. The heater is not completely immersed in water.

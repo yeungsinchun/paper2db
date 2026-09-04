@@ -1,0 +1,8 @@
+21. In each of the following diagrams, L is a concave lens and its two principal foci are denoted by F and
+F'. Which of the ray diagrams is/are possible ?
+) L @) L @) :
+\ F ; F F F F F
+A. (1) only
+B. (3) only
+c. (1) and (2) only
+D. (2) and (3) only

@@ -1,0 +1,15 @@
+18. In the figure below, PQ and OS are light rays refracted from a lens L. Both light rays come from a point
+object situated on the left of L.
+L
+P| Q
+rincipal axis
+mA Princip:
+Ss
+Which of the following deductions is/are correct ?
+(1) The image of the object must be virtual.
+(2) The object must lie along the straight line containing OS.
+G) L must be a concave lens.
+A. (1) only
+B. (3) only
+Cc. (1) and (2) only
+Dz. (2) and (3) only

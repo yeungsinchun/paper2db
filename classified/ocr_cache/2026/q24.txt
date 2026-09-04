@@ -1,0 +1,15 @@
+24. 4
+mains supply
+xX
+¥
+The above shows a simplified diagram of the circuit in a heater. It consists of two heating elements X
+and Y. The time taken for the heater to heat a certain amount of water from room temperature to 100 °C
+is as follows.
+[only Xis connected [180s __|
+only Y is connected
+How long does it take to heat the same amount of water from room temperature to 100 °C if both X and
+Y are connected ?
+A. 105s
+B. 113s
+c, 154s
+D. 240s

@@ -1,0 +1,16 @@
+31.
+Ly
+L,
+Ss Ss
+In each of the above circuits, the cell has constant e.m.f. and negligible internal resistance. When the
+sliding contact S of each rheostat shifts from the mid-position to the right, how would the brightness of
+each bulb change ?
+bulb LZ; bulb L,
+
+A. becomes dimmer remains unchanged
+
+B. becomes dimmer becomes brighter
+
+C. ~ remains unchanged becomes dimmer
+
+Dz. becomes brighter remains unchanged

@@ -1,0 +1,16 @@
+27.
+N
+T
+P Ss
+I
+| | 0 rf
+Q R
+mM _ Figure (1) Figure (2)
+A long straight current-carrying wire MN and a rectangular coil PQRS are fixed in the same plane as
+shown in Figure (1). The current / is taken as positive when it flows from M to N and it varies with time
+tas shown in Figure (2). The direction of the induced current in the coil during the time interval 0 — T
+is
+A. first anti-clockwise and then clockwise.
+B. first clockwise and then anti-clockwise.
+Cc. anti-clockwise throughout.
+D. clockwise throughout.

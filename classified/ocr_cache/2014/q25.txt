@@ -1,0 +1,9 @@
+25.
+6V Ss
+P Q
+The figure shows two light bulbs P and Q connected to a cell of e.m.f. 6 V and negligible internal
+resistance. The voltmeter reads 6 V when the switch S is closed. Which of the following is possible ?
+A. Both P and Q are short-circuited.
+B. Both P and Q are burnt out and become open circuit.
+Cc. P is short-circuited or Q is burnt out and becomes open circuit.
+D. P is burnt out and becomes open circuit or Q is short-circuited.

@@ -1,0 +1,15 @@
+#33, In the following nuclear reaction, nuclide X and Y fuse to form nuclide Z under suitable conditions and
+the amount of energy released is 7.16 MeV.
+X+YOZ
+
+The total mass of X and Y is
+
+A. 0.00385 u less than the mass of Z.
+
+B. 0.00385 u more than the mass of Z.
+
+Cc. 0.00769 u less than the mass of Z.
+
+Dz. 0.00769 u more than the mass of Z.
+
+END OF SECTION A

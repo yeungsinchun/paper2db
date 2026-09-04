@@ -1,0 +1,11 @@
+*4. Two vessels contain hydrogen gas and oxygen gas respectively. Both gases have the same pressure
+and temperature and are assumed to be ideal. Which of the following physical quantities must be the
+same for the two gases ?
+
+A. The volume of the gas
+
+B. The mass per unit volume of the gas
+
+C. The rms. speed of the gas molecules
+
+D. The number of gas molecules per unit volume

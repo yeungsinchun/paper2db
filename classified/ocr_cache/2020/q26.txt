@@ -1,0 +1,14 @@
+26. The figure below shows the magnetic field pattern on a horizontal surface around a long vertical
+straight wire carrying a steady current / pointing out of the paper. The Earth’s magnetic field is NOT
+neglected.
+
+supe
+—_—~
+—_—_
+What are the directions of the following ?
+the horizontal component of the magnetic force experienced
+the Earth’s magnetic field by the current-carrying wire
+A. < Lt
+B. < t
+Cc. ad L
+D. > t

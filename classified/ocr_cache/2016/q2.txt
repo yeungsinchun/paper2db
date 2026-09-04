@@ -1,0 +1,8 @@
+2. 0.3 kg of water at temperature 50°C is mixed with 0.2 kg of ice at temperature 0°C in an insulated
+container of negligible heat capacity. What is the final temperature of the mixture ?
+Given: specific heat capacity of water = 4200 J kg? °C"
+specific latent heat of fusion of ice = 3.34 x 10° Jkg™
+A. -1.8°C
+B. 0°c
+c. 1.8°C
+D. 3.0°C

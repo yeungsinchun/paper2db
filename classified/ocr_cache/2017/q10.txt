@@ -1,0 +1,10 @@
+10. Blocks X and Y are connected by a light inextensible string passing over a fixed frictionless light pulley
+as shown. The mass of X and Y are 0.5 kg and | kg respectively. Initially, Y is 1 m above the ground
+and the string is taut. The system is then released from rest.
+
+ee ee
+What is the speed of Y just before it reaches the ground ? (Take g= 9.81 m s’)
+A. 3.62ms*
+B. 4.43 ms"
+c 6.26ms
+D. 9.81ms™

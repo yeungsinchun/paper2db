@@ -1,0 +1,8 @@
+12. At a certain instant, an object flying horizontally to the right at 1 ms” suddenly explodes into two
+fragments of mass ratio 1 : 2. If just after the explosion the more massive fragment flies to the right at
+3ms"', what would happen to the other fragment just after the explosion ?
+
+A. _ It would fly to the left at 3 ms.
+B. It would fly to the left at 4 ms".
+Cc. It would be momentarily at rest.
+D. It would fly to the right at 1 ms".

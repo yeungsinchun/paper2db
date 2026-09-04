@@ -1,0 +1,10 @@
+28.
+32
+{
+L__
+In the above circuit, the cell has e.m.f. 12 V and internal resistance 2. Q. What is the current in the 6 Q
+resistor ?
+A. O.5A
+B. 10A
+Cc LSA
+D. 2.0A

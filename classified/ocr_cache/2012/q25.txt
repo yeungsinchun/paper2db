@@ -1,0 +1,16 @@
+*25.
+x Y Zz
++2Q M -O
+Two point charges +2Q and —Q are situated at fixed positions as shown. M is the mid-point between
+the charges. X, Y and Z are points marked on the line joining these two charges. At which point could
+(1) _ the resultant electric field due to the two charges be zero ?
+(2) _ the total electric potential due to the two charges be zero ?
+() Q)
+
+A. Zz xX
+
+B. Zz Yy
+
+Cc. x Zz
+
+D. Yy Zz

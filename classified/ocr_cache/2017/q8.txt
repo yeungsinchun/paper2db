@@ -1,0 +1,18 @@
+8. Selfie sticks are popular nowadays. A uniform selfie stick of length 0.7 m is held horizontally as
+shown. Assume that the forces required to hold the selfie stick by the hand are represented by F, and
+F, , and F; and F; are perpendicular to the stick.
+
+0.1m mobile phone
+>
+ee a 0.7m
+
+It is given that the weight of the selfie stick and the mobile phone are 1.5 N and 2.0 N respectively.
+Taking the mobile phone as a point mass, estimate the magnitude of F .
+
+A. 3.5N
+
+B. 19.3N
+
+Cc. 35N
+
+D. Cannot be determined as F; is unknown.

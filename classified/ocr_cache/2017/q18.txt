@@ -1,0 +1,6 @@
+18. Two musical notes of the same pitch and loudness are produced by two different musical instruments.
+They sound different to the human ears because they have different
+A. amplitudes.
+B. phases.
+C. wave speeds.
+D. waveforms.
