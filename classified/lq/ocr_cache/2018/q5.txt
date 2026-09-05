@@ -1,0 +1,26 @@
+5. Figure 5.1 shows the use of a beam balance to measure the mass of a load. Without the load and the counter-
+weight, the beam with a scale pan at its left end is balanced and remains horizontal. (g= 9.81 m s’)
+50cm —10.0cm oa
+EEE oh PERE eR
+load
+Figure 5.1 Eh counter-weight
+scale pan
+(a) A load is placed on the pan which is 5.0 cm from the pivot. The set-up is in equilibrium when the counter-
+weight of mass 50 g is 10.0 cm away from the pivot as shown.
+(i) Find the mass of the load. (2 marks)
+
+*< =
+fost 3
+o oO
+2 2
+rs) pee ee eS
+a fon
+g f=
+SI S|
+2 (ii) Ifthe reading of the counter-weight’s position on the beam carries an uncertainty of +0.1 cm, find the 2
+5 maximum error that corresponds to the result found in (a)(i). (2 marks) sg
+q 5
+= =
+a 2
+S|
+eee ee ee ee

@@ -1,0 +1,19 @@
+1. Ina restaurant, ‘wontons in soup’ is prepared by putting 5 pieces of cooked wonton at 4 °C into a bowl with
+0.60 kg of soup at temperature 96 °C.
+Given: average mass of each piece of wonton = 0.02 kg
+specific heat capacity of wonton = 3300 J kg! °C"!
+specific heat capacity of soup = 4200 J kg! °C”
+(a) Find the final temperature of the mixture. Assume that the heat capacity of the bowl and the heat loss to
+the surroundings are negligible. (2 marks)
+a ee en ee EE EE EE EE EEE EEE EE a
+= e
+te} re)
+= a
+= RS ES rE EEE eee =
+eg oy
+5 (b) The soup in (a) is taken from a metallic container of heat capacity 2000 J °C’ containing 16 kg of soup =
+gS maintained at 96 °C by an immersion heater. a
+q (i) Why does that energy have to be supplied by the heater to keep the soup at 96 °C ? (1 mark) =
+o
+= B=
+< <

@@ -1,0 +1,16 @@
+*4, An electron moving with speed 1.2 x 10’ ms"! enters a square region ABCD with a uniform magnetic field
+of 0.01 T pointing into the paper as shown in Figure 4.1. The electron describes a quarter circle from A to
+C and it emerges from C with the same speed. Neglect the effects of gravity.
+A B
+electron © KREG
+xX XXX xp x
+Ix XX XX XN XI
+XX K XX XX x
+Figure 4.1 x eS Ee uniform magnetic field
+xX XXX XXX 4 pointing into the paper
+Ix XXXXXXX
+XXX XK KKK
+D Cc
+(a) (i) Find the magnitude of the magnetic force acting on the electron at point P on its path. (2 marks)
+= (ii) Indicate in Figure 4.1 the direction of the electron’s acceleration at the point P. (1 mark) F
+= E

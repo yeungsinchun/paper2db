@@ -1,0 +1,8 @@
+9. Carbon-14 dating can be used to identify the age of some objects which have the '4C isotope, as it is
+radioactive and decays by emitting a f-particle. A piece of wood sample is ‘examined using carbon-14
+dating and its activity is 0.2 Bq. The half-life of '*C is 5730 years. Given: 1 year =3.16 x 10’s
+*(a) Calculate the decay constant of '“C in s'. Hence find the number of '“C nuclei in this wood sample.
+(3 marks)
+od Assume that living organisms contain a constant proportion of carbon-14 in the ratio of 3
+RY 4c /!2¢ = 1.3 x 10°” during its life time via intake of carbon dioxide (CO;) from the atmosphere. :
+E (b) The carbon content of this wood sample is found to contain a total of | x 10” carbon nuclei. Estimate E

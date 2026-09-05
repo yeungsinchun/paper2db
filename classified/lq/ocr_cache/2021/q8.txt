@@ -1,0 +1,15 @@
+8. _
+R(1kQ) 0—10mA
+A _— (A) B
+S10 kQ)
+Figure 8.1 D = C
+9V
+P X
+— so
+Figure 8.1 shows a circuit for measuring the resistance of resistor Y connected across P and Q. The resistance
+of resistor S is 10 kQ. The internal resistance of the 9 V cell and that of the ammeter are negligible.
+(a) When the switch is closed, the ammeter reads 8.5 mA.
+(i) What is the p.d. between A and B? (2 marks)
+r= Gi) Find the current passing through resistor S. (2 marks) |
+: :
+Oo o

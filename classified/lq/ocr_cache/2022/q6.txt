@@ -1,0 +1,33 @@
+6.
+Y
+KR
+xO
+t i CRO
+Figure 6.1 A MP
+a ye
+Toasignal |} '
+po—__— —_ ~~ —- ——
+generator x nO \
+B 1
+In Figure 6.1, two small identical loudspeakers A and B produce coherent sound waves. X is the mid-point
+of AB. A microphone M connected to a CRO is moved along OY to detect the loudness of the sound, with CRO
+trace of a larger amplitude representing a greater loudness. Figure 6.2 shows the result.
+amplitude of
+the CRO trace
+
+aw! “d
+a4 &
+5 Figure 6.2 4
+= &
+o ' o
+S 1 position of g
+= O P Q R microphone =
+es s
+5 (a) Explain what is meant by coherent sound waves. (1 mark) 5
+& 2
+=| =
+> 3
+2 z
+<
+
+(b) (i) Explain why sound of alternate maximum and minimum loudness is detected along OY. (2 marks)

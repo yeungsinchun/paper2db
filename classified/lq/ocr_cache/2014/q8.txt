@@ -1,0 +1,32 @@
+8. Figure 8.1 shows the schematic diagram of an electric heater consisting of Tour identical heating Clements,
+each having a rated value of ‘500 W 220 V’. A user can use the rotary switch to select one of the three
+modes of operation .X, Y, Z. Wires A, B, C from the heater are connected to the 220 V a.c. mains via a 3-pin
+plug.
+
+ofelectric | ca] ; |
+heater 2 6S) fase
+: i 3 rs) 1u5¢e
+Figure 8.1 N\ [a | 7 —aw
+| -o B
+(a) Find the resistance R of a heating element. (1 mark)
+~
+7s een mod,
+5
+3B
+8 (b) What is the total power dissipation when mode X is selected ? Assume that the resistance of each
+= heating sloment remains unchansed | (2 marks)
+3
+n
+fg
+a
+o
+s
+g
+oO
+Ba
+3
+wn
+z
+a
+(c) Without the need of calculations, explain which mode of operation has the largest total power
+Wissen (7 marks)

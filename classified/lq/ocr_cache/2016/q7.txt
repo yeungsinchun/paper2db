@@ -1,0 +1,31 @@
+7. (a) The circuits in Figure 7.1 each contains two resistors connected in series with a 6 V battery of negligible
+internal resistance. The resistors in circuit I are 10 kQ each while those in circuit II are 100 Q each.
+6V 6V
+circuit I circuit II
+Figure 7.1
+. 10 kQ 10 kQ 100 Q 100 Q
+Ry = 10kQ Ry = 10 kQ
+A voltmeter of internal resistance Ry = 10 kQ is used to measure the potential difference across one of the
+resistors as shown.
+(i) What would be the respective voltmeter readings ? (3 marks)
+< 3
+os]
+E ‘|
+o sara eso yore: esarep arene retrace rs. eve eels wei eco ae es in nok pete a ean nsetn oe einen enone negiRenne mee ema nomena EERE eE SES Pa a}
+Oo woes ee serene ener eer ae ee eee eee =
+Y fo}
+Ss} =
+na c=
+50 a
+ios]
+o S
+a ~
+bad f=
+S 5
+_
+; g
+ke siemens rinses (atin eparins wane wiet moesaece eeymee wince ace eiwinre mig ge wie we renee ane mene eee eminem ein ie Gin in din ais Sins RS SIE SS OS SERRE RSS SS NEWSU SES WUE Seesaw Sa S eS yee seen eeweereuSe EEO o
+= 3
+FI (ii) In fact, the potential difference across each resistor before connecting the voltmeter is 3 V in both a
+< circuits. Explain why this voltmeter gives a relatively inaccurate value for circuit I. Hence state the
+general principle of selecting a suitable voltmeter for such measurement. (2 marks)

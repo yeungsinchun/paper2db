@@ -1,0 +1,31 @@
+8. Read the following passage about lightning and answer the questions that follow.
+a -~,_ thundercloud F
+t 7,4 / .
++ oy + ay J
+‘ Soy Pao es eee
+Ne Reet Se al So
+lightning d lightning
+induced charges current
+Sirtrivirir ty eo
+3 Lightning occurs when charges accumulate in the clouds to such an extent that the electric field in 8
+BY
+the atmosphere is strong enough to cause the air to lose its insulating properties. The threshold
+o
+35 electric field for ‘breakdown’ to occur is about 3 x 10° V m™ above which electrons or ions in the ve
+LE atmosphere can pass through the air between clouds and the ground or between clouds and clouds. =
+8 The peak current of a typical lightning bolt can reach about 30000 A. How the charges are 2
+eh separated and accumulated in the clouds is not fully understood yet. In most cases, negative 2
+ios]
+5 charges are at the base of the cloud and positive charges are induced on the ground. 5
+Ss <=
+s a=
+= (a) (i) What is the meaning of ‘breakdown’ in the passage ? (1 mark) | §
+FS 5
+Sal
+he oO
+a Ss
+< <
+*(ii) The thundercloud’s base and the ground can be modeled as two parallel plates with opposite charges.
+If the negative charges distributed at the cloud’s base are about d = 2 km from the ground, find the
+potential difference between the cloud and the ground when the electric field in the atmosphere just
+reaches the threshold of ‘breakdown’. (2 marks)

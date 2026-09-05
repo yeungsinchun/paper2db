@@ -1,0 +1,20 @@
+10. Deuterium (4H) and tritium (3H) are isotopes of hydrogen. The fusion of two deuterium nuclides can be
+represented by the following equation:
+7H + 7H—> 3He + in
+Given: mass of 27H = 2.014102 u
+mass of 3He = 3.016029 u
+mass of 4n = 1.008665 u
+*(a) 1 in 6420 atoms of hydrogen in nature is a deuterium. Estimate the maximum energy, in MeV, that could
+be produced from this fusion reaction with 1 mole of hydrogen nuclides. (3 marks)
+oO
+: E
+a (b) If conditions are altered, the fusion of two deuterium nuclides may not produce a helium (He) nucleus. | 3%
+2 Complete the equation below for such a possible fusion reaction. (1 mark) &
+F :
+B= =
+= a=|
+g §
+E (c) Both fission and fusion produce energy. State TWO advantages of using fusion as an energy source over 5
+4 fission. (2 marks) | >
+S 8
+a Es

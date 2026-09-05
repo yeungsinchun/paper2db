@@ -343,7 +343,7 @@ def main() -> None:
         raise SystemExit("--step anchors/split only applies to MC papers")
 
     max_questions = args.questions if args.questions is not None else 12
-    print("=== LQ: detect and crop questions ===")
+    print("=== LQ: split exam pages (no question crops) ===")
     count = segment_lq(
         pdf,
         dest,
@@ -351,10 +351,10 @@ def main() -> None:
         scale=0.0,
         max_questions=max_questions,
         max_scale=args.max_scale,
-        pages_dir=None,
+        pages_dir=dest / "pages",
+        crop_questions_flag=False,
     )
-    combine_pngs_to_pdf(dest)
-    print(f"Wrote {count} questions -> {dest}")
+    print(f"Wrote {count} questions (page split) -> {dest}")
     print(f"Review PDF -> {dest / 'combined.pdf'}")
 
 

@@ -1,0 +1,27 @@
+I Read the following description about the ‘shaver supply unit’ in bathrooms and answer the questions that
+follow.
+ENE NII
+The danger of electric shock is particuiarly high in bathrooms. Normai electric socket outiets
+should not be installed in bathrooms.. As electric shavers and toothbrushes are becoming
+popular these days, a special unit, called ‘shaver supply unit’ is now common in bathrooms to |
+provide electricity just for these low power consumption electric appliances (Figure 9.1).
+The shaver supply unit consists of a transformer in which the secondary is not earthed and is
+completely isolated from the 220 V a.c. mains supply connecting to the primary. It can be used
+with 220 V or 110 V shavers.
+, ; Shaver supply unit a ;
+220 V ac. : oes |
+igure $.1 aan "= 220 3
+¢ i 6 s
+Neutral oa fe | | &
+é
+(a) Explain why the chance of electric shock is high in bathrooms. (2 marks)
+=
+D)
+&
+=|
+a ee ee eee eee eee ee eee ee eee eee oO
+R=
+:
+a
+oO
+<

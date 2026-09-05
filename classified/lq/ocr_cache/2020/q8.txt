@@ -1,0 +1,40 @@
+8. Figure 8.1 shows a simplified circuit of the lighting system of a car. Each of the taillights (7, T), high-beam
+headlights (H;, Hz) and low-beam headlights (Z,, L2) has resistance 30 Q, 2 Q and 3 Q respectively. The
+internal resistance of the 12 V battery and the resistance of the fuse are negligible.
+
+B
+A Cc
+om fe CQ)
+; 30 Q
+Figure 8.1 .
+2 (>) 22
+30Q fuse
+12 Va
+F D
+E
+
+oJ oJ
+oO oO
+c= =
+3 3S
+& &
+oO oO
+_ When switch S; is closed and switch S, is set at the position shown in Figure 8.1, only 7, and 7> as well as 2
+S H, and H; are lit. The current drawn from the battery is at a maximum in this setting. &
+2 (a) Explain why Z, and L, are not lit. (1 mark) 2
+B= 5
+=| &
+oO oO
+& a—|
+S Ss
+oO Meret ree ewer e ere e eee ete en cece een cece w en e eens eee eee cee cece cee ccc cee cece cee ee cece cee e eee cn eee ee cee cee ee ee eee eee wee ce eee meee nnn ence nenccccccccecs oO
+2 =
+5 5
+3 2
+< <
+
+(b) (i) What is the potential difference across the taillight T> ? (1 mark)
+
+(ii) Indicate on Figure 8.1 the direction of current in each of the branches AB, GB and BC. Which branch
+
+carries the largest current ? (3 marks)
