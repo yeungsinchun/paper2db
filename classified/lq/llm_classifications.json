@@ -1,15 +1,14 @@
 {
   "2012-q1": {
     "sections": [
-      2,
-      3
+      3,
+      2
     ],
-    "reason": "keywords: specific heat, heat capacity"
+    "reason": "keywords: latent heat, vaporization, steam; dual with S2 (significant earlier part)"
   },
   "2012-q2": {
     "sections": [
-      4,
-      22
+      4
     ],
     "reason": "keywords: kinetic theory"
   },
@@ -29,14 +28,13 @@
     "sections": [
       10
     ],
-    "reason": "keywords: projectile"
+    "reason": "keywords: projectile; primary=max(S6,S10)"
   },
   "2012-q6": {
     "sections": [
-      7,
-      13
+      14
     ],
-    "reason": "keywords: moment"
+    "reason": "keywords: ripple tank; primary=max(S7,S13,S14)"
   },
   "2012-q7": {
     "sections": [
@@ -48,13 +46,14 @@
     "sections": [
       22
     ],
-    "reason": "keywords: mains, a.c."
+    "reason": "keywords: mains, a.c.; primary=max(S21,S22)"
   },
   "2012-q9": {
     "sections": [
+      24,
       22
     ],
-    "reason": "keywords: mains, a.c."
+    "reason": "keywords: transformer; dual with S22 (significant earlier part)"
   },
   "2012-q10": {
     "sections": [
@@ -64,9 +63,9 @@
   },
   "2012-q11": {
     "sections": [
-      5
+      27
     ],
-    "reason": "fallback: weak keyword match -> Motion"
+    "reason": "keywords: energy released in the decay, energy released, nuclear equation, mev"
   },
   "2013-q1": {
     "sections": [
@@ -82,9 +81,9 @@
   },
   "2013-q3": {
     "sections": [
-      6
+      21
     ],
-    "reason": "keywords: friction"
+    "reason": "keywords: resistance; primary=max(S6,S21)"
   },
   "2013-q4": {
     "sections": [
@@ -94,22 +93,21 @@
   },
   "2013-q5": {
     "sections": [
-      5
+      8
     ],
-    "reason": "fallback: weak keyword match -> Motion"
+    "reason": "keywords: stopping distance, height of release"
   },
   "2013-q6": {
     "sections": [
-      7
+      26
     ],
-    "reason": "keywords: moment"
+    "reason": "keywords: activity; primary=max(S21,S26)"
   },
   "2013-q7": {
     "sections": [
-      15,
-      13
+      15
     ],
-    "reason": "keywords: interference"
+    "reason": "keywords: interference; primary=max(S13,S15)"
   },
   "2013-q8": {
     "sections": [
@@ -143,21 +141,21 @@
   },
   "2014-q2": {
     "sections": [
-      22
+      7
     ],
-    "reason": "keywords: mains"
+    "reason": "keywords: equilibrium"
   },
   "2014-q3": {
     "sections": [
       5
     ],
-    "reason": "fallback: weak keyword match -> Motion"
+    "reason": "keywords: score-based"
   },
   "2014-q4": {
     "sections": [
-      5
+      6
     ],
-    "reason": "fallback: weak keyword match -> Motion"
+    "reason": "keywords: tension"
   },
   "2014-q5": {
     "sections": [
@@ -203,34 +201,34 @@
   },
   "2015-q2": {
     "sections": [
-      5
+      4
     ],
-    "reason": "fallback: weak keyword match -> Motion"
+    "reason": "fallback: gas cues"
   },
   "2015-q3": {
     "sections": [
-      22
+      21
     ],
-    "reason": "keywords: mains"
+    "reason": "keywords: resistance"
   },
   "2015-q4": {
     "sections": [
       5
     ],
-    "reason": "keywords: velocity-time, acceleration"
+    "reason": "keywords: velocity-time"
   },
   "2015-q5": {
     "sections": [
-      5
+      6
     ],
-    "reason": "fallback: weak keyword match -> Motion"
+    "reason": "keywords: protractor, metal ball with a hook, measure the acceleration"
   },
   "2015-q6": {
     "sections": [
-      18,
-      19
+      19,
+      18
     ],
-    "reason": "keywords: refractive index"
+    "reason": "keywords: lens; dual with S18 (significant earlier part)"
   },
   "2015-q7": {
     "sections": [
@@ -246,17 +244,15 @@
   },
   "2015-q9": {
     "sections": [
-      7,
       24
     ],
-    "reason": "keywords: moment"
+    "reason": "keywords: faraday; primary=max(S7,S23,S24)"
   },
   "2015-q10": {
     "sections": [
-      8,
       27
     ],
-    "reason": "keywords: work done"
+    "reason": "keywords: fusion, energy released, mev, nucleus"
   },
   "2016-q1": {
     "sections": [
@@ -268,13 +264,13 @@
     "sections": [
       4
     ],
-    "reason": "keywords: mole, pressure of the gas"
+    "reason": "keywords: gas molecules, pressure of the gas"
   },
   "2016-q3": {
     "sections": [
       5
     ],
-    "reason": "keywords: velocity-time, acceleration"
+    "reason": "keywords: velocity-time"
   },
   "2016-q4": {
     "sections": [
@@ -290,9 +286,9 @@
   },
   "2016-q6": {
     "sections": [
-      10
+      13
     ],
-    "reason": "keywords: projected"
+    "reason": "keywords: wavelength; primary=max(S10,S13)"
   },
   "2016-q7": {
     "sections": [
@@ -308,47 +304,47 @@
   },
   "2016-q9": {
     "sections": [
+      27,
       26
     ],
-    "reason": "keywords: half-life"
+    "reason": "keywords: uranium, nucleus; dual with S26 (significant earlier part)"
   },
   "2017-q1": {
     "sections": [
-      1
+      6
     ],
-    "reason": "keywords: thermometer"
+    "reason": "keywords: score-based; primary=max(S1,S6)"
   },
   "2017-q2": {
     "sections": [
-      5
+      9
     ],
-    "reason": "fallback: weak keyword match -> Motion"
+    "reason": "keywords: score-based"
   },
   "2017-q3": {
     "sections": [
-      4,
-      8
+      4
     ],
-    "reason": "keywords: kinetic theory, mole"
+    "reason": "keywords: kinetic theory, gas molecules, monatomic gas, avogadro"
   },
   "2017-q4": {
     "sections": [
-      10
+      21
     ],
-    "reason": "keywords: projected"
+    "reason": "keywords: resistance; primary=max(S10,S21)"
   },
   "2017-q5": {
     "sections": [
-      22
+      6
     ],
-    "reason": "keywords: mains"
+    "reason": "fallback: force cues"
   },
   "2017-q6": {
     "sections": [
-      5,
-      13
+      13,
+      5
     ],
-    "reason": "keywords: displacement-time"
+    "reason": "keywords: wave speed, frequency; dual with S5 (significant earlier part)"
   },
   "2017-q7": {
     "sections": [
@@ -370,10 +366,10 @@
   },
   "2017-q10": {
     "sections": [
-      26,
-      12
+      27,
+      26
     ],
-    "reason": "keywords: half-life, activity"
+    "reason": "keywords: nuclear equation, mev, nucleus; dual with S26 (significant earlier part)"
   },
   "2018-q1": {
     "sections": [
@@ -383,8 +379,7 @@
   },
   "2018-q2": {
     "sections": [
-      4,
-      22
+      4
     ],
     "reason": "keywords: ideal gas"
   },
@@ -392,20 +387,19 @@
     "sections": [
       8
     ],
-    "reason": "keywords: kinetic energy"
+    "reason": "keywords: kinetic energy; primary=max(S6,S8)"
   },
   "2018-q4": {
     "sections": [
-      9,
-      7
+      9
     ],
     "reason": "keywords: momentum"
   },
   "2018-q5": {
     "sections": [
-      22
+      7
     ],
-    "reason": "keywords: mains"
+    "reason": "keywords: equilibrium"
   },
   "2018-q6": {
     "sections": [
@@ -425,18 +419,30 @@
     ],
     "reason": "keywords: mains, fuse, domestic"
   },
+  "2018-q9": {
+    "sections": [
+      24
+    ],
+    "reason": "keywords: generator"
+  },
+  "2018-q10": {
+    "sections": [
+      26
+    ],
+    "reason": "keywords: half-life; primary=max(S6,S26)"
+  },
   "2019-q1": {
     "sections": [
-      2,
-      3
+      3,
+      2
     ],
-    "reason": "keywords: specific heat, heat capacity"
+    "reason": "keywords: latent heat, fusion, ice at 0; dual with S2 (significant earlier part)"
   },
   "2019-q2": {
     "sections": [
-      5
+      4
     ],
-    "reason": "fallback: weak keyword match -> Motion"
+    "reason": "fallback: gas cues"
   },
   "2019-q3": {
     "sections": [
@@ -448,14 +454,13 @@
     "sections": [
       11
     ],
-    "reason": "keywords: centripetal"
+    "reason": "keywords: centripetal; primary=max(S6,S11)"
   },
   "2019-q5": {
     "sections": [
-      13,
       14
     ],
-    "reason": "keywords: wavelength, frequency"
+    "reason": "keywords: ripple tank; primary=max(S13,S14)"
   },
   "2019-q6": {
     "sections": [
@@ -483,10 +488,9 @@
   },
   "2019-q10": {
     "sections": [
-      26,
       27
     ],
-    "reason": "keywords: half-life"
+    "reason": "keywords: fission, mev, uranium"
   },
   "2020-q1": {
     "sections": [
@@ -504,7 +508,7 @@
     "sections": [
       23
     ],
-    "reason": "keywords: electromagnet, magnetic field"
+    "reason": "keywords: magnetic field; primary=max(S21,S23)"
   },
   "2020-q4": {
     "sections": [
@@ -514,15 +518,15 @@
   },
   "2020-q5": {
     "sections": [
-      5
+      6
     ],
-    "reason": "fallback: weak keyword match -> Motion"
+    "reason": "fallback: force cues"
   },
   "2020-q6": {
     "sections": [
-      5
+      16
     ],
-    "reason": "fallback: weak keyword match -> Motion"
+    "reason": "keywords: speed of sound"
   },
   "2020-q7": {
     "sections": [
@@ -532,35 +536,34 @@
   },
   "2020-q8": {
     "sections": [
-      21
+      22
     ],
-    "reason": "keywords: resistance, circuit"
+    "reason": "keywords: fuse; primary=max(S21,S22)"
   },
   "2020-q9": {
     "sections": [
       20
     ],
-    "reason": "keywords: electric field"
+    "reason": "keywords: electric field; primary=max(S6,S20)"
   },
   "2020-q10": {
     "sections": [
-      8
+      27
     ],
-    "reason": "keywords: kinetic energy"
+    "reason": "keywords: mev, nucleus; primary=max(S8,S27)"
   },
   "2021-q1": {
     "sections": [
       3,
       2
     ],
-    "reason": "keywords: latent heat, vaporization, boiling"
+    "reason": "keywords: latent heat, vaporization, boiling; dual with S2 (significant earlier part)"
   },
   "2021-q2": {
     "sections": [
-      4,
-      22
+      16
     ],
-    "reason": "keywords: kinetic theory"
+    "reason": "keywords: speed of sound"
   },
   "2021-q3": {
     "sections": [
@@ -570,28 +573,28 @@
   },
   "2021-q4": {
     "sections": [
-      6
+      21
     ],
-    "reason": "keywords: friction"
+    "reason": "keywords: resistance; primary=max(S7,S21)"
   },
   "2021-q5": {
     "sections": [
-      12
+      21
     ],
-    "reason": "keywords: satellite"
+    "reason": "keywords: resistance; primary=max(S12,S21)"
   },
   "2021-q6": {
     "sections": [
-      18,
-      13
+      19,
+      18
     ],
-    "reason": "keywords: refractive index"
+    "reason": "keywords: lens; dual with S18 (significant earlier part)"
   },
   "2021-q7": {
     "sections": [
       24
     ],
-    "reason": "keywords: induction, transformer"
+    "reason": "keywords: induction; primary=max(S6,S8,S21,S23,S24)"
   },
   "2021-q8": {
     "sections": [
@@ -613,10 +616,9 @@
   },
   "2022-q2": {
     "sections": [
-      1,
-      8
+      4
     ],
-    "reason": "keywords: conduction"
+    "reason": "keywords: gas molecules, monatomic gas"
   },
   "2022-q3": {
     "sections": [
@@ -626,9 +628,9 @@
   },
   "2022-q4": {
     "sections": [
-      8
+      21
     ],
-    "reason": "keywords: kinetic energy"
+    "reason": "keywords: resistance; primary=max(S8,S21)"
   },
   "2022-q5": {
     "sections": [
@@ -640,7 +642,7 @@
     "sections": [
       16
     ],
-    "reason": "keywords: sound wave"
+    "reason": "keywords: sound wave, microphone"
   },
   "2022-q7": {
     "sections": [
@@ -656,15 +658,15 @@
   },
   "2022-q9": {
     "sections": [
-      21
+      23
     ],
-    "reason": "keywords: resistance"
+    "reason": "keywords: magnetic field; primary=max(S21,S23)"
   },
   "2022-q10": {
     "sections": [
       27
     ],
-    "reason": "keywords: fission, fusion"
+    "reason": "keywords: fission, fusion, mev, nucleus"
   },
   "2023-q1": {
     "sections": [
@@ -674,15 +676,13 @@
   },
   "2023-q2": {
     "sections": [
-      4,
-      22
+      4
     ],
     "reason": "keywords: kinetic theory"
   },
   "2023-q3": {
     "sections": [
-      5,
-      7
+      5
     ],
     "reason": "keywords: velocity-time"
   },
@@ -694,9 +694,9 @@
   },
   "2023-q5": {
     "sections": [
-      13
+      16
     ],
-    "reason": "keywords: wavelength, frequency"
+    "reason": "keywords: sound wave, speed of sound"
   },
   "2023-q6": {
     "sections": [
@@ -718,8 +718,299 @@
   },
   "2023-q9": {
     "sections": [
+      27,
       26
     ],
-    "reason": "keywords: half-life"
+    "reason": "keywords: radium, nucleus; dual with S26 (significant earlier part)"
+  },
+  "2024-q1": {
+    "sections": [
+      3
+    ],
+    "reason": "keywords: latent heat, vaporization"
+  },
+  "2024-q2": {
+    "sections": [
+      4
+    ],
+    "reason": "keywords: monatomic gas"
+  },
+  "2024-q3": {
+    "sections": [
+      6
+    ],
+    "reason": "keywords: free-body"
+  },
+  "2024-q4": {
+    "sections": [
+      11
+    ],
+    "reason": "keywords: angular speed"
+  },
+  "2024-q5": {
+    "sections": [
+      4
+    ],
+    "reason": "fallback: gas cues"
+  },
+  "2024-q6": {
+    "sections": [
+      14
+    ],
+    "reason": "keywords: diffraction"
+  },
+  "2024-q7": {
+    "sections": [
+      16
+    ],
+    "reason": "keywords: speed of sound"
+  },
+  "2024-q8": {
+    "sections": [
+      18
+    ],
+    "reason": "keywords: refractive index"
+  },
+  "2024-q9": {
+    "sections": [
+      5
+    ],
+    "reason": "fallback: weak keyword match -> Motion"
+  },
+  "2024-q10": {
+    "sections": [
+      9
+    ],
+    "reason": "keywords: momentum, collision, conservation of momentum"
+  },
+  "2024-q11": {
+    "sections": [
+      21
+    ],
+    "reason": "keywords: resistance, circuit"
+  },
+  "2024-q12": {
+    "sections": [
+      26
+    ],
+    "reason": "keywords: half-life, activity, decay constant"
+  },
+  "2025-q1": {
+    "sections": [
+      2
+    ],
+    "reason": "keywords: specific heat, heat capacity"
+  },
+  "2025-q2": {
+    "sections": [
+      21
+    ],
+    "reason": "keywords: resistance; primary=max(S8,S10,S21)"
+  },
+  "2025-q3": {
+    "sections": [
+      5
+    ],
+    "reason": "keywords: velocity-time"
+  },
+  "2025-q4": {
+    "sections": [
+      6
+    ],
+    "reason": "keywords: free-body"
+  },
+  "2025-q5": {
+    "sections": [
+      9
+    ],
+    "reason": "keywords: collision"
+  },
+  "2025-q6": {
+    "sections": [
+      19
+    ],
+    "reason": "keywords: lens, focal length, magnification"
+  },
+  "2025-q7": {
+    "sections": [
+      21
+    ],
+    "reason": "keywords: resistance, circuit"
+  },
+  "2025-q8": {
+    "sections": [
+      23
+    ],
+    "reason": "keywords: magnetic field"
+  },
+  "2025-q9": {
+    "sections": [
+      4
+    ],
+    "reason": "keywords: ideal gas, number of molecules, mole"
+  },
+  "2025-q10": {
+    "sections": [
+      15
+    ],
+    "reason": "keywords: stationary wave"
+  },
+  "2025-q11": {
+    "sections": [
+      21
+    ],
+    "reason": "keywords: resistance; primary=max(S8,S21)"
+  },
+  "2025-q12": {
+    "sections": [
+      26
+    ],
+    "reason": "keywords: activity, decay constant"
+  },
+  "2026-q1": {
+    "sections": [
+      3
+    ],
+    "reason": "keywords: latent heat, fusion, boiling, melting"
+  },
+  "2026-q2": {
+    "sections": [
+      4
+    ],
+    "reason": "keywords: ideal gas, gas molecules, pressure of the gas"
+  },
+  "2026-q3": {
+    "sections": [
+      9
+    ],
+    "reason": "keywords: collision"
+  },
+  "2026-q4": {
+    "sections": [
+      8
+    ],
+    "reason": "keywords: conservation of energy"
+  },
+  "2026-q5": {
+    "sections": [
+      15,
+      13
+    ],
+    "reason": "keywords: interference; dual with S13 (significant earlier part)"
+  },
+  "2026-q6": {
+    "sections": [
+      16
+    ],
+    "reason": "keywords: microphone"
+  },
+  "2026-q7": {
+    "sections": [
+      20
+    ],
+    "reason": "keywords: electrostatic; primary=max(S6,S20)"
+  },
+  "2026-q8": {
+    "sections": [
+      21
+    ],
+    "reason": "keywords: resistance"
+  },
+  "2026-q9": {
+    "sections": [
+      4
+    ],
+    "reason": "keywords: r.m.s."
+  },
+  "2026-q10": {
+    "sections": [
+      18
+    ],
+    "reason": "keywords: refractive index, critical angle"
+  },
+  "2026-q11": {
+    "sections": [
+      5
+    ],
+    "reason": "keywords: velocity-time, displacement-time"
+  },
+  "2026-q12": {
+    "sections": [
+      27,
+      25
+    ],
+    "reason": "keywords: nuclear equation; dual with S25 (significant earlier part)"
+  },
+  "pp-q1": {
+    "sections": [
+      4
+    ],
+    "reason": "fallback: gas cues"
+  },
+  "pp-q2": {
+    "sections": [
+      8
+    ],
+    "reason": "keywords: kinetic energy, power"
+  },
+  "pp-q3": {
+    "sections": [
+      10
+    ],
+    "reason": "keywords: projectile, horizontal range, angle of projection"
+  },
+  "pp-q4": {
+    "sections": [
+      5
+    ],
+    "reason": "fallback: weak keyword match -> Motion"
+  },
+  "pp-q5": {
+    "sections": [
+      13
+    ],
+    "reason": "keywords: wavelength"
+  },
+  "pp-q6": {
+    "sections": [
+      24
+    ],
+    "reason": "keywords: generator; primary=max(S16,S24)"
+  },
+  "pp-q7": {
+    "sections": [
+      24
+    ],
+    "reason": "keywords: generator"
+  },
+  "pp-q8": {
+    "sections": [
+      22
+    ],
+    "reason": "keywords: mains, domestic, live wire, neutral wire"
+  },
+  "pp-q9": {
+    "sections": [
+      5
+    ],
+    "reason": "fallback: weak keyword match -> Motion"
+  },
+  "pp-q10": {
+    "sections": [
+      5
+    ],
+    "reason": "fallback: weak keyword match -> Motion"
+  },
+  "pp-q11": {
+    "sections": [
+      21
+    ],
+    "reason": "keywords: resistance"
+  },
+  "pp-q12": {
+    "sections": [
+      24
+    ],
+    "reason": "keywords: transformer; primary=max(S22,S24)"
   }
 }

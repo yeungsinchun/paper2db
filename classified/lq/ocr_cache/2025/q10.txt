@@ -1,0 +1,40 @@
+10. (a) A student uses the set-up in Figure 10.1 to investigate stationary waves on a stretched string. When the
+frequency of the vibrator is set at i00 Hz, a stationary wave is formed between the vibrator and the stand,
+Xx stand
+Y
+Figure 10.1 i) Womens reer eg eee fmm mmm
+vibrator
+—————————— sa
+90 cm
+Particles X and Y on the string are at maximum displacement from their respective equilibrium positions at
+(i) Label the positions of all antinodes (using ‘A’) and nodes (using ‘N’) on Figure 10.1. (2 marks)
+(ii) Compare the oscillations of X and Y in terms of their amplitude and phase. (2 marks)
+3 rd
+vd oO
+4 wd
+4 =
+es i.
+2 8
+2 q
+a ~n
+J S
+Dd oO
+=| =
+= (iii) Sketch on Figure 10.1 the shape of the string just after 0.0075 s. (1 mark) i=
+z
+: (iv) If the frequency of the vibrator is increased gradually, at what frequency will the next stationary wave | §
+; pattern be observed ? Show your working. (2 marks) | &
+é <
+(b) Read the following passage about stationary waves in musical instruments and answer the questions that
+follow.
+How do we make musical sounds ? In non-electronic instruments such as guitar and piano, stable and
+controlled vibration is usually produced by a stationary wave. If you pluck a guitar string fixed at both ends,
+various modes of stationary waves will be produced and they all travel with the same speed on the string.
+The mode with the lowest frequency /; is called the fundamental while the v mode, called the n™ harmonic,
+has a frequency nv times that of the fundamental, i.e. m/f.
+The pitch of a note is determined by the frequency of the fundamental. The relative strengths and proportions
+of the harmonics determine the unique sound characteristics of different instruments. Therefore, a guitar
+and a violin playing a note of the same pitch will have different qualities because of different amplitudes
+and distributions oftheir harmonics.
+(i) Figure 10.2 shows the stationary wave pattern of the fundamental formed on a string. Sketch the
+stationary wave pattern corresponding to the 2" harmonic on Figure 10.2. (1 mark)

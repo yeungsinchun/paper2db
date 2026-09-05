@@ -1,0 +1,41 @@
+11. Read the following passage about deformation sensors and answer the questions that follow.
+Figure 11.1(a) shows a simple sensing device consisting of a thin, flat rectangular metal foil attached to a
+plastic backing plate. When this foil, length ¢ and width w, is stretched to deform as shown in
+Figure 11.1(b), its resistance will change. 1
+Ceo thin, flat
+plastic backing plate 7 matal foil
+Xo—tae et O Y foil deforms
+Ke he iinbeinkakedonanaanase when stretched
+' 1
+: runtunentar mutal fell Le a
+| Tein cams Saves acne Gooeeuee sooo
+When this device is connected to a suitable circuit, it can serve as a sensor to monitor deformation which
+results in a change in parameters of the circuit (such as voltage).
+Z
+j (a) Referring to Figure 11.1(a) and (b), state and explain how the metal foil’s resistance across XY changes
+3 when the foil is stretched. Assume that the thickness and resistivity of the foil remain unchanged. (2 marks)
+>
+2
+a
+a
+20
+EI
+Q
+F|
+z
+io
+5 (b) Figure 11.2 shows a circuit with four resistors of resistance Ri, R2, Rs and Ry connected to an input
+fa voliage Vin. Vout is the voliage across DB.
+Ro p Rs
+Figure 11.9 4 Pout |
+Ri Ry
+B
++ -
+Vin
+Annware orittan in the maraine ufll nat he marbled
+(i) Current 4; flows through branch ABC. Write an equation relating Vis, 4, Ri and R2. (1 mark)
+(ii) R, in the circuit is the sensing device described in the passage, with unstretched resistance 500 Q. Find
+the corresponding percentage change in Vou/Vin When Kq increases 0.2% (i.e. Decomes 501 £2).
+— Ve. Ra Ba — = = as a -
+GNI SS -S S TETA,TTE SE (areas)
+wy Pt Pa BBE

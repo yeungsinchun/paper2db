@@ -1,0 +1,25 @@
+*8, A rectangular coil, with V turns and each turn of area 9.00 x 10-4 m2, is placed in a uniform magnetic field of
+strength B. Initially the plane containing the coil is parallel to the magnetic field. The coil is then rotated steadily
+about the axis XY as shown in Figure 8.1(a).
+Figure 8.1(a) ie x jo eat Figure 8.1(b)
+yo | a ya oe oe : 3S” : magnetic field
+be direction coil
+wo” WP OREO ee ee Hs =x Hi
+4 ae Stk RRR IVVLAGLIPUuial VUIL
+d& of N turns
+(a) Sketch the variation of magnetic flux ® passing through each turn of the coil when the coil rotates from
+A= 0° to 360° (see Figure 8.1(b)). (2 marks)
+i
+ye tT :
+q | OF ¢ 0 A
+| Pe E
+E =
+PEt} TE} | tf =
+3 3
+: ia
+: (b) The maximum magnetic flux through each turn of the coil is 2.70 x 10-* Wb. =
+» (i) Determine B (unit: T). (2 marks) B
+&
+Pp) ts enone sho cis sag esta le ae aceiaea a nt ee ait Si se iS im ie Eta wari ic eres ers accra re Ee mec ees oe eoee oO
+3 a
+a=

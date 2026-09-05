@@ -1,0 +1,44 @@
+11. A drone carries a 0.50-kg block by connecting it with a light and inextensible string as shown in Figure 11.1.
+The size of the biock is negiigibie. (g = 9.81 ms)
+Sel bea Lm = drone
+mol tn
+. SI
+Figure 11.1 @
+string
+block
+(a) At time ¢=0 s, the block is at rest on the ground and the string is taut. The drone then moves vertically with
+the block. The velocity-time graph of the block is shown below, taking upwards as positive.
+1. sf i i : PUN pe | ae : Sar
+(i) Find the maximum height that the block can reach from ¢= 0 to 8 s. (2 marks)
+as)
+oO
+eoee - ae ee eee en eee en nn ne et rr tn tr rrr re wd
+a
+|
+Q
+rs}
+E
+eee ee nee ng eee eee Reh ebb een ee alee be eee See eS Se cece ee come ne mene meen ne een eet eee en cece mee cen e ner er ener ersn cence rse ener eres ccc scsness wn
+é
+(ii) Sketch the displacement-time graph of the block from ¢ = 0 to 5 s. The displacement at¢=2sis| &
+marked. Labelling of values is not required and the displacement at / = 0 s is taken to be zero. E
+(2 marks) | S
+an ee ee <
+0 2 3 4 5 ~ f/s
+(iii) Find the tension of the string att=5 s. (3 marks)
+Answers written in the margins will not be marked.
+
+*(b) The drone now flies upward and forward. When the block is 32 m above the ground, the string breaks.
+Figure 11.2 shows the moment immediately after the break, where the block has a velocity of 20 m s™! at an
+angle of 30° above the horizontal. Neglect air resistance.
+
+Se, 20 ms”!
+Figure 11.2
+30°
+32m
+ground
+(i) Draw an arrow in the figure below to represent the direction of the acceleration of the block at that
+moment. (1 mark)
+Ny
+;
+wo

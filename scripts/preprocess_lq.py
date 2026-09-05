@@ -711,12 +711,13 @@ def process_one(
         questions_meta: list[dict] = []
         for i, (qn, page_i, y) in enumerate(starts_scaled):
             if i + 1 < len(starts_scaled):
-                end_page = starts_scaled[i + 1][1]
+                next_page = starts_scaled[i + 1][1]
+                # Full pages for this Q only - stop before the next question's page.
+                end_page = next_page - 1 if next_page > page_i else page_i
             else:
                 end_page = len(full_pages) - 1
-            # Full pages from this question through the page where the next starts.
             page_from = page_i
-            page_to = max(page_i, end_page)
+            page_to = max(page_from, end_page)
             questions_meta.append(
                 {
                     "q": qn,

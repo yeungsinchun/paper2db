@@ -6,7 +6,8 @@ Writes:
   classified/<book>/<NN_section>/  (PNG copies; cross-topic Qs appear in each)
   classified/classification.csv
   classified/uncertain.csv
-  classified/classification.json
+  classified/mc_classification.json
+  classified/classification.json  (legacy copy)
 """
 from __future__ import annotations
 
@@ -613,10 +614,21 @@ def main() -> None:
         summary[f"{n:02d} {name}"] = count
         print(f"S{n:02d} {name}: {count}")
 
+    payload = {"rows": rows, "summary": summary}
+    (CLASSIFIED / "mc_classification.json").write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
+    )
     (CLASSIFIED / "classification.json").write_text(
-        json.dumps({"rows": rows, "summary": summary}, indent=2, ensure_ascii=False) + "\n"
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
     )
     (CLASSIFIED / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n")
+    # Flat spreadsheet copy (same columns as classification.csv)
+    mc_csv = CLASSIFIED / "mc_classification.csv"
+    with mc_csv.open("w", newline="", encoding="utf-8") as f:
+        fields = list(rows[0].keys()) if rows else []
+        writer = csv.DictWriter(f, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(rows)
 
     print()
     print(f"Questions: {len(rows)}")
@@ -626,6 +638,8 @@ def main() -> None:
     print(f"  uncertain:     {len(uncertain_rows)}")
     print(f"CSV: {csv_path}")
     print(f"Uncertain: {unc_path}")
+    print(f"JSON: {CLASSIFIED / 'mc_classification.json'}")
+    print(f"MC CSV: {mc_csv}")
 
 
 if __name__ == "__main__":

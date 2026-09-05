@@ -5,3 +5,4 @@ __pycache__/
 output/*-intermediate/
 output/*-test/
 output/*/intermediate/
+output/**/pages/
