@@ -18,7 +18,6 @@ import json
 import re
 import shutil
 import subprocess
-from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
@@ -480,6 +479,51 @@ def dest_name(record: dict) -> str:
     return f"{record['Year']}_q{record['Question']}.png"
 
 
+def year_key(name: str) -> tuple:
+    if name in YEAR_ORDER:
+        return (0, YEAR_ORDER.index(name))
+    return (1, name)
+
+
+def row_key(row: dict) -> tuple[str, int]:
+    return (str(row["Year"]), int(row["Question"]))
+
+
+def merge_by_year_question(existing: list[dict], updates: list[dict]) -> list[dict]:
+    by_key = {row_key(row): row for row in existing}
+    for row in updates:
+        by_key[row_key(row)] = row
+    return sorted(
+        by_key.values(),
+        key=lambda row: (year_key(str(row["Year"])), int(row["Question"])),
+    )
+
+
+def png_stem_key(path: Path) -> tuple[str, int] | None:
+    match = re.fullmatch(r"(.+)_q(\d+)\.png", path.name)
+    if not match:
+        return None
+    return (match.group(1), int(match.group(2)))
+
+
+def clear_section_pngs(touched_keys: set[tuple[str, int]] | None) -> None:
+    for _n, book, folder, _name in SECTIONS:
+        for path in (CLASSIFIED / book / folder).glob("*_q*.png"):
+            if touched_keys is None:
+                path.unlink()
+                continue
+            key = png_stem_key(path)
+            if key is not None and key in touched_keys:
+                path.unlink()
+
+
+def load_existing_classification_rows() -> list[dict]:
+    path = CLASSIFIED / "mc_classification.json"
+    if path.exists():
+        return json.loads(path.read_text(encoding="utf-8"))
+    return []
+
+
 def ensure_tree() -> None:
     for _n, book, folder, _name in SECTIONS:
         (CLASSIFIED / book / folder).mkdir(parents=True, exist_ok=True)
@@ -508,48 +552,62 @@ def main() -> None:
 
     ensure_tree()
     ocr_json = CLASSIFIED / "mc_ocr.json"
+    ocr_full_json = CLASSIFIED / "mc_ocr_full.json"
+    partial_run = bool(args.years)
 
     if args.skip_ocr and ocr_json.exists():
-        records = json.loads(ocr_json.read_text())
-        print(f"Loaded {len(records)} OCR records from {ocr_json}")
+        full_records = json.loads(ocr_json.read_text())
+        print(f"Loaded {len(full_records)} OCR records from {ocr_json}")
     else:
         jobs = collect_jobs(args.years)
         print(f"OCR {len(jobs)} questions with {args.workers} workers...", flush=True)
-        records = []
+        new_records = []
         done = 0
         with ProcessPoolExecutor(max_workers=args.workers) as pool:
             futures = {pool.submit(_ocr_one, job): job for job in jobs}
             for fut in as_completed(futures):
-                records.append(fut.result())
+                new_records.append(fut.result())
                 done += 1
                 if done % 25 == 0 or done == len(jobs):
                     print(f"  OCR {done}/{len(jobs)}", flush=True)
-        records.sort(
-            key=lambda r: (
-                (0, int(r["Year"])) if isinstance(r["Year"], int) or str(r["Year"]).isdigit() else (1, str(r["Year"])),
-                int(r["Question"]),
-            )
+        new_records.sort(
+            key=lambda r: (year_key(str(r["Year"])), int(r["Question"]))
         )
         ocr_json.parent.mkdir(parents=True, exist_ok=True)
-        # Persist without bulky raw OCR in the main export; keep OCR for debug separately
-        slim = [{k: v for k, v in r.items() if k != "OCR"} for r in records]
-        ocr_json.write_text(json.dumps(slim, indent=2, ensure_ascii=False) + "\n")
-        (CLASSIFIED / "mc_ocr_full.json").write_text(
-            json.dumps(records, indent=2, ensure_ascii=False) + "\n"
+        slim_new = [{k: v for k, v in r.items() if k != "OCR"} for r in new_records]
+        if partial_run and ocr_json.exists():
+            full_records = merge_by_year_question(
+                json.loads(ocr_json.read_text()),
+                slim_new,
+            )
+            if ocr_full_json.exists():
+                full_with_ocr = merge_by_year_question(
+                    json.loads(ocr_full_json.read_text()),
+                    new_records,
+                )
+            else:
+                full_with_ocr = new_records
+        else:
+            full_records = slim_new
+            full_with_ocr = new_records
+        ocr_json.write_text(json.dumps(full_records, indent=2, ensure_ascii=False) + "\n")
+        ocr_full_json.write_text(
+            json.dumps(full_with_ocr, indent=2, ensure_ascii=False) + "\n"
         )
         print(f"Wrote {ocr_json}")
 
-    # Clear previous question copies (keep tree)
-    for _n, book, folder, _name in SECTIONS:
-        for path in (CLASSIFIED / book / folder).glob("*_q*.png"):
-            path.unlink()
+    work_records = full_records
+    if args.years:
+        want = set(args.years)
+        work_records = [r for r in full_records if str(r["Year"]) in want]
+    touched_keys = {row_key(r) for r in work_records} if partial_run else None
 
-    buckets: dict[int, list[dict]] = defaultdict(list)
-    rows: list[dict] = []
-    uncertain_rows: list[dict] = []
+    clear_section_pngs(touched_keys)
+
+    new_rows: list[dict] = []
     n_one = n_multi = n_fallback = 0
 
-    for record in records:
+    for record in work_records:
         chosen = classify_multi(record)
         if chosen[0][1] == 0:
             n_fallback += 1
@@ -566,7 +624,6 @@ def main() -> None:
         section_names = []
         scores = []
         for section, score in chosen:
-            buckets[section].append(record)
             book, folder, name = SECTION_BY_NUM[section]
             section_nums.append(str(section))
             section_names.append(name)
@@ -576,7 +633,7 @@ def main() -> None:
                 shutil.copy2(src, CLASSIFIED / book / folder / dest_name(record))
 
         primary = chosen[0][0]
-        pbook, pfolder, pname = SECTION_BY_NUM[primary]
+        pbook, _pfolder, pname = SECTION_BY_NUM[primary]
         row = {
             "Year": record["Year"],
             "Question": record["Question"],
@@ -591,20 +648,31 @@ def main() -> None:
             "PNG": record["PNG"],
             "StatementPreview": (record.get("Question statement") or "")[:160].replace("\n", " "),
         }
-        rows.append(row)
-        if uncertain:
-            uncertain_rows.append(row)
+        new_rows.append(row)
+
+    if touched_keys is not None:
+        rows = merge_by_year_question(load_existing_classification_rows(), new_rows)
+    else:
+        rows = new_rows
+
+    uncertain_rows = [r for r in rows if r.get("Uncertain") == "yes"]
 
     unc_path = CLASSIFIED / "uncertain.csv"
     with unc_path.open("w", newline="", encoding="utf-8") as f:
-        fields = list(uncertain_rows[0].keys()) if uncertain_rows else list(rows[0].keys())
+        fields = list(uncertain_rows[0].keys()) if uncertain_rows else (
+            list(rows[0].keys()) if rows else []
+        )
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
         writer.writerows(uncertain_rows)
 
     summary = {}
     for n, book, folder, name in SECTIONS:
-        count = len({(r["Year"], r["Question"]) for r in buckets.get(n, [])})
+        count = 0
+        for r in rows:
+            secs = str(r.get("AllSections") or "")
+            if str(n) in {p.strip() for p in secs.split(";") if p.strip()}:
+                count += 1
         summary[f"{n:02d} {name}"] = count
         print(f"S{n:02d} {name}: {count}")
 
@@ -621,6 +689,7 @@ def main() -> None:
 
     print()
     print(f"Questions: {len(rows)}")
+    print(f"  updated now:   {len(new_rows)}")
     print(f"  one section:   {n_one}")
     print(f"  multi-section: {n_multi}")
     print(f"  fallback S5:   {n_fallback}")

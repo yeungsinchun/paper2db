@@ -374,71 +374,103 @@ def merge_by_year_question(existing: list[dict], updates: list[dict]) -> list[di
     )
 
 
-def apply_classifications(records: list[dict], decisions: list[dict]) -> None:
-    ensure_tree()
-    by_key = {(str(d["Year"]), int(d["Question"])): d for d in decisions}
-    # Clear previous PNG copies
+def png_stem_key(path: Path) -> tuple[str, int] | None:
+    match = re.fullmatch(r"(.+)_q(\d+)\.png", path.name)
+    if not match:
+        return None
+    return (match.group(1), int(match.group(2)))
+
+
+def clear_section_pngs(touched_keys: set[tuple[str, int]] | None) -> None:
     for _n, book, folder, _name in SECTIONS:
         for path in (CLASSIFIED / book / folder).glob("*_q*.png"):
-            path.unlink()
+            if touched_keys is None:
+                path.unlink()
+                continue
+            key = png_stem_key(path)
+            if key is not None and key in touched_keys:
+                path.unlink()
 
-    rows: list[dict] = []
-    uncertain_rows: list[dict] = []
-    buckets: dict[int, int] = defaultdict(int)
+
+def load_existing_classification_rows() -> list[dict]:
+    path = CLASSIFIED / "mc_classification.json"
+    if path.exists():
+        return json.loads(path.read_text(encoding="utf-8"))
+    return []
+
+
+def build_classification_row(record: dict, decision: dict) -> dict:
+    sections = normalize_sections(decision.get("sections")) or [5]
+    primary = sections[0]
+    pbook, _pfolder, pname = SECTION_BY_NUM[primary]
+    return {
+        "Year": record["Year"],
+        "Question": record["Question"],
+        "PrimarySection": primary,
+        "PrimaryName": pname,
+        "PrimaryBook": BOOK_NAMES[pbook],
+        "AllSections": ";".join(str(s) for s in sections),
+        "AllSectionNames": "; ".join(SECTION_BY_NUM[s][2] for s in sections),
+        "Reason": decision.get("reason") or "",
+        "Uncertain": "yes" if decision.get("uncertain") else "no",
+        "PNG": record["PNG"],
+        "StatementPreview": decision.get("StatementPreview")
+        or re.sub(r"\s+", " ", record_text(record, 160)),
+        "_sections": sections,
+    }
+
+
+def apply_classifications(
+    records: list[dict],
+    decisions: list[dict],
+    *,
+    touched_keys: set[tuple[str, int]] | None = None,
+) -> None:
+    ensure_tree()
+    by_key = {row_key(d): d for d in decisions}
+    missing = [r for r in records if row_key(r) not in by_key]
+    if missing and touched_keys is None:
+        raise SystemExit(
+            f"Missing LLM decisions for {len(missing)} of {len(records)} records; "
+            "refusing to invent Section 5 stubs. Use --years/--limit to merge a partial "
+            "update, or supply complete decisions."
+        )
+
+    apply_records = [r for r in records if row_key(r) in by_key]
+    if touched_keys is not None:
+        apply_records = [r for r in apply_records if row_key(r) in touched_keys]
+        if not apply_records:
+            raise SystemExit("Partial run produced no decisions to apply.")
+
+    clear_section_pngs(touched_keys)
+
+    new_rows: list[dict] = []
     n_one = n_multi = 0
 
-    for record in records:
-        key = (str(record["Year"]), int(record["Question"]))
-        decision = by_key.get(key)
-        if decision is None:
-            decision = {
-                "Year": record["Year"],
-                "Question": record["Question"],
-                "sections": [5],
-                "reason": "missing LLM decision",
-                "uncertain": True,
-                "PNG": record["PNG"],
-                "StatementPreview": re.sub(r"\s+", " ", record_text(record, 160)),
-            }
-        sections = normalize_sections(decision.get("sections")) or [5]
+    for record in apply_records:
+        decision = by_key[row_key(record)]
+        row = build_classification_row(record, decision)
+        sections = row.pop("_sections")
         if len(sections) == 1:
             n_one += 1
         else:
             n_multi += 1
         for sec in sections:
             book, folder, _name = SECTION_BY_NUM[sec]
-            buckets[sec] += 1
             src = ROOT / record["PNG"]
             if src.exists():
-                shutil.copy2(src, CLASSIFIED / book / folder / dest_name(record["Year"], int(record["Question"])))
+                shutil.copy2(
+                    src,
+                    CLASSIFIED / book / folder / dest_name(record["Year"], int(record["Question"])),
+                )
+        new_rows.append(row)
 
-        primary = sections[0]
-        pbook, _pfolder, pname = SECTION_BY_NUM[primary]
-        row = {
-            "Year": record["Year"],
-            "Question": record["Question"],
-            "PrimarySection": primary,
-            "PrimaryName": pname,
-            "PrimaryBook": BOOK_NAMES[pbook],
-            "AllSections": ";".join(str(s) for s in sections),
-            "AllSectionNames": "; ".join(SECTION_BY_NUM[s][2] for s in sections),
-            "Reason": decision.get("reason") or "",
-            "Uncertain": "yes" if decision.get("uncertain") else "no",
-            "PNG": record["PNG"],
-            "StatementPreview": decision.get("StatementPreview")
-            or re.sub(r"\s+", " ", record_text(record, 160)),
-        }
-        rows.append(row)
-        if row["Uncertain"] == "yes":
-            uncertain_rows.append(row)
+    if touched_keys is not None:
+        rows = merge_by_year_question(load_existing_classification_rows(), new_rows)
+    else:
+        rows = sorted(new_rows, key=lambda r: (year_key(str(r["Year"])), int(r["Question"])))
 
-    def sort_key(r: dict) -> tuple:
-        y = r["Year"]
-        return (year_key(str(y)), int(r["Question"]))
-
-    rows.sort(key=sort_key)
-    uncertain_rows.sort(key=sort_key)
-
+    uncertain_rows = [r for r in rows if r.get("Uncertain") == "yes"]
     fieldnames = [
         "Year", "Question", "PrimarySection", "PrimaryName", "PrimaryBook",
         "AllSections", "AllSectionNames", "Reason", "Uncertain", "PNG", "StatementPreview",
@@ -454,18 +486,26 @@ def apply_classifications(records: list[dict], decisions: list[dict]) -> None:
         writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
+
+    merged_buckets: dict[int, int] = defaultdict(int)
+    for row in rows:
+        for part in str(row.get("AllSections") or "").split(";"):
+            part = part.strip()
+            if part.isdigit():
+                merged_buckets[int(part)] += 1
     summary = {
-        f"S{n:02d} {name}": buckets[n]
+        f"S{n:02d} {name}": merged_buckets[n]
         for n, _book, _folder, name in SECTIONS
     }
     (CLASSIFIED / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
 
     print("Questions:", len(rows))
+    print("  updated now: ", len(new_rows))
     print("  one section:  ", n_one)
     print("  multi-section:", n_multi)
     print("  uncertain:    ", len(uncertain_rows))
     for n, _b, _f, name in SECTIONS:
-        print(f"S{n:02d} {name}: {buckets[n]}")
+        print(f"S{n:02d} {name}: {merged_buckets[n]}")
 
 
 def main() -> None:
@@ -547,7 +587,9 @@ def main() -> None:
     decisions_path.write_text(json.dumps(decisions, indent=2, ensure_ascii=False) + "\n")
     print(f"Wrote {decisions_path} ({len(decisions)} decisions)")
 
-    apply_classifications(full_records, decisions)
+    touched_keys = {row_key(r) for r in work_records} if partial_run else None
+    apply_records = work_records if partial_run else full_records
+    apply_classifications(apply_records, decisions, touched_keys=touched_keys)
 
     if args.rebuild_pdfs:
         subprocess.run(
