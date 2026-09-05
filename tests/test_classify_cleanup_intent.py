@@ -222,6 +222,230 @@ class TestMcLlmPartialYearsMerge(unittest.TestCase):
             self.assertEqual(by_year["2013"]["Reason"], "lenses")
             self.assertNotEqual(by_year["2013"]["Reason"], "missing LLM decision")
 
+    def test_incomplete_decisions_abort_without_s5_stubs(self) -> None:
+        """Full apply with gaps must abort, not invent Section 5 stubs."""
+        import classify_mc_llm as m
+
+        with tempfile.TemporaryDirectory() as tmp:
+            classified = Path(tmp) / "classified"
+            classified.mkdir()
+            for _n, book, folder, _name in m.SECTIONS:
+                (classified / book / folder).mkdir(parents=True, exist_ok=True)
+
+            full_records = [
+                {
+                    "Year": "2012",
+                    "Question": 1,
+                    "PNG": "missing.png",
+                    "Question statement": "gas",
+                    "Option": {},
+                },
+                {
+                    "Year": "2013",
+                    "Question": 1,
+                    "PNG": "missing.png",
+                    "Question statement": "lenses",
+                    "Option": {},
+                },
+            ]
+            partial_decisions = [
+                {
+                    "Year": "2012",
+                    "Question": 1,
+                    "sections": [2],
+                    "reason": "heat",
+                    "uncertain": False,
+                    "PNG": "missing.png",
+                    "StatementPreview": "heat",
+                }
+            ]
+            with mock.patch.object(m, "CLASSIFIED", classified):
+                with self.assertRaises(SystemExit) as ctx:
+                    m.apply_classifications(full_records, partial_decisions)
+            self.assertIn("refusing to invent Section 5 stubs", str(ctx.exception))
+            self.assertFalse((classified / "mc_classification.json").exists())
+
+    def test_partial_touched_keys_merges_existing_classification(self) -> None:
+        """--years path merges only touched rows into shipped mc_classification.*."""
+        import classify_mc_llm as m
+
+        with tempfile.TemporaryDirectory() as tmp:
+            classified = Path(tmp) / "classified"
+            classified.mkdir()
+            for _n, book, folder, _name in m.SECTIONS:
+                (classified / book / folder).mkdir(parents=True, exist_ok=True)
+
+            book19, folder19, _ = m.SECTION_BY_NUM[19]
+            kept_png = classified / book19 / folder19 / "2013_q1.png"
+            kept_png.write_bytes(b"KEEP-2013")
+            book4, folder4, _ = m.SECTION_BY_NUM[4]
+            old_2012 = classified / book4 / folder4 / "2012_q1.png"
+            old_2012.write_bytes(b"OLD-2012")
+
+            existing_rows = [
+                {
+                    "Year": "2012",
+                    "Question": 1,
+                    "PrimarySection": 4,
+                    "PrimaryName": "Gases",
+                    "PrimaryBook": "Heat and Gases",
+                    "AllSections": "4",
+                    "AllSectionNames": "Gases",
+                    "Reason": "old-gas",
+                    "Uncertain": "no",
+                    "PNG": "missing.png",
+                    "StatementPreview": "gas",
+                },
+                {
+                    "Year": "2013",
+                    "Question": 1,
+                    "PrimarySection": 19,
+                    "PrimaryName": "Lenses",
+                    "PrimaryBook": "Wave Motion",
+                    "AllSections": "19",
+                    "AllSectionNames": "Lenses",
+                    "Reason": "old-lenses",
+                    "Uncertain": "no",
+                    "PNG": "missing.png",
+                    "StatementPreview": "lenses",
+                },
+            ]
+            (classified / "mc_classification.json").write_text(
+                json.dumps(existing_rows, indent=2) + "\n", encoding="utf-8"
+            )
+
+            work_records = [
+                {
+                    "Year": "2012",
+                    "Question": 1,
+                    "PNG": "missing.png",
+                    "Question statement": "heat capacity",
+                    "Option": {},
+                }
+            ]
+            new_decisions = [
+                {
+                    "Year": "2012",
+                    "Question": 1,
+                    "sections": [2],
+                    "reason": "heat capacity",
+                    "uncertain": False,
+                    "PNG": "missing.png",
+                    "StatementPreview": "heat",
+                }
+            ]
+            with mock.patch.object(m, "CLASSIFIED", classified):
+                m.apply_classifications(
+                    work_records,
+                    new_decisions,
+                    touched_keys={("2012", 1)},
+                )
+
+            rows = json.loads((classified / "mc_classification.json").read_text())
+            self.assertEqual(len(rows), 2)
+            by_year = {str(r["Year"]): r for r in rows}
+            self.assertEqual(by_year["2012"]["PrimarySection"], 2)
+            self.assertEqual(by_year["2012"]["Reason"], "heat capacity")
+            self.assertEqual(by_year["2013"]["PrimarySection"], 19)
+            self.assertEqual(by_year["2013"]["Reason"], "old-lenses")
+            self.assertNotIn("missing LLM decision", by_year["2013"]["Reason"])
+            self.assertTrue(kept_png.is_file())
+            self.assertEqual(kept_png.read_bytes(), b"KEEP-2013")
+            self.assertFalse(old_2012.exists())
+
+
+class TestMcSectionsYearsMerge(unittest.TestCase):
+    """classify_mc_sections --years must merge into existing mc_classification.*."""
+
+    def test_years_skip_ocr_preserves_other_year_rows_and_pngs(self) -> None:
+        import classify_mc_sections as sec
+
+        with tempfile.TemporaryDirectory() as tmp:
+            classified = Path(tmp) / "classified"
+            classified.mkdir()
+            for _n, book, folder, _name in sec.SECTIONS:
+                (classified / book / folder).mkdir(parents=True, exist_ok=True)
+
+            book19, folder19, _ = sec.SECTION_BY_NUM[19]
+            kept_png = classified / book19 / folder19 / "2013_q1.png"
+            kept_png.write_bytes(b"KEEP-2013-SECTIONS")
+
+            existing_rows = [
+                {
+                    "Year": "2012",
+                    "Question": 1,
+                    "PrimarySection": 5,
+                    "PrimaryName": "Motion",
+                    "PrimaryBook": "Force and Motion",
+                    "AllSections": "5",
+                    "AllSectionNames": "Motion",
+                    "Scores": "1",
+                    "Uncertain": "yes",
+                    "BadCrop": "no",
+                    "PNG": "missing.png",
+                    "StatementPreview": "old-2012",
+                },
+                {
+                    "Year": "2013",
+                    "Question": 1,
+                    "PrimarySection": 19,
+                    "PrimaryName": "Lenses",
+                    "PrimaryBook": "Ray Optics",
+                    "AllSections": "19",
+                    "AllSectionNames": "Lenses",
+                    "Scores": "3",
+                    "Uncertain": "no",
+                    "BadCrop": "no",
+                    "PNG": "missing.png",
+                    "StatementPreview": "old-2013",
+                },
+            ]
+            (classified / "mc_classification.json").write_text(
+                json.dumps(existing_rows, indent=2) + "\n", encoding="utf-8"
+            )
+            (classified / "mc_ocr.json").write_text(
+                json.dumps(
+                    [
+                        {
+                            "Year": "2012",
+                            "Question": 1,
+                            "PNG": "missing.png",
+                            "Question statement": "temperature heat transfer",
+                            "Option": {},
+                        },
+                        {
+                            "Year": "2013",
+                            "Question": 1,
+                            "PNG": "missing.png",
+                            "Question statement": "lenses focal length",
+                            "Option": {},
+                        },
+                    ],
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+
+            with (
+                mock.patch.object(sec, "CLASSIFIED", classified),
+                mock.patch(
+                    "argparse.ArgumentParser.parse_args",
+                    return_value=argparse.Namespace(years=["2012"], workers=1, skip_ocr=True),
+                ),
+                mock.patch.object(sec, "classify_multi", return_value=[(1, 4)]),
+            ):
+                sec.main()
+
+            rows = json.loads((classified / "mc_classification.json").read_text())
+            self.assertEqual(len(rows), 2)
+            by_year = {str(r["Year"]): r for r in rows}
+            self.assertEqual(by_year["2012"]["PrimarySection"], 1)
+            self.assertEqual(by_year["2013"]["PrimarySection"], 19)
+            self.assertEqual(by_year["2013"]["StatementPreview"], "old-2013")
+            self.assertTrue(kept_png.is_file())
+            self.assertEqual(kept_png.read_bytes(), b"KEEP-2013-SECTIONS")
+
 
 class TestLqLlmAbortOnPartialFailure(unittest.TestCase):
     """LLM failures must not clear-and-replace nested LQ outputs."""

@@ -8,6 +8,9 @@ Writes:
   classified/mc_classification.csv
   classified/mc_classification.json
   classified/summary.json
+
+--years merges into existing mc_ocr.* / mc_classification.* and only refreshes
+touched section PNGs (same shared MC paths as classify_mc_llm.py).
 """
 from __future__ import annotations
 

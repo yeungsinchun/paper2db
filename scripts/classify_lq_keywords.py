@@ -10,6 +10,8 @@ Uses OCR under classified/lq/ocr_cache (or creates it). Writes:
 
 Top-level classified/lq_classification.* is the split naming contract for LQ;
 nested classified/lq/classification.csv feeds build_lq_lavish_review.py.
+--years merges into those existing nested/top-level rows and only replaces
+section PNG copies for the selected years.
 """
 from __future__ import annotations
 

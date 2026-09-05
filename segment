@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Segment an HKDSE Physics exam PDF into per-question PNGs (q1.png, q2.png, ...).
+"""Segment an HKDSE Physics exam PDF (MC question PNGs, or LQ page splits).
 
 Paper 1A (MC) two-step workflow:
   Step 1 - place anchors (blue dots) for review:
@@ -8,12 +8,14 @@ Paper 1A (MC) two-step workflow:
   Step 2 - split into clean PNGs from the original PDF:
     ./segment paper.pdf output/2012 --step split --intermediate output/2012-intermediate
 
-Paper 1B (LQ): OCR question numbers and crop each long question directly.
+Paper 1B (LQ): pages-only split (pages/, starts.json, combined.pdf). Does not
+write or delete q*.png; use scripts/crop_lq_from_pages.py for question crops.
+Page renders under output/**/pages/ are gitignored.
 
 Usage:
   ./segment paper.pdf output_dir/
   ./segment paper.pdf output_dir/ --type mc
-  ./segment paper.pdf output_dir/ --type lq --max-questions 12
+  ./segment paper.pdf output_dir/ --type lq --questions 12
 """
 from __future__ import annotations
 

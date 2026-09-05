@@ -12,6 +12,10 @@ Pipeline:
        classified/summary.json
   4. Optionally rebuild per-section combined.pdf (easiest -> hardest) + answer.pdf
 
+Partial --years/--limit runs merge into existing mc_ocr.* / mc_classification.*
+and only refresh touched section PNGs. A full apply aborts if decisions do not
+cover every OCR record (no Section 5 stubs for gaps).
+
 Env:
   LLM_API_KEY   (or OPENAI_API_KEY / TOGETHER_API_KEY)
   LLM_BASE_URL  (default https://api.together.xyz/v1)

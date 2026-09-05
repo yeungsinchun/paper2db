@@ -8,6 +8,7 @@ Reads crops from output/lq/<year>/qN.png, writes nested LQ outputs only:
   classified/lq/<book>/<section>/ year-qN.png (+ optional answer copy)
 
 Top-level classified/lq_classification.csv|json come from classify_lq_keywords.py.
+Any LLM failure aborts before write_outputs so nested outputs stay unchanged.
 
 Env: same as classify_mc_llm.py (LLM_API_KEY / OPENAI_API_KEY / TOGETHER_API_KEY).
 """
