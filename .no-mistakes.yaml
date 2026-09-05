@@ -1,0 +1,3 @@
+# Trusted default-branch config for no-mistakes.
+# This repository has no GitHub Actions workflows.
+no_ci: true
