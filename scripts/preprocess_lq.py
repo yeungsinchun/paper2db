@@ -738,8 +738,6 @@ def process_one(
         combine_pngs_to_pdf(pages_out, output=output_dir / "combined.pdf", overwrite=True)
 
         if not crop_questions_flag:
-            for old in output_dir.glob("q*.png"):
-                old.unlink()
             return len(questions_meta)
 
         images = crop_questions(

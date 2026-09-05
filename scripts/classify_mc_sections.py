@@ -4,10 +4,10 @@
 
 Writes:
   classified/<book>/<NN_section>/  (PNG copies; cross-topic Qs appear in each)
-  classified/classification.csv
   classified/uncertain.csv
+  classified/mc_classification.csv
   classified/mc_classification.json
-  classified/classification.json  (legacy copy)
+  classified/summary.json
 """
 from __future__ import annotations
 
@@ -595,12 +595,6 @@ def main() -> None:
         if uncertain:
             uncertain_rows.append(row)
 
-    csv_path = CLASSIFIED / "classification.csv"
-    with csv_path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
-        writer.writeheader()
-        writer.writerows(rows)
-
     unc_path = CLASSIFIED / "uncertain.csv"
     with unc_path.open("w", newline="", encoding="utf-8") as f:
         fields = list(uncertain_rows[0].keys()) if uncertain_rows else list(rows[0].keys())
@@ -614,15 +608,10 @@ def main() -> None:
         summary[f"{n:02d} {name}"] = count
         print(f"S{n:02d} {name}: {count}")
 
-    payload = {"rows": rows, "summary": summary}
     (CLASSIFIED / "mc_classification.json").write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
-    )
-    (CLASSIFIED / "classification.json").write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
+        json.dumps(rows, indent=2, ensure_ascii=False) + "\n"
     )
     (CLASSIFIED / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n")
-    # Flat spreadsheet copy (same columns as classification.csv)
     mc_csv = CLASSIFIED / "mc_classification.csv"
     with mc_csv.open("w", newline="", encoding="utf-8") as f:
         fields = list(rows[0].keys()) if rows else []
@@ -636,7 +625,6 @@ def main() -> None:
     print(f"  multi-section: {n_multi}")
     print(f"  fallback S5:   {n_fallback}")
     print(f"  uncertain:     {len(uncertain_rows)}")
-    print(f"CSV: {csv_path}")
     print(f"Uncertain: {unc_path}")
     print(f"JSON: {CLASSIFIED / 'mc_classification.json'}")
     print(f"MC CSV: {mc_csv}")

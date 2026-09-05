@@ -425,19 +425,11 @@ def apply_classifications(records: list[dict], decisions: list[dict]) -> None:
         "Year", "Question", "PrimarySection", "PrimaryName", "PrimaryBook",
         "AllSections", "AllSectionNames", "Reason", "Uncertain", "PNG", "StatementPreview",
     ]
-    with (CLASSIFIED / "classification.csv").open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
     with (CLASSIFIED / "uncertain.csv").open("w", newline="", encoding="utf-8") as fh:
         writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(uncertain_rows)
     (CLASSIFIED / "mc_classification.json").write_text(
-        json.dumps(rows, indent=2, ensure_ascii=False) + "\n"
-    )
-    # Keep legacy name as a copy for older scripts.
-    (CLASSIFIED / "classification.json").write_text(
         json.dumps(rows, indent=2, ensure_ascii=False) + "\n"
     )
     with (CLASSIFIED / "mc_classification.csv").open("w", newline="", encoding="utf-8") as fh:
