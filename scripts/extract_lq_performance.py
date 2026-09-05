@@ -94,6 +94,15 @@ def main() -> None:
     args = parser.parse_args()
 
     data: dict[str, dict[str, str]] = {}
+    if args.years and OUT.exists():
+        existing = json.loads(OUT.read_text(encoding="utf-8"))
+        if isinstance(existing, dict):
+            data = {
+                str(year): dict(notes)
+                for year, notes in existing.items()
+                if isinstance(notes, dict)
+            }
+
     paths = sorted(PERF_DIR.glob("* performance.md"))
     for path in paths:
         m = re.match(r"(20\d{2})", path.name)
