@@ -5,7 +5,11 @@
 Pipeline:
   1. Reuse / refresh OCR from output/ PNGs (tesseract cache under classified/ocr_cache)
   2. Call an OpenAI-compatible chat API one question (or small batch) at a time
-  3. Write classified/<book>/<section>/ PNG copies + CSV/JSON
+  3. Write classified/<book>/<section>/ PNG copies plus:
+       classified/mc_classification.csv
+       classified/mc_classification.json
+       classified/uncertain.csv
+       classified/summary.json
   4. Optionally rebuild per-section combined.pdf (easiest -> hardest) + answer.pdf
 
 Env:

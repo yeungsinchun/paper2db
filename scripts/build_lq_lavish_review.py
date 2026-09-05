@@ -63,8 +63,8 @@ def question_page_image(year: str, q: int, dest: Path) -> bool:
         for item in meta.get("questions", []):
             if int(item["q"]) != q:
                 continue
-            # Prefer pages up to but not past the next question's start page
-            # when page_to equals next Q page (inclusive stack for full problem).
+            # starts.json page_to stops before the next question's page
+            # (see preprocess_lq); stack page_from..page_to inclusive.
             paths = [
                 pages_dir / f"page{i:03d}.png"
                 for i in range(int(item["page_from"]), int(item["page_to"]) + 1)
@@ -288,7 +288,7 @@ def write_html(sections: list[dict]) -> None:
           <div class="meta" id="secCount"></div>
         </div>
       </div>
-      <div class="help">Question side uses the full paper page(s) covering that LQ (no within-page crop). Answer side is a tight marking-scheme crop. Candidate performance text is from the official report (Section B only).</div>
+      <div class="help">Question side stacks starts.json page_from..page_to (no within-page crop; falls back to qN.png). Answer side is a tight marking-scheme crop. Candidate performance text is from the official report (Section B only).</div>
       <div class="grid" id="grid"></div>
     </main>
   </div>

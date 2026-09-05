@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 """Keyword-classify LQ crops into the 27 MC sections (no LLM required).
 
-Uses OCR under classified/lq/ocr_cache (or creates it). Writes the same
-outputs as classify_lq_llm.py so build_lq_lavish_review.py can run.
+Uses OCR under classified/lq/ocr_cache (or creates it). Writes:
+  classified/lq/classification.csv
+  classified/lq/llm_classifications.json
+  classified/lq/<book>/<section>/ year-qN.png (+ optional answer copy)
+  classified/lq_classification.csv
+  classified/lq_classification.json
+
+Top-level classified/lq_classification.* is the split naming contract for LQ;
+nested classified/lq/classification.csv feeds build_lq_lavish_review.py.
 """
 from __future__ import annotations
 

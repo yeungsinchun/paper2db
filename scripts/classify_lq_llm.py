@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 """Classify LQ (Paper 1B) questions into the same 27 sections as MC.
 
-Reads crops from output/lq/<year>/qN.png, writes:
+Reads crops from output/lq/<year>/qN.png, writes nested LQ outputs only:
   classified/lq/llm_classifications.json
   classified/lq/classification.csv
   classified/lq/<book>/<section>/ year-qN.png (+ optional answer copy)
+
+Top-level classified/lq_classification.csv|json come from classify_lq_keywords.py.
 
 Env: same as classify_mc_llm.py (LLM_API_KEY / OPENAI_API_KEY / TOGETHER_API_KEY).
 """

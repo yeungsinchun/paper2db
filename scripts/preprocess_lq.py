@@ -661,7 +661,8 @@ def process_one(
 
     Default is pages-only: split upright full pages + starts.json. Question
     crops are off unless crop_questions_flag=True (answers stay separately
-    cropped from the marking scheme).
+    cropped from the marking scheme). Pages-only mode leaves existing q*.png
+    crops untouched.
     """
     doc = fitz.open(source)
     try:
