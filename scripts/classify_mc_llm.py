@@ -360,6 +360,20 @@ def dest_name(year: object, question: int) -> str:
     return f"{year}_q{question}.png"
 
 
+def row_key(row: dict) -> tuple[str, int]:
+    return (str(row["Year"]), int(row["Question"]))
+
+
+def merge_by_year_question(existing: list[dict], updates: list[dict]) -> list[dict]:
+    by_key = {row_key(row): row for row in existing}
+    for row in updates:
+        by_key[row_key(row)] = row
+    return sorted(
+        by_key.values(),
+        key=lambda row: (year_key(str(row["Year"])), int(row["Question"])),
+    )
+
+
 def apply_classifications(records: list[dict], decisions: list[dict]) -> None:
     ensure_tree()
     by_key = {(str(d["Year"]), int(d["Question"])): d for d in decisions}
@@ -458,61 +472,82 @@ def main() -> None:
     args = parse_args()
     ensure_tree()
     ocr_json = CLASSIFIED / "mc_ocr.json"
+    ocr_full_json = CLASSIFIED / "mc_ocr_full.json"
+    partial_run = bool(args.years or args.limit)
 
     if args.skip_ocr and ocr_json.exists():
-        records = json.loads(ocr_json.read_text())
-        print(f"Loaded {len(records)} OCR records")
+        full_records = json.loads(ocr_json.read_text())
+        print(f"Loaded {len(full_records)} OCR records")
     else:
         jobs = collect_jobs(args.years)
         print(f"OCR {len(jobs)} questions...")
-        records = []
+        new_records = []
         with ProcessPoolExecutor(max_workers=args.workers) as pool:
             futs = {pool.submit(_ocr_one, job): job for job in jobs}
             done = 0
             for fut in as_completed(futs):
-                records.append(fut.result())
+                new_records.append(fut.result())
                 done += 1
                 if done % 25 == 0 or done == len(jobs):
                     print(f"  OCR {done}/{len(jobs)}", flush=True)
-        records.sort(key=lambda r: (year_key(str(r["Year"])), int(r["Question"])))
-        slim = [{k: v for k, v in r.items() if k != "OCR"} for r in records]
-        ocr_json.write_text(json.dumps(slim, indent=2, ensure_ascii=False) + "\n")
-        (CLASSIFIED / "mc_ocr_full.json").write_text(
-            json.dumps(records, indent=2, ensure_ascii=False) + "\n"
+        new_records.sort(key=lambda r: (year_key(str(r["Year"])), int(r["Question"])))
+        slim_new = [{k: v for k, v in r.items() if k != "OCR"} for r in new_records]
+        if partial_run and ocr_json.exists():
+            full_records = merge_by_year_question(
+                json.loads(ocr_json.read_text()),
+                slim_new,
+            )
+            if ocr_full_json.exists():
+                full_with_ocr = merge_by_year_question(
+                    json.loads(ocr_full_json.read_text()),
+                    new_records,
+                )
+            else:
+                full_with_ocr = new_records
+        else:
+            full_records = slim_new
+            full_with_ocr = new_records
+        ocr_json.write_text(json.dumps(full_records, indent=2, ensure_ascii=False) + "\n")
+        ocr_full_json.write_text(
+            json.dumps(full_with_ocr, indent=2, ensure_ascii=False) + "\n"
         )
 
+    work_records = full_records
     if args.years:
         want = set(args.years)
-        records = [r for r in records if str(r["Year"]) in want]
+        work_records = [r for r in work_records if str(r["Year"]) in want]
     if args.limit:
-        records = records[: args.limit]
+        work_records = work_records[: args.limit]
 
     decisions_path = CLASSIFIED / "llm_classifications.json"
+    existing_decisions: list[dict] = []
+    if decisions_path.exists():
+        existing_decisions = json.loads(decisions_path.read_text())
+
     if args.from_json:
-        decisions = json.loads(args.from_json.read_text())
-        print(f"Loaded {len(decisions)} LLM decisions from {args.from_json}")
+        new_decisions = json.loads(args.from_json.read_text())
+        print(f"Loaded {len(new_decisions)} LLM decisions from {args.from_json}")
     else:
-        print(f"LLM-classifying {len(records)} questions...")
-        decisions = []
-        for i, record in enumerate(records, 1):
+        print(f"LLM-classifying {len(work_records)} questions...")
+        new_decisions = []
+        for i, record in enumerate(work_records, 1):
             decision = classify_one_llm(record)
-            decisions.append(decision)
-            if i % 10 == 0 or i == len(records):
-                print(f"  LLM {i}/{len(records)}", flush=True)
+            new_decisions.append(decision)
+            if i % 10 == 0 or i == len(work_records):
+                print(f"  LLM {i}/{len(work_records)}", flush=True)
             if args.sleep:
                 time.sleep(args.sleep)
-            # checkpoint
             if i % 25 == 0:
-                decisions_path.write_text(json.dumps(decisions, indent=2, ensure_ascii=False) + "\n")
-        decisions_path.write_text(json.dumps(decisions, indent=2, ensure_ascii=False) + "\n")
-        print(f"Wrote {decisions_path}")
+                checkpoint = merge_by_year_question(existing_decisions, new_decisions)
+                decisions_path.write_text(
+                    json.dumps(checkpoint, indent=2, ensure_ascii=False) + "\n"
+                )
 
-    apply_classifications(records if not args.years else json.loads(ocr_json.read_text()), decisions)
+    decisions = merge_by_year_question(existing_decisions, new_decisions)
+    decisions_path.write_text(json.dumps(decisions, indent=2, ensure_ascii=False) + "\n")
+    print(f"Wrote {decisions_path} ({len(decisions)} decisions)")
 
-    # If --years was set, apply_classifications above used full records only when not filtered.
-    # Re-apply carefully: always rebuild from full OCR + full decisions when available.
-    if args.years and decisions_path.exists() and not args.from_json:
-        pass
+    apply_classifications(full_records, decisions)
 
     if args.rebuild_pdfs:
         subprocess.run(

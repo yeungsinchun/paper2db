@@ -1,6 +1,7 @@
 """Behavioral checks for classify-branch cleanup intent."""
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import subprocess
@@ -148,6 +149,233 @@ class TestMcLlmWriterOutputs(unittest.TestCase):
             self.assertIsInstance(payload, list)
             self.assertEqual(payload[0]["PrimarySection"], 2)
             self.assertEqual(payload[0]["Reason"], "heat capacity")
+
+
+class TestMcLlmPartialYearsMerge(unittest.TestCase):
+    """Partial --years runs must merge decisions, not S5-fill other years."""
+
+    def test_merge_keeps_prior_decisions_on_partial_apply(self) -> None:
+        import classify_mc_llm as m
+
+        with tempfile.TemporaryDirectory() as tmp:
+            classified = Path(tmp) / "classified"
+            classified.mkdir()
+            for _n, book, folder, _name in m.SECTIONS:
+                (classified / book / folder).mkdir(parents=True, exist_ok=True)
+
+            full_records = [
+                {
+                    "Year": "2012",
+                    "Question": 1,
+                    "PNG": "missing.png",
+                    "Question statement": "gas law",
+                    "Option": {},
+                },
+                {
+                    "Year": "2013",
+                    "Question": 1,
+                    "PNG": "missing.png",
+                    "Question statement": "lenses",
+                    "Option": {},
+                },
+            ]
+            existing_decisions = [
+                {
+                    "Year": "2012",
+                    "Question": 1,
+                    "sections": [4],
+                    "reason": "gas",
+                    "uncertain": False,
+                    "PNG": "missing.png",
+                    "StatementPreview": "gas",
+                },
+                {
+                    "Year": "2013",
+                    "Question": 1,
+                    "sections": [19],
+                    "reason": "lenses",
+                    "uncertain": False,
+                    "PNG": "missing.png",
+                    "StatementPreview": "lenses",
+                },
+            ]
+            new_decisions = [
+                {
+                    "Year": "2012",
+                    "Question": 1,
+                    "sections": [2],
+                    "reason": "heat capacity",
+                    "uncertain": False,
+                    "PNG": "missing.png",
+                    "StatementPreview": "heat",
+                }
+            ]
+            merged = m.merge_by_year_question(existing_decisions, new_decisions)
+            with mock.patch.object(m, "CLASSIFIED", classified):
+                m.apply_classifications(full_records, merged)
+
+            rows = json.loads((classified / "mc_classification.json").read_text())
+            by_year = {str(r["Year"]): r for r in rows}
+            self.assertEqual(by_year["2012"]["PrimarySection"], 2)
+            self.assertEqual(by_year["2012"]["Reason"], "heat capacity")
+            self.assertEqual(by_year["2013"]["PrimarySection"], 19)
+            self.assertEqual(by_year["2013"]["Reason"], "lenses")
+            self.assertNotEqual(by_year["2013"]["Reason"], "missing LLM decision")
+
+
+class TestLqLlmAbortOnPartialFailure(unittest.TestCase):
+    """LLM failures must not clear-and-replace nested LQ outputs."""
+
+    def test_write_outputs_not_called_when_one_fails(self) -> None:
+        import classify_lq_llm as lq
+
+        records = [
+            {
+                "Year": "2012",
+                "Question": 1,
+                "Statement": "ok",
+                "PNG": "output/lq/2012/q1.png",
+                "AnswerPNG": "output/lq/2012/ans/q1.png",
+            },
+            {
+                "Year": "2012",
+                "Question": 2,
+                "Statement": "bad",
+                "PNG": "output/lq/2012/q2.png",
+                "AnswerPNG": "output/lq/2012/ans/q2.png",
+            },
+        ]
+
+        def fake_classify(rec: dict) -> dict:
+            if int(rec["Question"]) == 2:
+                raise ValueError("boom")
+            return {"sections": [5], "reason": "ok"}
+
+        with (
+            mock.patch.object(lq, "collect_jobs", return_value=[
+                ("2012", Path("x"), 1),
+                ("2012", Path("y"), 2),
+            ]),
+            mock.patch.object(lq, "_ocr_one", side_effect=records),
+            mock.patch.object(lq, "classify_one", side_effect=fake_classify),
+            mock.patch.object(lq, "llm_config", return_value=("k", "http://x", "m")),
+            mock.patch.object(lq, "write_outputs") as write_outputs,
+            mock.patch.object(
+                lq,
+                "parse_args",
+                return_value=argparse.Namespace(
+                    years=None, workers=1, from_json=None, limit=None, sleep=0
+                ),
+            ),
+        ):
+            with self.assertRaises(SystemExit) as ctx:
+                lq.main()
+        self.assertIn("Aborting write", str(ctx.exception))
+        write_outputs.assert_not_called()
+
+
+class TestLqKeywordsYearsMerge(unittest.TestCase):
+    """--years must merge into existing split LQ outputs."""
+
+    def test_years_filter_preserves_other_year_rows_and_pngs(self) -> None:
+        import classify_lq_keywords as kw
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            output_lq = root / "output" / "lq"
+            classified_lq = root / "classified" / "lq"
+            classified = root / "classified"
+            classified.mkdir()
+            classified_lq.mkdir(parents=True)
+
+            from PIL import Image
+
+            for year, qn, primary in (("2013", 1, 5), ("2024", 1, 8)):
+                year_dir = output_lq / year
+                year_dir.mkdir(parents=True)
+                png = year_dir / f"q{qn}.png"
+                Image.new("RGB", (20, 20), "white").save(png)
+                book, folder, _name = kw.SECTION_BY_NUM[primary]
+                dest_dir = classified_lq / book / folder
+                dest_dir.mkdir(parents=True, exist_ok=True)
+                dest = dest_dir / f"{year}-q{qn}.png"
+                dest.write_bytes(b"OLD-" + year.encode())
+
+            existing_rows = [
+                {
+                    "Year": "2013",
+                    "Question": "1",
+                    "Primary": "5",
+                    "AllSections": "5",
+                    "Reason": "old-2013",
+                    "PNG": "output/lq/2013/q1.png",
+                    "AnswerPNG": "output/lq/2013/ans/q1.png",
+                },
+                {
+                    "Year": "2024",
+                    "Question": "1",
+                    "Primary": "8",
+                    "AllSections": "8",
+                    "Reason": "old-2024",
+                    "PNG": "output/lq/2024/q1.png",
+                    "AnswerPNG": "output/lq/2024/ans/q1.png",
+                },
+            ]
+            with (classified_lq / "classification.csv").open("w", newline="", encoding="utf-8") as fh:
+                writer = csv.DictWriter(fh, fieldnames=kw.NESTED_CSV_FIELDS)
+                writer.writeheader()
+                writer.writerows(existing_rows)
+            (classified_lq / "llm_classifications.json").write_text(
+                json.dumps(
+                    {
+                        "2013-q1": {"sections": [5], "reason": "old-2013"},
+                        "2024-q1": {"sections": [8], "reason": "old-2024"},
+                    },
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            detailed = kw.build_detailed_rows(
+                [
+                    {**r, "Primary": int(r["Primary"]), "Question": int(r["Question"])}
+                    for r in existing_rows
+                ],
+                {},
+            )
+            (classified / "lq_classification.json").write_text(
+                json.dumps(detailed, indent=2) + "\n", encoding="utf-8"
+            )
+
+            with (
+                mock.patch.object(kw, "ROOT", root),
+                mock.patch.object(kw, "OUTPUT_LQ", output_lq),
+                mock.patch.object(kw, "CLASSIFIED_LQ", classified_lq),
+                mock.patch.object(kw, "OCR_CACHE", classified_lq / "ocr_cache"),
+                mock.patch.object(
+                    kw,
+                    "parse_args",
+                    return_value=argparse.Namespace(years=["2024"]),
+                ),
+                mock.patch.object(kw, "ocr_png", return_value="kinetic energy work done"),
+                mock.patch.object(kw, "classify_text", return_value=([8], "new-2024")),
+            ):
+                kw.main()
+
+            with (classified_lq / "classification.csv").open(encoding="utf-8") as fh:
+                rows = list(csv.DictReader(fh))
+            self.assertEqual(len(rows), 2)
+            by_year = {r["Year"]: r for r in rows}
+            self.assertEqual(by_year["2013"]["Reason"], "old-2013")
+            self.assertEqual(by_year["2024"]["Reason"], "new-2024")
+
+            top = json.loads((classified / "lq_classification.json").read_text())
+            self.assertEqual(len(top), 2)
+
+            book5, folder5, _ = kw.SECTION_BY_NUM[5]
+            kept = classified_lq / book5 / folder5 / "2013-q1.png"
+            self.assertTrue(kept.is_file())
+            self.assertEqual(kept.read_bytes(), b"OLD-2013")
 
 
 class TestPreprocessPreservesCrops(unittest.TestCase):

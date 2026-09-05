@@ -248,11 +248,14 @@ def main() -> None:
     print(f"LLM {model} @ {base} ({len(records)} questions)")
 
     rows: list[dict] = []
+    failures: list[str] = []
     for i, rec in enumerate(records, 1):
         try:
             result = classify_one(rec)
-        except (urllib.error.URLError, urllib.error.HTTPError, ValueError, KeyError, SystemExit) as exc:
-            print(f"  FAIL {rec['Year']} Q{rec['Question']}: {exc}")
+        except (urllib.error.URLError, urllib.error.HTTPError, ValueError, KeyError) as exc:
+            label = f"{rec['Year']} Q{rec['Question']}"
+            print(f"  FAIL {label}: {exc}")
+            failures.append(label)
             continue
         sections = result["sections"]
         rows.append(
@@ -270,6 +273,11 @@ def main() -> None:
             print(f"  classified {i}/{len(records)}")
         time.sleep(args.sleep)
 
+    if failures or len(rows) != len(records):
+        raise SystemExit(
+            f"Aborting write: {len(failures)} LLM failure(s) "
+            f"({len(rows)}/{len(records)} succeeded); nested LQ outputs unchanged"
+        )
     write_outputs(rows)
 
 

@@ -294,72 +294,58 @@ def classify_text(text: str) -> tuple[list[int], str]:
     return sections, reason
 
 
-def main() -> None:
-    args = parse_args()
-    CLASSIFIED_LQ.mkdir(parents=True, exist_ok=True)
-    OCR_CACHE.mkdir(parents=True, exist_ok=True)
-    for _n, book, folder, _name in SECTIONS:
-        (CLASSIFIED_LQ / book / folder).mkdir(parents=True, exist_ok=True)
-        for old in (CLASSIFIED_LQ / book / folder).glob("*.png"):
-            old.unlink()
+NESTED_CSV_FIELDS = [
+    "Year",
+    "Question",
+    "Primary",
+    "AllSections",
+    "Reason",
+    "PNG",
+    "AnswerPNG",
+]
+TOP_CSV_FIELDS = [
+    "Year",
+    "Question",
+    "PrimarySection",
+    "PrimaryName",
+    "PrimaryBook",
+    "AllSections",
+    "AllSectionNames",
+    "Reason",
+    "PNG",
+    "AnswerPNG",
+    "CandidatePerformance",
+]
 
-    jobs = []
-    for year_dir in sorted(OUTPUT_LQ.iterdir(), key=lambda p: year_key(p.name)):
-        if not year_dir.is_dir():
-            continue
-        if args.years and year_dir.name not in args.years:
-            continue
-        for png in sorted(year_dir.glob("q*.png"), key=lambda p: int(p.stem[1:])):
-            jobs.append((year_dir.name, png, int(png.stem[1:])))
 
-    rows = []
-    decisions = {}
-    for year, png, qn in jobs:
-        text = ocr_png(png, OCR_CACHE / year / f"q{qn}.txt")
-        sections, reason = classify_text(text)
-        preview = " ".join(text.split())[:220]
-        ans = f"output/lq/{year}/ans/q{qn}.png"
-        row = {
-            "Year": year,
-            "Question": qn,
-            "Primary": sections[0],
-            "AllSections": ";".join(str(s) for s in sections),
-            "Reason": reason,
-            "PNG": f"output/lq/{year}/q{qn}.png",
-            "AnswerPNG": ans,
-        }
-        rows.append(row)
-        decisions[f"{year}-q{qn}"] = {"sections": sections, "reason": reason}
-        book, folder, _name = SECTION_BY_NUM[sections[0]]
-        dest = CLASSIFIED_LQ / book / folder / f"{year}-q{qn}.png"
-        shutil.copy2(png, dest)
-        ans_path = ROOT / ans
-        if ans_path.is_file():
-            shutil.copy2(ans_path, CLASSIFIED_LQ / book / folder / f"{year}-q{qn}-ans.png")
-        for sec in sections[1:]:
-            book, folder, _name = SECTION_BY_NUM[sec]
-            shutil.copy2(png, CLASSIFIED_LQ / book / folder / f"{year}-q{qn}.png")
-            if ans_path.is_file():
-                shutil.copy2(ans_path, CLASSIFIED_LQ / book / folder / f"{year}-q{qn}-ans.png")
+def nested_row_key(row: dict) -> tuple[str, int]:
+    return (str(row["Year"]), int(row["Question"]))
 
-    csv_path = CLASSIFIED_LQ / "classification.csv"
-    with csv_path.open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(
-            fh,
-            fieldnames=["Year", "Question", "Primary", "AllSections", "Reason", "PNG", "AnswerPNG"],
-        )
-        writer.writeheader()
-        writer.writerows(rows)
-    (CLASSIFIED_LQ / "llm_classifications.json").write_text(
-        json.dumps(decisions, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
+
+def merge_nested_rows(existing: list[dict], updates: list[dict]) -> list[dict]:
+    by_key = {nested_row_key(row): row for row in existing}
+    for row in updates:
+        by_key[nested_row_key(row)] = row
+    return sorted(
+        by_key.values(),
+        key=lambda row: (year_key(str(row["Year"])), int(row["Question"])),
     )
 
-    # Detailed review file at repo classified/lq_classification.json
-    perf: dict = {}
-    perf_path = CLASSIFIED_LQ / "candidate_performance.json"
-    if perf_path.is_file():
-        perf = json.loads(perf_path.read_text(encoding="utf-8"))
+
+def clear_section_pngs(years: set[str] | None) -> None:
+    for _n, book, folder, _name in SECTIONS:
+        folder_path = CLASSIFIED_LQ / book / folder
+        folder_path.mkdir(parents=True, exist_ok=True)
+        for old in folder_path.glob("*.png"):
+            if years is None:
+                old.unlink()
+                continue
+            year_part = old.name.split("-q", 1)[0]
+            if year_part in years:
+                old.unlink()
+
+
+def build_detailed_rows(rows: list[dict], perf: dict) -> list[dict]:
     sec_name = {n: name for n, _b, _f, name in SECTIONS}
     detailed = []
     for r in rows:
@@ -384,26 +370,87 @@ def main() -> None:
                 "CandidatePerformance": (perf.get(str(year_raw)) or {}).get(str(q), ""),
             }
         )
+    return detailed
+
+
+def main() -> None:
+    args = parse_args()
+    CLASSIFIED_LQ.mkdir(parents=True, exist_ok=True)
+    OCR_CACHE.mkdir(parents=True, exist_ok=True)
+    touched_years = set(args.years) if args.years else None
+    clear_section_pngs(touched_years)
+
+    jobs = []
+    for year_dir in sorted(OUTPUT_LQ.iterdir(), key=lambda p: year_key(p.name)):
+        if not year_dir.is_dir():
+            continue
+        if args.years and year_dir.name not in args.years:
+            continue
+        for png in sorted(year_dir.glob("q*.png"), key=lambda p: int(p.stem[1:])):
+            jobs.append((year_dir.name, png, int(png.stem[1:])))
+
+    new_rows = []
+    new_decisions = {}
+    for year, png, qn in jobs:
+        text = ocr_png(png, OCR_CACHE / year / f"q{qn}.txt")
+        sections, reason = classify_text(text)
+        ans = f"output/lq/{year}/ans/q{qn}.png"
+        row = {
+            "Year": year,
+            "Question": qn,
+            "Primary": sections[0],
+            "AllSections": ";".join(str(s) for s in sections),
+            "Reason": reason,
+            "PNG": f"output/lq/{year}/q{qn}.png",
+            "AnswerPNG": ans,
+        }
+        new_rows.append(row)
+        new_decisions[f"{year}-q{qn}"] = {"sections": sections, "reason": reason}
+        book, folder, _name = SECTION_BY_NUM[sections[0]]
+        dest = CLASSIFIED_LQ / book / folder / f"{year}-q{qn}.png"
+        shutil.copy2(png, dest)
+        ans_path = ROOT / ans
+        if ans_path.is_file():
+            shutil.copy2(ans_path, CLASSIFIED_LQ / book / folder / f"{year}-q{qn}-ans.png")
+        for sec in sections[1:]:
+            book, folder, _name = SECTION_BY_NUM[sec]
+            shutil.copy2(png, CLASSIFIED_LQ / book / folder / f"{year}-q{qn}.png")
+            if ans_path.is_file():
+                shutil.copy2(ans_path, CLASSIFIED_LQ / book / folder / f"{year}-q{qn}-ans.png")
+
+    csv_path = CLASSIFIED_LQ / "classification.csv"
+    decisions_path = CLASSIFIED_LQ / "llm_classifications.json"
+    if touched_years is not None and csv_path.is_file():
+        with csv_path.open(encoding="utf-8") as fh:
+            existing_rows = list(csv.DictReader(fh))
+        rows = merge_nested_rows(existing_rows, new_rows)
+        existing_decisions = {}
+        if decisions_path.is_file():
+            existing_decisions = json.loads(decisions_path.read_text(encoding="utf-8"))
+        decisions = {**existing_decisions, **new_decisions}
+    else:
+        rows = new_rows
+        decisions = new_decisions
+
+    with csv_path.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.DictWriter(fh, fieldnames=NESTED_CSV_FIELDS)
+        writer.writeheader()
+        writer.writerows(rows)
+    decisions_path.write_text(
+        json.dumps(decisions, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+    perf: dict = {}
+    perf_path = CLASSIFIED_LQ / "candidate_performance.json"
+    if perf_path.is_file():
+        perf = json.loads(perf_path.read_text(encoding="utf-8"))
+    detailed = build_detailed_rows(rows, perf)
     lq_json = ROOT / "classified" / "lq_classification.json"
     lq_json.write_text(json.dumps(detailed, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     lq_csv = ROOT / "classified" / "lq_classification.csv"
     with lq_csv.open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(
-            fh,
-            fieldnames=[
-                "Year",
-                "Question",
-                "PrimarySection",
-                "PrimaryName",
-                "PrimaryBook",
-                "AllSections",
-                "AllSectionNames",
-                "Reason",
-                "PNG",
-                "AnswerPNG",
-                "CandidatePerformance",
-            ],
-        )
+        writer = csv.DictWriter(fh, fieldnames=TOP_CSV_FIELDS)
         writer.writeheader()
         writer.writerows(detailed)
 
