@@ -1,0 +1,30 @@
+In the circuit shown in Figure 8.1, resistors KR; and A, represent the heating elements in a heater using mains
+supply. Both resistors are immersed in water.
+heater
+ro
+t
+i)
+1 SP
+, “9 (~) 220 V a.c.
+Figure 8.1 :
+The heater can be operated in two modes, namely, heating and keeping warm, and it is controlled by the 7
+switch S. The power consumed by the heater in the heating mode is 550 W and in the mode of keeping
+warm is 88 W. The mains voltage is 220 V a.c. :
+(a) In which mode is the heater operating when switch S is open ? (1 mark) |
+no
+= .
+(b) Find the resistance of R;. (2 marks) | &
+, a)
+F
+vow enee ce ee ee ee ee eee ee eee meee eee ene amen een eee eee nner ee naman ere ener an reese tema e meee: f=
+cece atneeceencecececueeseeeececeeseueeeeeeeccccecessececeneaeesececcccoceeeeesececeeeeeeeeceeseeeesuececeeeseeeecneceeeeeeceeeeeeesereee os a ts.
+| &
+o
+&
+q
+oO
+al
+s
+ee aera aN aaa adalat ¥
+| :
+(c) When switch S is closed, calculate the current passing through resistor Ro. (3 marks) g

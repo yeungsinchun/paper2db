@@ -1,0 +1,10 @@
+26. 6V
+|
+Ss
+In the above circuit, the resistors are identical and the 6 V battery has negligible internal resistance.
+Which of the following is the set of readings on the voltmeter when (1) S is open; (2) S is closed ?
+Sopen S closed
+A. OV 6V
+B. 3V 6V
+Cc. 6V OV
+. D. 6V 3V

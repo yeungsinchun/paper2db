@@ -1,0 +1,13 @@
+10. Loosening a screw requires a pair of forces of 10 N acting tangentially as shown in Figure (1). A suitable
+screwdriver with a handle of diameter 0.025 m shown in Figure (2) is chosen. Estimate the magnitude
+of the pair of forces needed to act tangentially on the handle of the screwdriver.
+
+Figure (1) Figure (2)
+handle of the screwdriver
++ 0.005 m
+Top view 0.005 m
+screw Diagram NOT drawn to scale
+A. 2N
+B. 4n
+c. SN
+D. 10N

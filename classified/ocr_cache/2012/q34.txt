@@ -1,0 +1,8 @@
+34. PO
+E.H.T.
+The figure shows a schematic diagram of an X-ray tube in which the filament F and the metal target 7
+are connected to terminals P and Q of an E.H.T. Which statement is correct ?
+A. P is the positive terminal and X-rays are emitted from 7.
+B. P is the positive terminal and X-rays are emitted from F.
+Cc. Q is the positive terminal and X-rays are emitted from 7.
+D. Q is the positive terminal and X-rays are emitted from F.

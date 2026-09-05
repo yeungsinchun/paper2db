@@ -1,0 +1,107 @@
+8. (a) Figure 8.1 shows the schematic diagram of an electric heater which can operate in two modes, namely,
+‘heating’ and ‘keeping warm’. The heating elements of resistances 4R and R are connected to the mains
+supply via a 3-way switch with its two poles tied together. That is, both poles can be connected to one of
+the three pairs of terminals X, Y or Z.
+
+ee enn 3-way switch
+4R ———*
+metal case ae =
+of electric i i os Tt
+i i WZ H
+heater ed Se!
+R [Sa
+Figure 8.1 ot oe se
+tonyenensay anaes | fuse
+mains supply
+(i) To which pairs of terminals, X, Y or Z, should the switch connect to when the heater is in ‘heating’
+mode ? (1 mark)
+= The power consumed by the heater in ‘heating’ mode is 800 W. =
+o o
+Be w
+5 (ii) Calculate the current drawn from the 220 V mains supply when the heater is in ‘heating’ mode. ©
+o (2 marks) | 5
+wo ne)
+is} e
+e Es
+2 =.
+S =
+© 2
+s s
+5 : =
+2 o
+baal —s
+= =
+Nn 2)
+3 (iii) Find the power consumed by the heater in the mode of ‘keeping warm’. (3 marks) E
+i
+Tee ne TERRES ES Sag cera Ane Rae Neen immo Sine Seek ewsie eles Ss Hep ee Ses Se Sete Shes Sass jas connsn elt etesneas sae n Sec ac ee eee |
+Answers written in the margins will not be marked
+(b) Figure 8.2 shows a simplified domestic circuit connected to an electrical appliance via a fuse, a meter M, a
+residual current circuit breaker (RCCB) and a switch.
+metal case
+oa RCCB
+
+(i) What physical quantity does the meter M record ? : (1 mark)
+
+(ii) An RCCB is a kind of safety device that cuts off the supply automatically whenever there is a small
+difference between the currents in the live (L) and neutral (N) wires. State, in each of the following
+situations, which device(s) will respond (i.e. the fuse blows and/or the RCCB cuts off the supply).
+
+as J
+= (1) A short circuit occurs between points X and Y, (1 mark) &
+eS E
+: g
+a (2) A short circuit occurs between point Y and the metal case of the appliance. (1 mark) | 2
+: eS
+oO Piya ore eae
+= =
+Raa om
+= =
+[=| n
+* 4
+Answers written in the margins will not be marked.
+9. (a) P
+
+mifom i @ eo fell « e« e'!
+
+magnetic H i
+
+field B 1
+
+Ke ® @ cS) e @|
+
+ae istor
+Figure 9.1 i jj a
+
+1 ® ® @ @ © e
+
+4
+
+i
+
+1 6 ® @ ® e @!
+
+ete as eee eee ee Ss oe
+
+Q
+
+Figure 9.1 shows a metal rod PQ of length L moving with constant velocity v across a uniform magnetic
+
+field B pointing out of the paper. An e.m.f. & is induced across rod PQ as it cuts the field lines. When the
+
+rod is connected to a resistor outside the field, a current J flows in the circuit.
+
+(i) Indicate the direction of J in Figure 9.1. (1 mark)
+
+(ii) Explain why an external force F is required to maintain the uniform motion of rod PQ. Find F in
+terms of the physical quantities given. (3 marks)
+
+EOS 5
+5 oO
+E E
+= So R Ree ones Sean bittives oem eee lorie ie Sscsseed ec rece aes aes a= 5
+Ss
+s s
+S
+= (iii) This set-up works as a generator. By considering the mechanical power input by external force F to | @
+the set-up, show that € = BLy. (2 marks)

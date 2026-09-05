@@ -1,0 +1,11 @@
+*30. In the circuits below, if a 12 V sinusoidal a.c. is applied across ab and across xy respectively, the
+voltages across cd and zw are both 6 V. Now ifa 6 V sinusoidal a.c. is applied across cd and across zw
+respectively, what would be the voltages across ab and xy respectively ?
+
+a x
+b d Jy w
+voltage across ab voltage across xy
+A. 12V 12V
+B. 12V 6V
+Cc. 6V 6Vv
+D. 12V OV

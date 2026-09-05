@@ -1,0 +1,17 @@
+25.
+L
+QO ,
+f(A
+O
+Ty
+fr)
+O
+In the above circuit, L,, L, and L; are three light bulbs and the cell has negligible internal resistance.
+Which of the following changes will make L; brighter ?
+qd) L, is faulty and becomes a short circuit.
+(2) I, is faulty and becomes a short circuit.
+(3) L, is faulty and becomes an open circuit.
+A. (1) and (2) only
+B. (1) and (3) only
+Cc. (2) and (3) only
+D. (1), @) and G)

@@ -1,0 +1,6 @@
+29. An electric iron of 1800 W sold in Hong Kong (220 V 50 Hz) is connected to a 110 V 60 Hz mains
+socket in another country. How does its performance compare on the same ironing setting ?
+A. The electric iron does not work because the a.c. supply is 60 Hz instead of 50 Hz.
+B. The electric iron is as hot as when it is used in Hong Kong.
+Cc. The electric iron is hotter than when it is used in Hong Kong.
+D. The electric iron is colder than when it is used in Hong Kong.

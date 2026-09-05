@@ -1,0 +1,11 @@
+2. In some countries, the outdoor temperature can drop below 0 °C in winter such that the lake surface
+becomes a thick layer of ice. However the water beneath the ice surface does not easily tur into ice
+and most aquatic life can survive during winter time.
+
+ice surface
+TS lake
+Which statement below best explains this phenomenon ?
+A. The layer of ice provides good heat insulation.
+B. The freezing point of water below the ice surface is much lower than 0 °C.
+Cc. There is thermal energy transferred from the soil to the water in the lake.
+D. Ice releases latent heat when it melts.

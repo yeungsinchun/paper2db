@@ -1,0 +1,10 @@
+*29, A heater of resistance 100 Q is connected to the mains supply. The r.m.s. voltage of the mains supply
+is 110 V. Which of the following statements are correct ?
+. (1) The peak voltage across the heater is 156 V.
+(2) The power dissipated by the heater is 121 W.
+(3) The power dissipated by the heater will be doubled if the r.m.s. voltage of the mains supply
+doubles.
+A. (1) and (2) only
+B. (1) and (3) only
+c. (2) and (3) only
+D. (1), (2) and 3)

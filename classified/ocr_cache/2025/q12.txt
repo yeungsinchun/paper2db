@@ -1,0 +1,10 @@
+Two identical objects located at point X and point Y are at distances r and 2r from the Earth’s centre.
+The weight of the object at point X is W. What is the weight of the object at point ¥?
+
+A. 0.25W
+
+B. 0.5W
+
+Cc. 0.75W
+
+Dz. Ww

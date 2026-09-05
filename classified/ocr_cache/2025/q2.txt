@@ -1,0 +1,20 @@
+2. The set-up below can be used to find the specific latent heat of fusion of ice, /s. The energy supplied by
+the heater is measured by a joulemeter, The mass of ice melted by the heater is given by the difference
+between the mass of water collected in beakers P and Q.
+
+connected to NOT connected to
+power supply power supply
+({—— heater ({—— heater
+oh ae ice oh Ae ice
+|| funnel ||— funnel
+’ .
+,
+Ll’ LJ?
+How would the calculated value of /; be affected if
+(D the heater is not completely covered by the ice ?
+(If) _ the mass of water collected in beaker P is taken as the mass of ice melted by the heater ?
+10) qm)
+A. decrease increase
+B. decrease decrease
+on increase increase
+D. increase decrease

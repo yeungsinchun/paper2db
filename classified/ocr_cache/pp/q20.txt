@@ -1,0 +1,10 @@
+20.
+' medium 1
+medium 2
+' medium 3
+As shown above, a ray of light travels from medium 1 to medium 2, and then enters medium 3. T
+boundaries are parallel to each other. Arrange the speed of light, c, in the three media in ascending orde
+A 3<O<C)
+B. c3<C1< cp
+Cc 2<03< Cc)
+D. C2 <C1< C3

@@ -1,0 +1,9 @@
+27. The figure below shows a battery of e.m.f. 3.0 V and internal resistance 2.0 Q is connected to a light bi
+of resistance 10.0 Q. A voltmeter of internal resistance 10 kQ is connected in parallel with the light bu
+What is the reading of the voltmeter ?
+____battery
+F ! o-]
+A. 24V
+B. 25V
+Cc 2.9V
+D. 3.0V

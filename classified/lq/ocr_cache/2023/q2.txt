@@ -1,0 +1,31 @@
+*2. Figure 2.1 shows a ‘water rocket’ built from a 2-litre plastic bottle with fins attached. The bottle is filled with
+water such that 1.5 litres of air is trapped inside.
+plastic bottle
+. 1.5 litres of air
+0.5 litre of water (i.e. 1.5 x 103 m)
+(i.e. 0.5 x 10-3 m3) oS
+Figure 2.1 fin
+rocket- .~ frcmh
+launching y > pump
+control fn LEN
+nozzle
+Initially the trapped air of temperature 27 °C is at atmospheric pressure.
+Given: atmospheric pressure = 1.0 x 10° Pa
+density of air = 1.20 kg m?
+(a) Find the mass of the trapped air mo. (2 marks)
+A Re
+= =
+oO oO
+o wa)
+2 a To)
+q q
+4 Air is then pumped slowly into the rocket until the total mass of trapped air inside the bottle becomes 4m. A
+: Assume that the trapped air is kept at a temperature of 27°C (i.e. 300 K) and its volume remains constant. s
+o o
+i= (b) (i) Find the pressure of the trapped air. (2 marks) =
+- '
+oO oO
+5 5
+3 E
+<x
+(ii) Use kinetic theory to explain why the pressure of the trapped air increases. (2 marks)

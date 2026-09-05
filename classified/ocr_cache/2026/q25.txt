@@ -1,0 +1,5 @@
+25. In household appliances, the function of the earth wire is
+A. to provide a return path for the current during normal operations.
+B. to provide a return path for the current when the neutral wire is disconnected.
+Cc. to break the circuit when the live wire touches the metal case.
+D. to provide a low-resistance path when the live wire touches the metal case.

@@ -1,0 +1,14 @@
+*33. Consider the following nuclear reaction:
+23 4 1
+iH+ |H— ,He+ gn
+Using the data below, estimate the energy released when 5 got 1H completely reacts with iH through
+the reaction.
+mass of “H =2.0136u
+mass of }H = 3.0155 u
+mass of }He = 4.0015 u
+mass of jn = 1,0087u
+A. 3x 1OPy
+B. 3x 10°)
+Cc. 4x 10!
+Dz. 2x 10l8J
+END OF SECTION A

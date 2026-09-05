@@ -1,0 +1,11 @@
+26. The figure shows an electrical appliance connected to a potential difference of 12 V.
+P
++0 electrical
+es
+Q
+When a charge of +2 C passes from P to Q in the circuit, how much electrical energy is supplied to the
+appliance ?
+A. 2J
+B. 6s
+C. 125
+D. 244

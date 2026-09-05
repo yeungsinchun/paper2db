@@ -1,0 +1,17 @@
+23. A positively charged sphere X of mass m is suspended from a fixed point O by a nylon thread. Another
+negatively charged sphere Y at the end of an insulating rod is held in various positions as shown. O, X
+and Y are in the same vertical plane.
+
+(0) 2) ¥ 3) @
+oO oO oO
+Y
+x Xx xX
+\ . y
+N N \
+\ \, \
+\ \ \Y¥
+In which situation(s) could X be kept at rest as shown ?
+A. (1) only
+B. (3) only
+[on (1) and (2) only
+D. (2) and (3) only

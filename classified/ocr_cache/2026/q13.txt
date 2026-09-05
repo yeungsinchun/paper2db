@@ -1,0 +1,24 @@
+13. The figure shows a string with one end fixed on the wall and the other end tied to a vibrator with
+frequency f. A stationary wave is formed as shown at a certain instant. The distance between the vibrator
+and the wall is L.
+
+L
+t Lon aw nen gee nena -- === Wall
+vibrator
+
+Which of the following statements are correct ?
+qd) All particles on the string between two successive nodes are vibrating in phase.
+(2) If the tension in the string increases while L remains unchanged, f must increase to maintain the
+
+same stationary wave pattern.
+(3) The wavelength of the stationary wave is = a1
+
+A. (1) and (2) only
+
+B. (1) and (3) only
+
+Cc. (2) and (3) only
+
+D. (1), (2) and (3)
+
+- —

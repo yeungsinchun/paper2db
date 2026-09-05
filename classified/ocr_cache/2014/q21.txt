@@ -1,0 +1,11 @@
+21.
+a Q Qs
+—I 0 —_o—_—_
+Three point charges Q;, Q, and Q; are fixed on a straight line with Q, at the mid-point of Q, and Q;.
+The resultant electrostatic force on each charge is zero. Which of the following can be the sign and
+magnitude (in the same arbitrary units) of Q;, Q) and Q; ?
+a Q Qs
+A. +2 +1 +2
+B. +2 -1 +2
+Cc. 4 +1 +4
+Dz 4 +1 4

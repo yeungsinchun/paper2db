@@ -1,0 +1,17 @@
+1. Figure 1.1 shows a domestic water heater. Tap water entering the heater is heated when it passes through the
+coil duct and exits as hot water at a certain temperature.
+—
+a ET os coil duct
+—=
+temperature
+control panel -J[a)
+|
+water + 4 water
+outlet fuel gas inlet
+for heating
+On a certain day in winter, the temperature of tap water is 15 °C. When the heater is in use, it delivers 6 kg of
+: hot water at a temperature of 50°C in 1 minute. Assume that there is no heat exchange between the heater and | __
+3 the surroundings. Given: specific heat capacity of water = 4200 Jkg™! °c! 8
+3 S
+5 (a) Estimate the power supplied to the tap water by the heater. (3 marks) 5
+2 a)

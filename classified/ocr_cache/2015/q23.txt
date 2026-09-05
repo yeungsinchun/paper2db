@@ -1,0 +1,14 @@
+*23. Point charges +O and —Q are fixed respectively at two vertices of an equilateral triangle with sides of
+length L as shown. What is the minimum energy required for bringing another point charge +Q from
+infinity to the third vertex ?
+
+A. 0
+A.
+Bo u () f
+a L/ \L
+1 (20° f \
+on _1 | 2a" / \
+4ney\ L /
+2 +0 L ~O
+p {22
+4ney\ L

@@ -1,0 +1,16 @@
+*
+2. illuminated
+object lly
+p Jens
+screen
+.
+0 lu
+Figure (a) Figure (b)
+A student uses the set-up in Figure (a) to study the relationship between the object distance w and {
+image distance v of a convex lens. A graph of 1/v against 1/u is plotted in Figure (b). If the lens
+replaced by another convex lens of shorter focal length, which of the following graphs (in dotted lin
+would be obtained ?
+“A ) Bp |
+0 Vu 0 lu
+c lv D. lv
+ho le KK Vu

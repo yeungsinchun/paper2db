@@ -1,0 +1,23 @@
+10.
+s u v C
+Two identical spheres are moving in opposite directions with speeds u and v (with u > v) respectively
+as shown. They make a head-on collision. Which of the following diagrams show(s) a possible
+situation of the spheres after collision ?
+u
+
+o +O O
+
+v u
+(2) +) Ow
+
+v
+
+o  O O-
+
+A. (1) only
+
+B. (3) only
+
+c. (1) and (2) only
+
+D. (2) and (3) only

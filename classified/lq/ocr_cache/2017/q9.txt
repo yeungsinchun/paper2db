@@ -1,0 +1,27 @@
+9. (a) Two long straight current carrying wires, P and Q, are parallel to each other and lie on the plane of the
+paper as shown in Figure 9.1. The currents in the wires, Jp and Jg, flow in the same direction.
+wire P wire Q
+i t
+Figure 9.1 Ip ly
+: 1 ‘
+
+(i) State the direction (to the left / to the right / into the paper / out of the paper) of the magnetic field at Q
+
+due to P. (i mark)
+zg (ii) In Figure 9.1, draw the direction of the magnetic force acting on Q due to P. (I mark) | g
+Ew BY
+5 (iii) Show that the magnitude of the magnetic force per unit length / acting on Q due to P is 5
+3 Hol plo 38
+3 tari 3
+< 2ar =
+‘5 where /i, is the permeability of free space and r is the separation between the two wires. (3 marks) =
+2 Fe
+of oD
+= g
+4 &
+8 5
+< <
+
+(iv) For the magnetic force acting on Q due to P and the magnetic force acting on P due to Q, if Ip # lg,
+
+briefly explain whether the two forces are equal in magnitude. (2 marks)

@@ -1,0 +1,10 @@
+25. The table shows three electrical appliances which Clara used in a certain month :
+220 V, 1200 W 250 hours
+220 V,_250 W
+220 V,_150 W
+Calculate the cost of electricity used.
+Note : 1 kW h of electricity costs $ 0.86.
+A. § 62.25
+B. $73.79
+C. $282.94
+D. $536.64

@@ -1,0 +1,14 @@
+23. Three identical resistors, a battery of negligible internal resistance and an ideal voltmeter are connected
+to form Circuits (a) and (b) respectively.
+2 | = : 1| -)
+Circuit (a) Circuit (b)
+
+Given that the voltmeter reading is 8 V in Circuit (a), what is the voltmeter reading in Circuit (b) ?
+
+A. 4V
+
+B. 6V
+
+Cc. 8V
+
+Dz 2V

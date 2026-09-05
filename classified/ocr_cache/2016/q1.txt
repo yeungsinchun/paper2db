@@ -1,0 +1,8 @@
+1, Some icy cold liquid is kept cold inside a vacuum flask. Which statements are correct ?
+(1) The flask’s cork stopper reduces heat gain from the surroundings.
+(2) The silver coating on the inner surface of the glass wall is a good reflector of infra-red.
+(3) The vacuum between the double glass walls reduces heat gain by radiation.
+A. (1) and (2) only
+B. (1) and (3) only
+Cc. (2) and (3) only
+D. (1), 2) and (3)

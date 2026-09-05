@@ -1,0 +1,13 @@
+2. temperature
+P
+Q
+P
+room temperature
+0 time
+The graph shows the variation in temperature of equal masses of two substances P and Q when they are
+separately heated by identical heaters. Which deduction is correct ?
+A. The melting point of P is lower than that of Q.
+B. The specific heat capacity of P in solid state is larger than that of Q.
+c. The specific latent heat of fusion of P is larger than that of Q.
+D. The energy required to raise the temperature of P from room temperature to boiling
+point is more than that of Q.

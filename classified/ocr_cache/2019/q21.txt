@@ -1,0 +1,17 @@
+21.
+! a
+| central line
+x | Y
+|
+|
+i
+a
+—
+Two loudspeakers X and Y emit sound waves of frequency 500 Hz. A microphone is moved steadily
+along a line perpendicular to the central line as shown. It detects sound waves of maximum amplitude
+at the central line and the next maximum amplitude is detected at point P. Find PX — PY.
+Given: speed of sound in air = 340 ms
+A. 0.17m
+B. 0.34 m
+Cc. 0.51m
+D. 0.68 m

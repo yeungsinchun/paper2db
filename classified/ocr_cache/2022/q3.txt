@@ -1,0 +1,6 @@
+#3, A weather balloon filled with 21 kg of helium gas has a volume of 120 m’ at 27°C. Find the gas pressure
+in the balloon. Given: mass of one mole of helium gas = 4 x 10° kg
+A. 9.93 x 10*Pa
+B. 1.00 x 10°Pa
+Cc. 1.05 x 10° Pa
+D. 1.09 x 10° Pa

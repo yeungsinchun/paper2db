@@ -1,0 +1,15 @@
+*24,
++40 +O
+oe
+oO 15cm
+
+Point charges +4Q and +Q are fixed on the x-axis with +4Q at the origin O and + at x = 15 cm as
+shown. The respective electric fields due to the two charges are equal at
+
+A. x= 10cm.
+
+B. x= 12cm.
+
+Cc. x= 20cm.
+
+D. x= 30cm.

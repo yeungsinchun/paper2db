@@ -1,0 +1,8 @@
+*28. Which of the following current against time (/- £) graphs represent an a.c. ?
+a Q) (3)
+I | I | I
+0 t 0 t 0 t
+A. (1) and (2) only
+B. (1) and (3) only
+C. (2)and (3) only
+D. (1), (2) and (3)

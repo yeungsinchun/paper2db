@@ -1,0 +1,37 @@
+6. Read the following passage about rainbows and answer the questions that follow.
+
+Rainbows are sometimes seen after a rainfall (Figure 6.1(a)). Tiny water droplets in the air each act like a
+
+prism to disperse sunlight into a spectrum of colours. The most common rainbow that we see is called a
+
+primary rainbow, in which the white light from the sun undergoes reflection once within each water droplet.
+
+_— 3 as - secondary |
+a : - Boat rainbow a Z > primary © '
+ail ee i . _ rainbow ap
+ee 2 . a
+Figure 6.1(a) Figure 6.1(b)
+
+Under suitable conditions, a double rainbow with an additional secondary rainbow formed above the
+
+primary rainbow can be seen (Figure 6.1(b)).
+3 Assume that water droplets are spherical. Given: refractive index for red light in water = 1.325 3
+Re BY
+(a) Figure 6.2 shows a red light ray entering a water droplet suspended in air. S
+2 45° 3
+2 red light ray A re
+q ; =
+= DD) =
+: B 5
+3 | Figure 6.2 EI
+= =|
+o oO
+g s
+R=) G
+iS (i) When the angle of incidence is 45°, find the angle of refraction r at point A. (2 marks) | ©
+5 5
+g
+< <
+
+(ii) Calculate the critical angle c for red light at the water-air interface and justify whether the reflection at
+point B is a total internal reflection or not. (3 marks)

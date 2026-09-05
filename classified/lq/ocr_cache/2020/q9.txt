@@ -1,0 +1,34 @@
+9. Two small metal spheres are attached to the ends of an insulating rod of length 5.0 cm. They carry charges +Q
+and —Q respectively of equal magnitude as shown in Figure 9.1. The insulating rod is suspended horizontally
+between two parallel metal plates, A and B, which are connected to an E.H.T. (extra high tension) supply.
+metal plates |
+a
++0
+Figure 9.1
+-Q
+To E.H.T.
+- +
+SN NN ’
+
+"J ne)
+2 The rod is parallel to the metal plates when the E.H.T. is off. After the E.H.T. is switched on, an electric field 2
+5 is set up between the plates and the rod is twisted by an angle of 20° as shown in Figure 9.2. =
+ra) ra)
+Ke) is)
+=| =|
+f 209 .
+& Top view i~ =
+- ty po
+E ior E
+i) 1 o
+s =
+‘& | Figure 9.2 A B =
+P= P|
+oO (} oO
+S b=
+5 -0 6 :
+5 a =
+=| i ot ra
+< po! <
+
+(a) On Figure 9.2, sketch the electric field lines due to the potential difference across the plates. (2 marks)

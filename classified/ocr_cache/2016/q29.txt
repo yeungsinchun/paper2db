@@ -1,0 +1,12 @@
+*29. A student uses a search coil to study the strength of the magnetic field inside a long solenoid which is
+connected to an a.c. signal generator set at a certain frequency. Which of the following can improve
+the accuracy of this experiment ?
+
+(1) Ensure the plane of the search coil is perpendicular to the field lines.
+(2) Increase the signal generator’s frequency and use the same current as before.
+(3) Set the axis of the solenoid along an east-west direction to avoid the effects of the Earth’s
+magnetic field.
+A. (1) only
+B. (1) and (2) only
+Cc. (2) and (3) only
+Dz (1), 2) and (3)

@@ -1,0 +1,10 @@
+8. A stationary uranium nucleus °33U decays to give a thorium nucleus 733Th and an particle $He.
+233U ——> 733Th + jHe
+Which of the following correctly describes the situation about the *8$Th nucleus and the @ particle just
+after the decay ?
+magnitude of oe
+momentum p kinetic energy KE
+A p(Th) = pa) KE(Th) < KE(a@)
+B. p(Th) > p(@) KE(Th) > KE(@)
+c p(Th) = p(a) KE(Th) > KE(@)
+D. p(Th) = pla) KE(Th) = KE(@)

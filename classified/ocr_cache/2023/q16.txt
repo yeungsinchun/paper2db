@@ -1,0 +1,17 @@
+16. The figure shows a light ray passing through the horizontal boundaries between media W, X, Y and Z.
+The light ray in W is parallel to that entered into Y from.X. Total internal reflection occurs at the boundary
+between Y and Z.
+
+Ww
+x
+Y
+Z
+Which medium has the highest refractive index ?
+
+A. Ww
+
+B. x
+
+Cc. Yy
+
+D. Zz

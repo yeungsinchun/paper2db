@@ -1,0 +1,6 @@
+25. A student tests an electric circuit by connecting a filament light bulb to a dry cell using two connecting
+wires. The bulb does not light up. Which of the following is certainly NOT a possible explanation ?
+A. The dry cell may be flat.
+B. The circuit may be open due to a bad connection.
+Cc. The dry cell may have its polarities connected the wrong way round.
+D. The bulb may have blown,

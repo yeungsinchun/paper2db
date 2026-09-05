@@ -1,0 +1,11 @@
+33. Two radioactive samples P and Q are freshly prepared. It is found that when A of all the nuclei of P
+“life of P
+have decayed, & of all the nuclei of Q have also decayed. Find the ratio halflife of P :
+
+64 half-life of Q
+A. 1:4
+B. 2:3
+Cc. 3:2
+D. 4:1
+
+END OF SECTION A

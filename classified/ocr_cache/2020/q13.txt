@@ -1,0 +1,12 @@
+13. Monochromatic light travels with the same incident angle from media X and Y respectively to another
+medium Z as shown.
+Zz a Zz B
+The corresponding refracted rays in Z make angles a and f respectively with the boundary plane (with
+a> f). Which medium, X or Y, has a greater refractive index ? In which medium, X or Y, does light
+travel faster ?
+medium with a medium in which
+greater refractive index light travels faster
+A. x x
+B. x Y
+c. Y x
+D. Yy Yy

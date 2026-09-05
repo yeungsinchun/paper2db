@@ -1,0 +1,11 @@
+8. Two blocks of masses 5 kg and 3 kg respectively are connected by a light string passing through a
+frictionless fixed light pulley. Find the magnitude of the acceleration of the blocks in terms of the
+acceleration due to gravity g when they are released. Neglect air resistance.
+
+A. g
+Bk
+2
+on &
+4
+pd = 6&
+8

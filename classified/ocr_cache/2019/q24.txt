@@ -1,0 +1,10 @@
+24,
+Lt
+wl,
+A+
+The figure shows a 6 V cell of negligible internal resistance connected to three identical resistors. Both
+ammeter and voltmeter are ideal. Find the voltmeter reading.
+A. 6V
+B. 4v
+c. 3V
+D. 2Vv

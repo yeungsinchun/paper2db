@@ -1,0 +1,22 @@
+1. The solid curve in Figure 1.1 shows how the resistance of a metallic resistance thermometer varies with
+temperature. This thermometer is calibrated at standard atmospheric pressure for the melting point of ice and
+the steam point of boiling water. The dotted calibration line represents how the resistance of the thermometer
+varies with temperature if a linear resistance-temperature relationship is assumed. The deviation of the curve
+from linearity has been exaggerated in the figure.
+resistance
+metallic resistance
+: Barnes |
+Figure 1.1] Sean |
+Am tic line |
+I
+; temperature /°C
+ee ee 20 40) 60) 80 ~—§-100 120
+(a) (i) Using the resistances at the calibration points tabulated below, calculate the expected resistance at
+60°C if the resistance varies linearly with temperature. (2 marks)
+es q
+S Ee
+= “pp socoms ne eco prac ecme tonsa ceeiadéeoon cede SeSS SH SGOOO ESSER OBER CCHS RSE SSO BSE IONE Snipe nese aR ne eer arta 2 Rare el ald pen nas ned alee Reena cet ci near ameec Sy tr =
+n
+1) Oe ww wo ww ww ow oe ee een ween eee ee eee eee eee ewe nncee: 5D
+=I I
+| =

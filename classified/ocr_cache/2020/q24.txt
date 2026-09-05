@@ -1,0 +1,16 @@
+24, The figure shows part of a domestic lighting circuit in which the bulb Z does not light up when
+switch S is closed.
+. a
+Live
+d
+Neutral
+S
+L
+b c
+The circuit is then checked with switch S closed. Using a voltage tester to touch points 6 and c in turns,
+the tester indicates that both points are at high voltage. When touching points a and d in turns, the
+tester indicates only point a is at high voltage. Which of the following can be a reason for the fault ?
+A. The switch S has been damaged.
+B. The filament of bulb Z has been burnt out and becomes an open circuit.
+c. There is a short circuit between a and d.
+Dz There is an open circuit between c and d.

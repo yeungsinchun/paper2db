@@ -1,0 +1,9 @@
+1. Two metal blocks X and Y of the same mass and of initial temperatures 40°C and 30°C respectively are
+in good thermal contact as shown. The specific heat capacity of X is greater than that of Y. Which
+statement is correct when a steady state is reached ? Assume no heat loss to the surroundings.
+
+Block X Block Y
+A. The temperature of block X is higher than that of block Y.
+B. Their temperature becomes the same and is lower than 35°C.
+Cc. Their temperature becomes the same and is higher than 35°C.
+D. Their temperature becomes the same and is equal to 35°C.

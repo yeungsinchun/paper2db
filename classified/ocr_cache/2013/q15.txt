@@ -1,0 +1,8 @@
+*15. It is known that the mass of Mars is about io of that of the Earth while its radius is about 5 of the
+Earth’s radius. In terms of the gravitational acceleration g on the Earth’s surface, the approximate
+gravitational acceleration on the surface of Mars is
+
+A 02g.
+B. 048.
+Cc. 25g.
+D. 4g.

@@ -1,0 +1,434 @@
+[
+  {
+    "Year": 2020,
+    "Question": 19,
+    "text": "Which of the following phenomena provides conclusive evidence that sound is a wave ?\n(1) reflection of sound from a wall\n2) refraction of sound at the boundary between two media\n(3) interference of sound\nA. (2) only | B. (3) only | C. (1) and (2) only Dz. (1) and (3) only",
+    "PNG": "output/2020/q19.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 20,
+    "text": "The figure shows an enlarged sharp image of an object O formed on a screen S by a convex len\nobject O lens L\nes, screen S |\n\nWhich of the following can give a diminished sharp image on the screen ?\n(1) Keeping the positions of O and L unchanged, move S suitably closer to L.\n(2) Keeping the positions of L and S unchanged, move O suitably farther away from L.\n(3) Keeping the positions of O and S unchanged, move L suitably closer to S.\nA. (1) only | B. (3) only (on (1) and (2) only | D. (2) and (3) only",
+    "PNG": "output/2020/q20.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 21,
+    "text": "Which of the following statements about ultrasound is/are correct ?\n(1) Ultrasound has a shorter wavelength than audible sound.\n(2) Ultrasound cannot be produced by vibrating objects.\n(3) Ultrasound cannot be heard as it cannot travel through air.\nA. (1) only | B. (3) only | C. (1) and (2) only | D. (2) and (3) only",
+    "PNG": "output/2020/q21.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 22,
+    "text": "The cylindrical resistors below are made from the same metal. Which one would produce the most\npower when the same voltage is applied in turns across the two ends of each resistor ?\n“\n*\n;",
+    "PNG": "output/2020/q22.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 23,
+    "text": "Three identical resistors, a battery of negligible internal resistance and an ideal voltmeter are connected\nto form Circuits (a) and (b) respectively.\n2 | = : 1| -)\nCircuit (a) Circuit (b)\n\nGiven that the voltmeter reading is 8 V in Circuit (a), what is the voltmeter reading in Circuit (b) ?\nA. 4V | B. 6V | C. 8V Dz 2V",
+    "PNG": "output/2020/q23.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 24,
+    "text": "24, The figure shows part of a domestic lighting circuit in which the bulb Z does not light up when\nswitch S is closed.\n. a\nLive\nd\nNeutral\nS\nL\nb c\nThe circuit is then checked with switch S closed. Using a voltage tester to touch points 6 and c in turns,\nthe tester indicates that both points are at high voltage. When touching points a and d in turns, the\ntester indicates only point a is at high voltage. Which of the following can be a reason for the fault ?\nA. The switch S has been damaged. | B. The filament of bulb Z has been burnt out and becomes an open circuit. | C. There is a short circuit between a and d. Dz There is an open circuit between c",
+    "PNG": "output/2020/q24.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 25,
+    "text": "ms .\nThe battery shown has a capacity of 1100 mA h. How much energy is delivered when the battery\noperates normally at a current of 250 mA for one hour ? Assume that the battery’s operating voltage\nremains at 3.7 V during that period.\nA. (3.7 x 222 x 3600) 3 1000 | B. (3.7 x 100 3600) 3 1000 [on G.7 x 250 I 1000 | D. (3.7% 1100 DI 1000",
+    "PNG": "output/2020/q25.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 26,
+    "text": "The figure below shows the magnetic field pattern on a horizontal surface around a long vertical\nstraight wire carrying a steady current / pointing out of the paper. The Earth’s magnetic field is NOT\nneglected.\n\nsupe\n—_—~\n—_—_\nWhat are the directions of the following ?\nthe horizontal component of the magnetic force experienced\nthe Earth’s magnetic field by the current-carrying wire\nA. < Lt | B. < t | C. ad L | D. > t",
+    "PNG": "output/2020/q26.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 27,
+    "text": "—,\n. SOR uniform magnetic\nnegatively — field pointing\ncharged OST XK into the paper\nparticle\nx x x x x\nA negatively charged particle goes undeflected through a region in which a uniform electric field and a\nuniform magnetic field are set up as shown. The electric field is set up by the potential difference\nacross the two parallel metal plates. Which of the following changes may cause the charged particle to\ndeflect downward ? Neglect the effects of gravity.\n(1) increasing the potential difference across the plates\n(2) increasing the magnitude of the charge on the particle\n(3) increasing the pa\nA. (1) only | B. (3) only on (1) and (2) only | D. (2) and (3) only",
+    "PNG": "output/2020/q27.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 28,
+    "text": "Ls observer\n—=—_\nnn\nt oF 4\nfalling i | ‘ hollow\nmagnet tesa ' aluminium tube\nH Hl\nroto\ni ott\nVoeeleet\n|\nWhen a small strong magnet falls through a hollow aluminium tube as shown, eddy currents are\ninduced. Which of the following correctly describes the direction of current induced in the tube when\nviewed by an observer from above ?\nA. clockwise both above and below the magnet | B. anti-clockwise both above and below the magnet | C. clockwise above the magnet and anti-clockwise below the magnet | D. anti-clockwise above the magnet and clockwise below the magnet",
+    "PNG": "output/2020/q28.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 29,
+    "text": "mes\n12Vac. ~\n°\n9 “ee\nThe figure shows an ideal transformer with two secondary coils connected to two light bulbs marked\n‘6 V, 0.5 A’ and ‘3 V, 1.0 A’ respectively. When a 12 V a.c. supply is connected to the primary coil, the\nbulbs work at their respective rated values. Estimate the current in the primary coil.\nA. 0.25A | B. 0.50 A | C. 0.75A | D. LOA",
+    "PNG": "output/2020/q29.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 30,
+    "text": "The background count rate in an experiment is determined using a GM counter. Four readings of the\ncount rate in each minute are taken. Which set of readings below is the most probable ?\n1“ minute 2\" minute 3” minute 4\" minute\nA. 5 62 8 69 | B. 40 40 40 40 | C. 60 50 30 20 Dz. 29 26 31 35",
+    "PNG": "output/2020/q30.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 31,
+    "text": "R\na\n2 ; i en ;\n—_\nA s a\n\nNuclide P can decay into nuclide 7 through either process P— Q — R — T or process P~ Q- S - Tas\nshown. Which deductions below are correct ?\n(1) P and T are isotopes of the same element.\n(2) Q and S have the same number of protons.\n(3) Shas one more neutron than R.\nA. (1) and (2) only | B. (1) and (3) only | C. (2) and (3) only | D. (1), (2) and (3)",
+    "PNG": "output/2020/q31.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 32,
+    "text": "The decay constant of a radioisotope of an element\nA. is random. | B. depends on pressure and temperature. | C. is directly proportional to the number of nucleons in the isotope. | D. is an identifying characteristic of that isotope.",
+    "PNG": "output/2020/q32.png"
+  },
+  {
+    "Year": 2020,
+    "Question": 33,
+    "text": "Two radioactive samples P and Q are freshly prepared. It is found that when A of all the nuclei of P\n“life of P\nhave decayed, & of all the nuclei of Q have also decayed. Find the ratio halflife of P :\n\n64 half-life of Q\nA. 1:4 | B. 2:3 | C. 3:2 | D. 4:1 END OF SECTION A",
+    "PNG": "output/2020/q33.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 1,
+    "text": "lL. Solid substances X and Y of equal mass are heated by heaters of power 2P and P respectively. The graph\nshows how the temperature @ of each substance varies with the heating time /.\na/°C\nftp itty ty\nry\nsoi | tt TT pt |\nope\n/\\-\n30 _\nACE\n20\noe\nLIiti ti iiy\n01234567 8 ¢/min\nWhat is the ratio of the specific latent heat of fusion of X to that of Y?\nA. 3:2 | B. 3:4 | C. 4:3 | D. 2:3",
+    "PNG": "output/2021/q1.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 2,
+    "text": "Metal blocks X and Y are identical in size and shape. ¥ is of a higher temperature than Y. Which of the\nfollowing statements must be correct ?\n(dy Energy will flow from X to ¥ if they are in thermal contact.\n(2) X is a better conductor of heat compared to Y.\n(3) The total internal energy of X is higher than that of Y.\nA. (1) only | B. (3) only | C. (1) and (2) only Dz (2) and (3) only",
+    "PNG": "output/2021/q2.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 3,
+    "text": "*3, For an ideal gas, kinetic theory deduces that pV = 3 Nmc? . Which physical quantity below can be\n3\nrepresented by = 2\n\nc\nA. the total mass of the gas | B. the volume of one mole of the gas | C. the density of the gas | D. the number of gas molecules per unit volume",
+    "PNG": "output/2021/q3.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 4,
+    "text": "A block of weight W is at rest on a horizontal ground as shown.\nround\nWw\nThe force acting on the block by the ground is R. Which of the following statements is/are correct ?\n(1) Rand Ware opposite in direction.\n(2) R and W are equal in magnitude.\n(3) Rand W is an action-and-reaction pair.\nAL (1) only\nB. (1) and (2) only | C. (2) and (3) only Dz. (1), (2) and (3)",
+    "PNG": "output/2021/q4.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 5,
+    "text": "the\nindicates 1]\n‘Ow\nWhich sistance\nir resi\nwn. arr\nity as ? Neglect\nloci ine ?\nt veloc cli\nstant he in:\nith const by t\nfe cost Sliding 12 iy\nugh sting on tl B. Stay Clociny\nrol til\nlta foree 20\nis sliding down\nk ii he r\nbloc! of tl\nA ion\nirecti\n\n5. direc Slicing on, Wit,\nA. S2estann “Clociyy D Sliding dou, With <2Rstanp Clociny . Siding d Wn wit, c : /",
+    "PNG": "output/2021/q5.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 6,
+    "text": "Which statement below about a raindrop falling at a constant terminal velocity is correct ?\nraindrop falling at\na constant velocity\nA. No work is done on the raindrop by the gravitational force. | B. As the raindrop falls, all its gravitational potential energy loss is converted  | C. The only force acting on the raindrop is its weight. D«. No net force is acting",
+    "PNG": "output/2021/q6.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 7,
+    "text": "At time ¢ = 0, a small sphere is projected up along a smooth incline with a certain initial velocity. It\ntravels a distance L and becomes momentarily at rest after a time 27. The corresponding velocity-time\ngraph is shown below.\n\nvelocity\nMh time\nWhat is the distance travelled by the sphere from ¢= 0 to r= 7?\n\nA 41\n\n4\nBAL\n\n2\nC. 3 L 4 | D. 4 L =",
+    "PNG": "output/2021/q7.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 8,
+    "text": "A stationary uranium nucleus °33U decays to give a thorium nucleus 733Th and an particle $He.\n233U ——> 733Th + jHe\nWhich of the following correctly describes the situation about the *8$Th nucleus and the @ particle just\nafter the decay ?\nmagnitude of oe\nmomentum p kinetic energy KE\nA p(Th) = pa) KE(Th) < KE(a@)\nB. p(Th) > p(@) KE(Th) > KE(@) c p(Th) = p(a) KE(Th) > KE(@) | D. p(Th) = pla) KE(Th) = KE(@)",
+    "PNG": "output/2021/q8.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 9,
+    "text": "A particle is moving clockwise (top view) in a horizontal circle with uniform speed. Which top view\ndiagram below correctly shows the net force acting on the particle at various positions ?\nA. B. ce ~ ~ | C. D.",
+    "PNG": "output/2021/q9.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 10,
+    "text": "Which of the following can be transferred by mechanical waves from one place to another along the\ndirection of propagation ?\n(dy mass\n(2) momentum\nGB) energy\nA. (1) and (2) only | B. (1) and (3) only lon (2) and (3) only Dz. (1), (2) and (3)",
+    "PNG": "output/2021/q10.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 11,
+    "text": "displacement\no| x vA 18N\\ * time / ms\nThe displacement-time graph of a particle on a travelling wave is as shown. Find the frequency of the\nwave.\nA. 55.6 Hz | B. 62.5 Hz | C. 111 Hz | D. 125 Hz",
+    "PNG": "output/2021/q11.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 12,
+    "text": "Earthquakes propagate in the form of waves. The quake centre produces both longitudinal waves\n(P-wave) and transverse waves (S-wave) which travel with speeds 9.6 km s“! and 6.4 km s™! respectively\non the Earth’s crust. In an earthquake, a monitoring station detects the arrival of the P-wave pulse at\n7:02 a.m. while the S-wave pulse arrives 2 minutes later at 7:04 a.m. Estimate the time that this\nearthquake occurs.\nA. 6:53 a.m. B 6:56 a.m | C. 6:58 a.m. Dz 6:59 a.m.",
+    "PNG": "output/2021/q12.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 13,
+    "text": "P N Q\n; J\nglass block\n04\nSs R\nThe figure shows the cross-section of a rectangular glass block PORS. A light ray is incident from air\nat M on face PS and the refracted ray strikes face PQ at N. Find the critical angle for the glass-air\ninterface.\nA. 37° | B. 44° | C. 53° | D. 60°",
+    "PNG": "output/2021/q13.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 14,
+    "text": "14 In a ripple tank, circular water waves of wavelengths A; and 2 (A; > 42) are produced by two vibrators\n‘S; and Sz respectively. The figure represents the two circular waves propagating on the water surface at\na certain moment.\n\n—— crest\naeeeeeneeeeeee trough\nre P\n' foe 4h \" fe ec)\nSi Sa\nWhich of the following statements is correct ?\nA. The particle at P is always at crest position. | B. At P, the two waves always reinforce to give a larger amplitude. | C. The principle of superposition cannot be applied at P as A; # Az. | D. The principle of superposition can be applied at P but the two waves do not alwa",
+    "PNG": "output/2021/q14.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 15,
+    "text": "In the set-up below, different stationary wave patterns are formed on an elastic string by adjusting the\nfrequency f of the vibrator.\n. stand\n“TT 1\nWhich statements are correct when f increases ?\n(1) The number of antinodes increases.\n(2) The speed of the waves on the string increases.\n(3) The frequency of the waves produced in air by the string increases.\nA. (1) and (2) only | B. (1) and (3) only | C. (2) and (3) only | D. (1), (2) and (3)",
+    "PNG": "output/2021/q15.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 16,
+    "text": "In Young’s double slit experiment employing monochromatic light, how will the interference patterr\nchange if the separation a of the double slit is reduced ?\n(1) The pattern will become brighter.\n(2) The number of fringes that can be observed will increase.\nGB) The fringe separation of the pattern will become larger.\nA. (1) only | B. (3) only lon (1) and (2) only | D. (2) and (3) only",
+    "PNG": "output/2021/q16.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 17,
+    "text": "“17. second-order\nbright fringe\nmonochromatic\nlight beam\n40°\ndiffraction\ngrating second-order\nbright fringe\nWhen a monochromatic light beam is incident normally on a diffraction grating with 300 lines per mm,\na pattern of bright fringes is formed. The angle between the two second-order bright fringes is 40°. Find\nthe frequency of the light.\nA. 1.4 « 10!4 Hz | B. 2.6 x 10'* Hz | C. 2.8 x 10'* Hz. | D. 5.3 x 10! Hz",
+    "PNG": "output/2021/q17.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 18,
+    "text": "In the figure below, PQ and OS are light rays refracted from a lens L. Both light rays come from a point\nobject situated on the left of L.\nL\nP| Q\nrincipal axis\nmA Princip:\nSs\nWhich of the following deductions is/are correct ?\n(1) The image of the object must be virtual.\n(2) The object must lie along the straight line containing OS.\nG) L must be a concave lens.\nA. (1) only | B. (3) only | C. (1) and (2) only Dz. (2) and (3) only",
+    "PNG": "output/2021/q18.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 19,
+    "text": "Typical wavelengths of X-rays and microwaves are in the ratio 10”: 1. The value of » could be\nA. -10. | B. -4 | C. +4, | D. +10.",
+    "PNG": "output/2021/q19.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 20,
+    "text": "Submarines employ ultrasound instead of microwaves to detect obstacles in the sea. This is because\nA. wavelengths of ultrasound are shorter than those of microwaves. | B. ultrasound travels faster than microwaves in the sea. | C. microwaves are casily absorbed by sea water. | D. microwaves diffract too much in the sea.",
+    "PNG": "output/2021/q20.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 21,
+    "text": "Three isolated identical metal spheres X, Y and Z carry charges +20, -4Q and +5Q respectively. Y is\nfirst moved to touch X and then ¥ is brought in contact with Z. When Y and Z are separated, find the\ncharge on each sphere.\n\nx Yy Z\nA. 0 +1.5Q +1.5Q B, -0 +0.50 +0.50 | C. +2 +O +O | D. -O 420 420",
+    "PNG": "output/2021/q21.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 22,
+    "text": "When a point charge +0 is placed at Vas shown, the strength of the electric field at Y is Eo.\nWO\nane rt tT\nvelo oan\npit td LT TT]\nCCor elt\nIf W and Z are each placed with a point charge of +Q, what will be the electric field strength at Y ?\n. v2\nNote: sin 45° = cos 45° = >\na 2h\nB. Ey c v2 Fo | D. 2£o",
+    "PNG": "output/2021/q22.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 23,
+    "text": "Four identical resistors P, Q, R and S are connected to a battery of negligible internal resistance as shown\nQ\nP |\nCH)\nIf the power dissipated by R is 1 W, find the total power output of the battery.\nA. 11W B is W | C. 19 W Dz 21W",
+    "PNG": "output/2021/q23.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 24,
+    "text": "The figure shows a metallic cube of side length x. How is its resistance R between any two opposite\nfaces related to x ?\nx\nA. Rot x | B. R«x c R «x? | D. Rot x",
+    "PNG": "output/2021/q24.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 25,
+    "text": "In the figure below, POR is a straight line with PQ = 10 cm and OR= 5 cm. A long straight wire carrying\na current of 0.3 A (directed into the paper) is placed at P. When another long straight wire carrying a\ncurrent / is placed at Q, the resultant magnetic field at R becomes zero, Determine the direction and\nmagnitude of /.\n\nP Q R\n\nQe -O-- -«\n\n<——\n\n10cm Sem\ndirection of J magnitude of J\nA. into the paper OLA B, into the paper 09A | C. out of the paper O1A Dz out of the paper 0.9A",
+    "PNG": "output/2021/q25.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 26,
+    "text": "When a copper rod PQ moves with a constant velocity across a uniform magnetic field as shown, an\ne.m.f, is induced across the rod.\nP\nuniform magnetic\nx * || x * —_* field (into the paper)\n—_\nx xg x x\nWhich of the following statements is/are correct ?\nqa) The magnitude of the induced e.m.f. depends on the length of the rod.\n(2) Rod PQ acts like a cell providing an e.m.f. with P being its positive terminal.\n(3) There is a force acting on the rod to oppose its motion.\nA. (1) only | B. (3) only | C. (1) and (2) only | D. (2) and (3) only",
+    "PNG": "output/2021/q26.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 27,
+    "text": "A light bulb is connected in series with a device Y and a cell as shown. Assume that the internal resistance\nof the cell is negligible and its e.m.f. remains unchanged.\nIt is found that the brightness of the light bulb decreases with time. Which deductions must be correct ?\nql) The current in Y decreases with time.\n(2) The voltage across Y decreases with time.\n(3) The power supplied by the cell decreases with time.\nA. (1) and (2) only | B. (1) and (3) only | C. (2) and (3) only | D. (1), (2) and (3)",
+    "PNG": "output/2021/q27.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 28,
+    "text": "The graph shows the waveform of a sinusoidal alternating p.d. applied across a 10 Q resistor.\np.d./V\n2bL-----------\nB. 0.14 0.4 | C. 0.2 0.2 | D. 01 0 0.02 time/s Find the root-mean-square current in this 10 Q resistor and the",
+    "PNG": "output/2021/q28.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 29,
+    "text": "The figure shows three mutually perpendicular coils (1), (2) and (3) placed near a conducting wire\ncarrying an a.c. along the z-axis direction. In which coil(s) would e.m.f. be induced ?\nconducting wire\ncarrying an a.c. rs\nx\nA. (1) only | B. (3) only | C. (1) and (2) only | D. (2) and (3) only",
+    "PNG": "output/2021/q29.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 30,
+    "text": "P xX\n720 40\nQ y\n480 30\nR Z\nThe above figure represents a multi-tapped transformer. The number of turns between the various\n‘tapping points’ are indicated as shown. Which connections should be used for stepping down a voltage\nfrom 240 V to 6 V ?\nprimary coil secondary coil\nA. PO XY | B. PO YZ | C. PR XY | D. PR YZ",
+    "PNG": "output/2021/q30.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 31,
+    "text": "31 A radioactive nuclide plutonium-239 (“9,Pu) becomes a stable lead-207 isotope (*g3Pb) after a series\nof a and B decays. Find the number of / decays in the process.\nA. 3 | B. 4 | C. 5 | D. 6",
+    "PNG": "output/2021/q31.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 32,
+    "text": "The activity of a radioactive sample is measured to be 18 MBq. What is its activity 3 half-lives before ?\nA 6 MBq\nB. 54 MBq c 72 MBq | D. 144 MBq",
+    "PNG": "output/2021/q32.png"
+  },
+  {
+    "Year": 2021,
+    "Question": 33,
+    "text": "Which of the following may contain sources of ionizing radiatio\nqd) sea water\n(2) arock sample\n(3) human body\nA. (1) only | B. (2) only Cc, (2) and (3) only | D. (1), (2) and (3) END OF SECTION A",
+    "PNG": "output/2021/q33.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 1,
+    "text": "A well-insulated vessel with negligible heat capacity contains warm water at 45°C. The temperature of\nwarm water drops by 5°C after mixing with 50 g water at temperature 0 °C added to the vessel. Find the\noriginal mass of warm water in the vessel.\nA. 400 g | B. 450g [on 500 g | D. 550g",
+    "PNG": "output/2022/q1.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 2,
+    "text": "When ice melts into water at 0 °C, what happens to the molecules during the melting process ?\n(1) their average separation increases\n(2) their average kinetic energy increases\n(3) their average potential energy increases\nA. (1) only | B. (3) only | C. (1) and (2) only | D. (2) and (3) only",
+    "PNG": "output/2022/q2.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 3,
+    "text": "#3, A weather balloon filled with 21 kg of helium gas has a volume of 120 m’ at 27°C. Find the gas pressure\nin the balloon. Given: mass of one mole of helium gas = 4 x 10° kg\nA. 9.93 x 10*Pa | B. 1.00 x 10°Pa | C. 1.05 x 10° Pa | D. 1.09 x 10° Pa",
+    "PNG": "output/2022/q3.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 4,
+    "text": "A car travels with constant speed v along a horizontal road PORST with four sections of equal length as\nshown. Determine v if the car’s average velocity for the journey PORST is 20 km h™ in magnitude.\nQ R\nTop view\npees T\nA. 10 km ht | B. 20 km ht | C. 40 km h™! | D. It cannot be found as the length of each section is unknown.",
+    "PNG": "output/2022/q4.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 5,
+    "text": "In each figure below, a uniform rod P@ has its upper end P attached to point O on the ceiling by a light\ninextensible string. The rod’s lower end Q rests on a rough horizontal ground as shown.\nA. 4 Q) @) 0 Oo oO P. P, P Q Q Q In which figure is the frictional force acting on  | B. (3) only | C. (1) and (2) only | D. (2) and (3) only",
+    "PNG": "output/2022/q5.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 6,
+    "text": "a ground\nA block of mass m is placed on a wedge of mass Mas shown. The system remains at rest. What is the\nnormal force exerted on the wedge by the ground ?\nA. Mg | B. (M+ m)g | C. Mg +mg cos@ Dz Mg +mg tand",
+    "PNG": "output/2022/q6.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 7,
+    "text": "An egg is released from a height and falls towards a cushion without breaking.\nGees\nWhich of the following is the most probable explanation ?\nA. The cushion makes the egg stop at a shorter distance. | B. The cushion helps Jengthen the time of impact. | C. The cushion helps reduce part of the gravitational force acting on the egg. | D. ‘The cushion increases the reaction force acting on the egg during impact. IN",
+    "PNG": "output/2022/q7.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 8,
+    "text": "An object of mass 2 kg moves with velocity 1 m s™ initially. It is acted upon by a force F which varies\nwith time ¢ as shown in the graph. The force and the object’s velocity are in the same direction. Find\nthe speed of the object at r=3 s.\n\nFINA\nof TT TT TT TT\nIt TT TT TT\niP TENET TTT\nSee \\Gennn\nLTT TPN TT\n0 1 2 3 t/s\nA. 1.5ms? | B. 25ms7 | C. 3.5mst | D. 4.5ms",
+    "PNG": "output/2022/q8.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 9,
+    "text": "*9, A trolley with a spring-loaded launcher in Figure (1) can project a ball vertically upward. The trolley\ntravels on the ground at a constant speed in a horizontal circle (with centre O) as shown in Figure (2).\nFigure (2) p--7 777s y.\n“ ae\n‘ “ ‘\ni \\\n‘ \\\nH oO \\\n\\ + '\nFigure (1) \\ /\nii ‘Top view #2\n‘ ’\nir Ss\nSide view cylinder a . a\nThe ball is projected when the trolley is at point P. After some time, the ball falls back to the ground z\nthe trolley just reaches point Q. Neglecting air resistance, where would the ball land 2\nA. oO | B. P | C. Q | D. R",
+    "PNG": "output/2022/q9.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 10,
+    "text": "wall\n——>\n30N\n‘ound\n\nOn a horizontal ground there is a block attached with a smooth light pulley as shown. A light and\ninextensible horizontal string, with one end fixed to a wall, passes the pulley. A man exerts a horizontal\nforce of 30 N at the other end of the string and pulls a distance of 4 m. Find the work done by the man\nif the ground exerts a frictional force of 10 N on the block.\nA. 203 | B. 805 | C. 100J | D. 1203",
+    "PNG": "output/2022/q10.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 11,
+    "text": "In the figure below, the straight path (1) and the curved path (2) in a vertical plane are smooth. A small\nblock slides from rest at X along the respective paths to Y.\nXp ae Q)\n¥y\nWhich of the following about the speed of the block at Y and the time taken to reach Y is correct ? Neglect\nair resistance.\nspeed at Y time taken to reach Y\nA. the same different | B. the same the same | C. different the same | D. different different",
+    "PNG": "output/2022/q11.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 12,
+    "text": "x/m\n16\noL_Lalet |\nat rest\nBa 3 a\n~@ @ ., {7Ner\nx=0m\nVi N 1,\n0 24 6 8\nOn a smooth horizontal surface, sphere P travelling along the x-axis collides head-on with another\nsphere Q, which is initially at rest at x = 8 m. The graph shows the displacement-time (x-f) relationship\nof P (solid line) and Q (dotted line). The collision takes place at = 2 s and the collision time is negligible.\nWhich statement is correct ?\nA. The collision is perfectly inelastic. | B. The mass of P is larger than that of Q. | C. P still moves along +x direction after collision. | D. P and Q move with the same speed after collision. x",
+    "PNG": "output/2022/q12.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 13,
+    "text": "A marble leaves the edge of a table at point X with a horizontal speed v and hits the ground at a certain\npoint as shown.\nx y\nground ‘\n\nIf the marble leaves the table at a higher speed, which of the following would remain unchanged ?\nNeglect air resistance.\nA. (1) only | B. (3) only | C. (1) and (2) only Dz. (2) and (3) only | D. the time of flight of the marble in the air (2) the acceleration of the marble d",
+    "PNG": "output/2022/q13.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 14,
+    "text": "In the figure, X is an object resting on the Earth’s equator. Y is a geostationary satellite moving in a\ncircular orbit above the equator such that it always appears stationary to an observer on Earth.\na at.\n“ X ~*.. NOT drawn to scale\n' \\\n'\nWhich descriptions about the motion of X and Y are correct ?\nqd) The motion of X and Y takes the same period.\n(2) X is moving with a slower speed.\n(3) Xhas a greater acceleration.\nA. (1) and (2) only | B. (1) and (3) only | C. (2) and (3) only | D. (1), (2) and (3)",
+    "PNG": "output/2022/q14.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 15,
+    "text": "The figure shows the displacement-distance graph at time t= 0 and t=2 s respectively of a wave\ntravelling to the right.\ndisplacement\nt=0 t=2s _\n; ; OY, distance x /m\n/ /\nWhich statements about the wave are correct ?\n(1) The wavelength is 4 m.\n(2) The period is 4 s.\n(3) The speed of the wave can be 2.5 ms”.\nA. (1) and (2) only | B. (1) and (3) only | C. (2) and (3) only Dz (1), 2) and G)",
+    "PNG": "output/2022/q15.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 16,
+    "text": "Referring to the set-up below, which of the following combinations would give the highest speed of wave\npropagation along the string when the string is plucked ?\nstring\n| weight\ntension of the string _ radius of the cross-section of the string\nA. T r | B. T 2r | C. 2T r | D. 2T 2r N",
+    "PNG": "output/2022/q16.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 17,
+    "text": "Plane water waves travel from shallow water to deep water in a ripple tank as shown below.\ndirection of wave propagation\n———)\nglass block PEELE LS ES ESE GL GSS.\nWhich diagram correctly shows the top view of the wavefronts in the ripple tank ?\n= Ze\nc ag Dz we",
+    "PNG": "output/2022/q17.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 18,
+    "text": "Yy second order\nX\ndiffraction , Y first ord\ngrating ‘et order\na zeroth order\nA light beam which consists of monochromatic lights X and Y is incident normally on a diffraction grating.\nThe figure shows the spectra of the first two orders. The diffraction angle of X in the first order is a\nThe angular separation between X and Y in the first order is @ and that in the second order is 62. Which\nstatement must be correct ?\nA. The wavelength of ¥ is shorter than that of X. | B. a would be larger if the grating spacing is smaller. | C. 6; is independent of the grating spacing. | D. A =20,",
+    "PNG": "output/2022/q18.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 19,
+    "text": "19, In the ripple tank shown below, dippers S; and S: are vibrating in phase with frequency f and generate\ntwo sets of waves towards each other at a speed of 20 cm s“'. Destructive interference occurs at point P\non the straight line SiS2.\n\nTop view\nSi P Sr\nee arenes\n1S cm 10 cm.\nWhich of the following is a possible value of f?\nA. 24 Hz | B. 20 Hz | C. 18 Hz | D. 16 Hz",
+    "PNG": "output/2022/q19.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 20,
+    "text": "A periscope is formed by two plane mirrors as shown.\n:\npicture (J '\ni\n145°\n\"\ni\nHl\nH\nHl\nH\ni\n145° observer\nWhich image will the observer see ?\n*\n.\n“\n»",
+    "PNG": "output/2022/q20.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 21,
+    "text": "In the set-up below, the separation between the bright object and the translucent screen is fixed. A lens\nis moved from the object towards the screen as shown.\nbright translucent\nyy object lens screen\n—s\nThe first sharp image formed is inverted as shown and its length is 9 cm. When the lens is moved further\ntowards the screen, a second sharp image of length 1 cm is observed. Which of the following statements\nis/are correct ?\nqd) The second image is erect.\n(2) The length of the object is 3 cm.\n(3) There are at most two positions of the lens that can give a sharp image on the screen when the\nlen\nA. (1) only | B. (2) only | C. (2) and (3) only Db. (1), 2) and (3)",
+    "PNG": "output/2022/q21.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 22,
+    "text": "Which statements about ultrasound are correct ?\n\n(1) Ultrasound is longitudinal waves,\n\nQ) Ultrasound needs media to propagate.\n\n(3) The speed of ultrasound in glass is higher than that in air.\nA. (J) and (2) only | B. (1) and (3) only | C. (2) and (3) only | D. (1), 2) and (3)",
+    "PNG": "output/2022/q22.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 23,
+    "text": "A positively charged sphere X of mass m is suspended from a fixed point O by a nylon thread. Another\nnegatively charged sphere Y at the end of an insulating rod is held in various positions as shown. O, X\nand Y are in the same vertical plane.\n\n(0) 2) ¥ 3) @\noO oO oO\nY\nx Xx xX\n\\ . y\nN N \\\n\\ \\, \\\n\\ \\ \\Y¥\nIn which situation(s) could X be kept at rest as shown ?\nA. (1) only | B. (3) only [on (1) and (2) only | D. (2) and (3) only",
+    "PNG": "output/2022/q23.png"
+  },
+  {
+    "Year": 2022,
+    "Question": 24,
+    "text": "*24, +0\n?\n'\nMb ~-~~-~-~----%----N\nH r .\n'\no+o\nTwo positive point charges +Q are fixed as shown above. MN is the perpendicular bisector of the line\njoining the charges. Which graph correctly shows the variation of the electric field strength E on line MN\nwith distance r from M?\nA. E B. E i r L r | C. E Dz E 0 LE r 0 \\ r",
+    "PNG": "output/2022/q24.png"
+  }
+]

@@ -1,0 +1,16 @@
+2.
+\
+‘25 F
+20N
+
+A block of weight 20 N is suspended by a light string from the ceiling. A force F is applied such that
+the block is displaced to one side with the string making an angle of 25° with the vertical as shown
+Find the magnitude of F .
+
+A. 8.5N
+
+B. 9.3.N
+
+Cc. 18.1N
+
+D. 47.3.N

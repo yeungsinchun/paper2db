@@ -1,0 +1,6 @@
+25. An electrical device is charged with a steady d.c. of 60 mA for 30 minutes. Find the number of electrons
+that pass through the device during charging.
+A. 108
+B. 1800
+Cc. 3.75 x 10!”
+D. 6.75 x 10°

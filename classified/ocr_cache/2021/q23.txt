@@ -1,0 +1,9 @@
+23. Four identical resistors P, Q, R and S are connected to a battery of negligible internal resistance as shown
+Q
+P |
+CH)
+If the power dissipated by R is 1 W, find the total power output of the battery.
+A. 11W
+B is W
+Cc. 19 W
+Dz 21W

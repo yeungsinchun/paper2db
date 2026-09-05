@@ -1,0 +1,21 @@
+32. A GM counter is placed close to and in front of a radioactive source which emits both a and yradiations.
+The count rate recorded is 450 counts per minute while the background count rate is 50 counts per
+minute. Three different materials are placed in tun between the source and the counter. The following
+results are obtained.
+
+Recorded count rate / counts per minute
+(Nil) 450
+
+cardboard x
+
+1 mm of aluminium y
+
+2 mm of lead Zz
+
+Which of the following is the most suitable set of values for x, y and z ?
+x y Zz
+
+A 300 300 100
+B. 300 100 50
+Cc. 100 100 0
+D. 100 50 50

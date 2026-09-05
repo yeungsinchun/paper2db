@@ -1,0 +1,27 @@
+8. A student uses the following apparatus to measure the resistance of a tungsten filament light bulb.
+a battery, a switch, a variable resistor, an ammeter, a voltmeter, a light bulb
+(a) Figure 8.1 shows an incomplete circuit for the experiment. The ‘+’ symbol represents the positive terminal
+of the ammeter.
+Use suitable circuit symbols to complete the circuit, and mark the positive terminal of the voltmeter
+with ‘+’. (3 marks)
++
+Figure 8.1 ah
+3 g
+| ca
+E E
+3 The table below and Figure 8.2 show the results obtained. 3
+3 : i}
+eS Voltage across the light bulb V/V [| 0 | 0.1 [ 02 [03 [04 [05 [10 [20 5
+5 Current // mA [oJ 76 | 112 | 126 | 133 [139 | 170 | 226 | 273 | 5
+g Es
+fe So ee oe Eos Cee a | elie iloee renin oe §
+vo oO
+g - PERE RER CAREER EE ead Che are & 5
+g 200 Re eee eee SeREeueee! g
+4 < “EERE COP Reber ee re alle ek #
+< & 150 - ea ep teat aaa sae <
+Figure 8.2 5 100 | SUECHGEOINTE! LEE Peers
+50 Hac eee
+A a a Fa WF 5k YW FF a se a
+0 O35: 4. 4.5 2 25 3 35
+Voltage across the light bulb V/ V

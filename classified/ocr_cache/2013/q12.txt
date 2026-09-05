@@ -1,0 +1,16 @@
+12
+wooden block
+
+A bullet of mass 50 g is fired from a gun with a speed of 400 m s” and passes right through a fixed
+wooden block of 6 cm thickness as shown. Find the average resistive force acting on the bullet due to
+the block if it emerges with a speed of 250 ms". Neglect air resistance and the effects of gravity,
+
+A. 4.06 x 10°N
+
+B. 1.02 x 10°N
+
+Cc 125N
+
+Dz Answer cannot be found as the time of travel of the bullet within the block is not
+
+known.

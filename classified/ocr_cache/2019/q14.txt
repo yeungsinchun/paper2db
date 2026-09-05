@@ -1,0 +1,19 @@
+14. The figure shows the displacement-distance graph at a certain instant of a longitudinal wave which
+travels to the right. Displacement to the right is taken to be positive.
+displacement, direction of wave propagation
+=———
+f\ o f\
+0 P \/ R \ / distance
+
+At the instant shown, which of the following statements is/are correct ?
+(1) P is a centre of compression.
+(2) A particle with its equilibrium position at Q is at rest.
+(3) A particle with its equilibrium position at R is moving downwards.
+
+A. (1) only
+
+B. (3) only
+
+C. (1) and (2) only
+
+D. (2) and (3) only

@@ -1,0 +1,12 @@
+8. An object falls from P to Q as shown below. Throughout the motion, air resistance increases with the
+speed of the object.
+@”
+Which of the following descriptions is/are correct ?
+qd) The net force acting on the object is constant throughout the motion.
+(2) The magnitude of the object’s acceleration decreases from P to Q.
+(3) The kinetic energy gained by the object from P to Q is equal to its loss in gravitational
+potential energy.
+A (1) only
+B. (2) only
+Cc. (1) and (3) only
+D. (2) and (3) only

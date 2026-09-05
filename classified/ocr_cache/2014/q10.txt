@@ -1,0 +1,15 @@
+*10.
+‘ 10m p> wall
+\ m
+
+A particle is projected horizontally towards a vertical wall 1.0 m away. It hits the wall at a position
+0.8 m vertically below its point of projection. At what speed is it projected 2 Neglect air resistance.
+(g=9.81 ms”)
+
+A. 2.0mst
+
+B.  2.5ms?
+
+c. 5.0mst
+
+D. = =6.3mst

@@ -1,0 +1,9 @@
+14,
+displacement
+0 os A 5 AN distance / m
+The above figure shows the displacement-distance graph of a wave travelling at a speed of 10 m s~
+What is the period of this wave ?
+A. 0.10
+B. 0.15 s
+c. 0.20s
+D. 0.25s

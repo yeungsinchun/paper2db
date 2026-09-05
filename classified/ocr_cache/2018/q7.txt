@@ -1,0 +1,13 @@
+7 Two blocks X and Y are moving towards the left. Their positions at successive instants (indicated by
+the numbers) of equal time intervals are shown below.
+—————————
+7 6 5 4 3 2 1
+a 8 a a a a a Block X
+Qo ao Oo a oO a o Block Y
+7 6 5 4 3 2 1
+SS
+Do these two blocks ever have the same instantaneous speed ?
+A. Yes, at instant 3.
+B Yes, at a moment between instants 4 and 5.
+c. Yes, at instant 6.
+D. No.

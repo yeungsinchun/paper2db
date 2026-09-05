@@ -1,0 +1,13 @@
+2. An electric kettle which contains | kg of water at room temperature takes 168 s to heat up the water to
+boiling point. The kettle’s rated value is ‘220 V, 2000 W’. Assume that all the electrical energy
+consumed by the kettle is transferred to the water. Which of the following statements is/are correct ?
+Given: specific heat capacity of water = 4200 J kg! °c!
+
+(ld) The initial temperature of the water is 20 °C.
+(2) The resistance of the kettle’s heating element is about 24 Q.
+(3) If the electric kettle is operated with 110 V, the time taken to heat up the water to boiling point
+will be doubled.
+A. (1) only
+B. (3) only
+Cc. (1) and (2) only
+D. (1), (2) and (3)

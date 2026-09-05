@@ -1,0 +1,12 @@
+12. A uniform metre rule of a certain weight is hung by a string at X such that it is kept in equilibrium with
+weights hanging at both ends as shown. If the 1.0-kg weight is shifted 0.1 m towards X, what distance
+should the 0.4-kg weight be shifted towards X in order to restore equilibrium ?
+
+x
+ic N
+0.3m ~} 0.7m
+1.0 kg : 0.4 kg
+A. 0.1m
+B. 0.2m
+Cc. 0.25 m
+D. 0.45 m

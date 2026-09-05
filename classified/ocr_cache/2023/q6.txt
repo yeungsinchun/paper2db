@@ -1,0 +1,13 @@
+6. On a smooth incline, a block of weight 120 N is kept stationary by a string with tension 50 N parallel to
+the incline.
+SON ;
+String
+SMooy, .
+_ MNeling
+The string is then cut and the block accelerates down the incline. What is the net force acting on the
+block before and after the string is cut ?
+before the string is cut _after the string is cut
+A. SON TON
+B. SON SON
+c. ON TON
+Dz. ON 5ON

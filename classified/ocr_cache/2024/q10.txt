@@ -1,0 +1,20 @@
+10. A child tries to push a 150 kg (sumo) wrestler in order to topple him backwards in a game. The simplified
+diagram indicates the weight W of the wrestler and the horizontal pushing force F acting on the wrestler
+by the child. P is the wrestler’s contact point on the ground.
+
+> QO
+7 1.00m
+‘
+Py ) Q 080m A )
+*. é 0
+oe Secs es 0.50 m.
+We —
+Find the minimum value of F required.
+
+A. 368N
+
+B. 736N
+
+c. 1177N
+
+D. 2354N

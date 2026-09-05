@@ -1,0 +1,13 @@
+9. Kelvin is standing on a balance inside a lift. The table shows the readings of the balance in three
+situations.
+
+Motion of the lift Reading of the balance
+moving upwards withaunifomspeed [OR
+moving downwards with a uniform speed
+moving upwards with an acceleration
+
+Which relationship is correct ?
+A Ri =Rp>Ry
+B. Ry> R= Ry
+Cc. R,>Rp>R3
+D. Ry>R,> Ry

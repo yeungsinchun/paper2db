@@ -1,0 +1,6 @@
+32 Which of the following units is used for measuring the radiation equivalent dose of a patient receiving
+radiotherapy treatment ?
+A. sievert (Sv)
+B. becquerel (Bq)
+C joule (J)
+D. watt per square metre (W m™)

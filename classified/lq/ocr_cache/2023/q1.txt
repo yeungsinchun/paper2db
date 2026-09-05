@@ -1,0 +1,32 @@
+1. Aniron cube of mass 200 g is heated to a few hundred degree Celsius (say at 7°C). It is then quickly transferred
+into a polystyrene cup containing 600 g of water. The cube is totally immersed in the water as shown in
+Figure 1.1. The temperature of the heated iron cube can be estimated in this experiment.
+
+mercury-in-glass
+a fromcube hell thermometer
+Figure 1.1 with a light wire
+polystyrene cup —eH/
+water :
+Assume that no heat is lost to the surroundings and neglect the heat capacity of the polystyrene cup.
+(a) The temperature of water recorded by the thermometer rises from 25 °C to 33 °C. Estimate 7.
+Given: The specific heat capacities of iron and water are 450 J kg"! °C“! and 4200 J kg“! °C" respectively.
+
+, (3 marks) |.
+J J
+a2 2
+= =
+o o
+g g
+= =
+)
+
+& B
+
+5 2
+
+5 5
+
+i. (b) What would happen to the water when this iron cube of high temperature just touches the water surface ? ie
+
+5 (1 mark) | 2
+(c) Explain why the actual temperature of the iron cube should be higher than that estimated in (a), (2 marks)

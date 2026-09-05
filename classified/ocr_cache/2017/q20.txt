@@ -1,0 +1,16 @@
+*20. The figure below shows some of the bright fringes formed when monochromatic light passes through a
+diffraction grating.
+_-|] second-order bright fringe
+V8 __--|| first-order bright fringe
+monochromatic light ete at a
+——fes ~--L-4.----4] central bright fringe
+diffraction Tete .
+grating tS
+Which of the following is/are correct ?
+() = 6
+(2) The maximum order of bright fringe is 4 if @ = 20°.
+(3) @, will decrease if the experiment is performed in water but not in air.
+A. (1) only
+B. (3) only
+Cc. (1) and (2) only
+D. (2) and (3) only

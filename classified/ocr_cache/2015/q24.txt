@@ -1,0 +1,20 @@
+24.
+xt
+nd
+' metal frame
+uniform
+P Q magnetic field
+'
+1
+--e—— IID
+1
+yt
+'
+A rectangular metal frame is made to rotate steadily about its axis XY in a uniform magnetic field.
+At the instant shown, the frame is in the plane of the paper and side P is moving out of the paper
+while side Q is moving into the paper. Which statement is INCORRECT at this instant ?
+A. The induced e.m-f. in the frame is at a maximum.
+B. The induced current produced in the frame is flowing in anti-clockwise direction.
+Cc. The magnetic force acting on side P is in a direction pointing into the paper.
+D. The magnetic forces acting on the frame produce a moment opposing the frame’s
+rotation.

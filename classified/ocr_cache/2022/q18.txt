@@ -1,0 +1,14 @@
+*18.
+Yy second order
+X
+diffraction , Y first ord
+grating ‘et order
+a zeroth order
+A light beam which consists of monochromatic lights X and Y is incident normally on a diffraction grating.
+The figure shows the spectra of the first two orders. The diffraction angle of X in the first order is a
+The angular separation between X and Y in the first order is @ and that in the second order is 62. Which
+statement must be correct ?
+A. The wavelength of ¥ is shorter than that of X.
+B. a would be larger if the grating spacing is smaller.
+Cc. 6; is independent of the grating spacing.
+D. A =20,

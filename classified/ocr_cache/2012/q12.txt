@@ -1,0 +1,13 @@
+*12. A bomber aircraft is 1 km above the ground and is flying horizontally at a speed of 200 m s"', The
+aircraft is going to release a bomb to destroy a target on the ground. How long before flying over the
+target should the bomb be released ? Assume that the bomber aircraft and the target are in the same
+vertical plane and neglect air resistance. (g = 9.81 ms™)
+
+A. 5.6s
+
+B. 10.1s
+
+Cc. 14.35
+
+D. It cannot be calculated as the horizontal distance between the aircraft and the target is
+not known.

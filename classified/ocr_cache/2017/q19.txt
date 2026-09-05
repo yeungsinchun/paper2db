@@ -1,0 +1,9 @@
+*19. When an object is placed 30 cm in front of a concave lens, an image is formed 20 cm away from the
+lens. If the concave lens is replaced by a convex lens of the same focal length and the object distance
+remains unchanged, which of the following descriptions about the image formed is correct ?
+
+nature of the image image distance
+A. real 20 cm
+B. real 60 cm
+Cc. virtual 20cm
+D. virtual 60cm

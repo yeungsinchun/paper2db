@@ -1,0 +1,14 @@
+*30.
+P xX
+720 40
+Q y
+480 30
+R Z
+The above figure represents a multi-tapped transformer. The number of turns between the various
+‘tapping points’ are indicated as shown. Which connections should be used for stepping down a voltage
+from 240 V to 6 V ?
+primary coil secondary coil
+A. PO XY
+B. PO YZ
+C. PR XY
+D. PR YZ

@@ -1,0 +1,5 @@
+23. Which of the following about ultrasound is INCORRECT ?
+A. Ultrasound is a longitudinal wave.
+B. The frequency of ultrasound is greater than 20000 Hz.
+Cc. In air, the speed of ultrasound is faster than the speed of audible sound.
+Dz. In air, the diffraction effect of ultrasound is less prominent than that of audible sound.

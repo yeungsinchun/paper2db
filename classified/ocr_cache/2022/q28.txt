@@ -1,0 +1,21 @@
+28.
+direction
+of rotation
+TN
+“8B
+| S Ip ;
+} _
+LS coil
+LT B48
+Oe
+(Cae
+load
+The figure shows the structure of a simple generator. Which of the following statements is/are correct ?
+(1) The magnetic force acting on side AB of the coil is upward at the instant shown,
+(2) The commutator would reverse the direction of current in the coil whenever the coil passes its
+vertical position.
+(3) The current flowing through the load is an unsteady d.c.
+A. (1) only
+B. (2) only
+[on (3) only
+Dz (1) and (3) only

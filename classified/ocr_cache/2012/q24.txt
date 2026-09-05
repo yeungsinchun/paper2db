@@ -1,0 +1,11 @@
+24. P, Q, R, S are charged objects. When two of them are brought close to each other, P and Q repel, R and
+S also repel while Q and R attract each other. Which of the following descriptions about their charges
+is/are possible ?
+qd) P and R are negatively charged.
+
+(2) Q and S are positively charged.
+(3) P is positively charged and S is negatively charged.
+A. (1) only
+B. (3) only
+con (1) and (2) only
+D. (2) and (3) only

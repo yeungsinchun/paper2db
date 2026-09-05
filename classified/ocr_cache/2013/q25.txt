@@ -1,0 +1,8 @@
+*25. Lightning flash may occur when the strength of the electric field (assumed uniform) between a
+thundercloud and the ground reaches 3 x 10° N C"'. A lightning flash on average discharges about
+20 C of charge. If a thundercloud is at a height of 500 m above the ground, estimate the order of
+magnitude of the energy released in a lightning flash.
+A. 10°5
+B. 1084
+c 10°°5
+D. 1075

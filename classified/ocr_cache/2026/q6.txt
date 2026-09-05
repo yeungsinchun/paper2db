@@ -1,0 +1,13 @@
+We
+: oy
+cae
+F
+30?
+A 1-kg block is placed on a 2-kg block, and both are on a smooth incline at 30° to the horizontal. A
+constant force F is applied to the 1-kg block upward along the incline so that the two blocks move up the
+incline together with the same constant velocity as shown. What is the frictional force acting on the
+1-kg block by the 2-kg block ? Neglect air resistance. (g = 9.81 ms)
+A. 4.91 N upward along the incline
+B. 9.81 N upward along the incline
+Cc. 4.91 N downward along the incline
+D. 9.81 N downward along the incline

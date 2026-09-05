@@ -1,0 +1,9 @@
+21. Three isolated identical metal spheres X, Y and Z carry charges +20, -4Q and +5Q respectively. Y is
+first moved to touch X and then ¥ is brought in contact with Z. When Y and Z are separated, find the
+charge on each sphere.
+
+x Yy Z
+A. 0 +1.5Q +1.5Q
+B, -0 +0.50 +0.50
+c. +2 +O +O
+D. -O 420 420

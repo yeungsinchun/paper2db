@@ -1,0 +1,16 @@
+23. first-order
+. maximum
+grating
+0 central
+incident maximum
+light
+first-order
+maximum
+When monochromatic light is passed through a diffraction grating, a pattern of maxima and minima is
+observed as shown. Which combination would produce the largest angle @ between the first-order
+maxima ?
+Grating (lines per mm) Colour of light used
+A. 200 blue
+B. 200 red
+Cc. 400 blue
+D. 400 red

@@ -1,0 +1,9 @@
+20. A Young’s double-slit experiment was performed using a monochromatic light source. Which change
+would result in a greater fringe separation on the screen ?
+(1) Using monochromatic light source of longer wavelength
+(2) Using double slit with greater slit separation
+(3) Using double slit with larger slit width
+A. (Jjonly
+B. (1) and (2) only
+C. (2) and (3) only
+D. (1), 2) and (3)

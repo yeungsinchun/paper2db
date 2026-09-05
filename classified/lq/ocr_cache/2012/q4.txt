@@ -1,0 +1,23 @@
+4, Train A initially travels at a speed of 60 m s along a straight horizontal railway. Another identical train B
+travels ahead of A in the same direction on the same railway. Due to mechanical failure, B is only travelling
+at 20 ms"! (Figure 4.1). .
+60 ms! 20ms"
+Pal Lal
+a. YN
+Figure 4.1
+At time ¢t = 0, A and B are x m apart, the captain of A receives a stopping signal and immediately A
+decelerates at 4 ms” while B continues to travel at 20 ms"'. A eventually collides with B after 5 s. Neglect
+(a) (i) _ Find the speed of A just before collision. (2 marks)
+i]
+(ii) |The graph below shows how the speed of B varies with time within this 5 s. Sketch on the | &
+same graph the variation of the speed of A within the same period. (1 mark) E
+OQ
+speed/ms . ~ Toy &
+io p
+joi
+40 a een one Toh 2
+a
+20 “Be 4 . E
+0 2 4 6 time /s 2
+&
+(iii) | Based on the above information, determine the separation x of the two trains att=0. (3 marks)

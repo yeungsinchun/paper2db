@@ -1,0 +1,18 @@
+27.
+ae R “ s Lez _Clectromagnet
+CULO CJ)
+tty coil JSS
+Q P
+comametgtor LES soft iron core
+LTT 7X LR
+a 5)
+Ae
+LUT
+(sie
+The figure shows the structure of a motor. The coil PORS and the two electromagnets are connected to
+a battery so that the coil rotates continuously. If a sinusoidal a.c. source of frequency 50 Hz is used
+instead of a battery, the coil will
+A. remain at rest.
+B. oscillate at a frequency 50 Hz.
+Cc. rotate to a vertical position and then stop.
+D. rotate continuously.

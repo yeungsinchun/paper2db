@@ -1,0 +1,14 @@
+29.
+XX XXX XXX xX
+XX X X X X XPX X
+XX X X ye xX x
+xX X X X o xX X x
+XXX XXX XX X
+xX XX X XX X X X
+XX XX XX XX X
+A metal rod OP is rotated about O in a clockwise direction in the plane of the paper with a uniform
+magnetic field pointing into the paper. Which statement is correct ?
+A. An induced current flows in the rod from O to P.
+B. An induced current flows in the rod from P to O.
+Cc. E.m.f. is induced in the rod with end O at a higher electric potential.
+D. E.m.f. is induced in the rod with end P at a higher electric potential.

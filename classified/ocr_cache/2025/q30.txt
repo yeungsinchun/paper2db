@@ -1,0 +1,8 @@
+*30.  Anelectric iron works at its rated power of 1100 W under a 50 Hza.c. mains of root-mean-square voltage
+220 V. What power will it deliver when working under a 100 Hz a.c. of root-mean-square voltage
+110V?
+
+A. 275 W
+B. 718 W
+C. 550 W
+Dz. 1100 W

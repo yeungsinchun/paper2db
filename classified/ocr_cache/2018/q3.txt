@@ -1,0 +1,9 @@
+3. Milk at 5 °C is added to a cup of tea at 25 °C. Which statements below are correct ? Neglect the heat
+capacity of the cup and assume that there is no heat exchange with the surroundings.
+ql) The average kinetic energy of the water molecules in the tea decreases.
+(2) The average potential energy of the water molecules in the tea remains unchanged.
+(3) The energy lost by the tea equals the energy gained by the milk.
+A. (1) and (2) only
+B. (1) and (3) only
+Cc. (2) and (3) only
+D. (1), 2) and (3)

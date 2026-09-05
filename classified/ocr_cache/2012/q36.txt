@@ -1,0 +1,9 @@
+36. Isotopes of an element have different mass number A and neutron number N. Which of the following
+N- A plots correctly shows the relationship of N and A for any given element ?
+A. B,
+N N
+0 74 0 7A
+Cc. D.
+N N
+‘a A LZ A
+END OF SECTION A

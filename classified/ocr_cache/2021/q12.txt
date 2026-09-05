@@ -1,0 +1,10 @@
+12. Earthquakes propagate in the form of waves. The quake centre produces both longitudinal waves
+(P-wave) and transverse waves (S-wave) which travel with speeds 9.6 km s“! and 6.4 km s™! respectively
+on the Earth’s crust. In an earthquake, a monitoring station detects the arrival of the P-wave pulse at
+7:02 a.m. while the S-wave pulse arrives 2 minutes later at 7:04 a.m. Estimate the time that this
+earthquake occurs.
+
+A. 6:53 a.m.
+B 6:56 a.m
+c. 6:58 a.m.
+Dz 6:59 a.m.

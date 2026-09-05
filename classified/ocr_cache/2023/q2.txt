@@ -1,0 +1,14 @@
+2.
+temperature
+—_——
+i 20 min. fl
+i '
+0 time
+A hot liquid substance of mass 0.3 kg and with heat capacity 600 J °C"! is left to cool in air. Its
+temperature falls at a rate of 2 °C per minute just before it begins to solidify. Then its temperature
+remains steady for 20 minutes until all the liquid just solidifies. Estimate the specific latent heat of fusion
+of the substance,
+A. 20000 J kg"
+B. 24000 J kg
+c. 48000 J kg"!
+D. 80000 J kg!

@@ -1,0 +1,6 @@
+16. A transverse wave propagates along a stretched string. Which graph below correctly shows the
+variation of the speed v of the wave with its frequency f?
+A. 7 B. y
+0 tf 0 f
+Cc. y D. y
+0 f 0 tf

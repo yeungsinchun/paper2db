@@ -1,0 +1,9 @@
+*13. A satellite of mass m moves around a planet of mass M in a circular orbit of radius r. What does the
+angular velocity of the satellite depend on ?
+a) r
+(2) m
+G) M
+A. (1) only
+B. (2) only
+(on (1) and (3) only
+D. (2) and (3) only

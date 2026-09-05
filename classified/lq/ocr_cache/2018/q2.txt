@@ -1,0 +1,18 @@
+*2. Two vessels, 4 and B, of volumes 3V and 2V respectively are connected by a narrow tube with a tap as shown
+in Figure 2.1. Initially the tap is closed and both vessels are at the same temperature. Vessel A contains
+helium gas at a pressure p while vessel B contains 0.8 mol helium gas at a pressure 2p. Assume that helium
+gas can be taken as an ideal gas.
+A
+B
+tap
+Figure 2.1 Q)
+(a) Deduce the amount of helium gas (in mol) in vessel 4. (2 marks)
+2 Be
+a ee ee E
+& el
+o o
+oO ESP SSDS Se caste eee = ees ae eae eee Se 21S oe Sia oan ee SS oe ee a eee eee Q
+is} i)
+=| a
+a (b) Now the tap is open and a steady state is reached. Assume that the temperature remains unchanged. ga
+op

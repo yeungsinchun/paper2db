@@ -1,0 +1,15 @@
+17.
+Figure (1) Figure (2)
+ultrasound generator .
+and detector emitted reflected
+= pulse pulse
+[=k )) 42> sel
+y <—Gm 0 02 04 06 “mes
+Figure (1) shows a car travelling with a uniform speed along a straight road away from a stationary
+ultrasound generator and detector at Y. When the car is 64 m from Y, the generator emits an ultrasound
+pulse towards the car, The pulse is then reflected back to the detector at Y and displayed on a CRO as
+shown in Figure (2). Estimate the speed of the car, Given: speed of ultrasound in air is 340 m s?
+A 16ms!
+B..20ms"
+Cc. 24ms"
+D. 32ms*

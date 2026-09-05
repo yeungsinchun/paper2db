@@ -1,0 +1,78 @@
+12. Figure 12.1 shows a coil of several turns.
+
+Figure 12.1 a =
+(a) Sketch the magnetic field pattern produced by the coil when it carries a current J as shown. (2 marks)
+(b) As shown in Figure 12.2(a), this coil is now connected to an a.c. source to serve as a transmitter coil (7).
+
+A receiver coil (R) connected to a CRO is placed directly above 7. The time variation of the voltage of
+anil Din dianlavad an tha CON (Bienes 19 OhY
+coil Ris displayed on the CRO (Figure 12.2¢h)).
+ORO Henley
+. To CRO _—
+2
+3
+prs
+|
+= receiver coil R
+a
+3
+3
+FS transmitter coil T —
+4
+ab
+s 2.6. souree
+a
+Py
+g 6 aod r=} Nerd
+3
+3 () Explain how the voltage of the receiver coil R is produced. (2 marks)
+2
+a
+*(ii) On Figure 12.2(b), sketch the CRO display when the frequency of the a.c. source is doubled. (2 marks)
+Anowers written in the margins will not he marked.
+(c) A mobile phone with a receiver coil inside can be charged wirelessly by placing it on a charging pad
+equipped with a built-in transmitter coil, which is connected to a power source.
+ht — fee — charging pad
+Ree. s e AAT an
+Secon . : %, ne ae : on f_ cable connecting
+ee eee the power source
+Explain why wirelessly charging of phones need phone cases with non-metallic back covers. (2 marks)
+i
+a
+;
+i ;
+i
+j
+;
+j
+i
+Answers written in the margins will not be marked.
+
+13. Radon (Rn-222) is a radioactive gas with no colour, no smell and no taste. It is released from bedrock material
+underground or from concrete composed of granite. Rn-222 decays with a half-life of 3.82 days by giving out
+apotichs.
+
+(a) *(i) Find the decay constant (unit: s~') of Rn-222. (2 marks)
+
+(ii) Inside buildings, the average activity due to radon in 1 m? of air is about 48 Bq. Estimate the average
+
+number of radon atoms in 1 m? of air inside buildings. (2 marks)
+2
+4
+q
+2
+
+3 . ee eee eee ne ee enue eee nen e ee econ eee ee ene connec ee ee eee _
+3
+q
+z
+4
+?
+
+3 (iii) Why is indoor radon considered harmful to human although @ particles have limited penetrating
+
+3 power ? (2 marks)
+F|
+:
+3
+:

@@ -1,0 +1,15 @@
+9. A square metal loop WXYZ of side length 0.10 m is inserted with a constant velocity v into a uniform magnetic
+field of flux density 0.03 T. The magnetic field is perpendicular to the plane of the loop as shown in Figure 9.1.
+The resistance of each side of the metal loop is 0.15 Q.
+Ww X
+mn wl
+‘Xo KX yx! uniform magnetic field
+Figure 9.1 i °2 ¥ :
+’ 1X X f xX xX a of 0.03 T into the paper
+1X X XY XK x4
+1X X X X Xt
+When the metal loop is entering the magnetic field, a current of 0.01 A flows in the loop.
+(a) On Figure 9.1, indicate the direction of this current. (1 mark)
+*(b) Find v. (2 marks)
+s S
+3 3

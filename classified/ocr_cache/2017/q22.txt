@@ -1,0 +1,14 @@
+22. In the figure, two charged conducting spheres of the same mass m are put in a vertical plastic cylinder.
+The inner wall of the cylinder is smooth. The spheres are separated by a distance d and remain in
+equilibrium.
+
+i
+NA)
+Which of the following statements MUST BE correct ?
+qd) Both spheres carry positive charges.
+(2) The amount of charges on the two spheres is the same.
+(3) The separation d depends on m.
+A. (1) only
+B. (3) only
+Cc. (1) and (2) only
+Dz. (2) and (3) only

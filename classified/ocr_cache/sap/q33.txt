@@ -1,0 +1,8 @@
+*33, Power is transmitted over long distances at high alternating voltages. Which statements are correct ?
+(1) Alternating voltages can be stepped up or down efficiently by transformers.
+(2) Fora given transmitted power, the current will be reduced if a high voltage is adopted.
+(3) The power loss in the transmission cables will be reduced if a high voltage is adopted.
+A. (1)and (2) only
+B. (1) and (3) only
+C. (2) and (3) only
+D. (1), 2) and (3)

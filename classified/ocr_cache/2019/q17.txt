@@ -1,0 +1,9 @@
+17. Peter is standing next to the door of a room. He can hear the sound emitted by the television inside the
+room but cannot see the television pictures. Which of the following is/are the possible reason(s) ?
+qd) Sound wave diffracts while light wave does not.
+(2) Sound wave is mechanical in nature while light wave is electromagnetic.
+(3) Sound wave has a much longer wavelength than visible light.
+A. (1) only
+B. (3) only
+c. (1) and (2) only
+D. (2) and (3) only

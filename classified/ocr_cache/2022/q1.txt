@@ -1,0 +1,8 @@
+1. A well-insulated vessel with negligible heat capacity contains warm water at 45°C. The temperature of
+warm water drops by 5°C after mixing with 50 g water at temperature 0 °C added to the vessel. Find the
+original mass of warm water in the vessel.
+
+A. 400 g
+B. 450g
+[on 500 g
+D. 550g

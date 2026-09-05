@@ -1,0 +1,13 @@
+27.
+magnetic field of 0.8 T
+ae veree I
+3cm : 3cm
+wire loop with current 0.1 A 3m
+billet hee kee
+An equilateral triangular wire loop with sides of 3 cm is placed in a uniform magnetic field of 0.8 T. One
+of the sides of the loop is parallel to the field as shown. A current of 0.1 A flows through the loop. Find
+the net magnetic force acting on the loop.
+A. ON
+B. 2.8 = 103N
+c. 5.6 * 10°N
+Dz 7.6 = 103N

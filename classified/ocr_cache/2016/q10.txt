@@ -1,0 +1,15 @@
+*10.
+[fet TT TI
+[| | fel [|
+FEEEE
+tty TT fe |
+12semf TT TTT |
+125 om
+The above stroboscopic picture shows a particle projected horizontally at position P into the air in a
+vertical plane. Subsequently the particle reaches positions Q and R such that the time interval between
+P and Q is equal to that between Q and R. Each square of the grid measures 1.25 cm x 1.25 cm. Find
+the particle’s speed of projection at P. Neglect air resistance. (g = 9.81 ms”)
+A. 0.3ms?
+B. 04mst
+c. 0.5ms
+D. 0.6ms"

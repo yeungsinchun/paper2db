@@ -1,0 +1,578 @@
+[
+  {
+    "Year": 2016,
+    "Question": 7,
+    "sections": [
+      5
+    ],
+    "reason": "Deceleration from given initial speed and stopping distance via kinematics (v^2=u^2+2as); angle not needed."
+  },
+  {
+    "Year": 2016,
+    "Question": 8,
+    "sections": [
+      8
+    ],
+    "reason": "Gravitational potential energy U versus time for free fall from rest."
+  },
+  {
+    "Year": 2016,
+    "Question": 9,
+    "sections": [
+      8
+    ],
+    "reason": "Work done by crane lifting/moving a load between two points (steady motion)."
+  },
+  {
+    "Year": 2016,
+    "Question": 10,
+    "sections": [
+      10
+    ],
+    "reason": "Stroboscopic horizontal projection; find launch speed from equal time intervals (projectile)."
+  },
+  {
+    "Year": 2016,
+    "Question": 11,
+    "sections": [
+      7
+    ],
+    "reason": "Uniform metre rule supported by wires with hung weight; moments/tension equilibrium."
+  },
+  {
+    "Year": 2016,
+    "Question": 12,
+    "sections": [
+      9
+    ],
+    "reason": "Head-on collision of marbles; momentum conservation and related KE statements."
+  },
+  {
+    "Year": 2016,
+    "Question": 13,
+    "sections": [
+      11
+    ],
+    "reason": "Particles on rotating horizontal platform; ratio of centripetal accelerations (UCM)."
+  },
+  {
+    "Year": 2016,
+    "Question": 14,
+    "sections": [
+      12
+    ],
+    "reason": "Satellite circular orbit period from Earth mass and orbital radius (gravitation)."
+  },
+  {
+    "Year": 2016,
+    "Question": 15,
+    "sections": [
+      13
+    ],
+    "reason": "Snapshot of transverse wave on a string; particle motion directions/amplitudes."
+  },
+  {
+    "Year": 2016,
+    "Question": 16,
+    "sections": [
+      13
+    ],
+    "reason": "Water-wave crest spacing and crest-to-trough time; find wave speed (v=f lambda)."
+  },
+  {
+    "Year": 2016,
+    "Question": 17,
+    "sections": [
+      18
+    ],
+    "reason": "Ray from water through glass into air along interface; refractive index/critical refraction."
+  },
+  {
+    "Year": 2016,
+    "Question": 18,
+    "sections": [
+      15
+    ],
+    "reason": "Stationary wave on string with vibrator; effect of doubling frequency on wavelength/phase."
+  },
+  {
+    "Year": 2016,
+    "Question": 19,
+    "sections": [
+      14
+    ],
+    "reason": "When diffraction of light occurs (pinhole, edge, slit)."
+  },
+  {
+    "Year": 2016,
+    "Question": 20,
+    "sections": [
+      18
+    ],
+    "reason": "White light separated by glass prism because colours travel at different speeds in glass (dispersion/refraction)."
+  },
+  {
+    "Year": 2016,
+    "Question": 21,
+    "sections": [
+      15
+    ],
+    "reason": "Two in-phase loudspeakers; path difference and maximum/minimum loudness (interference)."
+  },
+  {
+    "Year": 2016,
+    "Question": 22,
+    "sections": [
+      19
+    ],
+    "reason": "Object approaching a convex lens; image motion and speed relative to object."
+  },
+  {
+    "Year": 2016,
+    "Question": 23,
+    "sections": [
+      16
+    ],
+    "reason": "Applications of ultrasound (sterilizing, crack detection, kidney stones)."
+  },
+  {
+    "Year": 2016,
+    "Question": 24,
+    "sections": [
+      20
+    ],
+    "reason": "Where electric fields of two fixed point charges +4Q and +Q are equal."
+  },
+  {
+    "Year": 2016,
+    "Question": 25,
+    "sections": [
+      21
+    ],
+    "reason": "Circuit with series/parallel resistors and variable R; resistance range between terminals."
+  },
+  {
+    "Year": 2016,
+    "Question": 26,
+    "sections": [
+      21
+    ],
+    "reason": "Parallel filament bulbs brightness; charge flow, energy dissipated, and pd per charge."
+  },
+  {
+    "Year": 2016,
+    "Question": 27,
+    "sections": [
+      21
+    ],
+    "reason": "Network of identical bulbs; which burns out first as supply voltage rises."
+  },
+  {
+    "Year": 2016,
+    "Question": 28,
+    "sections": [
+      22
+    ],
+    "reason": "TV stand-by power over a month and CO2 emission from electricity (domestic energy use)."
+  },
+  {
+    "Year": 2016,
+    "Question": 29,
+    "sections": [
+      24
+    ],
+    "reason": "Search coil measuring B inside a long solenoid on a.c.; accuracy of induction-based measurement."
+  },
+  {
+    "Year": 2016,
+    "Question": 30,
+    "sections": [
+      22
+    ],
+    "reason": "Sinusoidal a.c.; effect of changing frequency and peak voltage on r.m.s. voltage."
+  },
+  {
+    "Year": 2016,
+    "Question": 31,
+    "sections": [
+      24
+    ],
+    "reason": "Transformer primary current and secondary bulbs at rated values; find efficiency."
+  },
+  {
+    "Year": 2016,
+    "Question": 32,
+    "sections": [
+      25
+    ],
+    "reason": "Properties of ionizing radiations (alpha, beta, gamma): ionizing power, shielding, deflection."
+  },
+  {
+    "Year": 2016,
+    "Question": 33,
+    "sections": [
+      26
+    ],
+    "reason": "Two radionuclides with different half-lives; initial undecayed ratio after equal remaining numbers."
+  },
+  {
+    "Year": 2017,
+    "Question": 1,
+    "sections": [
+      2
+    ],
+    "reason": "Mixing milk and coffee; final temperature from specific heat capacities (calorimetry)."
+  },
+  {
+    "Year": 2017,
+    "Question": 2,
+    "sections": [
+      3
+    ],
+    "reason": "Temperature-time heating graphs; compare melting points and specific latent heats of fusion."
+  },
+  {
+    "Year": 2017,
+    "Question": 3,
+    "sections": [
+      3
+    ],
+    "reason": "Internal energy changes for melting, condensation, and evaporation (change of state)."
+  },
+  {
+    "Year": 2017,
+    "Question": 4,
+    "sections": [
+      4
+    ],
+    "reason": "Ideal gas: volume halved and temperature raised; find new pressure (combined gas law)."
+  },
+  {
+    "Year": 2017,
+    "Question": 5,
+    "sections": [
+      5
+    ],
+    "reason": "Conceptual statements about path, average velocity, velocity, and acceleration (motion)."
+  },
+  {
+    "Year": 2017,
+    "Question": 6,
+    "sections": [
+      5
+    ],
+    "reason": "Block released on incline; acceleration from distance in first 3 s under uniform acceleration."
+  },
+  {
+    "Year": 2017,
+    "Question": 7,
+    "sections": [
+      6
+    ],
+    "reason": "Free-body diagram of block at rest on rough incline (weight, normal, friction)."
+  },
+  {
+    "Year": 2017,
+    "Question": 8,
+    "sections": [
+      7
+    ],
+    "reason": "Selfie stick held horizontally; find hand force using moments/equilibrium."
+  },
+  {
+    "Year": 2017,
+    "Question": 9,
+    "sections": [
+      10
+    ],
+    "reason": "Marbles projected horizontally from different heights; flight time, range, PE, acceleration."
+  },
+  {
+    "Year": 2017,
+    "Question": 10,
+    "sections": [
+      8
+    ],
+    "reason": "Atwood-like pulley system; speed of Y just before hitting ground (energy/dynamics of connected masses)."
+  },
+  {
+    "Year": 2017,
+    "Question": 11,
+    "sections": [
+      8
+    ],
+    "reason": "Lifting a block vertically vs along incline at same speed; tension, power, and work comparison."
+  },
+  {
+    "Year": 2017,
+    "Question": 12,
+    "sections": [
+      9
+    ],
+    "reason": "Bubble soccer reduces injury by lengthening impact time (impulse/momentum)."
+  },
+  {
+    "Year": 2017,
+    "Question": 13,
+    "sections": [
+      12
+    ],
+    "reason": "Object falling from far away toward a planet; v-t graph under increasing gravitational field."
+  },
+  {
+    "Year": 2017,
+    "Question": 14,
+    "sections": [
+      13
+    ],
+    "reason": "Longitudinal wave particle displacements after 1 s; wavelength/period/particle motion."
+  },
+  {
+    "Year": 2017,
+    "Question": 15,
+    "sections": [
+      16
+    ],
+    "reason": "Experiment measuring speed of sound with two microphones and a timer."
+  },
+  {
+    "Year": 2017,
+    "Question": 16,
+    "sections": [
+      14
+    ],
+    "reason": "Plane water waves changing wavelength between regions X and Y (wave refraction)."
+  },
+  {
+    "Year": 2017,
+    "Question": 17,
+    "sections": [
+      14
+    ],
+    "reason": "When wave travel direction must change: reflection, entering new medium, diffraction at gap."
+  },
+  {
+    "Year": 2017,
+    "Question": 18,
+    "sections": [
+      16
+    ],
+    "reason": "Same pitch and loudness but different instruments; quality/waveform of sound."
+  },
+  {
+    "Year": 2017,
+    "Question": 19,
+    "sections": [
+      19
+    ],
+    "reason": "Concave lens image data; replace with convex lens of same |f|; image nature and distance."
+  },
+  {
+    "Year": 2017,
+    "Question": 20,
+    "sections": [
+      15
+    ],
+    "reason": "Diffraction-grating bright fringes; orders and effect of medium on angle (interference)."
+  },
+  {
+    "Year": 2017,
+    "Question": 21,
+    "sections": [
+      16
+    ],
+    "reason": "Compare sound and light speeds in water versus in air."
+  },
+  {
+    "Year": 2017,
+    "Question": 22,
+    "sections": [
+      20
+    ],
+    "reason": "Two charged conducting spheres in equilibrium in a vertical cylinder (electrostatics)."
+  },
+  {
+    "Year": 2017,
+    "Question": 23,
+    "sections": [
+      20
+    ],
+    "reason": "Electric field strength along axis of a fixed point charge."
+  },
+  {
+    "Year": 2017,
+    "Question": 24,
+    "sections": [
+      21
+    ],
+    "reason": "Identical-resistor network; potential difference between X and Y."
+  },
+  {
+    "Year": 2017,
+    "Question": 25,
+    "sections": [
+      22
+    ],
+    "reason": "Correct use of a fuse in domestic wiring/appliances (neutral, double insulation, rating)."
+  },
+  {
+    "Year": 2017,
+    "Question": 26,
+    "sections": [
+      23
+    ],
+    "reason": "Simple d.c. motor coil between magnet poles; turning effect and forces on sides."
+  },
+  {
+    "Year": 2017,
+    "Question": 27,
+    "sections": [
+      24
+    ],
+    "reason": "Eddy current in rotating metal disc in magnetic field; what increases the current."
+  },
+  {
+    "Year": 2017,
+    "Question": 28,
+    "sections": [
+      24
+    ],
+    "reason": "Rod sliding on rails in B-field; magnitude and direction of induced current."
+  },
+  {
+    "Year": 2017,
+    "Question": 29,
+    "sections": [
+      22
+    ],
+    "reason": "Heater on mains; peak voltage, power from r.m.s., and effect of doubling V_rms."
+  },
+  {
+    "Year": 2017,
+    "Question": 30,
+    "sections": [
+      24
+    ],
+    "reason": "Transformer feeding parallel bulbs; efficiency and current drawn from mains."
+  },
+  {
+    "Year": 2017,
+    "Question": 31,
+    "sections": [
+      25
+    ],
+    "reason": "Deflection of alpha and beta particles in a uniform magnetic field."
+  },
+  {
+    "Year": 2017,
+    "Question": 32,
+    "sections": [
+      25
+    ],
+    "reason": "Comparing beta particles and gamma rays (ionization, vacuum travel, detection, charge)."
+  },
+  {
+    "Year": 2017,
+    "Question": 33,
+    "sections": [
+      27
+    ],
+    "reason": "U-238 alpha decay; mass defect and energy released (nuclear energy), not half-life uses."
+  },
+  {
+    "Year": 2018,
+    "Question": 1,
+    "sections": [
+      1
+    ],
+    "reason": "Vacuum flask silvered surfaces to reduce heat transfer by radiation."
+  },
+  {
+    "Year": 2018,
+    "Question": 2,
+    "sections": [
+      1
+    ],
+    "reason": "Lake surface freezes but water below survives; heat insulation / thermal properties of ice-water."
+  },
+  {
+    "Year": 2018,
+    "Question": 3,
+    "sections": [
+      1
+    ],
+    "reason": "Best explanation of the iced-lake phenomenon (ice as heat insulator)."
+  },
+  {
+    "Year": 2018,
+    "Question": 4,
+    "sections": [
+      1
+    ],
+    "reason": "Options on ice insulation, freezing point, soil heat, latent heat explaining lake survival."
+  },
+  {
+    "Year": 2018,
+    "Question": 5,
+    "sections": [
+      2
+    ],
+    "reason": "Milk added to tea; molecular KE/PE and energy conservation in mixing (heat capacity/calorimetry)."
+  },
+  {
+    "Year": 2018,
+    "Question": 6,
+    "sections": [
+      7
+    ],
+    "reason": "Light rod hinged to wall with string and weight; direction of hinge reaction (moments/equilibrium)."
+  },
+  {
+    "Year": 2018,
+    "Question": 7,
+    "sections": [
+      5
+    ],
+    "reason": "Two blocks' positions at equal time intervals; whether they ever share the same instantaneous speed."
+  },
+  {
+    "Year": 2018,
+    "Question": 8,
+    "sections": [
+      6
+    ],
+    "reason": "Block on smooth incline; how acceleration changes when applied force doubles (Newton's 2nd law)."
+  },
+  {
+    "Year": 2018,
+    "Question": 9,
+    "sections": [
+      5
+    ],
+    "reason": "Particle reverses direction at same speed; magnitude of average acceleration over 0.2 s."
+  },
+  {
+    "Year": 2018,
+    "Question": 10,
+    "sections": [
+      5
+    ],
+    "reason": "Train accelerates then decelerates with speed limit; shortest trip time (kinematics)."
+  },
+  {
+    "Year": 2018,
+    "Question": 11,
+    "sections": [
+      5
+    ],
+    "reason": "Bead on smooth incline; separation PQ from velocity-time graph."
+  },
+  {
+    "Year": 2018,
+    "Question": 12,
+    "sections": [
+      9
+    ],
+    "reason": "Object explodes into two fragments in flight; velocities from momentum conservation."
+  }
+]

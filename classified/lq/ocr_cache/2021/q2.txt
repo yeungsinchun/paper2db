@@ -1,0 +1,26 @@
+2. A diver makes a sound by tapping a metal cylinder at sea level. Within a time of 0.04 s, the sound goes vertically
+to the seabed 30 m below and echoes back to the sea level.
+(a) Estimate the speed of sound in sea water. (2 marks)
+meres wnt ~~~ 4- sea level (1.0 atm, 27 °C)
+metal cylinder of 72 N h
+compressed gas (rE
+Figure 2.1 (0.012 m?, 18.5 atm) 9 2-0 m
+
+3 3
+| The metal cylinder of volume 0.012 m? contains compressed gas under a pressure of 18.5 atm is initially at sea | 5
+E level, where the pressure is 1.0 atm and the temperature is 27°C. The diver then brings the cylinder to the E
+2 seabed where the pressure is 4.0 atm and the temperature is 20 °C. Assume that the volume of the cylinder 2
+g remains unchanged. Given: atmospheric pressure 1.0 atm = 1.01 x 10° Pa i}
+3 *(b)(i) Show that at the seabed the pressure in the cylinder becomes 18.1 atm. (1 mark) 2
+g =
+| =
+so] we ee ee ee ree ee ee ee ee eee eee Ss
+& &
+3 s
+=| ra
+oO wee eeeeee 7 . eee eee ee cee eee eee . OQ
+3 3
+s A
+A I
+
+(ii) Explain the pressure drop in the cylinder using the kinetic theory. (2 marks)

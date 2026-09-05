@@ -1,0 +1,9 @@
+11.
+displacement
+o| x vA 18N\ * time / ms
+The displacement-time graph of a particle on a travelling wave is as shown. Find the frequency of the
+wave.
+A. 55.6 Hz
+B. 62.5 Hz
+c. 111 Hz
+D. 125 Hz

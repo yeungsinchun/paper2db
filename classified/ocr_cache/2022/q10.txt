@@ -1,0 +1,17 @@
+10. wall
+——>
+30N
+‘ound
+
+On a horizontal ground there is a block attached with a smooth light pulley as shown. A light and
+inextensible horizontal string, with one end fixed to a wall, passes the pulley. A man exerts a horizontal
+force of 30 N at the other end of the string and pulls a distance of 4 m. Find the work done by the man
+if the ground exerts a frictional force of 10 N on the block.
+
+A. 203
+
+B. 805
+
+c. 100J
+
+D. 1203

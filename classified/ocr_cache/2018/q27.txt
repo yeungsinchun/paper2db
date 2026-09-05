@@ -1,0 +1,14 @@
+27. A straight wire carrying a current / pointing out of the paper is placed in a uniform magnetic field
+between two pole pieces as shown. At which point, P, Q, R or S, can the resultant magnetic field be
+zero? Neglect the effects of the Earth’s magnetic field.
+
+x
+\ Q ys ;
+N South pole x {0} x \ North pole
+N WS
+: \
+R
+A. P
+B. Q
+Cc. R
+Dz. Ss

@@ -1,0 +1,13 @@
+28. Which statement is NOT a reason why mains sockets at home are connected in parallel instead of a
+series circuit ?
+
+A. Electrical appliances connected to different sockets can be switched on or off
+independently.
+
+B. Voltage supplied to each socket is fixed and all electrical appliances can operate at
+their rated voltages.
+
+Cc. The current supplied can be reduced and thinner cables can then be used.
+
+D. When an electrical appliance breaks down and becomes an open circuit, other
+appliances can still work normally.

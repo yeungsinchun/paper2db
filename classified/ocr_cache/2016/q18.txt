@@ -1,0 +1,16 @@
+18. A string is tied to a vibrator while the other end is fixed to a wall. A stationary wave is formed as
+shown.
+wall
+x
+vibrator Y
+a
+
+Which statement is correct when the frequency of the vibrator doubles ?
+
+A. The wavelength will double.
+
+B. The wave speed will double.
+
+Cc. The amplitude will be halved.
+
+D. Particles X and Y will become vibrating in phase.

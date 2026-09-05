@@ -1,0 +1,17 @@
+23. Positive point charges X, Y and Z are placed along a straight line with Y at the mid-point between X and Z.
+Assume that the only interaction among them is the electrostatic force.
+4N IN.
+
+At the instant shown, the net forces acting on X and Y respectively are 4 N and | N both towards the
+left. At that instant, which statements about Z are correct ?
+(dl) The net force acting on Z is towards the right.
+(2) The net force acting on Z is 5 N in magnitude.
+(3) The charge of Z must be larger than that of X.
+
+A. (1) and (2) only
+
+B. (1) and (3) only
+
+(on (2) and (3) only
+
+D. (1), (2) and (3)

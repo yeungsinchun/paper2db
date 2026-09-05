@@ -1,0 +1,14 @@
+*10.
+as <<
+12... ee
+tl MD
+The figure shows the rear view of a car of mass m which travels along a circular road banked with an
+angle @ to the horizontal. The car moves at a certain speed such that it experiences no frictional force
+along the inclined surface. Which of the following represents the centripetal force on the car ?
+A. mgsin 0
+B. mgsin Ocos 0
+mgcos 0
+ron mes”
+sin@
+D. mgsin 0
+cos 0

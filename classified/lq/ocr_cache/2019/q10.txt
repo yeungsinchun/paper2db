@@ -1,0 +1,28 @@
+10. (a) The equation below represents nuclear fission of uranium-235 (U-235).
+Ut gn > Bat 3¢Kr+xqn+200 MeV
+(i) What is the value of x ? (1 mark)
+(ii) State a necessary condition for chain reaction of fission to occur. (1 mark)
+Scientists found evidence in Oklo, Africa that natural nuclear fission occurred two billion (2 x 10°) years ago.
+The uranium mineral ore mined from Oklo at present is found to have 0.6% concentration by mass of U-235
+(see the table below), which is much lower than usual.
+(b) The table gives the information of U-235 and U-238 in a sample of uranium mineral ore found in Oklo.
+Given: half-life of U-235 = 7.04 x 10° years
+iE U-235 0.060 kg (i.e. 0.6% concentration by mass) E
+U-238 13.556 kg 9.940 kg (i.e. 99.4% concentration by mass)
+8 2
+3 *(i) Estimate the amount mp (in kg) of U-235 in the sample 2 x 10° years ago. (2 marks) 3
+= CME ATT PIAA ACI CTC NCTC CRRA TES CRERRTRSEWEER RSET RERERE TACT REE Y ENGR SS RRR SSR RNEaeeS =]
+E E
+o o
+a= a=
+5 5
+< <
+(ii) Hence determine whether natural nuclear fission of U-235 was possible 2 x 10° years ago. For
+fission of U-235 to happen, its concentration by mass in the uranium mineral ore has to be at
+least 3%. (1 mark)
+Answers written in the margins will not be marked.
+There must be underground water in the vicinity of this uranium-rich mineral deposit for natural nuclear
+fission to be possible. Since water can slow down the fast neutrons from fission, these neutrons can easily be
+captured by U-235.
+(c) In fact the chain reaction stopped even before the concentration by mass of U-235 dropped to 3%.
+Explain why this occurred. (2 marks)

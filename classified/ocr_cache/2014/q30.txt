@@ -1,0 +1,10 @@
+“30. When a heater is connected to a d.c. voltage of 10 V, the power dissipated is P. If the heater is
+connected to a sinusoidal a.c., the power dissipated becomes 3P . What is the rm.s. voltage of this a.c.
+source ? Assume that the resistance of the heater is constant.
+
+A. sv
+
+B. 5¥2V
+Cc. 10V
+
+D. —-10V2V

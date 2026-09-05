@@ -1,0 +1,19 @@
+22.
+principal axis
+x Y
+20cm
+
+A point light source at X on the principal axis of a thin convex lens emits a ray of light. The ray passes
+through the lens and reaches the principal axis at point Y as shown. O is the optical centre of the lens
+such that OX = 20 cm and OY > OX. Which of the following statements is/are correct ?
+(1) The focal length of the lens is shorter than 20 cm.
+(2) Ifthe point light source is shifted away from the lens, separation OY would increase.
+(3) An object placed at Y would give a diminished image at X.
+
+A. (1) only
+
+B. (2) only
+
+Cc. (1) and (3) only
+
+D. (2) and (3) only

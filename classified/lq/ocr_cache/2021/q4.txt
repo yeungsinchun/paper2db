@@ -1,0 +1,29 @@
+4. A trolley is connected to a hanger of mass 20 g by a light inextensible string as shown in Figure 4.1. Four slotted
+weights, each of mass 20 g, are loaded onto the trolley. The experiment is designed to investigate the relationship
+between the net force acting on the system (trolley and slotted weights with hanger) and its acceleration. The
+acceleration a is measured after the trolley is released on the smooth horizontal runway.
+
+slotted weights
+4 trolley
+horizontal runway O—O> Hight pulley
+Figure 4.1 emma cea |
+hanger (20 g)
+3 The experiment is repeated by transferring the slotted weights one by one from the trolley to the hanger soasto | 3
+x increase the mass hanging, m. Re]
+a 3
+& &
+3 no. of weights 1 2 3 4 2
+g transferred to the hanger iS
+7 mass hanging 0.020 0.040 0.060 0.080 0.100
+a mike Ke}
+Ei Sh
+co) Ss
+& =
+I The results obtained are used for plotting a graph of a against m as shown below. Neglect both air resistance R=
+s and the frictional forces acting on the trolley. (g = 9.81 ms”) aq
+5 5
+E a against m m
+= a/ms? 6 =
+€ po a &
+es a ee ce ee ce ae a ae ae a a a es a ae a as ae. Cn ae aa ae
+poppe _ ae [Tt

@@ -1,0 +1,15 @@
+17.
+eects eee
+air
+
+A parallel-sided glass sheet separates water from air. A ray of light in water is incident at an angle @ on
+the glass sheet and finally emerges into air along the glass-air interface as shown. Find 6.
+Given: refractive index of water is 1.33.
+
+A. 41.2°
+
+B. 48.8°
+
+c. 53.1°
+
+D. It depends on the refractive index of glass.
