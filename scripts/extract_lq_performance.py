@@ -3,6 +3,7 @@
 
 Reads OCR markdown under paper/performance/<year> performance.md and writes
 classified/lq/candidate_performance.json keyed by year -> question -> text.
+--years merges selected years into any existing JSON; other years are kept.
 """
 from __future__ import annotations
 

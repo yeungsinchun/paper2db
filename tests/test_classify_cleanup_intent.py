@@ -602,6 +602,69 @@ class TestLqKeywordsYearsMerge(unittest.TestCase):
             self.assertEqual(kept.read_bytes(), b"OLD-2013")
 
 
+class TestLqPerformanceYearsMerge(unittest.TestCase):
+    """extract_lq_performance --years must merge into existing JSON."""
+
+    def test_years_filter_preserves_other_year_notes(self) -> None:
+        import extract_lq_performance as perf
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            perf_dir = root / "paper" / "performance"
+            out = root / "classified" / "lq" / "candidate_performance.json"
+            perf_dir.mkdir(parents=True)
+            out.parent.mkdir(parents=True)
+
+            def write_year_md(year: str, note: str) -> None:
+                (perf_dir / f"{year} performance.md").write_text(
+                    "\n".join(
+                        [
+                            "## Paper 1",
+                            "### Section B",
+                            "#### Question 1",
+                            f"**Performance in General:** {note}",
+                            "",
+                            "## Paper 2",
+                            "### Section A",
+                        ]
+                    )
+                    + "\n",
+                    encoding="utf-8",
+                )
+
+            write_year_md("2013", "kept-other-year")
+            write_year_md("2024", "updated-2024")
+            out.write_text(
+                json.dumps(
+                    {
+                        "2013": {"1": "old-2013"},
+                        "2024": {"1": "old-2024"},
+                        "2025": {"1": "untouched-source-missing"},
+                    },
+                    indent=2,
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+
+            with (
+                mock.patch.object(perf, "PERF_DIR", perf_dir),
+                mock.patch.object(perf, "OUT", out),
+                mock.patch.object(
+                    sys,
+                    "argv",
+                    ["extract_lq_performance.py", "--years", "2024"],
+                ),
+            ):
+                perf.main()
+
+            data = json.loads(out.read_text(encoding="utf-8"))
+            self.assertEqual(set(data), {"2013", "2024", "2025"})
+            self.assertEqual(data["2013"]["1"], "old-2013")
+            self.assertEqual(data["2025"]["1"], "untouched-source-missing")
+            self.assertEqual(data["2024"]["1"], "updated-2024")
+
+
 class TestPreprocessPreservesCrops(unittest.TestCase):
     """pages-only preprocess must not delete existing question crops."""
 
