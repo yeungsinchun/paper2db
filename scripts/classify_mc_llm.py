@@ -3,16 +3,16 @@
 """Classify MC questions into Book 1-5 / Sections 1-27 using an LLM.
 
 Pipeline:
-  1. Reuse / refresh OCR from output/ PNGs (tesseract cache under classified/ocr_cache)
+  1. Reuse / refresh OCR from output/ PNGs (tesseract cache under classified/mc/ocr_cache)
   2. Call an OpenAI-compatible chat API one question (or small batch) at a time
-  3. Write classified/<book>/<section>/ PNG copies plus:
-       classified/mc_classification.csv
-       classified/mc_classification.json
-       classified/uncertain.csv
-       classified/summary.json
+  3. Write classified/mc/<book>/<section>/ PNG copies plus:
+       classified/mc/classification.csv|json
+       classified/mc/uncertain.csv
+       classified/mc/summary.json
+       classified/mc_classification.csv|json  (top-level split naming)
   4. Optionally rebuild per-section combined.pdf (easiest -> hardest) + answer.pdf
 
-Partial --years/--limit runs merge into existing mc_ocr.* / mc_classification.*
+Partial --years/--limit runs merge into existing mc_ocr.* / classification.*
 and only refresh touched section PNGs. A full apply aborts if decisions do not
 cover every OCR record (no Section 5 stubs for gaps).
 
@@ -22,7 +22,7 @@ Env:
   LLM_MODEL     (default meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo)
 
 You can also apply a precomputed JSON of LLM decisions:
-  python scripts/classify_mc_llm.py --from-json classified/llm_classifications.json
+  python scripts/classify_mc_llm.py --from-json classified/mc/llm_classifications.json
 """
 from __future__ import annotations
 
@@ -45,8 +45,14 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "output"
-CLASSIFIED = ROOT / "classified"
+CLASSIFIED = ROOT / "classified" / "mc"
 OCR_CACHE = CLASSIFIED / "ocr_cache"
+
+
+def top_level_mc_paths() -> tuple[Path, Path]:
+    """Top-level mc_classification.* live beside classified/mc/ (or in CLASSIFIED when tests patch it)."""
+    root = CLASSIFIED.parent if CLASSIFIED.name == "mc" else CLASSIFIED
+    return root / "mc_classification.json", root / "mc_classification.csv"
 
 YEAR_ORDER = [
     "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020",
@@ -397,10 +403,23 @@ def clear_section_pngs(touched_keys: set[tuple[str, int]] | None) -> None:
 
 
 def load_existing_classification_rows() -> list[dict]:
-    path = CLASSIFIED / "mc_classification.json"
-    if path.exists():
-        return json.loads(path.read_text(encoding="utf-8"))
+    top_json, _top_csv = top_level_mc_paths()
+    for path in (CLASSIFIED / "classification.json", top_json):
+        if path.exists():
+            return json.loads(path.read_text(encoding="utf-8"))
     return []
+
+
+def write_mc_classification(rows: list[dict], fieldnames: list[str]) -> None:
+    payload = json.dumps(rows, indent=2, ensure_ascii=False) + "\n"
+    (CLASSIFIED / "classification.json").write_text(payload)
+    top_json, top_csv = top_level_mc_paths()
+    top_json.write_text(payload)
+    for path in (CLASSIFIED / "classification.csv", top_csv):
+        with path.open("w", newline="", encoding="utf-8") as fh:
+            writer = csv.DictWriter(fh, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
 
 
 def build_classification_row(record: dict, decision: dict) -> dict:
@@ -483,13 +502,7 @@ def apply_classifications(
         writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(uncertain_rows)
-    (CLASSIFIED / "mc_classification.json").write_text(
-        json.dumps(rows, indent=2, ensure_ascii=False) + "\n"
-    )
-    with (CLASSIFIED / "mc_classification.csv").open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
+    write_mc_classification(rows, fieldnames)
 
     merged_buckets: dict[int, int] = defaultdict(int)
     for row in rows:

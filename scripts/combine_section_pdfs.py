@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write per-section question + answer PDFs under classified/.
+"""Write per-section question + answer PDFs under classified/mc/.
 
 For each section folder:
   - combined.pdf: question PNGs sorted easiest -> hardest by Correct %
@@ -18,7 +18,7 @@ from pathlib import Path
 import pymupdf as fitz
 
 ROOT = Path(__file__).resolve().parents[1]
-CLASSIFIED = ROOT / "classified"
+CLASSIFIED = ROOT / "classified" / "mc"
 DEFAULT_KEYS = ROOT / "processed" / "MC" / "answer_keys.json"
 
 PNG_RE = re.compile(r"^(?P<year>\d{4}|pp|sap)_q(?P<q>\d+)\.png$", re.I)

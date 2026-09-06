@@ -107,14 +107,15 @@ class TestPaperRenameAndNewYears(unittest.TestCase):
 
 
 class TestMcLlmWriterOutputs(unittest.TestCase):
-    """classify_mc_llm.apply_classifications writes only mc_* split names."""
+    """classify_mc_llm.apply_classifications writes nested + top-level MC names."""
 
     def test_apply_classifications_writes_mc_names_as_list(self) -> None:
         import classify_mc_llm as m
 
         with tempfile.TemporaryDirectory() as tmp:
-            classified = Path(tmp) / "classified"
-            classified.mkdir()
+            root = Path(tmp) / "classified"
+            classified = root / "mc"
+            classified.mkdir(parents=True)
             for _n, book, folder, _name in m.SECTIONS:
                 (classified / book / folder).mkdir(parents=True, exist_ok=True)
 
@@ -140,12 +141,13 @@ class TestMcLlmWriterOutputs(unittest.TestCase):
             with mock.patch.object(m, "CLASSIFIED", classified):
                 m.apply_classifications(records, decisions)
 
-            names = {p.name for p in classified.iterdir() if p.is_file()}
-            self.assertIn("mc_classification.json", names)
-            self.assertIn("mc_classification.csv", names)
-            self.assertNotIn("classification.json", names)
-            self.assertNotIn("classification.csv", names)
-            payload = json.loads((classified / "mc_classification.json").read_text())
+            nested = {p.name for p in classified.iterdir() if p.is_file()}
+            top = {p.name for p in root.iterdir() if p.is_file()}
+            self.assertIn("classification.json", nested)
+            self.assertIn("classification.csv", nested)
+            self.assertIn("mc_classification.json", top)
+            self.assertIn("mc_classification.csv", top)
+            payload = json.loads((root / "mc_classification.json").read_text())
             self.assertIsInstance(payload, list)
             self.assertEqual(payload[0]["PrimarySection"], 2)
             self.assertEqual(payload[0]["Reason"], "heat capacity")

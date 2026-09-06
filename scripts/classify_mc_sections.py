@@ -3,13 +3,13 @@
 """Classify output/ MC PNGs into Book 1-5 / Sections 1-27.
 
 Writes:
-  classified/<book>/<NN_section>/  (PNG copies; cross-topic Qs appear in each)
-  classified/uncertain.csv
-  classified/mc_classification.csv
-  classified/mc_classification.json
-  classified/summary.json
+  classified/mc/<book>/<NN_section>/  (PNG copies; cross-topic Qs appear in each)
+  classified/mc/uncertain.csv
+  classified/mc/classification.csv|json
+  classified/mc/summary.json
+  classified/mc_classification.csv|json  (top-level split naming)
 
---years merges into existing mc_ocr.* / mc_classification.* and only refreshes
+--years merges into existing mc_ocr.* / classification.* and only refreshes
 touched section PNGs (same shared MC paths as classify_mc_llm.py).
 """
 from __future__ import annotations
@@ -28,8 +28,13 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "output"
-CLASSIFIED = ROOT / "classified"
+CLASSIFIED = ROOT / "classified" / "mc"
 OCR_CACHE = CLASSIFIED / "ocr_cache"
+
+
+def top_level_mc_paths() -> tuple[Path, Path]:
+    root = CLASSIFIED.parent if CLASSIFIED.name == "mc" else CLASSIFIED
+    return root / "mc_classification.json", root / "mc_classification.csv"
 
 YEAR_ORDER = [
     "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020",
@@ -521,10 +526,23 @@ def clear_section_pngs(touched_keys: set[tuple[str, int]] | None) -> None:
 
 
 def load_existing_classification_rows() -> list[dict]:
-    path = CLASSIFIED / "mc_classification.json"
-    if path.exists():
-        return json.loads(path.read_text(encoding="utf-8"))
+    top_json, _top_csv = top_level_mc_paths()
+    for path in (CLASSIFIED / "classification.json", top_json):
+        if path.exists():
+            return json.loads(path.read_text(encoding="utf-8"))
     return []
+
+
+def write_mc_classification(rows: list[dict], fieldnames: list[str]) -> None:
+    payload = json.dumps(rows, indent=2, ensure_ascii=False) + "\n"
+    (CLASSIFIED / "classification.json").write_text(payload)
+    top_json, top_csv = top_level_mc_paths()
+    top_json.write_text(payload)
+    for path in (CLASSIFIED / "classification.csv", top_csv):
+        with path.open("w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
 
 
 def ensure_tree() -> None:
@@ -550,10 +568,11 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--years", nargs="*", default=None)
     parser.add_argument("--workers", type=int, default=6)
-    parser.add_argument("--skip-ocr", action="store_true", help="Reuse classified/mc_ocr.json if present")
+    parser.add_argument("--skip-ocr", action="store_true", help="Reuse classified/mc/mc_ocr.json if present")
     args = parser.parse_args()
 
     ensure_tree()
+    OCR_CACHE.mkdir(parents=True, exist_ok=True)
     ocr_json = CLASSIFIED / "mc_ocr.json"
     ocr_full_json = CLASSIFIED / "mc_ocr_full.json"
     partial_run = bool(args.years)
@@ -679,16 +698,10 @@ def main() -> None:
         summary[f"{n:02d} {name}"] = count
         print(f"S{n:02d} {name}: {count}")
 
-    (CLASSIFIED / "mc_classification.json").write_text(
-        json.dumps(rows, indent=2, ensure_ascii=False) + "\n"
-    )
     (CLASSIFIED / "summary.json").write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n")
-    mc_csv = CLASSIFIED / "mc_classification.csv"
-    with mc_csv.open("w", newline="", encoding="utf-8") as f:
-        fields = list(rows[0].keys()) if rows else []
-        writer = csv.DictWriter(f, fieldnames=fields)
-        writer.writeheader()
-        writer.writerows(rows)
+    fields = list(rows[0].keys()) if rows else []
+    write_mc_classification(rows, fields)
+    top_json, top_csv = top_level_mc_paths()
 
     print()
     print(f"Questions: {len(rows)}")
@@ -698,8 +711,8 @@ def main() -> None:
     print(f"  fallback S5:   {n_fallback}")
     print(f"  uncertain:     {len(uncertain_rows)}")
     print(f"Uncertain: {unc_path}")
-    print(f"JSON: {CLASSIFIED / 'mc_classification.json'}")
-    print(f"MC CSV: {mc_csv}")
+    print(f"JSON: {top_json}")
+    print(f"MC CSV: {top_csv}")
 
 
 if __name__ == "__main__":
