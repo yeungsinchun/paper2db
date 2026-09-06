@@ -1,0 +1,526 @@
+#!/usr/bin/env python3
+"""HKDSE Physics paper2db - single entry point for the full pipeline.
+
+Reads PDFs under paper/{mc,lq,ans,performance}/ and writes:
+  output/<year>/          MC question crops + combined.pdf
+  output/lq/<year>/       LQ pages, question crops, answer crops
+  classified/mc/          MC section folders, CSVs, section PDFs, answer keys
+  classified/lq/          LQ section folders, CSVs, section PDFs, performance
+  .lavish/lq-classified-review/   optional HTML review UI
+
+Human gates (skipped with --yes, but paths are still printed):
+  1. After MC anchors - review each intermediate/anchor.pdf (blue dot beside
+     the question number, not options or diagrams) before split.
+  2. After classify - skim classified/mc/uncertain.csv (and LQ section folders).
+
+Usage:
+  ./pipeline
+  ./pipeline --years 2024 2025
+  ./pipeline --from classify-mc
+  ./pipeline --only keys,classify-mc,section-pdfs
+  ./pipeline --yes --force
+"""
+from __future__ import annotations
+
+import argparse
+import os
+import re
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+SCRIPTS = ROOT / "scripts"
+
+STAGES = (
+    "mc-anchors",
+    "mc-split",
+    "lq-pages",
+    "lq-crops",
+    "lq-answers",
+    "keys",
+    "classify-mc",
+    "classify-lq",
+    "section-pdfs",
+    "performance",
+    "lavish",
+)
+
+
+def ensure_venv() -> None:
+    venv_dir = (ROOT / ".venv").resolve()
+    venv_py = venv_dir / "bin" / "python3"
+    if not venv_py.is_file():
+        return
+    if Path(sys.prefix).resolve() != venv_dir:
+        os.execv(str(venv_py), [str(venv_py), *sys.argv])
+
+
+ensure_venv()
+
+
+def python_executable() -> str:
+    venv = ROOT / ".venv" / "bin" / "python3"
+    return str(venv) if venv.is_file() else sys.executable
+
+
+def run_script(script_name: str, *args: str) -> None:
+    cmd = [python_executable(), str(SCRIPTS / script_name), *args]
+    print(f"$ {' '.join(cmd)}")
+    subprocess.run(cmd, check=True, cwd=str(ROOT))
+
+
+def run_segment(*args: str) -> None:
+    cmd = [python_executable(), str(ROOT / "segment"), *args]
+    print(f"$ {' '.join(cmd)}")
+    subprocess.run(cmd, check=True, cwd=str(ROOT))
+
+
+def paper_year_label(stem: str) -> str:
+    name = stem.lower()
+    if name.startswith("sapp"):
+        return "sap"
+    if name.startswith("ppp"):
+        return "pp"
+    match = re.search(r"(20\d{2})", name)
+    if match:
+        return match.group(1)
+    raise SystemExit(f"Cannot derive year label from {stem!r}")
+
+
+def discover_mc_papers(years: list[str] | None) -> list[tuple[Path, str]]:
+    papers: list[tuple[Path, str]] = []
+    for path in sorted((ROOT / "paper" / "mc").glob("*.pdf")):
+        label = paper_year_label(path.stem)
+        if years and label not in years:
+            continue
+        papers.append((path, label))
+    return papers
+
+
+def discover_lq_papers(years: list[str] | None) -> list[tuple[Path, str]]:
+    papers: list[tuple[Path, str]] = []
+    for path in sorted((ROOT / "paper" / "lq").glob("*.pdf")):
+        label = paper_year_label(path.stem)
+        if years and label not in years:
+            continue
+        papers.append((path, label))
+    return papers
+
+
+def discover_answer_pdfs(years: list[str] | None) -> list[tuple[Path, str]]:
+    """Prefer paper/ans; fall back to legacy answer/."""
+    ans_dir = ROOT / "paper" / "ans"
+    if not ans_dir.is_dir():
+        ans_dir = ROOT / "answer"
+    papers: list[tuple[Path, str]] = []
+    for path in sorted(ans_dir.glob("*ans.pdf")):
+        # Skip *ans2.pdf (handled separately if needed); glob is *ans.pdf only.
+        label = path.name[: -len("ans.pdf")]
+        if years and label not in years:
+            continue
+        papers.append((path, label))
+    return papers
+
+
+def mc_output_ready(year: str) -> bool:
+    year_dir = ROOT / "output" / year
+    if not year_dir.is_dir():
+        return False
+    pngs = list(year_dir.glob("q*.png"))
+    return len(pngs) >= 30 and (year_dir / "combined.pdf").is_file()
+
+
+def lq_pages_ready(year: str) -> bool:
+    year_dir = ROOT / "output" / "lq" / year
+    return (year_dir / "starts.json").is_file() and (year_dir / "pages").is_dir()
+
+
+def lq_crops_ready(year: str) -> bool:
+    year_dir = ROOT / "output" / "lq" / year
+    pngs = list(year_dir.glob("q*.png"))
+    return len(pngs) >= 8
+
+
+def lq_answers_ready(year: str) -> bool:
+    ans_dir = ROOT / "output" / "lq" / year / "ans"
+    return ans_dir.is_dir() and len(list(ans_dir.glob("q*.png"))) >= 8
+
+
+def intermediate_dir(year: str) -> Path:
+    return ROOT / "output" / f"{year}-intermediate"
+
+
+def pause(message: str, *, yes: bool) -> None:
+    print()
+    print("=" * 72)
+    print(message.rstrip())
+    print("=" * 72)
+    if yes:
+        print("(continuing without prompt because --yes)")
+        return
+    try:
+        input("Press Enter to continue (Ctrl-C to abort)... ")
+    except EOFError:
+        raise SystemExit(
+            "No TTY for review pause. Re-run with --yes after checking the paths above."
+        )
+
+
+def has_llm_key() -> bool:
+    return bool(
+        os.environ.get("LLM_API_KEY")
+        or os.environ.get("OPENAI_API_KEY")
+        or os.environ.get("TOGETHER_API_KEY")
+    )
+
+
+def stage_mc_anchors(years: list[str] | None, *, force: bool, yes: bool) -> list[str]:
+    papers = discover_mc_papers(years)
+    if not papers:
+        print("No MC papers matched.")
+        return []
+    reviewed: list[str] = []
+    for pdf, year in papers:
+        if mc_output_ready(year) and not force:
+            print(f"skip mc-anchors {year}: output/{year}/ already has crops (use --force)")
+            continue
+        inter = intermediate_dir(year)
+        print(f"\n=== MC anchors: {year} ({pdf.name}) ===")
+        run_segment(
+            str(pdf),
+            str(inter),
+            "--type",
+            "mc",
+            "--step",
+            "anchors",
+            "--intermediate",
+            str(inter),
+        )
+        reviewed.append(year)
+    if reviewed:
+        lines = [
+            "MC ANCHOR REVIEW (required for quality)",
+            "",
+            "Open each anchor.pdf below. Every blue dot must sit beside the",
+            "question number with a clear gap - not on digits, *, #, options,",
+            "diagrams, or empty margin. Fix overrides_YYYY.json or re-run a",
+            "year with --force if a dot is wrong. Do not continue until all pass.",
+            "",
+        ]
+        for year in reviewed:
+            lines.append(f"  {intermediate_dir(year) / 'anchor.pdf'}")
+        pause("\n".join(lines), yes=yes)
+    return reviewed
+
+
+def stage_mc_split(years: list[str] | None, *, force: bool) -> None:
+    papers = discover_mc_papers(years)
+    for pdf, year in papers:
+        out = ROOT / "output" / year
+        if mc_output_ready(year) and not force:
+            print(f"skip mc-split {year}: already ready")
+            continue
+        inter = intermediate_dir(year)
+        if not (inter / "anchor.pdf").is_file() and not (inter / "anchored.pdf").is_file():
+            if mc_output_ready(year):
+                continue
+            raise SystemExit(
+                f"Missing {inter / 'anchor.pdf'} for {year}. Run mc-anchors first."
+            )
+        print(f"\n=== MC split: {year} ===")
+        out.mkdir(parents=True, exist_ok=True)
+        run_segment(
+            str(pdf),
+            str(out),
+            "--type",
+            "mc",
+            "--step",
+            "split",
+            "--intermediate",
+            str(inter),
+        )
+
+
+def stage_lq_pages(years: list[str] | None, *, force: bool) -> None:
+    papers = discover_lq_papers(years)
+    for pdf, year in papers:
+        out = ROOT / "output" / "lq" / year
+        if lq_pages_ready(year) and not force:
+            print(f"skip lq-pages {year}: starts.json already present")
+            continue
+        print(f"\n=== LQ pages: {year} ({pdf.name}) ===")
+        out.mkdir(parents=True, exist_ok=True)
+        run_segment(str(pdf), str(out), "--type", "lq")
+
+
+def stage_lq_crops(years: list[str] | None, *, force: bool, yes: bool) -> None:
+    papers = discover_lq_papers(years)
+    need = [year for _, year in papers if force or not lq_crops_ready(year)]
+    if not need:
+        print("skip lq-crops: all selected years already cropped")
+        return
+    run_script("crop_lq_from_pages.py", "--years", *need)
+    pause(
+        "LQ CROP REVIEW (optional but recommended)\n\n"
+        "Skim output/lq/<year>/questions.pdf (or combined.pdf) for cut-off\n"
+        "questions or wrong starts. Fix starts.json and re-run lq-crops if needed.\n\n"
+        + "\n".join(f"  output/lq/{y}/questions.pdf" for y in need),
+        yes=yes,
+    )
+
+
+def stage_lq_answers(years: list[str] | None, *, force: bool) -> None:
+    answers = discover_answer_pdfs(years)
+    if not answers:
+        print("No answer PDFs found under paper/ans (or answer/).")
+        return
+    for pdf, year in answers:
+        out = ROOT / "output" / "lq" / year / "ans"
+        if lq_answers_ready(year) and not force:
+            print(f"skip lq-answers {year}: ans/ already present")
+            continue
+        # Only crop answers when we have an LQ paper for that year (or force).
+        lq_dir = ROOT / "output" / "lq" / year
+        if not lq_dir.is_dir() and not force:
+            print(f"skip lq-answers {year}: no output/lq/{year}/ yet")
+            continue
+        print(f"\n=== LQ answers: {year} ({pdf.name}) ===")
+        out.mkdir(parents=True, exist_ok=True)
+        run_script("preprocess_lq_answers.py", str(pdf), str(out))
+
+
+def answer_keys_path() -> Path:
+    return ROOT / "classified" / "mc" / "answer_keys.json"
+
+
+def stage_keys(*, force: bool) -> None:
+    dest = answer_keys_path()
+    legacy = ROOT / "processed" / "MC" / "answer_keys.json"
+    if dest.is_file() and not force:
+        print(f"skip keys: {dest.relative_to(ROOT)} exists (use --force to refresh)")
+        return
+    if legacy.is_file() and not dest.is_file() and not force:
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(legacy, dest)
+        print(f"Copied legacy keys -> {dest.relative_to(ROOT)}")
+        return
+    ans_dir = ROOT / "paper" / "ans"
+    if not ans_dir.is_dir():
+        ans_dir = ROOT / "answer"
+    run_script(
+        "extract_answer_keys.py",
+        "--answers",
+        str(ans_dir),
+        "--output",
+        str(dest),
+    )
+
+
+def stage_classify_mc(years: list[str] | None, *, force: bool, yes: bool) -> None:
+    classified = ROOT / "classified" / "mc" / "classification.csv"
+    if classified.is_file() and not force and not years:
+        print("skip classify-mc: classification.csv exists (use --force or --years)")
+    else:
+        year_args: list[str] = []
+        if years:
+            year_args = ["--years", *years]
+        if has_llm_key():
+            print("=== classify-mc: LLM ===")
+            run_script("classify_mc_llm.py", *year_args)
+        else:
+            print(
+                "=== classify-mc: keyword scorer "
+                "(set LLM_API_KEY / OPENAI_API_KEY / TOGETHER_API_KEY for LLM) ==="
+            )
+            run_script("classify_mc_sections.py", *year_args)
+    uncertain = ROOT / "classified" / "mc" / "uncertain.csv"
+    count = 0
+    if uncertain.is_file():
+        lines = uncertain.read_text(encoding="utf-8").strip().splitlines()
+        count = max(0, len(lines) - 1)
+    pause(
+        "MC CLASSIFICATION REVIEW\n\n"
+        f"Uncertain rows: {count}\n"
+        f"  {uncertain.relative_to(ROOT) if uncertain.is_file() else '(missing)'}\n"
+        "  classified/mc/<book>/<section>/\n\n"
+        "Fix keyword OVERRIDES or edit llm_classifications.json then:\n"
+        "  ./pipeline --only classify-mc --force\n"
+        "  # or: python scripts/classify_mc_llm.py --from-json ...",
+        yes=yes,
+    )
+
+
+def stage_classify_lq(years: list[str] | None, *, force: bool) -> None:
+    classified = ROOT / "classified" / "lq" / "classification.csv"
+    if classified.is_file() and not force and not years:
+        print("skip classify-lq: classification.csv exists (use --force or --years)")
+        return
+    year_args: list[str] = []
+    if years:
+        year_args = ["--years", *years]
+    if has_llm_key() and os.environ.get("PAPER2DB_LQ_LLM", "").lower() in {
+        "1",
+        "true",
+        "yes",
+    }:
+        print("=== classify-lq: LLM (PAPER2DB_LQ_LLM set) ===")
+        run_script("classify_lq_llm.py", *year_args)
+    else:
+        print("=== classify-lq: keywords (default; set PAPER2DB_LQ_LLM=1 for LLM) ===")
+        run_script("classify_lq_keywords.py", *year_args)
+
+
+def stage_section_pdfs() -> None:
+    keys = answer_keys_path()
+    if not keys.is_file():
+        legacy = ROOT / "processed" / "MC" / "answer_keys.json"
+        if legacy.is_file():
+            keys = legacy
+    run_script("combine_section_pdfs.py", "--keys", str(keys))
+    run_script("combine_lq_section_pdfs.py")
+
+
+def stage_performance(years: list[str] | None) -> None:
+    year_args: list[str] = []
+    if years:
+        year_args = ["--years", *years]
+    run_script("extract_lq_performance.py", *year_args)
+
+
+def stage_lavish() -> None:
+    run_script("build_lq_lavish_review.py")
+
+
+def parse_stage_list(raw: str | None) -> list[str] | None:
+    if not raw:
+        return None
+    parts = [p.strip() for p in raw.split(",") if p.strip()]
+    unknown = [p for p in parts if p not in STAGES]
+    if unknown:
+        raise SystemExit(f"Unknown stage(s): {', '.join(unknown)}. Valid: {', '.join(STAGES)}")
+    return parts
+
+
+def select_stages(args: argparse.Namespace) -> list[str]:
+    only = parse_stage_list(args.only)
+    if only:
+        return only
+    stages = list(STAGES)
+    if args.from_stage:
+        if args.from_stage not in STAGES:
+            raise SystemExit(f"Unknown --from stage: {args.from_stage}")
+        stages = stages[STAGES.index(args.from_stage) :]
+    if args.until:
+        if args.until not in STAGES:
+            raise SystemExit(f"Unknown --until stage: {args.until}")
+        stages = [s for s in stages if STAGES.index(s) <= STAGES.index(args.until)]
+    if args.skip_lavish and "lavish" in stages:
+        stages = [s for s in stages if s != "lavish"]
+    return stages
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument(
+        "--years",
+        nargs="*",
+        default=None,
+        help="Limit to these year labels (e.g. 2024 2025 pp sap)",
+    )
+    parser.add_argument(
+        "--from",
+        dest="from_stage",
+        choices=STAGES,
+        default=None,
+        help="Start at this stage (inclusive)",
+    )
+    parser.add_argument(
+        "--until",
+        choices=STAGES,
+        default=None,
+        help="Stop after this stage (inclusive)",
+    )
+    parser.add_argument(
+        "--only",
+        default=None,
+        help="Comma-separated stage list (overrides --from/--until)",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Re-run stages even when outputs already look complete",
+    )
+    parser.add_argument(
+        "--yes",
+        action="store_true",
+        help="Do not wait for Enter at review gates (still prints paths)",
+    )
+    parser.add_argument(
+        "--skip-lavish",
+        action="store_true",
+        help="Omit the lavish HTML rebuild stage",
+    )
+    parser.add_argument(
+        "--list-stages",
+        action="store_true",
+        help="Print stage names and exit",
+    )
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    if args.list_stages:
+        for name in STAGES:
+            print(name)
+        return
+
+    stages = select_stages(args)
+    years = args.years
+    print(f"paper2db pipeline")
+    print(f"  stages: {', '.join(stages)}")
+    if years:
+        print(f"  years:  {', '.join(years)}")
+    print(f"  force={args.force} yes={args.yes}")
+
+    for stage in stages:
+        print(f"\n######## stage: {stage} ########")
+        if stage == "mc-anchors":
+            stage_mc_anchors(years, force=args.force, yes=args.yes)
+        elif stage == "mc-split":
+            stage_mc_split(years, force=args.force)
+        elif stage == "lq-pages":
+            stage_lq_pages(years, force=args.force)
+        elif stage == "lq-crops":
+            stage_lq_crops(years, force=args.force, yes=args.yes)
+        elif stage == "lq-answers":
+            stage_lq_answers(years, force=args.force)
+        elif stage == "keys":
+            stage_keys(force=args.force)
+        elif stage == "classify-mc":
+            stage_classify_mc(years, force=args.force, yes=args.yes)
+        elif stage == "classify-lq":
+            stage_classify_lq(years, force=args.force)
+        elif stage == "section-pdfs":
+            stage_section_pdfs()
+        elif stage == "performance":
+            stage_performance(years)
+        elif stage == "lavish":
+            stage_lavish()
+        else:
+            raise SystemExit(f"Unhandled stage: {stage}")
+
+    print("\nDone.")
+    print("Review PDFs:")
+    print("  MC sections: classified/mc/<book>/<section>/combined.pdf")
+    print("  LQ sections: classified/lq/<book>/<section>/questions.pdf")
+    print("  LQ lavish:   .lavish/lq-classified-review/ (if lavish stage ran)")
+
+
+if __name__ == "__main__":
+    main()

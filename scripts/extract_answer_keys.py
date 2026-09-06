@@ -20,15 +20,21 @@ KEY_RE = re.compile(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
+    root = Path(__file__).resolve().parents[1]
+    default_answers = root / "paper" / "ans"
+    if not default_answers.is_dir():
+        default_answers = root / "answer"
     parser.add_argument(
         "--answers",
         type=Path,
-        default=Path(__file__).resolve().parents[1] / "Year" / "Answer",
+        default=default_answers,
+        help="Marking-scheme PDF folder (default: paper/ans, else answer/)",
     )
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path(__file__).resolve().parents[1] / "processed" / "MC" / "answer_keys.json",
+        default=root / "classified" / "mc" / "answer_keys.json",
+        help="Output JSON (default: classified/mc/answer_keys.json)",
     )
     return parser.parse_args()
 

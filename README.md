@@ -1,0 +1,75 @@
+# paper2db
+
+Turn HKDSE Physics past papers into per-question crops and curriculum-section banks.
+
+## Quick start
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+# tesseract must be on PATH (OCR)
+
+./pipeline
+```
+
+That one command walks every stage from `paper/` PDFs to `classified/` section folders and review PDFs. It pauses at a few review gates (MC anchors, optional LQ crops, uncertain classifications). Pass `--yes` to print the same paths without waiting for Enter.
+
+```bash
+./pipeline --years 2025          # one year
+./pipeline --from classify-mc    # resume mid-pipeline
+./pipeline --only keys,section-pdfs
+./pipeline --force --yes         # rebuild everything, no prompts
+./pipeline --list-stages
+```
+
+Optional LLM for MC classification (better than keywords when available):
+
+```bash
+export LLM_API_KEY=...           # or OPENAI_API_KEY / TOGETHER_API_KEY
+export LLM_BASE_URL=https://api.together.xyz/v1   # optional
+export LLM_MODEL=meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
+./pipeline --from classify-mc --force
+```
+
+LQ defaults to keyword classification. Set `PAPER2DB_LQ_LLM=1` to use the LLM path instead.
+
+## Layout
+
+| Path | Role |
+|------|------|
+| `paper/mc/` | Paper 1A PDFs (`2012p1a.pdf`, `ppp1a.pdf`, ...) |
+| `paper/lq/` | Paper 1B PDFs |
+| `paper/ans/` | Marking schemes (`2012ans.pdf`, ...) |
+| `paper/performance/` | Candidate-performance notes (markdown) |
+| `output/<year>/` | MC question PNGs + `combined.pdf` |
+| `output/lq/<year>/` | LQ pages, `qN.png`, `ans/qN.png`, review PDFs |
+| `classified/mc/` | Section folders, CSVs, `answer_keys.json`, section PDFs |
+| `classified/lq/` | Same for long questions + `candidate_performance.json` |
+| `scripts/` | Stage implementations (called by `./pipeline`) |
+| `segment` | Low-level single-PDF tool (prefer `./pipeline`) |
+
+## Stages
+
+1. **mc-anchors** - blue dots on each MC paper; **you must review** `output/<year>-intermediate/anchor.pdf`
+2. **mc-split** - crop clean `qN.png` into `output/<year>/`
+3. **lq-pages** - export LQ pages + `starts.json`
+4. **lq-crops** - full-question crops + `questions.pdf`
+5. **lq-answers** - marking-scheme answer crops under `ans/`
+6. **keys** - MC keys + correct-% → `classified/mc/answer_keys.json`
+7. **classify-mc** - 27 syllabus sections (LLM if keyed, else keywords)
+8. **classify-lq** - same sections for LQ
+9. **section-pdfs** - per-section `combined.pdf` / `questions.pdf` (+ answer PDFs)
+10. **performance** - LQ candidate-performance JSON
+11. **lavish** - HTML review under `.lavish/lq-classified-review/`
+
+## Quality checklist (minimal human work)
+
+1. **Anchors** - every blue dot beside the question number with a clear gap (not on options or diagrams). Wrong anchors poison every later step. Use `scripts/overrides_YYYY.json` for hard pages.
+2. **Uncertain MC** - skim `classified/mc/uncertain.csv` and spot-check a few section folders.
+3. **LQ crops** - skim `output/lq/<year>/questions.pdf` if a year looks truncated.
+4. Trust the section review PDFs under `classified/*/.../combined.pdf` (or `questions.pdf`) rather than browsing PNG lists.
+
+## Low-level tools
+
+`./segment` and `scripts/*.py` remain available for single-paper debugging. Day-to-day use should be `./pipeline` only.
