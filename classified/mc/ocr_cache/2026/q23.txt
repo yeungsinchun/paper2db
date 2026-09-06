@@ -1,0 +1,13 @@
+23.
+G
+F R
+H
+9V
+In the circuit above, light bulbs F, G and H are identical and the battery is ideal. Rheostat R is initially
+set to maximum resistance. The maximum voltage across each bulb without burning out is 2 V, and a
+burnt-out bulb becomes an open circuit. Initially all bulbs light up. If the resistance of R is gradually
+reduced to zero, which of the bulbs will burn out in the process ?
+A. only bulb F
+B. only bulbs G and H
+c. none of them
+D. all of them

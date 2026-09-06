@@ -1,0 +1,8 @@
+1. 30 g of milk at 10°C is added to 120 g of coffee at 80°C. Assuming there is no heat loss to the
+surroundings, what is the final temperature of the mixture ?
+Given: specific heat capacity of milk = 3800 J kg! °C!
+specific heat capacity of coffee = 4200 Jkg™! °C"
+A. 64.8°C
+B. 65.2°C
+Cc. 66.0°C
+D. 67.1°C

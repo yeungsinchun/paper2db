@@ -1,0 +1,15 @@
+4,
+ceiling
+string
+wall
+sphere string
+electronic
+balance
+A sphere of weight 18 N is suspended by two light and inextensible strings. One string is attached
+horizontally to a wall, and the other is connected to the ceiling. The sphere rests on the smooth top
+surface of an electronic balance, which shows a reading of 10 N. Find the resultant force acting on the
+sphere by the two strings.
+A. ON
+B. 8N
+c. 10N
+D. 15SN

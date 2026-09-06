@@ -1,0 +1,15 @@
+5. Two blocks, each of weight W, are hung by three identical light strings as shown. Each string has a
+limiting tension of 2, i.e. it will break for a tension larger than this value.
+S
+F
+
+Force F acts vertically on the lower block. What is the largest value of F without breaking any of the
+strings ?
+
+A. 0.5W
+
+B. Ww
+
+c. 15W
+
+Dz. 3W

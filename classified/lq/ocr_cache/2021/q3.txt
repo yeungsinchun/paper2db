@@ -1,0 +1,39 @@
+3. A volleyball player serves by hitting the ball from rest at a height of 1.0 m above the end line of the court. The
+initial speed of the ball is 13.4 ms"! making an angle of 55° with the horizontal. It moves in a vertical plane
+perpendicular to the end line and finally reaches point C on the opposite end line as shown in Figure 3.1. Neglect
+the size of the ball and air resistance. (g = 9.81 ms”)
+
+B
+
+v
+
+3
+
+i
+
+Figure 3.1
+
+13.4ms!
+
+LJ
+
+volleyball /A\ 55° net
+wtanwenne v
+1.0m \
+A a
+
+3 (a) (i) The mass of the volleyball is 0.22 kg. Find the work done on the ball by the player. (2 marks) a
+o oO
+ao oO
+5S ee =|
+ra =|
+= aq
+Se 8
+a 8
+& &
+& B=
+RE B=}
+5 (ii) Determine the speed v with which the ball hits point C on the ground. (2 marks) =
+5 5
+a a
+< <

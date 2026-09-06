@@ -1,0 +1,14 @@
+36. Different absorbers are placed in turn between a radioactive source and a Geiger-Muller tube. Thre:
+readings are taken for each absorber. The following data are obtained:
+Count rate /s”
+[200205 9
+[Smmaluminium | 2 | 08 |
+25 mm lead >t
+
+50 mm lead
+What type(s) of radiation does the source emit ?
+A. only
+By only
+C. Band y only
+D. a, Bandy
+END OF SECTION A

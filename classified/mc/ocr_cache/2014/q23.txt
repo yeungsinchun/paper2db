@@ -1,0 +1,16 @@
+*23,
+square grid
+7
+| | 4
+pt | de
++9
+The figure shows the location of an isolated point charge +Q. If the electric potential at Y is V, what is
+the electric potential at Y?
+A 2y
+3
+B 3y
+2
+Cc. 4y
+9
+D. oy
+4

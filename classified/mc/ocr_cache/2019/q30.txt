@@ -1,0 +1,9 @@
+*30. The power consumption of the heating element of an electric heater connected to an a.c. mains can be
+increased by
+(1) increasing the electrical resistance of the heating element.
+(2) increasing the frequency of the a.c. voltage.
+@) increasing the r.m.s. value of the a.c. voltage.
+A. (1) only
+B. (3) only
+Cc. (1) and (2) only
+D. (2) and (3) only

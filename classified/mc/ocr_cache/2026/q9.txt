@@ -1,0 +1,15 @@
+9. A ball is released from a certain height. It rebounds from the ground several times before it comes to
+rest. Neglect air resistance. Which of the following graphs best represents the variation of the total
+mechanical energy E of the ball with time ¢?
+
+A. B.
+E E
+H
+i\i
+0 t 0 t
+con E D. E
+H
+—
+_
+—_
+0 t 0 t

@@ -1,0 +1,12 @@
+27. The figure shows how lamps L;, Lz and Z3 are connected in the ring circuit of a house. There are som
+wrong connections in the circuit.
+Ly ly Ls
+Sr Sy Sx
+Live
+Neutral
+If switches S2 and S3 are closed while switch S; remains open, which of the lamps will light up ?
+A. I, only
+B. Ls only
+[on Lz and L; only
+Dz none of them
+N

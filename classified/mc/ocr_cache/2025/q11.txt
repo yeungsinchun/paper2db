@@ -1,0 +1,10 @@
+*11. A car of weight W travels with constant speed on a circular humpback bridge. At the moment when the
+car passes the top of the bridge, the normal reaction acting on it by the bridge is R. What is the centripetal
+force acting on the car at that moment ?
+
+NN Side view
+A. W+R
+B. W-R
+Cc. Ww
+D. R
+~s” N

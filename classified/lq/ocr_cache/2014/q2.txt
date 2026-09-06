@@ -1,0 +1,31 @@
+#2. Figure 2.1 shows a basketball connected to an air pump via a short rubber tubing. By pushing the piston
+inward, the pump can compress 120 cm? of air inside its barrel at atmospheric pressure and room
+temnerature into the baskethall for cach stroke.
+
+| ah nad oe oo. at
+short rubbir tubing
+barrel push
+. VaSAULUAIL
+6000 cm? \_
+; Diagram NOT drawn
+piston to scale
+Initially the volume of air inside the basketball is 6000 cm? and is at equilibrium with the atmospheric
+pressure 100 kPa. The basketball has to be pumped to a pressure of 156 kPa for an official match.
+Throughout the pumping process, the temperature of the basketball and the surroundings is assumed to be
+Maintained ai :vvm iemperature which is constant.
+For each stroke, the valves of the pump (not shown in Figure 2.1) allow the air in the barrel to be completely
+pumped into the basketball and prevent it from going back into the barrel when the piston is pulled outward.
+3 (a) (i) Show that 3360 cm’ of air, originally at atmospheric pressure, is required to be pumped into the
+wd basketball until its pressure is suitable for an official match. Assume that the volume of the
+5 baskethall remains unchanged ot 6000 om’, (3 marks)
+= |
+ae)
+|
+oD
+pel. wo vcceeeeneees
+: |
+oO
+a
+<<
+Gi) Hence estimate the minimum number of strokes needed to pump the basketball to the required
+pressure, G mark)

@@ -1,0 +1,12 @@
+6. FIN
+10 a
+|
+5
+0 1 2 3 ¢/s
+An object of mass 3 kg is initially at rest on a smooth horizontal ground. A force F is applied
+horizontally to the object such that the magnitude of F varies with time ¢ as shown. What is the speed
+of the object at t= 3 s ? Neglect air resistance.
+A. 25ms*
+B. Sms"
+Cc. 10ms*
+D. 15ms"

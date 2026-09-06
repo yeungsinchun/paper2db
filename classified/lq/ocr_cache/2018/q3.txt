@@ -1,0 +1,40 @@
+3: Read the following passage about braking in vehicles and answer the questions that follow.
+
+Mechanical braking is the most common braking method in vehicles. In this method, wheels of
+
+vehicles are fitted with brake pads which apply frictional forces that inhibit the motion of the
+
+wheels. Frictional braking results in a conversion of the vehicle’s kinetic energy to thermal
+
+energy which then dissipates to the atmosphere in the form of waste heat.
+
+The thermal energy (in J) generated during braking is approximately given by :
+
+thermal energy generated =F. xd .
+where _F, is the frictional forces (in N), and
+d is the braking distance (in m).
+Applying the principle of energy conservation :
+kinetic energy dissipated = thermal energy generated
+Le =F xd
+2
+
+From this equation it can be seen that increasing the velocity v or mass m of an object means the
+
+applied frictional forces must be increased in order to bring the object to a stop within the same
+3 distance. z
+es x
+fs} is
+= E
+oO ©
+oO Oo
+iE (a) Referring to the passage, explain why there should be a maximum load limit for a vehicle (see the vehicle 5
+= label example below). (2 marks) 5
+2 TIRE AND LOADING INFORMATION =
+& =
+: :
+5 S
+‘S IMPORTANT: The combined load _ of =
+oO oO
+& occupants and cargo should never exceed i=
+g 385 kg. 2
+4 <

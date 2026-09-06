@@ -1,0 +1,12 @@
+*29.
+mes
+12Vac. ~
+°
+9 “ee
+The figure shows an ideal transformer with two secondary coils connected to two light bulbs marked
+‘6 V, 0.5 A’ and ‘3 V, 1.0 A’ respectively. When a 12 V a.c. supply is connected to the primary coil, the
+bulbs work at their respective rated values. Estimate the current in the primary coil.
+A. 0.25A
+B. 0.50 A
+Cc. 0.75A
+D. LOA

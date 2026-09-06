@@ -1,0 +1,22 @@
+3. A lift car of weight 8000 N is going up with constant speed 2 m s| as shown in Figure 3.1. The upward
+force raising the lift car is provided by the cable wound on a drum which is driven by a motor. The other
+end of the cable is firmly attached to the drum at P. Neglect air resistance and the mass of the cable.
+
+Fomor PTTL ) ‘ram Fomor érum
+cable cable
+counterweight
+of 7000N
+lift car lift car
+LZ _/\ of 8000 N of 8000 N
+Figure 3.1 7 t gms Figure 3.2 * 2ms'
+3 (a) (i) Calculate the mechanical power delivered to the rising lift car by the motor. (2 marks) z
+& E
+3 :
+2 ¢
+6 eveuisinsiunnutessecestsusentaueuaeceuensecsusnenenennennsensarsacseneouspsnunetsidabencsiseuesnetsicunsseesseesessneeeednnenteneanentteasaecsensanennenene §
+a Ss
+FS £
+Fs Z
+i ceeeetetteseesaetsttneimetnititiiittinninnininennnnnn |S
+(ii) | The total mechanical power output of the motor is 20 kW. How much power is lost due to
+overcoming friction between the movable parts ? (1 mark)

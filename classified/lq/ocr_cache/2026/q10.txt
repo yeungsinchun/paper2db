@@ -1,0 +1,34 @@
+10. Figure 10.1 shows a rain SenSOr MOUNLE? OF ne ecco ee en ee OEE
+automatically turns on the windshield wipers.
+Figure 10.1 ; = 3
+i i rain sensor
+se i 1 rf
+it mn
+As shown in Figure 10.2, the rain sensor is composed of a light emitting diode (LED) and an infra-red sensor.
+The LED emits an infra-red signal and the infra-red sensor measures the intensity of the signal. When the
+intensity changes, the wipers are activated. An infra-red ray from the LED incident at surface A at 45°, and the
+infra-red ray finally received by the infra-red sensor are drawn in Figure 10.2. Assume surface A is parallel to
+surface B. It is given that the critical angle of the glass for infra-red is 44.0°.
+ad
+a 7 “4 : ‘
+surtace A air (outside the car) 7
+j
+— ann ¢._ $2952.39. act ! ‘ {
+figure 1U.2 WIIUSMIGIG £1485 7 ..
+enrfare R * A i <
+surface F LED infra-red ;
+sensor _|
+(a) Explain how the infra-red ray in Figure 10.2 travels from the LED to the infra-red sensor. (4 marks) | |
+Rn awinen wewittan in tha maroine will nat be markcd.
+(b) When it rains, some raindrops settle on the glass surface, as illustrated in Figure 10.3(a). Figure 10.3(b)
+shows an enlarged view of the region where the infra-red ray is incident on the glass-water interface.
+raindrans woo Om pete nT Soni
+gluse J tiga le EE
+Be = 35 Windsnicid A
+7 ,
+\Z we US glass 45°
+‘i i)
+se. 1
+ba \ '
+Figure 19.34} Figure 10.365)
+(i) Given that the refractive index of water for the infra-red is 1.26, find the critical angle of the glass-

@@ -1,0 +1,13 @@
+26.
+6V, 0.3 W
+Oy,
+ae
+6 V, 0.6 W ()
+!
+12V
+If both light bulbs work at their rated values as shown, find the resistance of R.
+
+A. 30Q
+B. 60Q
+c. 90Q
+D. 120 Q

@@ -1,0 +1,10 @@
+24.
+Ss
+— —
+3Q 62
+In the above circuit, the cell has constant e.m.f. and a fixed internal resistance. When S is closed, the
+ammeter reads 3.0 A. When S is open, which of the following is a possible reading of the ammeter ?
+A. 1L6A
+B. 2.0A
+Cc. 24A
+D. 3.2A

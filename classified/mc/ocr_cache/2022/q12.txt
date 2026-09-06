@@ -1,0 +1,18 @@
+12. x/m
+16
+oL_Lalet |
+at rest
+Ba 3 a
+~@  @ ., {7Ner
+x=0m
+Vi N 1,
+0 24 6 8
+On a smooth horizontal surface, sphere P travelling along the x-axis collides head-on with another
+sphere Q, which is initially at rest at x = 8 m. The graph shows the displacement-time (x-f) relationship
+of P (solid line) and Q (dotted line). The collision takes place at = 2 s and the collision time is negligible.
+Which statement is correct ?
+A. The collision is perfectly inelastic.
+B. The mass of P is larger than that of Q.
+Cc. P still moves along +x direction after collision.
+D. P and Q move with the same speed after collision.
+x

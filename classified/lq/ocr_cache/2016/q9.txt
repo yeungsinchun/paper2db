@@ -1,0 +1,30 @@
+9. Part of the decay series of uranium-238 (U-238) is shown below. The end product lead-206 (Pb-206) 1s stable.
+238 > Th 6 __s pa 5. 52% pp
+4.5x10’ years 21 days
+(a) When a U-238 nucleus decays to a Pb-206 nucleus, how many a-particle(s) and -particle(s) are emitted ?
+(2 marks)
+(b) As the first decay in the above chain from U to Th has a half-life much longer than those of subsequent
+
+decays, the decay from U-238 to Pb-206 can be simplified to a single decay with half-life 4.5 x 10° years:
+ao}
+4 o
+E 238 206 E
+
+I Ux, Pb
+
+E 2 4.5x10° years * 3
+on ie}
+i) Ss
+S =
+i Suppose that a uranium-bearing rock contains only U-238 and no Pb-206 at the time when it was formed | =
+. long ago by solidification of molten material. In a particular sample of the rock, it is found that the =
+= .. number of Pb-206atoms . 2 hey
+= ratio. ———_—_—___—_——— is — at present. I
+= number of U-238atoms 3 E
+2 s
+= (i) Estimate the age of the rock. Assume that all Pb-206 atoms come from the decay of U-238 originally |.
+2 present in the sample and ignore the small number of U-238 atoms which have decayed but have not | §
+FS yet become Pb-206. (2 marks) =
+: :
+ie o
+1 ral 3S

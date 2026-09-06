@@ -1,0 +1,9 @@
+*32. When a proton ({H ) bombards a lithium nucleus (Li), two a particles ($He ) are produced.
+‘H+ 2Li +2 $He
+The energy released in this nuclear reaction is 17.32 MeV. Find the mass of a lithium nucleus.
+Given: mass of |H = 1.0078 u
+mass of $He = 4.0026 u
+A. 6.9788 u
+B. 6.9974 u
+Cc. 7.0017 u
+D. 7.0160 u

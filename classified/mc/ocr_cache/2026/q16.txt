@@ -1,0 +1,14 @@
+16. The image of an object formed by a convex lens is virtual and is situated at the focus F as shown.
+virtual
+image
+A
+'
+F principal axis
+Which of the following statements is/are correct ?
+(1) The object is at infinity.
+(2) The object is larger than the image.
+(3) The object and the image are on the same side of the lens,
+A. (2) only
+B. (3) only
+Cc. (1) and (2) only
+Dz (1) and (3) only

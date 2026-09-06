@@ -23,12 +23,19 @@ RAIL_TOLERANCE = 12.0
 # Scanned pages shift left/right, so absolute --left/--right alone drift vs "N.".
 LEFT_PAD = 36.0  # crop starts this far left of the number rail
 ANCHOR_GAP = 16.0  # marker centre sits this far left of the leftmost number ink
-RIGHT_FROM_RAIL = 455.0  # fallback / cap: crop right = rail_x + this
-RIGHT_PAD = 18.0  # keep this much whitespace past detected content ink
+RIGHT_FROM_RAIL = 530.0  # fallback when content-right detection fails
+RIGHT_PAD = 24.0  # keep this much whitespace past detected content ink
 FIRST_LABEL_PAD = 20.0  # crop starts this far above the first question number on a page
 MARKER_LEFT_PAD = 8.0  # keep this much crop to the left of the marker centre
 FOOTER_GAP = 2.0  # crop bottom this far above detected footer text
-FOOTER_RE = re.compile(r"(dse[- ]?phy|phy\s*1a|section\s*a)", re.I)
+# Min vertical gap between consecutive same-page anchors. Option lines are
+# closer than this; midpoint gap-fills used to land on them and truncate crops.
+MIN_QUESTION_GAP = 90.0
+FOOTER_RE = re.compile(
+    r"(dse[- ]?phy|phy\s*1a|end\s+of\s+section|section\s*a|"
+    r"go\s+on\s+to\s+the\s+next\s+page|next\s+page)",
+    re.I,
+)
 LABEL_RE = re.compile(r"[#*]?(\d{1,2})([.,])?")
 SUBPART_RE = re.compile(r"^[A-Za-z]\d")
 Q1_CONFUSION_RE = re.compile(r"^[lIi|\|][.,]$")
@@ -44,6 +51,9 @@ def _normalize_label_token(text: str) -> str:
     # "11." is often read as "1]" or "1}".
     if re.fullmatch(r"1[\]}]", text):
         return "11."
+    # "*19." is often read as "*]", "*y", "*]!" (']'/'y' ≈ '9').
+    if re.fullmatch(r"[*#][\]yY!]+\.?", text):
+        return "19."
     # Leading junk before digits / asterisk.
     text = re.sub(r"^[^0-9#*]+", "", text)
     return text
@@ -352,7 +362,12 @@ def collect_labels(
     questions: int,
     page_hits: dict[int, list[tuple[int, float, float]]] | None = None,
 ) -> dict[int, tuple[int, float, float]]:
-    """Detect labels on each page, then assign in reading order (OCR hits only)."""
+    """Detect labels on each page, then assign in reading order (OCR hits only).
+
+    Only accept the exact next expected number. Accepting OCR "near misses"
+    (e.g. reading 2. as 4.) then inventing midpoints for the skipped numbers
+    places anchors on option lines and produces tiny / option-only crops.
+    """
     labels: dict[int, tuple[int, float, float]] = {}
     if page_hits is None:
         page_hits = {}
@@ -364,17 +379,19 @@ def collect_labels(
     for page_index in content_pages:
         hits = sorted(page_hits[page_index], key=lambda item: item[2])
         for number, x, y in hits:
-            if number in labels or number < expected:
+            # "*12." is often OCR'd as "*1"/"+1" (leading digit only). Only
+            # promote that case - mapping any N==expected%10 also matched
+            # footer junk "2" as Q12 on later pages.
+            if number != expected and expected == 12 and number == 1:
+                number = 12
+            if number != expected or number in labels:
                 continue
             if (page_index, y) <= last_pos:
                 continue
-            # Accept the next number, or a short OCR miss (e.g. Q1/Q2 misread but Q3 visible).
-            if number > expected + 4:
+            if last_pos[0] == page_index and (y - last_pos[1]) < MIN_QUESTION_GAP:
                 continue
             labels[number] = (page_index, x, y)
             expected = number + 1
-            while expected in labels:
-                expected += 1
             last_pos = (page_index, y)
 
     return _fill_same_page_gaps(labels, page_hits)
@@ -384,9 +401,13 @@ def merge_page_hits(
     source: fitz.Document,
     content_pages: list[int],
     questions: int,
-    scales: tuple[float, ...] = (5.0, 3.0, 8.0),
+    scales: tuple[float, ...] = (2.0, 3.0, 5.0, 8.0),
 ) -> dict[int, list[tuple[int, float, float]]]:
-    """Run OCR at several scales and keep the best hit per question per page."""
+    """Run OCR at several scales and keep the best hit per question per page.
+
+    Include the default render scale (2.0): higher scales alone miss some
+    labels on scanned papers (e.g. 2024 Q2), which breaks sequential collect.
+    """
     merged: dict[int, dict[int, tuple[int, float, float]]] = {pi: {} for pi in content_pages}
     for page_index in content_pages:
         for scale in scales:
@@ -399,32 +420,60 @@ def _fill_same_page_gaps(
     labels: dict[int, tuple[int, float, float]],
     page_hits: dict[int, list[tuple[int, float, float]]],
 ) -> dict[int, tuple[int, float, float]]:
-    """Fill missing numbers from neighbouring OCR hits (same page, else adjacent pages)."""
+    """Fill missing numbers only from real OCR hits (never invent midpoints).
+
+    Invented y positions land between a stem and its options and create the
+    tiny / option-only crops (e.g. 2018 Q4, 2026 Q2).
+    """
     filled = dict(labels)
     if not filled:
         return filled
-    questions = max(filled)
-    for number in range(1, questions + 1):
-        if number in filled:
-            continue
-        prevs = [k for k in filled if k < number]
-        nexts = [k for k in filled if k > number]
-        if not prevs or not nexts:
-            continue
-        prev_n = max(prevs)
-        next_n = min(nexts)
-        p_page, p_x, p_y = filled[prev_n]
-        n_page, n_x, n_y = filled[next_n]
-        if p_page == n_page:
-            filled[number] = (p_page, (p_x + n_x) / 2.0, (p_y + n_y) / 2.0)
-            continue
-        if n_page < p_page:
-            continue
-        # Next question is low on its page: this one likely starts that page.
-        if n_y > 160.0:
-            filled[number] = (n_page, n_x, max(70.0, n_y - 90.0))
-        else:
-            filled[number] = (p_page, p_x, p_y + 70.0)
+    questions = max(max(filled), max((n for hits in page_hits.values() for n, *_ in hits), default=0))
+    changed = True
+    while changed:
+        changed = False
+        for number in range(1, questions + 1):
+            if number in filled:
+                continue
+            prevs = [k for k in filled if k < number]
+            nexts = [k for k in filled if k > number]
+            if not prevs:
+                continue
+            prev_n = max(prevs)
+            p_page, _p_x, p_y = filled[prev_n]
+            if nexts:
+                next_n = min(nexts)
+                n_page, _n_x, n_y = filled[next_n]
+            else:
+                n_page, n_y = None, None
+
+            candidates: list[tuple[int, float, float]] = []
+            for page_index, hits in page_hits.items():
+                for hit_n, x, y in hits:
+                    if hit_n != number:
+                        continue
+                    if page_index < p_page:
+                        continue
+                    if page_index == p_page and y <= p_y + MIN_QUESTION_GAP * 0.5:
+                        continue
+                    if n_page is not None:
+                        if page_index > n_page:
+                            continue
+                        if page_index == n_page and y >= n_y - MIN_QUESTION_GAP * 0.5:
+                            continue
+                    candidates.append((page_index, x, y))
+            if not candidates:
+                continue
+            # Prefer reading order: earliest page, then topmost y.
+            candidates.sort(key=lambda item: (item[0], item[2], item[1]))
+            page_index, x, y = candidates[0]
+            # Re-check gap to previous after choosing.
+            if page_index == p_page and (y - p_y) < MIN_QUESTION_GAP:
+                continue
+            if n_page is not None and page_index == n_page and (n_y - y) < MIN_QUESTION_GAP:
+                continue
+            filled[number] = (page_index, x, y)
+            changed = True
     return filled
 
 
@@ -971,11 +1020,12 @@ def main() -> None:
             bottom,
         )
         if content_right is not None:
+            # Trust detected ink. The old min(..., provisional_right) cap at
+            # rail+455 clipped trailing characters on many scanned pages.
             right = min(page.rect.width - 2.0, content_right + args.right_pad)
         else:
             right = provisional_right
-        # Never keep a huge empty right band past the rail-relative fallback.
-        right = min(right, provisional_right)
+        right = min(right, page.rect.width - 2.0)
         right = max(right, left + 80.0)
 
         pixmap = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False)

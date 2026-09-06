@@ -1,0 +1,10 @@
+*14, Two satellites move in circular orbits of the same radius R around the Earth (mass M ). The orbits are
+in two different planes P and Q as shown. Plane P coincides with the Earth’s equator while plane Q is
+inclined to the equator at @. Which statement is INCORRECT ?
+
+. ay. ~
+Lh r “| P a Plane P
+A The speed of satellite P is 1 a :
+B. The centripetal force acting on satellite Q is pointing along the plane Q.
+Cc. The acceleration of both satellites is the same in magnitude.
+Dz. The period of satellite Q is longer than that of satellite P.

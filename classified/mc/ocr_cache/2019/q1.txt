@@ -1,0 +1,9 @@
+lL A block measuring 80 °C is put into water at a temperature of 40 °C. The final temperature of the
+mixture is 70 °C. Which of the following deductions must be correct ? Assume that there is no heat
+loss to the surroundings.
+
+A. The energy gained by the water is greater than the energy lost by the block.
+B. The mass of the water is greater than the mass of the block.
+
+[on The specific heat capacity of water is smaller than that of the block’s material.
+D. The heat capacity of the water is smaller than that of the block.

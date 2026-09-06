@@ -1,0 +1,10 @@
+*25.
+x
+w <> Zz
+Y
+The figure above shows four points W, X, Y and Z in a uniform electric field. WXZY is a square. 1
+electric potential at W, X and Y are 1 V, 5 V and 5 V respectively. What is the electric potential at Z?
+A. 1V
+B. 6Vv
+fon 9V
+D. 11v

@@ -1,0 +1,16 @@
+30. se
++
+switch
+battery box
+~ \es voltmeter — —y
++e “ = theostat
+ammeter 2
+A student wants to measure the resistance ot a resistor R and sets up the circuit shown. The student
+made which of these mistakes setting up the circuit ?
+(an) The polarity of the ammeter was reversed.
+(2) The polarity of the voltmeter was reversed.
+(3) The voltmeter was connected across both R and the rheostat.
+A. (1) only
+B. (2) only
+c. (1) and (3) only
+D. (2) and (3) only

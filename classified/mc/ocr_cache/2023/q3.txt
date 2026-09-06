@@ -1,0 +1,17 @@
+#3, A fixed mass of an ideal gas contained in a closed vessel X of volume V is heated. Line Y in the figure
+shows the variation of pressure p with temperature 7 of the gas. The experiment is repeated with another
+closed vessel Y containing the same amount of this ideal gas and line Y represents the result.
+
+P x
+Y
+aa
+i H
+t '
+i '
+i i
+i 300 600 TIK
+Find the volume of vessel Y.
+A. 0.25 V
+B. 0.5 V
+Cc. 2V
+D. 4V

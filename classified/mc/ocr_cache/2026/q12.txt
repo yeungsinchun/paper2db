@@ -1,0 +1,21 @@
+*12. A rocket on the Earth’s surface is launched by an upward thrust F, producing an upward acceleration g,
+where g is the acceleration due to gravity near the Earth’s surface, as shown in Figure (a). R is the radius
+of the Earth.
+
+Diagram NOT drawn to scale
+rocket @
+rocket 2R
+: |
+Earth
+Figure (a) Figure (b)
+Figure (b) shows an identical rocket at a distance 2R away from the Earth’s centre. What is the upward
+thrust required for producing the same upward acceleration g ? Neglect air resistance.
+a £
+4
+B. £
+2
+SF
+Cc. —
+8
+D. BF
+4

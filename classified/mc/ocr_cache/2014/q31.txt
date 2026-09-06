@@ -1,0 +1,10 @@
+31. Nucleus W decays to nucleus Z as shown below:
+WwW 3x4 >Y45Z
+Which of the following statements is/are correct ?
+qd) Nucleus X has | more proton than nucleus Y.
+(2) Nucleus W has 2 more neutrons than nucleus X.
+(3) W and Z are isotopes of the same element.
+A. (1) only
+B. (2) only
+c (1) and (3) only
+D. (2) and (3) only

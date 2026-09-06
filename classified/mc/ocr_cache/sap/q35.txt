@@ -1,0 +1,8 @@
+*35. On which of the following does the activity of a radioactive source depend ?
+(1) the nature of the nuclear radiation emitted by the source
+(2) the half-life of the source
+(3) the number of active nuclides in the source
+A. (1) only
+B. —_(3)only
+C. (1) and (2) only
+D. ——_2)and (3) only

@@ -1,0 +1,9 @@
+*20. For a diffraction grating of 600 lines per mm, the diffracted red light (657 nm) coincides with the
+diffracted violet light (438 nm) at angle of diffraction 52°. What are the respective orders of the
+diffracted red light and violet light ?
+
+red violet
+A. 2 3
+B. 3 4
+Cc. 3 2
+D. 4 3

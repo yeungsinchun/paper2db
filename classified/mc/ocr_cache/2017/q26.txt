@@ -1,0 +1,15 @@
+26. The figure shows a simple d.c. motor, the coil ABCD is mounted between the poles of two slab-sh
+magnets.
+[Fi LF
+Sf Af
+fox B CLA
+Af fe
+Lf VA.
+| D t4
+LIV af
+D—
+Which of the following statements is correct ?
+A. The turning effect is zero when the coil is vertical.
+B. The magnetic force acting on BC is the greatest when the coil is horizontal.
+[on The direction of the magnetic force acting on AB remains constant.
+D. The direction of the current in the coil remains unchanged.

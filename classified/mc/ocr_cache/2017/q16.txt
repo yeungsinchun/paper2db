@@ -1,0 +1,12 @@
+16. The figure shows plane water waves travelling from region X to region Y. The wavelengths of the
+water waves in regions X and Y are 4 cm and 5 cm respectively.
+region X H region Y
+4cm H
+Scm
+Which of the following statements is correct ?
+A. The speed of the water waves in region X is higher than that in region Y.
+B. The direction of travel of the water waves bends towards the normal as they enter
+region Y.
+Cc. The frequency of the water waves is the same in both regions.
+Dz. If plane water waves of wavelength 5 cm travel from region Y to region X, the
+wavelength becomes 6 cm after the waves enter region X.

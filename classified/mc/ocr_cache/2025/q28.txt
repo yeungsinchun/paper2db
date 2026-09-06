@@ -1,0 +1,12 @@
+28. The figure shows a rectangular coil connected in series with a dry cell and a switch through a pair of slip
+rings. The magnetic field between the two magnets is uniform and is perpendicular to the plane of the
+coil at the moment shown.
+
+. L ip
+|
+observer
+When the switch is closed, the coil will
+A. remain at rest.
+B. rotate in a clockwise direction continuously.
+c rotate in an anticlockwise direction continuously.
+D. change the direction of rotation after turning through 180°.

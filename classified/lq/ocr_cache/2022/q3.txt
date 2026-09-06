@@ -1,0 +1,23 @@
+3. Figure 3.1 shows a quadcopter with lour propeblvls.
+propellers
+ae \
+Figure 3.1 a 38
+When the four propellers are operating to propel air streams vertically downwards, the quadcopter can hover in
+the air in a fixed position. (g= 9.81 ms”)
+(a) Referring to Newton’s laws of motion, explain why the quadcopter can hover in the air. (2 marks)
+a &
+=| |
+oO vo
+E E
+= Given: mass of the quadcopter = 1.38 kg =
+S total area swept by the four propellers = 0.284 n? ES
+g density of air = 1.20 kg m™® =
+5
+3s
+S| (b) Suppose the speed of the air streams produced is v. =|
+o o
+= |
+sg (i) Considering the total volume of air being propelled downwards in 1 second, express the mass of air |
+8 m, propelled by the quadcopter per second in terms of v. (2 marks) §
+< <
+(ii) Hence, find the speed v that enables the quadcopter to hover. (2 marks)

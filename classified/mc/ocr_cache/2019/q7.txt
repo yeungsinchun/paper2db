@@ -1,0 +1,11 @@
+7.
+“ \ | lamp post
+A tree blown by strong wind is found leaning to one side. In order to give the tree some support, a rope
+is wrapped around its trunk and tied to a fixed lamp post nearby. In which of the following
+arrangements would the rope have the highest chance of breaking ?
+A. B.
+P P
+Q 2
+Cc. D.
+P P
+Qg Q

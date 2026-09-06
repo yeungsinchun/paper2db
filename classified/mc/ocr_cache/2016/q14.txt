@@ -1,0 +1,6 @@
+*14. A satellite orbits the Earth in a circular path of radius 7.2 x 10° m. What is the period of the satellite ?
+Given : mass of the Earth = 6.0 x 10% kg
+A. 1.4 hours
+B. 1.7 hours
+c. I day
+D. Answer cannot be found as the mass of the satellite is not known.

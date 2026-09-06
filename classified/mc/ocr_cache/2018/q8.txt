@@ -1,0 +1,12 @@
+8. A block of mass m is placed on a smooth incline making an angle @ with the horizontal as shown.
+When a force of magnitude F parallel to the incline is applied to the block, it travels up the incline with
+an acceleration a. If the applied force becomes 2F, what would the magnitude of the acceleration be ?
+
+at
+7
+_
+A greater than 2a
+B. equal to 2a
+Cc. between a and 2a
+D. whether it is greater than 2a, equal to 2a or between a and 2a depends on the value
+of 0

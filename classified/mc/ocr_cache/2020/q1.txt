@@ -1,0 +1,12 @@
+1. A heater is installed at the centre of a fully filled cubic water tank. Temperature sensors P, Q, R and S
+are fixed at the respective centres of the top, left, right and bottom surfaces of the tank.
+t
+2} 4
+,
+“ s° 7 heater
+After the heater is switched on for a short duration, which pair of sensors below would indicate the
+largest temperature difference ?
+A. QandR
+B. RandS
+Cc. QandS
+D. PandR

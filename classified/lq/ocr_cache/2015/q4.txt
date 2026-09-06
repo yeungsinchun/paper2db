@@ -1,0 +1,27 @@
+4. The motion of a block on an inclined plane can be investigated using a motion sensor connected to a computer
+(not shown in Figure 4.1).
+ti
+ee =|
+sensor
+A block is given a push up a rough inclined plane and then released. The velocity-time (v-t) graph recorded by
+the sensor is shown below. Assume that the frictional force acting on the block is constant in magnitude
+throughout the motion. Neglect air resistance. (g = 9.81 m s’)
+v/ms!
+3 SCRSTI Gna SERASARETSEENESS inning ssn eeounseetosrnebnenfcenscentetbentietetceeete seveurootnccenvocivoetien
+i i i
+2 snnesniwmnsoeenevosbeotooeeeeig ae Se Site castes soba tenes todacecnalovesmerotaiananiesoosicseedsvebiamctesaonratsscbbsitiocoiin
+A
+Z 0.5 1 1.5 | eo 5 t/ 7
+: Sl cages aan on or ae: ee 3
+s B =|
+= i | o
+e S
+3 Point A on the graph corresponds to the instant at which the push is removed. =
+aN (a) Describe the block’s motion from A to B. (2 marks) E)
+I
+& |
+A= R=
+= #
+5 5
+< 4
+(b) (i) Find the magnitude of the block’s acceleration from ¢= 1.5 s to¢=3.5 s. (2 marks)

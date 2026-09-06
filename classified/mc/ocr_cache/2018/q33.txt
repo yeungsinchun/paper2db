@@ -1,0 +1,10 @@
+*33. Given: mass of proton = 1.007276 u
+mass of neutron = 1.008665 u
+mass of 3He nucleus = 3.016030 u
+1u=931 MeV
+When a He nucleus is formed from 2 protons and I neutron,
+A. 6.7 MeV energy is released
+B. 6.7 MeV energy is required.
+Cc. 8.0 MeV energy is released.
+D. 8.0 MeV energy is required.
+END OF SECTION A

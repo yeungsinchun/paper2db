@@ -1,0 +1,15 @@
+5. You are given two trolleys A and B (with mass of trolley A being larger), which can run freely on a smooth
+straight horizontal runway. Each trolley has a force sensor mounted on it and the two sensors are connected to
+a computer interface to record the time variation of force (force towards the right is registered as positive).
+force sensors, each with a
+exbbhee hues covewed in Sant |
+avevvwa WINES eS Wweaw Ti ws £44 AA WSEY
+rubber
+Figure 5.1 bungs
+AE steep nl — B
+Vet le = O—_CO- smooth straight runway
+LLL LLL iiiiiisiisdddisdiiiiiididdiiddidéidsdiiiiiidliiiiliiisidiiiiitédts
+A student claims that when two objects collide, the less massive object experiences a larger force of collision.
+Describe how you would conduct an experiment to investigate the forces acting between the trolleys during
+collision. Sketch the expected force-time graphs of the trolleys in the grid provided and explain briefly.
+Assume that the collision takes place at time 0 s and lasts for approximately 0.1 s. (4 marks)

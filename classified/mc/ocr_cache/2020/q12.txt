@@ -1,0 +1,14 @@
+12. The figure shows part of the displacement-distance graph of a travelling wave of period 7 at time ¢= 0.
+P is a particle on the wave.
+displacement
+\ \/4 at r=0
+P
+0 | APA | distance
+Which graph below correctly shows the variation of the particle’s kinetic energy E within a period
+starting from ¢ = 0?
+A. B.
+E E
+0 T t 0 T ¢t
+C. D.
+E E
+° Tt ° T t

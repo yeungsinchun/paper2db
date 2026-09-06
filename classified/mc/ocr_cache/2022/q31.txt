@@ -1,0 +1,5 @@
+31. Which of the following statements about X-rays is INCORRECT ?
+A. X-rays can be produced by high-speed electrons hitting a metal target.
+B. X-rays are a kind of electromagnetic waves.
+[on X-rays can be deflected by an electric field.
+D. Although X-rays do not carry charges, they can cause ionization.

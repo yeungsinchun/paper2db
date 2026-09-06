@@ -1,0 +1,19 @@
+7. The circuit shown in Figure 7.1 can be used to measure the current at different lengths of a resistance wire us1
+a movable jockey. The power supply of negligible internal resistance delivers a voltage of 3.5 V.
+3.5 V power supply 4.7Q
+O |
+(a) ammeter
+Figure 7.1
+| | Tesistaince Wire /
+\ ey ee es
+| \ a VavIlv Jjuunvy
+A C
+—
+When the jockey is placed at point C on the resistance wire, the length of wire used is / and the correspondi
+current / is measured with an ammeter. The experiment is repeated at different lengths / and a graph of J again:
+is plotted below.
+r es
+(a) What is the function of the 4.7 Q resistor in this experiment ? (1 ma
+(b) When the jockey is placed at point A (i.e. / = 0), find the resistance of the whole circuit. Compare it with
+the value of the 4.7 Q resistor and account for the difference. (3 marks)
+(c) When the jockey is moved from point A on the resistance wire to point C where /= 30 cm, find the increase

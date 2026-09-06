@@ -1,0 +1,22 @@
+6. The set-up in Figure 6.1 is to find the speed of sound in air. Two identical microphones 4 and B are
+connected to a timer and placed on a bench top as shown. The timer can be triggered to ‘start’ and ‘stop’
+timing using the respective microphones to feed signals to the START and STOP terminals of the timer.
+
+[000 }ms/n
+\ bench top ’ START STOP
+\ A % PSP PIB
+Figure 6.1 AN i al
+\
+\
+\
+(a) You are given a hammer and a metal plate ( NN ). Use ‘X’ to indicate a suitable location on
+Figure 6.1 where the hammer should hit the plate so as to generate a sharp loud sound to be received by
+the microphones in this experiment. State an additional piece of apparatus needed and the measurements
+to be made in this experiment. (3 marks)
+(b) The separation between A and B is set at 0.280 m. The experiment is repeated to obtain a few readings of
+the timer as follows:
+3 801 us, 838 ps, 539 ps, 821 ps bs
+7 =
+5 (i) Find the speed of sound in air. Show how you would treat the data obtained in the calculation. =
+2 (ii) Suggest one adjustment to the experimental setting so as to obtain a more accurate result. 3
+ct 19. wmmaeleny\ [om

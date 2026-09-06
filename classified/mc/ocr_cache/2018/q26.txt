@@ -1,0 +1,6 @@
+26. A mobile phone battery labelled 2800 mA h capacity is fully charged initially. What percentage of
+capacity remains after it has delivered a current of 200 mA for 3 hours ?
+A. 71%
+B. 21.4%
+en 78.6%
+D. 92.9%

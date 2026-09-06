@@ -1,0 +1,19 @@
+8. One end of a light and inextensible string is connected to a floating balloon and the other end is fixed to
+the ground as shown. The string is taut.
+balloon —>\
+string ——>
+ground
+The free-body diagrams of the balloon and the string are shown below.
+Fy: upthrust by air
+F;;: force by balloon
+W: weight
+Fy: force by string Fy: force by ground
+forces acting on balloon forces acting on string
+Which of the following is/are action and reaction pair(s) ?
+qa) F\ and W
+(2) F, and F3
+@) F; and Fy
+A. (1) only
+B. (2) only
+c. (1) and (3) only
+D. (2) and (3) only

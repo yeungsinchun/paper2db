@@ -1,0 +1,30 @@
+*2. A weather balloon of volume 0.52 m‘° is filled with helium gas of temperature 15 °C and pressure 100 kPa at
+ground level.
+
+(a) Find the amount of helium gas (in mol) in the balloon. (2 marks)
+
+(b) The following graphs show the variation of air temperature 7 and atmospheric pressure p with height x
+. above ground level. .
+se) J
+a &
+T/IK p/kPa
+g 300 150 3
+Re) te}
+a =|
+= 200 100 =
+n n
+2 g
+S 100 50 a.
+= =
+o o
+| |
+= 0 + 0 p= |
+8 0 5 10 15 20 25 0 5 10 15 20 25 5
+= x/km x/km =
+Es 3
+A The weather balloon is released and rises to the upper atmosphere. Assume that the temperature and | 5
+a pressure of the helium gas in the balloon are the same as those of the air outside at any height x. &
+
+(i) A student believes that as the air temperature decreases in the first 10 km, the volume of the balloon
+
+decreases. Referring to the graphs above, explain qualitatively why this belief is not correct. (2 marks)

@@ -1,0 +1,12 @@
+20. A source in water emits a beam of ultrasound towards the water-air interface as shown.
+normal
+H air
+i
+1
+i water
+ultrasound beam
+Which of the following statements is INCORRECT ?
+A. The frequency of the refracted beam is the same as that of the incident beam.
+B. The speed of the refracted beam becomes smaller.
+lon The refracted beam leaving the interface bends towards the normal.
+Dz. If the angle of incidence is large enough, total internal reflection may occur.

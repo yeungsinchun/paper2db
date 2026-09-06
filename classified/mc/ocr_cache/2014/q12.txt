@@ -1,0 +1,17 @@
+*12. An artificial satellite revolves in a circular orbit above the Earth’s surface at a height equal to the radius
+of the Earth. Find the acceleration of the satellite in terms of the acceleration due to gravity g on the
+Earth’s surface.
+
+aA
+
+8
+
+BO
+
+4
+
+c «6
+
+2
+
+D. g

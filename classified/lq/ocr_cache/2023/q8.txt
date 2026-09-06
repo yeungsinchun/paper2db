@@ -1,0 +1,46 @@
+8. Astudent conducts an experiment to study the force on a straight current-carrying wire placed between the poles
+of a magnet providing a uniform magnetic field perpendicular to the wire. An adjustable power source is
+connected to the wire which is held horizontally by an insulated support placed on an electronic balance. The
+variation of the magnetic force on the wire is registered by the balance.
+
+conducting wire
+EA!
+7 B
+magnet ! }
+—_ TE magnet
+S 5 g << observer
+Figure 8.1 | N
+AS KR K~s2
+SL support
+electronic
+power
+8
+ammeter Ss 0— “a
+(a) On Figure 8.1, mark the positive (+) and negative (—) terminals of the ammeter. (1 mark)
+
+. (b) Figure 8.2 shows the side view of the wire AB seen by the observer. On the figure, draw the magnetic field .
+& provided by the magnet and indicate the directions of the current J and magnetic force Fg on the wire. 3
+a (3 marks) | &
+& =|
+2 | £.f 2
+S <—— 6
+a ' ' S
+E | | straight conducting wire z
+& | Figure 8.2 A nL na B €
+3 ; : I
+FS liw., — =|
+oO . oO
+g cross-section of Ss
+a the magnetic pole a=
+B g
+B= B=
+5 5
+“a 4
+= (c) Complete the table below to indicate how each of the factors listed would affect the magnitude of the | $
+E magnetic force Fg (increase, decrease or unchanged). (3 marks) g
+
+i
+using a stronger magnet of the same dimensions Po
+using another support such that the position of
+the horizontal wire is slightly lowered
+using a longer wire while the current is kept unchanged Po

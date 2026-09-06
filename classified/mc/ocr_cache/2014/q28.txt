@@ -1,0 +1,13 @@
+28.
+L <<
+es |
+DP
+The figure shows a closely packed long solenoid of cross-sectional area A and length L having a total of
+Nturns. If the solenoid carries a constant direct current throughout, which of the following changes can
+increase the magnetic flux density B at its central cross-section ?
+length cross-sectional area total number of turns
+A. 2L 2A 2N
+B. L 2A N
+Cc. 2L A N
+D. L A 2N
+Nr

@@ -1,0 +1,8 @@
+*31.
+z : EX,
+In the above circuit, each light bulb works at its rated value ‘22 W, 11 V’. The current in the primary
+coil is 0.25 A. Find the efficiency of the transformer.
+A. 20%
+B. 40%
+Cc. 64%
+D. 80%

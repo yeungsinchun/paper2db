@@ -1,0 +1,11 @@
+35. A certain radioactive isotope X has a half-life of 20 hours. After a time interval of 10 hours, what is the
+approximate fraction (f) of a sample of the radioactive isotope X remaining ?
+
+1 1
+
+A. z <f< 3
+1
+Bo f=
+
+3 1
+D. L>4

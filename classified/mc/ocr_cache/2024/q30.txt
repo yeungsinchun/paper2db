@@ -1,0 +1,9 @@
+*30. A power station generates 217 MW of power for transmission to downtown under a voltage of 132 kV
+via a transmission cable which has an effective resistance of 0.02 Q km™'. The power loss for a total
+cable length of 40 km is about
+
+A. 2.16 MW.
+B. 6.49 MW.
+Cc. 13.0 MW.
+D. 21.6 MW.
+NN

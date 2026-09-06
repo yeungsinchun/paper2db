@@ -1,0 +1,10 @@
+27. A light bulb is connected in series with a device Y and a cell as shown. Assume that the internal resistance
+of the cell is negligible and its e.m.f. remains unchanged.
+It is found that the brightness of the light bulb decreases with time. Which deductions must be correct ?
+ql) The current in Y decreases with time.
+(2) The voltage across Y decreases with time.
+(3) The power supplied by the cell decreases with time.
+A. (1) and (2) only
+B. (1) and (3) only
+Cc. (2) and (3) only
+D. (1), (2) and (3)

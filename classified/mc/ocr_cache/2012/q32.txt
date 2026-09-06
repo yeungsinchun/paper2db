@@ -1,0 +1,20 @@
+32. A copper rod P@ is placed horizontally as shown below. It is released and then falls vertically, cutting
+across the magnetic field of the Earth pointing out of the paper. Neglect air resistance. Which of the
+following statements is/are correct ?
+
+rr
+)
+EEN peemereeeanenl
+I — ee
+ee © © of we ew ew
+rs ™ magnetic field
+of the Earth
+rr
+(1) A voltage is induced across PQ.
+(2) A steady induced current is generated in the rod.
+(3) Due to the effect of the Earth’s magnetic field, the copper rod falls with an acceleration less
+than the acceleration due to gravity.
+‘ A. (1) only
+B. (3) only
+c. (1) and (2) only
+D. (2) and (3) only

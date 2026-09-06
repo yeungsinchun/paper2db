@@ -1,0 +1,8 @@
+10. A train departs from one station and stops at the next station after travelling 1.2 km along a straight
+line. The maximum acceleration and deceleration of the train are both 5 ms~ and the highest speed of
+the train is limited to 20 ms"! Find the shortest time taken for this trip.
+
+A. 56s
+B. 58s
+c. 62s
+D. 64s

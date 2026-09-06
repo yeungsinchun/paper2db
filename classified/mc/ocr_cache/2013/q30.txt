@@ -1,0 +1,10 @@
+30. |
+x | y
+—
+—
+Resistors X, Y and Z in the above circuit are identical while the battery of negligible internal resistance
+supplies a total power of 24 W. What is the power dissipated in resistor Z ?
+A. 3W
+B. 4w
+Cc. 6W
+D. 8W

@@ -1,0 +1,11 @@
+26.
+R
+{__}
+ao (__} ob
+12Q
+In the above network, the resistance across terminals a and b is 6 Q. If the 12 Q resistor is replaced by a
+6 Q resistor, the resistance across terminals a and b
+A. becomes 2 Q.
+B. becomes 4.Q.
+Cc. becomes 6 Q.
+D. cannot be found as the value of R is unknown.

@@ -1,0 +1,20 @@
+7. You are provided with a battery (of fixed e.m.f. € and internal resistance r), a variable resistor (with several
+known resistance values R to be selected), a switch, a voltmeter (assumed ideal) and a few connecting wires.
+Sih er
+(a) With the aid of a circuit diagram, describe the procedure of an experiment to study how the terminal
+voltage V delivered by the battery depends on the resistance R connected to it. State ONE precaution of
+the experiment. (5 marks)
+(b) Describe the variation of V with R and express V in terms of & r and R. (2 marks)
+3 3
+I S
+| &
+o o
+bs) re)
+3 2
+I I
+o o
+| s
+Sal he
+= s
+2 Z
+<x

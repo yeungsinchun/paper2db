@@ -1,0 +1,15 @@
+26. In the circuit below, a voltage Vo is applied across resistors of 0.1 MQ and 1 MQ connected in series.
+Voltmeter V; and V2 are connected respectively across the two resistors as shown. V is ideal while V2 has
+an internal resistance of 1 MQ.
+
+Vo
+0.1 MQ 1MQ.
+| ||
+Estimate the ratio of the voltmeter readings Vi: V2.
+
+A. Sil
+
+B. 1:5
+
+Cc. 10:1
+D. 1:10

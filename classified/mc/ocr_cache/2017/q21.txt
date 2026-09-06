@@ -1,0 +1,7 @@
+21. If the speed of sound in water is x and the speed of light in water is y, which of the following is
+correct ?
+speed of sound in air speed of light in air
+A. >x >y
+B. >x <y
+Cc. <x >y
+D. <x <y

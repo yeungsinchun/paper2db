@@ -1,0 +1,17 @@
+18. P
+vibrator R
+
+A vibrator generates a stationary wave on a string which is fixed at one end. The figure shows the
+appearance of the string at a certain instant. Which of the following descriptions about the motion of
+particles P, Q and R must be correct ?
+(1) Pand Q are momentarily at rest at this instant.
+(2) Qand R take the same time to reach their respective equilibrium positions.
+(3) Pand Rare always in antiphase.
+
+A. (1) only
+
+B. (3) only
+
+[on (1) and (2) only
+
+Dz. (2) and (3) only

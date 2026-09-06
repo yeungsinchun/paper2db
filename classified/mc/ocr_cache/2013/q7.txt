@@ -1,0 +1,12 @@
+7.
+constant speed
+——
+2N— —_ 12N
+Vp
+A block on a rough horizontal surface is moving to the left with constant speed under two horizontal
+forces 2 N and 12 N indicated as shown. If the force of 12 N is suddenly removed, what is the net force
+acting on the block at that instant ?
+A. 12N
+B. 10N
+Cc. 8N
+D. 2N

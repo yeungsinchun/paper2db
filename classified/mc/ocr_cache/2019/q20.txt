@@ -1,0 +1,17 @@
+20.
+L
+object
+Y Xx
+screen
+
+An object is placed at point X in front of a convex lens Z as shown. A sharp image is captured by the
+screen. The object is then shifted to point Y. Which adjustment below may give a sharp image on the
+screen again ?
+
+A. replacing L with another convex lens of longer focal length
+
+B. replacing ZL with another convex lens of the same shape but made from material of a
+
+larger refractive index
+Cc. replacing L with a concave lens
+D. moving the screen to the right

@@ -1,0 +1,10 @@
+*33. Given: mass ofa neutron = 16749 x 10" kg
+mass of a proton = 16726 x 107! kg
+mass of an electron = 9 x 107! kg
+In a nuclear reaction, a neutron becomes a proton and a f particle. Estimate the energy released in this
+process.
+A. 1.8 MeV
+B. 1.3 MeV
+Cc. 0.79 MeV
+Dz. 0.51 MeV
+END OF SECTION A

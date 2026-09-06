@@ -1,0 +1,7 @@
+1, An equal amount of energy is supplied to each of the substances P, Q, R and S' of mass and specific heat
+capacity listed below. Which substance would have the largest rise in temperature ?
+substance mass / kg specific heat capacity / J kg! °C"!
+A. P 2 4200
+B. Q 3 2100
+Cc. R 4 900
+D. s 5 840

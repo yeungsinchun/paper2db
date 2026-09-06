@@ -1,0 +1,5 @@
+20. Submarines employ ultrasound instead of microwaves to detect obstacles in the sea. This is because
+A. wavelengths of ultrasound are shorter than those of microwaves.
+B. ultrasound travels faster than microwaves in the sea.
+c. microwaves are casily absorbed by sea water.
+D. microwaves diffract too much in the sea.

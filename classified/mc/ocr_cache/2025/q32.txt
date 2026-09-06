@@ -1,0 +1,26 @@
+32. Radium-226 undergoes a series of a and f decays before finally becomes a stable nuclide. Referring to
+the plot of mass number against atomic number below, which nuclides, W,X, Y and Z, cannot be possible
+members in the decay series of radium-226 ?
+
+mass number
+A
+nl_| | | [| | Graditm-226
+a a
+Sy a a |
+t+
+a a
+a
+ool
+a a
+Soe a) Os
+a
+oe a
+a a a
+nap
+| Tot ft ft yt yt yt |
+ypLlL_ tt tr td
+81 82 83 84 85 86 87 88 89 atomic number
+A. Wand X
+B. Wand Y
+Cc. Zand X
+Dz. Zand Y

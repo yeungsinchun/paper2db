@@ -1,0 +1,5 @@
+31. A radioactive source undergoes decay such that 300 nuclides have decayed in 1 minute. Its activity is
+A. 0.2 Bq.
+B. 5Baq.
+c 300 Ba.
+D. 18000 Bq.

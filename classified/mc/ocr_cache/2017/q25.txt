@@ -1,0 +1,5 @@
+25. Which of the following statements about the use of a fuse is correct ?
+. A. A fuse should be installed in the neutral wire.
+B. A fuse is not required in an electrical appliance with double insulation.
+[on A SA fuse is suitable for a heater of rating ‘220 V, 1500 W’.
+Dz. The melting point of a fuse should be lower than that of copper.

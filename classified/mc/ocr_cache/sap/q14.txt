@@ -1,0 +1,10 @@
+*14.
++e pendulum in
+‘ 2 horizontal position
+A simple pendulum is held at rest in a horizontal position. It is then released with the string taut.
+Which statement about the tension in the string is not correct when the pendulum reaches its vertical
+position ?
+A. The tension equals the weight of the pendulum bob in magnitude.
+B. _The tension attains its greatest value.
+C. The tension does not depend on the length of the pendulum.
+D. The tension depends on the mass of the pendulum bob.

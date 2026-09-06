@@ -1,0 +1,14 @@
+15.
+300 m
+P nnn nanan nnn Q
+H Top view
+200m!
+t
+zl vertical wall
+Boys P and Q are 300 m apart and are both at a distance of 200 m from a vertical wall as shown. When
+P shouts once, two sounds are heard by Q. Which description below is correct ?
+Given : speed of sound in air = 340 ms?
+A. The first sound is louder and 0.59 s later the second sound is heard.
+B. The first sound is louder and 0.29 s later the second sound is heard.
+c. The second sound is louder and 0.59 s earlier the first sound is heard.
+D. The second sound is louder and 0.29 s earlier the first sound is heard.

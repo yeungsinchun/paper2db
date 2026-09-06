@@ -1,0 +1,16 @@
+*28. re |
+: : : i 2 | uniform magnetic field
+se * + =7 pointing out of the paper
+charged |
+particles PQ
+P and Q are two particles carrying the same amount of charge but of different masses. They travel with
+the same speed and enter a uniform magnetic field pointing out of the paper as shown. Semi-circular
+paths with different radii are described before they emerge from the field. Which descriptions below
+are correct ?
+(1) Both P and Q are positively charged.
+(2) P and Q emerge from the field with the same speed.
+(3) The mass of Q is greater than that of P.
+As (1) and (2) only
+B. (1) and (3) only
+Cc. (2) and (3) only
+D. (1), (2) and (3)

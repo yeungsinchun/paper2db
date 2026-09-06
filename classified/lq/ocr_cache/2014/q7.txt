@@ -1,0 +1,47 @@
+7. Figure 7.1 shows an experimental set-up to determine the wavelength of monochrowiatic light emitted from
+the vertical narrow slit of a discharge lamp. A, B are two mutually perpendicular metre rules on the bench
+with rule A pointing towards the lamp. A diffraction grating with vertical jines is plaved at one cna of rule
+A. A vertically mounted pin P is moved along rule B until the pin is in line with the diffracted image of the
+second-order to the observer. The corresponding distance x is measured for finding the diffraction angle 0.
+
+To slit
+supply P
+discharge tan
+Figure 7.1 lamp Sa
+wae
+A! ON,
+lm 6°
+Q>ss. grating
+Bs vuouver
+
+3 The grating has 300 lines per mm and x is found to be 0.38 m for the second-order image.
+
+a
+
+a
+
+3
+
+Re)
+
+co - once eee
+wy
+
+a
+
+on
+
+=
+
+o
+
+=|
+
+S
+
+oO - weno
+R=
+
+3
+
+E *(ii) Hence find the wavelength of the light from the lamp. (3 marks)

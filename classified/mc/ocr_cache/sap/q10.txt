@@ -1,0 +1,15 @@
+10. Ltt ll ll Z YY We We
+Im 0.25 m
+Figure (a) Figure (b)
+Figure (a) shows a uniform plank supported by two spring balances P and Q. The readings of the two
+balances are both 150 N. P is now moved 0.25 m towards Q (see Figure (b)). Find the new readings
+of P and Q.
+Reading of P/N Reading of Q/N
+
+A. 100 200
+
+B. 150 150
+
+Cc. 200 100
+
+D. 200 150

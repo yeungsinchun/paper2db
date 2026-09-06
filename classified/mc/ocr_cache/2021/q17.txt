@@ -1,0 +1,15 @@
+“17. second-order
+bright fringe
+monochromatic
+light beam
+40°
+diffraction
+grating second-order
+bright fringe
+When a monochromatic light beam is incident normally on a diffraction grating with 300 lines per mm,
+a pattern of bright fringes is formed. The angle between the two second-order bright fringes is 40°. Find
+the frequency of the light.
+A. 1.4 « 10!4 Hz
+B. 2.6 x 10'* Hz
+C. 2.8 x 10'* Hz.
+D. 5.3 x 10! Hz

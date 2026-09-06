@@ -1,0 +1,20 @@
+*30. A rectangular copper loop PORS, with its plane perpendicular to a uniform magnetic field of flux
+density B, is moving with velocity v in a direction perpendicular to the field as shown. The length and
+width of the loop are # and k respectively.
+
+x x x x x x x x
+A Oo
+uniform magnetic x xX tx x xp x xX x
+field into the paper A —*
+x x x x x x x x
+Ss R
+Kx xX K xX K xX KX
+Which of the following statements is/are correct ?
+(1) The potential difference across PQ is Bhy.
+(2) The potential difference across OR is Bkv.
+(3) There is no induced current flowing through the loop.
+A. (1) only
+B. (2) only
+Cc. (1) and (3) only
+D. (2) and (3) only
+————_.

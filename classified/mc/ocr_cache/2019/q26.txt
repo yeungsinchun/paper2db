@@ -1,0 +1,13 @@
+26. Three parallel wires P, Q and R are arranged with separations d, and a) (with d > d;) as shown. Each
+wire carries the same magnitude of current flowing in the directions indicated. If the magnitude of the
+magnetic force per unit length exerted on Q by P is F, what are the direction and magnitude of the
+resultant magnetic force per unit length exerted on Q?
+
+d, ad
+wire P wire O wire R
+direction of resultant magnetic magnitude of resultant magnetic
+force exerted on Q force per unit length exerted on Q
+A. to the right greater than 2F
+B. to the right smaller than F
+Cc. to the left greater than 2F
+D. to the left smaller than F

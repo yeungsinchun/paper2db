@@ -1,0 +1,9 @@
+25. In the circuit below, the two resistors are identical. When S is closed, how would the readings of th
+ammeter and voltmeter change ?
+C+) ——
+Lo Ss
+ammeter reading _ voltmeter reading
+A. increase increase
+B. increase decrease
+Cc. decrease increase
+Dz. decrease decrease

@@ -1,0 +1,9 @@
+29. The figure shows three mutually perpendicular coils (1), (2) and (3) placed near a conducting wire
+carrying an a.c. along the z-axis direction. In which coil(s) would e.m.f. be induced ?
+conducting wire
+carrying an a.c. rs
+x
+A. (1) only
+B. (3) only
+C. (1) and (2) only
+D. (2) and (3) only

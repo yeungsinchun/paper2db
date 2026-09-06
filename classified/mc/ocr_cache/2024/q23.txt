@@ -1,0 +1,12 @@
+23. Charges +Q and —2Q are fixed at X and Y as shown.
++2 522
+eS aaa
+Xx Yy
+Which description(s) about the electric field along the dotted line is/are correct ?
+(1) Between_X and Y, the respective electric fields due to the two charges are in the same direction.
+(2) To the right of Y, the resultant electric field is always directed to the left.
+(3) On the dotted line, there exist two points where the resultant electric field is zero.
+A. (2) only
+B. (3) only
+Cc. (1) and (2) only
+D. (1) and (3) only

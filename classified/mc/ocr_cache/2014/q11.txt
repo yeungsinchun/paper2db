@@ -1,0 +1,12 @@
+*11. An astronaut inside a spacecraft moving in a circular orbit around the Earth is apparently weightless
+because
+
+A, the astronaut is too far from the Earth to feel the Earth’s gravitational force.
+
+B. the astronaut and the spacecraft are both moving with the same acceleration towards
+the Earth.
+
+Cc. the Earth’s gravitational force on the astronaut is balanced by the reaction force of
+the spacecraft’s floor.
+
+D. the Earth’s gravitational force on the astronaut is balanced by the centripetal force.

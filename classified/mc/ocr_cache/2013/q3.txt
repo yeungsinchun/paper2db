@@ -1,0 +1,9 @@
+*3. In which of the following situations would the r.m.s. speed of the molecules of a fixed mass of an ideal
+gas increase ?
+(1) The gas is heated under constant volume.
+(2) The gas expands under constant pressure.
+(3) The gas is compressed under constant temperature.
+A. (1) only
+B. —_@)only
+c. (1) and (2) only
+D. (2) and (3) only

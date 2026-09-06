@@ -1,0 +1,22 @@
+*30.
+ween uniform magnetic field
+re wena of peinting out of the paper
+Sy
+. Pee] «current [
+STs
+7
+A slice of conductor (with a certain resistivity) of thickness ¢, breadth 6 and length L is connected to a
+battery of constant e.m.f. and negligible internal resistance. A steady current / passes through it as
+shown. When a uniform magnetic field is applied normally to the slice, a Hall voltage V is set up
+between two of its opposite faces. If the thickness and the breadth of the slice are reduced to 4 ¢ and
+'% b respectively, what would the following quantities be ?
+current passing Hall voltage
+through the slice developed -
+A Z zr
+4 4
+B. 1 x
+4
+c. i x
+4 2
+D. I £
+2

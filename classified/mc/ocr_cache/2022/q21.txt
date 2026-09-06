@@ -1,0 +1,16 @@
+21. In the set-up below, the separation between the bright object and the translucent screen is fixed. A lens
+is moved from the object towards the screen as shown.
+bright translucent
+yy object lens screen
+—s
+The first sharp image formed is inverted as shown and its length is 9 cm. When the lens is moved further
+towards the screen, a second sharp image of length 1 cm is observed. Which of the following statements
+is/are correct ?
+qd) The second image is erect.
+(2) The length of the object is 3 cm.
+(3) There are at most two positions of the lens that can give a sharp image on the screen when the
+lens is moved.
+A. (1) only
+B. (2) only
+c. (2) and (3) only
+Db. (1), 2) and (3)

@@ -1,0 +1,17 @@
+19.
+Y op
+[2m
+45cm Z
+String XY is fixed at both ends. The distance between X and Y is 45 cm. Two identical sinusoidal
+waves travel along XY in opposite directions and form a stationary wave with an antinode at point P.
+The figure shows the string when P is 2 mm, its maximum displacement, from the equilibrium
+position. What is the amplitude and wavelength of each of the travelling waves on the string ?
+Amplitude Wavelength
+
+A. Imm 30cm
+
+B. Imm 15 cm
+
+Cc. 2mm 30cm
+
+D. 2mm 15 cm

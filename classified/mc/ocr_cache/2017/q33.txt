@@ -1,0 +1,14 @@
+*33. The following shows the decay of uranium-238 (733U).
+233U> SoTh+3He
+Given that : mass of *35U = 238.05079 u
+mass of *3\Th = 234.04363 u
+mass of $He = 4.00260 u
+Which of the following statements is/are correct ?
+() The temperature required to start the decay is about 10’ K.
+(2) The energy released in the decay of one uranium-238 nucleus is 4.25 MeV.
+@) All the energy released in the decay becomes the kinetic energy of $He.
+A. (1) only .
+B. (2) only
+c. (1) and (3) only
+D. (2) and (3) only
+END OF SECTION A

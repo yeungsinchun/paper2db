@@ -1,0 +1,15 @@
+1.
+xX
+2m
+4
+
+A football player kicks a ball on the ground. The ball leaves the ground with speed v and hits the bar at
+with a speed of 17 ms'', X is 2 m above the ground. Neglecting air resistance, what is the value of v ?
+
+A. 15.8mst
+
+B. 18.1mst
+
+c 19.0 ms
+
+D. 23.3ms"

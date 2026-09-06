@@ -1,0 +1,15 @@
+*9. Particles P and Q are fixed on the surface of a sphere rotating about a vertical axis passing through the
+centre O of the sphere as shown. The horizontal shaded region X divides the sphere into two halves.
+P is at the edge of region X while Q is at an angle of elevation 0 above region X.
+
+chs
+Q 7
+Van region X
+P ecko N oy S
+=
+t
+Find the ratio of the centripetal acceleration of P to that of Q.
+A. 1: cos 6
+B. 1:sin@
+Cc. cos 6:1
+Dz sin 0:1

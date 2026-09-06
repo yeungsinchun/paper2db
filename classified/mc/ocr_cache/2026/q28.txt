@@ -1,0 +1,8 @@
+*28. ‘The input terminals of a transformer are connected to a 220 V mains supply. Its output power is 18 W
+and its output voltage is 5.0 V. If the efficiency of the transformer is 85%, what is the current drawn
+from the mains supply ?
+
+A. 0.070 A
+B. 0.082 A
+c. 0.096 A
+D. 0.55 A

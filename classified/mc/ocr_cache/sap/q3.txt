@@ -1,0 +1,11 @@
+*3,
+ae
+; |
+T oT absolute temperature
+As the gas in a vessel of fixed volume is heated, it gradually leaks out. The gas in the vessel changes
+from state X to state Y along the path XY shown in the plot of pressure against absolute temperature.
+What percentage of the original mass of the gas leaks out from the vessel in this process ?
+A. 10%
+B. 20%
+Cc. 25%
+D. 50%

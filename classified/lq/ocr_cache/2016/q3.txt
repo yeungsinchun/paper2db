@@ -1,0 +1,26 @@
+3. A person of mass m stands on a balance inside a lift. The lift goes down from the top of a building at time t = 0
+and it reaches the ground at t= T. The velocity-time (v-t) graph of the lift is shown in Figure 3.1.
+(g=9.81 ms”)
+v/ms"!
+Figure 3.] t=?
+As B Cc |
+0 > 12 t/s
+
+(a) Calculate the acceleration of the lift from t= 0 tot=2s. (2 marks)
+=| ls]
+B Raf
+Be LS
+r= |
+= The reading of the balance changes during the person’s ride on the lift and the readings registered are 685 N, | S
+5 569 N and 395 N. =
+=| &
+a= bb
+ey (b) Match these readings with the three stages, A, B and C, of the ride (shown in Figure 3.1). Hence deduce | 8
+E the mass of the person. (3 marks) E
+o o
+| gS
+a aI
+g A: B: Cc: g
+a -
+2 3
+3 2

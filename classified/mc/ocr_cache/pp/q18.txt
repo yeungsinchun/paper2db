@@ -1,0 +1,21 @@
+18.
+— >
+# wall
+bs
+>
+Two pulses, X and Y, are travelling along a string which is fixed at one end to the wall as shown in t
+figure above. Which of the following is a possible waveform of the string after the two pulses reflect ?
+A. B.
+oo
+<— wall » wall
+x
+x
+Y a
+qe
+G. D.
++
+_ wall Y wall
+xX
+x
+Y <
+qe

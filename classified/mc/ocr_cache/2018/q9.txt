@@ -1,0 +1,11 @@
+9. A particle moving along a straight line with speed 0.5 m s™ changes its direction of motion within a
+period of 0.2 s and subsequently travels with the same speed in the opposite direction. Find the
+magnitude of its average acceleration during this 0.2 s.
+
+A. Sms*
+
+B. 2.5ms*
+
+Cc. Oms*
+
+Dz. its magnitude depends on the mass of the particle

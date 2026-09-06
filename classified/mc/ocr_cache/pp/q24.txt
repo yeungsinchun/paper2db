@@ -1,0 +1,9 @@
+24,
+q
+Three identical point charges q (represented by dots) are situated in the space as shown. Which of th
+following descriptions about the direction and magnitude of the electric field E at X and at Y is correct ‘
+Direction Magnitude
+A Same Ex > Ey
+B. Same Ex <Ey
+Cc. Opposite Ex > Ey
+D. Opposite Ex <Ey

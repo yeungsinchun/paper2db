@@ -1,0 +1,15 @@
+26. When a copper rod PQ moves with a constant velocity across a uniform magnetic field as shown, an
+e.m.f, is induced across the rod.
+P
+uniform magnetic
+x * || x * —_* field (into the paper)
+—_
+x xg x x
+Which of the following statements is/are correct ?
+qa) The magnitude of the induced e.m.f. depends on the length of the rod.
+(2) Rod PQ acts like a cell providing an e.m.f. with P being its positive terminal.
+(3) There is a force acting on the rod to oppose its motion.
+A. (1) only
+B. (3) only
+Cc. (1) and (2) only
+D. (2) and (3) only

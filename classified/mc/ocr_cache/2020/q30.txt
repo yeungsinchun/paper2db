@@ -1,0 +1,7 @@
+30. The background count rate in an experiment is determined using a GM counter. Four readings of the
+count rate in each minute are taken. Which set of readings below is the most probable ?
+1“ minute 2" minute 3” minute 4" minute
+A. 5 62 8 69
+B. 40 40 40 40
+Cc. 60 50 30 20
+Dz. 29 26 31 35

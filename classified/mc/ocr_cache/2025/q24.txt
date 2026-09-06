@@ -1,0 +1,15 @@
+*24,
+P - M
++O
+r r
+oO F Nv
+Point charges +@ and —Q are fixed respectively at corners P and N of square MNOP of side length r as
+shown above. What is the electric field at 0?
+A. 22. along the direction from P to NV
+4neyr
+B. 2. along the direction from P to NV
+4neyr
+c. 20 along the direction from N to P
+ner
+Dz 2. along the direction from N to P
+4neyr

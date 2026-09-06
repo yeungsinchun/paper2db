@@ -1,0 +1,18 @@
+VW. P Q P Q
+Figure (a) Figure (b)
+IN IN 2.3N
+—— Im ——>+i ex
+weight 4.N
+
+A uniform metre rule is supported by vertical wires P and Q and remains at rest horizontally as shown
+in Figure (a). The tension in each wire is 1 N. When a weight of 4 N is hung from the metre rule at a
+certain position as shown in Figure (b), the tension in Q becomes 2.3 N while the metre rule remains
+horizontal. Find the distance x shown.
+
+A. 32.5 cm
+
+B. 57.5 cm
+
+Cc. 67.5 cm
+
+D. Answer cannot be found as the tension in P is not known.

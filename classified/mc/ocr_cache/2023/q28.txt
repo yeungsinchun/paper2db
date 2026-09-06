@@ -1,0 +1,14 @@
+28. Which of the following statements about domestic circuits is/are correct ?
+
+(1) The live (L) wire is sometimes positive and sometimes negative with respect to the neutral (N)
+wire.
+
+(2) The kilowatt-hour meter measures the total power consumed by the domestic electrical
+appliances.
+
+(3) With more electrical appliances connected, the total resistance of the domestic circuit becomes
+smaller,
+A (1) only
+B. (2) only
+con (1) and (3) only
+Dz. (2) and (3) only

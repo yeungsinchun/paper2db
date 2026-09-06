@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Split HKDSE Physics Paper 1B (LQ) into per-question PNGs.
+"""Split HKDSE Physics Paper 1B (LQ) into upright full pages (+ optional crops).
 
-Works in *displayed* pixel space (handles rotated scans). Keeps question
-stems + diagrams; strips dotted answer lines and margin warnings.
+Default: export exam pages and starts.json (no within-page question crops).
+Answer crops stay in preprocess_lq_answers.py.
 """
 from __future__ import annotations
 
 import argparse
 import io
+import json
+import math
 import re
 import subprocess
 from pathlib import Path
@@ -134,9 +136,15 @@ def apply_page_rotation(image: Image.Image, rot: int) -> Image.Image:
 
 
 def is_two_page_spread(image: Image.Image) -> bool:
-    """Detect side-by-side two-page scans (e.g. 2020 Paper 1B at 3507x4960)."""
+    """Detect side-by-side two-page scans (landscape, much wider than tall).
+
+    Portrait A4 at high DPI (e.g. 3508x4961) must NOT match - that used to
+    bisect every page and invent fake question numbers.
+    """
     w, h = image.size
-    return w >= 3400 and h >= 4800 and h > w
+    if w <= h:
+        return False
+    return w >= 3400 and h >= 2400 and (w / h) >= 1.25
 
 
 def split_spread(image: Image.Image) -> list[Image.Image]:
@@ -226,11 +234,20 @@ def export_pdf_pages(
         doc.close()
 
 
+def _placement_rotation_deg(transform: tuple | list) -> int:
+    """Snap the CTM image-x axis angle to 0/90/180/270."""
+    a, b = float(transform[0]), float(transform[1])
+    ang = math.degrees(math.atan2(b, a)) % 360.0
+    return int(min((0, 90, 180, 270), key=lambda c: min(abs(ang - c), abs(ang - c - 360))))
+
+
 def extract_fullpage_display(page: fitz.Page, doc: fitz.Document) -> Image.Image | None:
     """Copy the embedded full-page raster (no MuPDF resample) when safe.
 
     Photocopy JPEGs stay at native pixels; 1-bit CCITT stays sharp. Skip when the
-    page composites a soft backdrop with sharper overlays (e.g. 2022).
+    page composites a soft backdrop with sharper overlays (e.g. 2022), or when the
+    placement CTM rotates/clips a two-page scan (2019/2020/2023) - get_pixmap
+    handles that correctly and extract alone would stay sideways.
     """
     layers = _page_image_layers(page)
     if not layers:
@@ -239,6 +256,11 @@ def extract_fullpage_display(page: fitz.Page, doc: fitz.Document) -> Image.Image
     if len(full) != 1:
         return None
     base = full[0]
+    # Content-stream rotation (page.rotation may still be 0). 90/270 usually means
+    # a landscape booklet scan clipped per PDF page - do not extract raw pixels.
+    trot = _placement_rotation_deg(base.get("transform", (1, 0, 0, 1, 0, 0)))
+    if trot in (90, 270):
+        return None
     sharper = [
         L
         for L in layers
@@ -258,6 +280,22 @@ def extract_fullpage_display(page: fitz.Page, doc: fitz.Document) -> Image.Image
     rot = page.rotation % 360
     if rot:
         image = apply_page_rotation(image, rot)
+    # Placement 180° with page.rotation 0 (e.g. 2017) leaves the raster inverted.
+    if trot == 180:
+        image = image.transpose(Image.Transpose.ROTATE_180)
+    # Embedded rasters are sometimes stored rotated relative to the page
+    # rect (page.rotation still 0). Align aspect ratio with the page.
+    pw = max(abs(page.rect.width), 1.0)
+    ph = max(abs(page.rect.height), 1.0)
+    if (pw > ph) != (image.width > image.height):
+        target = pw / ph
+
+        def _aspect_score(im: Image.Image) -> float:
+            return abs((im.width / max(im.height, 1)) - target)
+
+        cand90 = image.transpose(Image.Transpose.ROTATE_90)
+        cand270 = image.transpose(Image.Transpose.ROTATE_270)
+        image = min((cand90, cand270), key=_aspect_score)
     if image.mode not in ("RGB", "L"):
         image = image.convert("RGB")
     elif image.mode == "L":
@@ -361,46 +399,69 @@ def ocr_tsv(image: Image.Image) -> list[dict]:
 def find_starts_on_image(image: Image.Image, max_questions: int) -> list[tuple[int, float]]:
     """Return (question_number, y_px) on one displayed page image."""
     w, h = image.size
-    # Left band where question numbers sit.
-    strip = image.crop((int(w * 0.02), int(h * 0.06), int(w * 0.28), int(h * 0.94)))
-    strip = strip.resize((strip.width * 2, strip.height * 2))
+    top0 = int(h * 0.035)
     hits: list[tuple[int, float, float]] = []
 
-    for row in ocr_tsv(strip):
-        if row["conf"] < 15:
-            continue
-        match = match_question_number(row["text"])
-        if not match:
-            continue
-        qn = int(match.group(1))
-        if not (1 <= qn <= max_questions):
-            continue
-        if row["left"] > strip.width * 0.55:
-            continue
-        y = int(h * 0.06) + row["top"] / 2.0
-        hits.append((qn, y, row["conf"]))
+    # Two strip widths: narrow avoids body text; wide keeps "1. Stem..." intact.
+    strips: list[Image.Image] = []
+    for left_f, right_f in ((0.035, 0.20), (0.035, 0.32)):
+        strip = image.crop((int(w * left_f), top0, int(w * right_f), int(h * 0.96)))
+        strips.append(strip.resize((strip.width * 2, strip.height * 2)))
 
-    tsv_qns = {qn for qn, _, _ in hits}
-    buf = io.BytesIO()
-    strip.save(buf, format="PNG")
-    result = subprocess.run(
-        ["tesseract", "stdin", "stdout", "--psm", "6"],
-        input=buf.getvalue(),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.DEVNULL,
-        check=False,
-    )
-    text = result.stdout.decode("utf-8", errors="ignore")
-    lines = text.splitlines()
-    for i, line in enumerate(lines):
-        m = re.match(r"^\s*[\"'*#]?\s*(\d{1,2})\s*[.)]+(?:\s+\S|$)", line)
-        if not m:
-            continue
-        qn = int(m.group(1))
-        if not (1 <= qn <= max_questions) or qn in tsv_qns:
-            continue
-        y = int(h * 0.06) + (i / max(1, len(lines))) * (h * 0.88)
-        hits.append((qn, y, 25.0))
+    for strip in strips:
+        for row in ocr_tsv(strip):
+            if row["conf"] < 15:
+                continue
+            text = _normalize_qnum_text(row["text"])
+            match = match_question_number(text)
+            if not match:
+                starred = re.fullmatch(r"[*#]?(\d{1,2})\s*[.)]?", text)
+                if starred:
+                    match = starred
+                else:
+                    continue
+            qn = int(match.group(1))
+            if not (1 <= qn <= max_questions):
+                continue
+            if row["left"] > strip.width * 0.55:
+                continue
+            y = top0 + row["top"] / 2.0
+            hits.append((qn, y, row["conf"]))
+
+        buf = io.BytesIO()
+        strip.save(buf, format="PNG")
+        result = subprocess.run(
+            ["tesseract", "stdin", "stdout", "--psm", "6"],
+            input=buf.getvalue(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+        lines = result.stdout.decode("utf-8", errors="ignore").splitlines()
+        # After N./N,/N) require EOL or a real stem char - not dotted-line noise.
+        line_q_re = re.compile(
+            r"^[|\[\]Il\"'*#\s]*[*#]?\s*(\d{1,2})\s*[.,)](?:\s*$|\s+[^\s.·•])"
+        )
+        fig_re = re.compile(r"Figure\s+(\d{1,2})\s*\.\s*1\b", re.I)
+        tsv_qns = {qn for qn, _, _ in hits}
+        for i, line in enumerate(lines):
+            stripped = line.strip()
+            m = line_q_re.match(stripped)
+            if m:
+                qn = int(m.group(1))
+                if 1 <= qn <= max_questions and qn not in tsv_qns:
+                    y = top0 + (i / max(1, len(lines))) * (h * 0.92)
+                    hits.append((qn, y, 25.0))
+                    tsv_qns.add(qn)
+                continue
+            fm = fig_re.search(stripped)
+            if fm:
+                qn = int(fm.group(1))
+                if 1 <= qn <= max_questions and qn not in tsv_qns:
+                    # Question number sits just above "Figure N.1".
+                    y = max(top0 + 20, top0 + (i / max(1, len(lines))) * (h * 0.92) - 40)
+                    hits.append((qn, y, 18.0))
+                    tsv_qns.add(qn)
 
     best: dict[int, tuple[float, float]] = {}
     for qn, y, conf in hits:
@@ -413,18 +474,31 @@ def find_starts_on_image(image: Image.Image, max_questions: int) -> list[tuple[i
 def find_question_starts(
     pages: list[Image.Image], cover_pages: int, max_questions: int
 ) -> list[tuple[int, int, float]]:
-    """Global (qn, page_index, y_px) sequence starting at 1."""
-    best: dict[int, tuple[int, float, float]] = {}
-    for page_index in range(cover_pages, len(pages)):
-        for qn, y in find_starts_on_image(pages[page_index], max_questions):
-            prev = best.get(qn)
-            if prev is None or (page_index, y) < (prev[0], prev[1]):
-                best[qn] = (page_index, y, 1.0)
+    """Global (qn, page_index, y_px) sequence starting at 1.
 
-    ordered = sorted(
-        ((qn, *best[qn][:2]) for qn in best if 1 <= qn <= max_questions),
-        key=lambda t: (t[1], t[2]),
-    )
+    Only accept the next expected number in reading order so OCR false hits
+    (option digits, figure labels) cannot invent Q7 mid-paper.
+    """
+    by_page: dict[int, list[tuple[int, float]]] = {}
+    for page_index in range(cover_pages, len(pages)):
+        by_page[page_index] = find_starts_on_image(pages[page_index], max_questions)
+
+    ordered: list[tuple[int, int, float]] = []
+    expected = 1
+    last_key = (-1, -1.0)
+    for page_index in range(cover_pages, len(pages)):
+        hits = sorted(by_page.get(page_index, []), key=lambda item: item[1])
+        for qn, y in hits:
+            if qn != expected:
+                continue
+            key = (page_index, y)
+            if key <= last_key:
+                continue
+            ordered.append((qn, page_index, y))
+            expected = qn + 1
+            last_key = key
+            if expected > max_questions:
+                return ordered
     return ordered
 
 
@@ -580,7 +654,16 @@ def process_one(
     max_questions: int,
     max_scale: float = 9.0,
     pages_dir: Path | None = None,
+    *,
+    crop_questions_flag: bool = False,
 ) -> int:
+    """Export LQ exam pages (and optionally per-question crops).
+
+    Default is pages-only: split upright full pages + starts.json. Question
+    crops are off unless crop_questions_flag=True (answers stay separately
+    cropped from the marking scheme). Pages-only mode leaves existing q*.png
+    crops untouched.
+    """
     doc = fitz.open(source)
     try:
         if doc.needs_pass:
@@ -594,48 +677,80 @@ def process_one(
         if not allow_crisp:
             print("  jpeg scans detected — keeping greyscale (no bilevel snap)")
 
-        loaded_from_png = False
-        full_pages: list[Image.Image] | None = None
-        if pages_dir is not None:
-            full_pages = load_page_pngs(pages_dir)
-            if full_pages:
-                loaded_from_png = True
-                print(f"  loaded {len(full_pages)} page PNGs from {pages_dir}")
-
-        if full_pages is None:
+        pages_out = pages_dir if pages_dir is not None else (output_dir / "pages")
+        full_pages: list[Image.Image] | None = load_page_pngs(pages_out)
+        if full_pages:
+            print(f"  loaded {len(full_pages)} page PNGs from {pages_out}")
+        else:
             full_pages = expand_pdf_pages(doc, scale, cover_pages=cover_pages)
-            if pages_dir is not None:
-                save_page_pngs(full_pages, pages_dir)
-                print(f"  saved {len(full_pages)} page PNGs -> {pages_dir}")
+            for i, image in enumerate(full_pages):
+                full_pages[i] = crisp_scan(image, enabled=allow_crisp)
+            save_page_pngs(full_pages, pages_out)
+            print(f"  saved {len(full_pages)} page PNGs -> {pages_out}")
 
-        detect_pages = expand_pdf_pages(doc, detect_scale, cover_pages=cover_pages)
-
+        detect_ratio = min(1.0, detect_scale / max(scale, 0.01))
+        if detect_ratio < 0.95:
+            detect_pages = downscale_pages(full_pages, detect_ratio)
+        else:
+            detect_pages = full_pages
         starts = find_question_starts(detect_pages, cover_pages=0, max_questions=max_questions)
         if not starts:
             print(f"  WARNING: no questions detected in {source.name}")
             return 0
-        if len(starts) > 10:
-            starts = starts[:10]
+        if len(starts) > max_questions:
+            starts = starts[:max_questions]
         print(f"  detected Q{starts[0][0]}-Q{starts[-1][0]} ({len(starts)} questions)")
 
-        starts_scaled = []
+        # Scale y to full-page coordinates for metadata / optional crops.
+        starts_scaled: list[tuple[int, int, float]] = []
         for qn, page_i, y in starts:
             det_h = max(detect_pages[page_i].size[1], 1)
             ren_h = full_pages[page_i].size[1]
             starts_scaled.append((qn, page_i, y * (ren_h / det_h)))
+
+        output_dir.mkdir(parents=True, exist_ok=True)
+        questions_meta: list[dict] = []
+        for i, (qn, page_i, y) in enumerate(starts_scaled):
+            if i + 1 < len(starts_scaled):
+                next_page = starts_scaled[i + 1][1]
+                # Full pages for this Q only - stop before the next question's page.
+                end_page = next_page - 1 if next_page > page_i else page_i
+            else:
+                end_page = len(full_pages) - 1
+            page_from = page_i
+            page_to = max(page_from, end_page)
+            questions_meta.append(
+                {
+                    "q": qn,
+                    "page_from": page_from,
+                    "page_to": page_to,
+                    "y": round(float(y), 1),
+                }
+            )
+        meta_path = output_dir / "starts.json"
+        meta_path.write_text(
+            json.dumps({"questions": questions_meta, "pages": len(full_pages)}, indent=2)
+            + "\n",
+            encoding="utf-8",
+        )
+        print(f"  wrote {meta_path.name} ({len(questions_meta)} questions)")
+
+        # Review PDF = full exam pages (not question crops).
+        combine_pngs_to_pdf(pages_out, output=output_dir / "combined.pdf", overwrite=True)
+
+        if not crop_questions_flag:
+            return len(questions_meta)
+
         images = crop_questions(
             full_pages,
             starts_scaled,
             clean_answer_lines=allow_crisp,
         )
-        output_dir.mkdir(parents=True, exist_ok=True)
         for old in output_dir.glob("q*.png"):
             old.unlink()
         for qn, image in sorted(images.items()):
             image = crisp_scan(image, enabled=allow_crisp)
-            # Large hi-res crops: skip PNG optimize (slow, little gain).
             image.save(output_dir / f"q{qn}.png", format="PNG", optimize=False)
-        combine_pngs_to_pdf(output_dir)
         return len(images)
     finally:
         doc.close()

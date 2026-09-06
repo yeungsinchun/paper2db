@@ -1,0 +1,15 @@
+23.
+x Yy Z (fixed)
+----@--------@---------@-----
+
+In the above figure, point charge Y is placed in the middle of two identical positive point charges X
+and Z, with Z being fixed. Both X and Y are in equilibrium and at rest initially. What would happen to
+X if Y is slightly pushed towards Z?
+
+A. It moves towards the left.
+
+B. It moves towards the right.
+
+Cc. It remains at rest.
+
+D. It cannot be determined as the sign of Y is not known.

@@ -1,0 +1,16 @@
+7. Patrick is driving along a straight horizontal road. At time t = 0, he observes that an accident has
+happened. He then applies the brakes to stop his car with uniform deceleration. The graph shows the
+variation of the speed of the car with time.
+
+v/ms!
+Pe.
+008 so. 1/8
+Find the distance travelled by the car from time 1=0 to 5.0.
+
+A. 294m
+
+B. 40.6
+
+C. 46.2m
+
+D. 812m

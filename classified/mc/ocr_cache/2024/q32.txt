@@ -1,0 +1,6 @@
+*32. It takes 2.0 years for the activity of a sample containing a radioactive nuclide to drop from 800 Bq to
+600 Bq. How long will it take for the activity of the sample to drop from 600 Bq to 300 Bq?
+A. 2.0 years
+B. 2.5 years
+Cc. 3.0 years
+Dz. 4.8 years

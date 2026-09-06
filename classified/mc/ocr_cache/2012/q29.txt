@@ -1,0 +1,12 @@
+29. In the figure below, X, Y and Z are three long straight parallel wires with Z placed midway between X
+and Y. X and Z carry currents of 1 A in the same direction while Y carries a current of 3 A in the
+opposite direction. The magnetic force per unit length experienced by wire X due to wire Z is of
+magnitude F.
+
+x Z Y
+1A | 1 ; A
+The magnetic force per unit length acting on wire Z due to both X and Y is
+A. 2F to the right.
+B. 2F to the left.
+Cc. 4F to the right.
+D. 4F to the left.

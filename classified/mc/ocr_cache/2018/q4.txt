@@ -1,0 +1,9 @@
+*4. From which graph below can one deduce that the pressure p of a fixed mass of an ideal gas is invers
+proportional to its volume V when the temperature of the gas is kept constant ?
+B.
+A py, P
+0 = Vv 0 NN Vv
+D.
+Cc. DP P
+i | \
+0 Vv 0 v

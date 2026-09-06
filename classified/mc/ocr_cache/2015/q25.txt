@@ -1,0 +1,12 @@
+25. For safety purposes, the driver seat of a car is equipped with a seat belt warning light. When the driver
+seat is occupied, the switch S, under his seat will close. If the seat belt is not yet fastened, switch S2
+will remain open and the warning light will light up. If the seat belt is fastened, the switch S, will close
+and the warning light will shut off. Which circuit design below is the best design ?
+
+A. B.
+\
+Sy
+S Sz
+Cc. D.
+ks, \.
+Sy Se

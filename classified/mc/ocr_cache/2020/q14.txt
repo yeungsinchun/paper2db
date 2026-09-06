@@ -1,0 +1,7 @@
+*14. A light beam consisting of wavelengths A, and 4, is incident normally on a diffraction grating. The
+third-order diffraction of wavelength 2, coincides with the fourth-order diffraction of wavelength A in
+the resulting pattern. If A; is 680 nm, find 2).
+A. 510 nm
+B. 680 nm
+Cc. 907 nm
+D. It cannot be determined because the grating spacing is unknown.

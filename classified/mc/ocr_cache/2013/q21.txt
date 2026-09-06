@@ -1,0 +1,9 @@
+21. White light can be resolved into component colours by using a glass prism. Which of the following
+statements is/are correct ?
+(1) The refractive indices of glass for different component colours are not the same.
+(2) Red light travels faster than violet light in a vacuum.
+(3) The frequencies of all the component colours are reduced when entering the prism.
+A. (1) only
+B. (3) only
+Cc. (1) and (2) only
+Dz. (2) and (3) only

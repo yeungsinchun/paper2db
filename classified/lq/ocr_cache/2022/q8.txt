@@ -1,0 +1,33 @@
+8. (a) A student sets up the circuit in Figure 8.1 to find the current-voltage (-V ) characteristic of a Tuament tent
+bulb.
+low-resistance ammeter
+—_ P.
+Ss
+Figure 8.1
+Q
+
+PQ is a variable resistor in the circuit with sliding contact S. The bulb and a high-resistance voltmeter are
+
+missing in the circuit.
+
+(i) | Use suitable circuit symbols to complete the circuit. (1 mark)
+= (ii) How would the brightness of the light bulb change when contact S is adjusted from P to O ? (J mark) ~
+oO o
+BY,
+3 4
+o o
+3 E
+e (b) The graph below represents the I-V characteristic of this light bulb which has a rated voltage of 20 V. e
+f= &
+e T/A, a)
+& 0.6 g
+P STITT 2
+E SCC eer E
+3 | sipure 8.2 03 tet 2
+; 0.2 an A | | | — 2
+
+i
+5 DZ EEE g
+& Vil iti it tit | ty 2
+0 2 4 6 8 10 12 14 16 18 20 VIN
+(i) Find the resistance of the bulb when working under its rated voltage. (2 marks)

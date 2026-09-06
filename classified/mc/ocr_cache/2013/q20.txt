@@ -1,0 +1,25 @@
+20.
+air
+A ray of light is travelling from a transparent medium X to air making an angle of 40° with the
+boundary plane as shown. If the angle between the refracted ray in air and the reflected ray in
+medium X is 70°, find the refractive index of medium X.
+
+A sin 40°
+
+: sin 30°
+
+sin 30°
+
+B. —~
+
+sin 40°
+
+sin 60°
+
+Cc. —
+
+sin 50°
+
+sin 50°
+
+D. sin 60°

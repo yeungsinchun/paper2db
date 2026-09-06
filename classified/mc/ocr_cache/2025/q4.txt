@@ -1,0 +1,12 @@
+4. 4
+3
+h +2
+4.0m
+Water drips regularly at a constant rate from a building’s roof, which is at a height / above the ground.
+The droplets fall from rest such that the first droplet reaches the ground just when the fourth droplet
+leaves the roof as shown. If the second droplet is 4.0 m above the ground at this instant, find h. Neglect
+air resistance.
+A. 5.8m
+B. 64m
+Cc. 7.2m
+D. 7.8m

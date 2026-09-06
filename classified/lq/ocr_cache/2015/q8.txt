@@ -1,0 +1,27 @@
+8. Electricity generated from power plants are transmitted at a high voltage through overhead cables in suburban
+areas.
+(a) Each overhead cable consists of 40 strands of identical transmission lines bundled together.
+eS x: be ; = a strand of
+es SS transmission line of
+Mh Eee s an overhead cable
+(i) One single strand of transmission line has a cross-sectional area of 1.3 x 10° m/ and resistivity
+2.6 x 10° Qm. Find the resistance per km of a single strand of transmission line. (2 marks)
+“4
+E 2
+= (ii) Explain why the resistance per km of an overhead cable is much smaller than that of a single strand of | =
+is transmission line. Estimate the resistance per km of an overhead cable. (2 marks) | 3
+na &
+: E
+E o
+i
+=|
+S a eee SUR ato aS eC cS Sh Su ea Cs wp mel nd bat i cp in te oe cm ay Re a cit are re eran lms miele mons oO
+£ 3
+5 5
+S|
+
+Z <
+
+(iii) Hence, explain why a bird can stand with both feet on a high-voltage cable without getting an electric
+
+shock. (2 marks)

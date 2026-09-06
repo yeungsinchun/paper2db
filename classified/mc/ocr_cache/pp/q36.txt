@@ -1,0 +1,15 @@
+#36, For the following nuclear reaction, state the type of reaction and determine the energy released.
+
+7H+ HO $He+ dn
+
+Given: mass of }H=2.014u
+mass of 7H = 3.016 u
+mass of 3 He = 4.003 u
+mass of gn= 1.009 u
+
+Type of reaction Energy released
+A. fusion 0,018 MeV
+B. fusion 16.76 MeV
+&. fission 0.018 MeV
+D. fission 16.76 MeV
+END OF SECTION A

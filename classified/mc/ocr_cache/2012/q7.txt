@@ -1,0 +1,21 @@
+7. Which of the following graphs (velocity-time and displacement-time) best represent the motion of a
+ball falling from rest under gravity at a height H and bouncing back from the ground two times ?
+Assume that the collision with the ground is perfectly elastic and neglect air resistance. (Downward
+measurement is taken to be negative.)
+
+. qd) Q)
+velocity, velocity
+: ‘ ‘ ‘
+0 : H 0 t :
+: H time H $ time
+displacement 8) displacement (4)
+H : ‘ H : ‘
+q ‘ ‘ ‘
+0; 0;
+| H time H H time
+‘ : ‘ H
+‘ : ‘ H
+A. (1) and (3) only
+B. (1) and (4) only
+Cc. (2) and (3) only
+D.~ (2) and (4) only

@@ -1,0 +1,37 @@
+7. Read the following passage about eddy currents and answer the questions that follow.
+Eddy currents are induced by changing magnetic fields. They flow in closed loops in conductors like
+swirling eddies in a stream, perpendicular to the direction of the magnetic field. They are commonly applied
+in braking known as ‘eddy braking’.
+The heating effect of eddy currents is used in induction heating devices, such as induction cookers. The
+resistance felt by the eddy currents in a conductor causes Joule heating. However, for applications like
+motors and transformers, this heat is considered as a waste of energy and as such, eddy currents need to be
+minimized.
+Eddy currents can be removed by cracks or slits in the conductor, which prevent the current loops from
+circulating. This means that eddy currents can be used in detecting defects in materials. The magnetic field
+produced by the eddy currents is measured, where a change in the field reveals the presence of an irregularity
+in the material.
+
+(a) (i) In Figure 7.1, a permanent magnet with north pole facing downwards is held stationary. A metal sheet
+moves past the magnet (the direction of movement is not shown) and eddy currents are induced as
+shown. Briefly explain why eddy currents are induced and state whether the metal sheet is moving
+forward, backward, towards the left or towards the right. (2 marks)
+
+as} ac
+x &
+| stationary =I
+5 backward magnet 5
+wa) a)
+8 left ws L' 6
+= A => right =m
+5 Figure 7.1 forward =
+| . =I
+& metal sheet 5
+o lo, o
+s & 5
+S =|
+o oO
+= =
+5 5
+z z
+2 <
+(ii) State the energy changes in the process in which the metal sheet is slowing down to stop. (2 marks)

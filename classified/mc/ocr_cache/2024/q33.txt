@@ -1,0 +1,11 @@
+33. In order to locate the cracks in an underground water pipe, a small amount of a radioisotope is added to
+the water in the pipe. The radioactive substance will leak through the crack to the soil nearby, thus
+radiation will be detected above ground. Which radioisotope (P, Q, R or S) below is the most suitable for
+this purpose ?
+
+isotope half-life radiation emitted
+A. P 66 hours Bb
+B. Q 36 hours Y
+c. R 7.2 hours a
+D~. Ss 45 minutes a, p
+END OF SECTION A

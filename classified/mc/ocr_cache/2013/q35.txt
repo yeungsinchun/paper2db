@@ -1,0 +1,8 @@
+*35, Polonium-210 is a pure a-emitter with a half-life of 140 days and it will decay into lead, which is stable.
+Initially there is a sample containing 420 mg of pure polonium-210. Estimate the mass of
+polonium-210 left after 70 days.
+
+A. 315 mg
+B. 297 mg
+Cc. 210mg
+D. ~—-105 mg

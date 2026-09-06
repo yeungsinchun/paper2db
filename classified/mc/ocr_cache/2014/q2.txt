@@ -1,0 +1,15 @@
+2. OPC
+100
+80
+60
+40
+20
+0 2 4 6 8 10 ¢/min
+An electric heater of constant power is used to heat a solid substance X which is insulated from the
+surroundings. The variation of its temperature 6 with time ¢ is shown above. X has a specific heat
+capacity of 800 J kg '°C"' in its solid state. What is the specific latent heat of fusion of X?
+A. 144k} kg
+B. 192k} kg
+c. 202 kI kg
+D. Answer cannot be found as both the mass of X and the power of the heater are not
+known.

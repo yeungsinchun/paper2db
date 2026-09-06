@@ -1,0 +1,8 @@
+4. Which of the following are vector quantities ?
+(ql) acceleration
+(2) momentum
+(3) work done
+A. (1) and (2) only
+B. (1) and (3) only
+c. (2) and (3) only
+D. (1), 2) and (3)

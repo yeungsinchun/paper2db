@@ -1,0 +1,14 @@
+26. In the following circuit, the cell has a finite internal resistance and both meters are ideal.
+ran
+a, (A)
+yet
+i '
+In which situation below will the readings of the ammeter and the voltmeter suddenly increase ?
+
+A. R, is faulty and becomes a short circuit.
+
+B. R, is faulty and becomes a short circuit.
+
+c R; is faulty and becomes a short circuit.
+
+D. R, is faulty and becomes an open circuit.

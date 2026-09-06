@@ -1,0 +1,15 @@
+lL. A bead is projected up along a smooth incline at point P at time ¢= 0. After reaching the highest point,
+the bead then travels downwards and passes point Q at ¢ = 3 s as shown. The velocity-time (v-1)
+relationship of the bead is shown in the graph below. Find the separation PQ along the incline.
+
+v/ms"
+4 2
+1 3
+x P 0 7 t/s
+CO '
+2 H
+qb ------------9
+A. 2m
+B. 3m
+c. 4m
+D. Sm

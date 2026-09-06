@@ -1,0 +1,15 @@
+*17,
+4.0 mm bright
+isaiee
+
+In Young’s double-slit experiment, monochromatic light of wavelength A is used and the slit separation
+is a. On a screen placed at a distance of 1.8 m from the double slits, the separation between five
+consecutive bright fringes is 4.0 mm. Which relationship below is correct ?
+
+A. a= 18002
+
+B. a=22504
+
+c. a=72004
+
+D. a=112504

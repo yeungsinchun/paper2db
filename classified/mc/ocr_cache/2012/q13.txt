@@ -1,0 +1,19 @@
+13. On a smooth horizontal surface, a circular disk P moving at velocity u along the x direction collides
+obliquely with an identical disk Q initially at rest as shown below. The mass of each disk is m. Which
+statements about the collision is/are correct ?
+
+s
+‘ a p y
+i
+uy “x
+----- SE x
+*s - : se
+Woy
+aay
+(1) Momentum of the system in the y direction is not conserved.
+(2) The total kinetic energy of P and Q after collision is simu? if the collision is perfectly elastic.
+(3) Speed of Q after collision is less than wu.
+A. (1) only
+B. (3) only :
+c. (1) and (2) only
+Dz. (2) and (3) only

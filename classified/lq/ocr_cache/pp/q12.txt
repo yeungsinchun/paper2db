@@ -1,0 +1,79 @@
+12.
+bulb Gente
+oe ve VE DYe
+switch voltage sensor
+Figure 12.1
+Iris uses the apparatus shown in Figure izZ.1 to study the lifetime of AA-size celis when used to power a
+bulb. She connects a cell and a switch to the bulb and uses a voltage sensor to measure the voltage across
+the bulb,
+(a) Draw a circuit diagram to illustrate how the apparatus is connected. Use the symbol () to
+denote the voltage sensor and the data-logger. (2 marks)
+ae) .
+o
+“ .
+be
+Ss
+=|
+o
+aa .
+3 "
+r=
+Dn
+|
+Eh .
+3
+=|
+o
+gs :
+= (b) Iris conducts the experiment with a zinc-carbon cell, an alkaline cell and a lithium cell separately. |"
+FS Figure 12.2 shows the variation of the voltage across the bulb with time for the cells. The bulb |:
+= lighis up as iong as the voiiage across ii is above 0.6 V.
+a
+o
+0 1 2 3 4 5 6 7 8 9 10
+Answers written in the margins will not he marked
+(b) (i) A salesman claims that the lifetime of a lithium cell for lighting un the bulb is five times
+that of an alkaline cell. Determine whether the claim is correct or not. (2 marks)
+(ii) Table 12.3 shows the prices of the three tynes of cell.
+m-~ -£ ~~ . see B |
+alkaline $3.8
+ae) .
+oO
+“ Vabte ee aQacn r
+4 Vattes- NOE
+E ee
+o
+oO .
+3 Table 12.3 ,
+S
+3 Which type of cells is the best buy, in terms of the cost per hour for lighting up the |*
+n L..1n 9 Qh nwee ern eee And anwelnsi nnn reer mark.
+a bulb ? Show your calculations. © marks)
+5 .
+3
+o
+s :
+S
+g
+3
+n
+oa)
+oO we eee eee eee
+3
+n
+S
+Answers written in the margins will not he marked
+13. Josephine conducts an investigation on transformers. Primary and secondary coils are wound on two
+soit-iron C-cores io form a iransiormer. She seis up a circuii as shown in Figure i3.i.
+<< voltmeter <<
+© \ ~ . ‘eS ¥ 4S
+( a transformer ra
+a.c. power supply
+A LN
+t 1
+t 1
+J ‘
+t ‘
+i im
+secondary primary
+es | es |

@@ -1,0 +1,26 @@
+7. (a) A straight metallic wire of length 0.20 m and cross-sectional area 8.0 x 107’ m* has a resistance of 0.50 Q.
+
+Find the resistivity, in Q m, of the material that the wire is made of. (2 marks)
+
+(b) Four such metallic wires in (a) are joined together to form a square coil CDEF. The coil is connected to a
+
+circuit consisting of a 1.5 V cell of negligible internal resistance and two identical resistors R; and Ro, each
+
+of 2.0 Q, as shown in Figure 7.1.
+1.5 V
+ul R222 wn R202) {>
+
+ao} oJ
+< Figure 7.1 : 2 4
+= Ss =
+o oO
+= Cc F «3 =
+: :
+2 5
+5 i E =
+a I
+= q
+s 3
+5 (i) To which terminal (1, 2 or 3) should switch S be connected in order to have a maximum current flowing | ©
+‘a through side CF of the coil ? (1 mark) &
+S (ii) With S connected to terminal 2, find the equivalent resistance across MN. (2 marks) S

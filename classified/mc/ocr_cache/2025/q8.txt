@@ -1,0 +1,18 @@
+8. A small ball of mass m is thrown vertically upward from point O with an initial speed uv. It reaches the
+highest point P and then falls to point Q such that OP = OQ = H. The ball’s potential energy at point O
+is taken to be zero.
+
+----.
+H
+u
+potential
+TOP TIN energy = 0
+H
+mae
+What are the kinetic energy and potential energy of the ball at point Q ? Neglect air resistance.
+kinetic energy potential energy
+
+A. mu —mgH
+B. me mgH
+(on zine —mgH
+D. dmé mgH

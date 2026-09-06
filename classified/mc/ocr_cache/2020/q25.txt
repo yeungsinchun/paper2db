@@ -1,0 +1,13 @@
+25.
+ms .
+The battery shown has a capacity of 1100 mA h. How much energy is delivered when the battery
+operates normally at a current of 250 mA for one hour ? Assume that the battery’s operating voltage
+remains at 3.7 V during that period.
+A. (3.7 x 222 x 3600) 3
+1000
+B. (3.7 x 100 3600) 3
+1000
+[on G.7 x 250 I
+1000
+D. (3.7% 1100 DI
+1000

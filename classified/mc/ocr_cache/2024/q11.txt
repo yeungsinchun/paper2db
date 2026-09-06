@@ -1,0 +1,11 @@
+ll. On a billiard table, a billiard ball of mass 0.16 kg and moving with a uniform speed of 1.20 ms“ collides
+elastically with the cushion. It rebounds with the same speed normal to the cushion as shown. If the
+impact time is 0.0003 s, find the average force acting on the ball by the cushion during collision.
+
+Top view
+1.20ms? .
+© —=—— | cushion
+A. ON
+B. 640 N
+Cc. 1280N
+Dz. 2560 N

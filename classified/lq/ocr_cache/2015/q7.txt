@@ -1,0 +1,33 @@
+7. *(a) A laser light beam of wavelength 650 nm is incident normally on a pair of slits separated by a = 0.325 mm.
+
+Interference pattern is observed on a screen at a distance D = 3.0 m from the slits as shown in Figure 7.1.
+
+What is the separation between adjacent first- and second-order bright fringes ? (2 marks)
+
+| first-order bright fringe
+
+Oo
+Figure 7.1 oe pee aF------- gas ee
+ight
+; » | D=3.0m
+double slits en
+Diagram NOT drawn to scale
+ae} :
+a I
+5 =
+3 ae eae ran er ee ee ee ee ee ee re ee 2 rr ee 2
+on .
+a (b) Figure 7.2 shows a set-up with two small LEDs separated by 6 mm and both LEDs emit light of
+5 wavelength 650 nm. State and explain what you would expect to see on the screen. (2 marks) 5
+cI g
+z= =
+5 e
+Be oO
+Z ‘ Vw a
+& | Figure 7.2 6mm ---------------------- 2-2-2 2-2 --------- a
+=D oO
+a ES D=3.0m =
+a LEDs 5
+< 4
+screen
+Diagram NOT drawn to scale

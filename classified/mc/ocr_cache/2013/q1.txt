@@ -1,0 +1,8 @@
+1. Which of the following statements about boiling and evaporation of a liquid is/are correct ?
+(1) A liquid absorbs energy when it boils but does not absorb energy when it evaporates.
+(2) Boiling occurs at a definite temperature while evaporation takes place above room temperature.
+(3) Boiling occurs throughout the liquid while evaporation only takes place at the liquid’s surface.
+A. (1) only
+B. (3) only
+Cc. (1) and (2) only
+D. (2) and (3) only

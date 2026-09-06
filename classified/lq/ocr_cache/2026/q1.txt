@@ -1,0 +1,4 @@
+1. A mountaineer arrives at a location X, which is 3000 m above sea level. At_X, the melting point of ice is 0 °C
+and the boiling point of water is 90 °C. The mountaineer needs to heat 0.50 kg of melting ice to its boiling point
+Given: specific latent heat of fusion of ice = 3.34 x 105° Jkg™!
+specific heat canacity of water = 4200 The leo!

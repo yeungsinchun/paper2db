@@ -1,0 +1,14 @@
+6.
+Cc B
+3N, 2N
+LN
+D: N A
+_ AN
+ANT 6 N
+E F
+In the figure, O is the centre of a regular hexagon. A particle at O is subject to six forces with
+magnitudes indicated as shown. The resultant force acting on the particle is
+A. 9 N along direction OE.
+B. 8 N along direction OE.
+c. 8 N along direction OF.
+D. 6N along direction OE.

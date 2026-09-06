@@ -1,0 +1,38 @@
+| Please stick the barcode label he!
+8. Figure 8.1 shows an earth leakage circuit breaker (jfg i Ef #& #8) installed in a domestic circuit. The
+live and the neutral wires pass through the centre of a soft iron ring of mean radius 1 cm. A 100-turn coil
+C wiih cross-seciion area 6.8 cm’ is wound on the ring.
+aaa aaa
+! pw a ea ae '
+(\ ; fC
+1 !
+' 6) a
+mains f\ ’ neutral ___ ' [tea
+supply — ¥——F live relay switch § 1 finse =
+I
+' _——=_=>== '
+c— !
+e— 1
+= 4
+H -— 4 solenoid !
+g =
+4 ' —— !
+q Le | E
+& . '
+2 Figure 8.1
+fe)
+g ;
+3 In case of an earth leakage in the domestic circuit such that the current in the neutral wire and the live wire
+a differ by 0.5 A or more, the relay switch S opens and disconnects the mains supply. To reconnect the |!
+5 sunnly, § has to be reset manually.
+=}
+x .
+E (a) Explain why S opens when there is a leakage current of 0.5 A from the load to the Earth. (3 marks)
+Ss
+g F
+S
+=|
+Ka]
+o
+E
+<

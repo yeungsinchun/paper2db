@@ -1,0 +1,15 @@
+28.
+retort
+a stand
+aluminium
+mms  ~ d.c. power
+aft supply
+coil NY
+A retort stand and a coil connecting to a d.c. power supply are arranged as shown. An aluminium ring
+threaded through the stand is placed on top of the coil. When the switch S is closed, the aluminium
+ring jumps up momentarily and then falls back down. Which of the following modifications would
+enable the ring to rise up and float in the air ?
+A. using a ring made from a lighter material
+B. using a ring made from a metal of smaller resistivity
+Cc. using a coil with the number of turns doubled
+D. using an a.c. power supply instead of a d.c. power supply

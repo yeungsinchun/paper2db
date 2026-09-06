@@ -1,0 +1,12 @@
+12. On a smooth horizontal surface, a marble P moving with speed wu collides head-on with another
+marble Q, which is at rest. After collision, P and Q move with different speeds as shown.
+TF
+Which of the following statements about this collision is/are correct ?
+(1) During collision, the force acting on Q by P is equal and opposite to that acting on P by Q.
+(2) The total momentum of the two marbles is conserved only when the collision is perfectly
+elastic.
+(3) The kinetic energy lost by P must be equal to that gained by Q.
+A. (1) only
+B. (2) only
+[on (1) and (3) only
+D. (2) and (3) only

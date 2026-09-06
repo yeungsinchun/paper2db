@@ -1,0 +1,14 @@
+16. In the ripple tank shown below, dippers S; and S2 are vibrating in phase and generate water waves of
+wavelength 0.8 cm towards each other at the same speed. For a particle P at distances 6 cm and 8 cm
+from S; and S2 respectively as shown, the amplitude of the waves reaching P from S} is 1 mm while that
+from S2 is 2 mm.
+
+Top view
+Si P S2
+Ye eee g
+6cm 8cm
+What is the amplitude of oscillation of P ?
+A. 0mm
+B. Imm
+c. 2mm
+D. 3mm

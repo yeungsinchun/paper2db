@@ -1,0 +1,9 @@
+*30. The input terminal of a transformer is connected to the 220 V mains supply. Ten identical light bulbs
+are connected in parallel to the output terminal of the transformer. All the light bulbs are working at
+their rated values of ‘3 V, 1.5 W’. If the efficiency of the transformer is 70%, what is the current
+drawn from the mains supply ?
+
+A. 0.007 A
+B. 0.048 A
+Cc. 0.068 A
+D. 0.097 A

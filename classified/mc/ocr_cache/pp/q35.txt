@@ -1,0 +1,16 @@
+35.
+J XXX GM tubes
+lead box * X X X X Y
+Y
+
+A radioactive source is placed in front of a uniform magnetic field pointing into the paper as shown abo
+The count rates recorded by the GM tubes at X and Y are 101 counts per minute and 400 counts per mint
+respectively. Which of the following deductions must be correct ?
+
+A. The source does not emit @ radiation.
+
+B. The source emits # radiations.
+
+e. The source emits y radiations.
+
+D. The background count rate is about 100 counts per minute.

@@ -1,0 +1,14 @@
+8. Block X and Y of mass 3.0 kg and 1.0 kg respectively are connected by a light inextensible string passing
+over a smooth light pulley fixed to the ceiling as shown. The blocks are released from rest. Find the
+time taken for block X to reach the ground. Neglect air resistance.
+
+ceiling & pulley
+x
+3.0 kg|
+1.5m
+Yy
+1.0 kg] ground
+A. 0.55 s
+B. 0.645
+Cc. 0.68 s
+D. 0.78 s

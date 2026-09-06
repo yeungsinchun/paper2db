@@ -1,0 +1,10 @@
+*5, A fixed mass of an ideal gas is contained in a cylinder fitted with a frictionless piston as shown in the fig
+below. If the gas is cooled under constant pressure,
+V4 piston
+(1) __ the average separation of the gas molecules will decrease,
+(2) ther.ms. speed of the gas molecules will decrease.
+(3) the number of collisions per second of the gas molecules on the piston will decrease.
+A. (1) and (2) only
+B. (1) and (3) only
+Cc (2) and (3) only
+D. (1), (2) and (3)

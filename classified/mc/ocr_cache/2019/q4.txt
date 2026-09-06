@@ -1,0 +1,18 @@
+4.
+5 ,
+P Q
+R
+Q
+‘R P
+
+CO is the centre of a metal plate POR in the form of an equilateral triangle with non-uniform mass
+distribution. The plate is suspended from the ceiling at P and then at Q as shown. The centre of gravity
+of the metal plate is
+
+A. at O.
+
+B. within the region POQ.
+
+Cc. within the region ROQ.
+
+D. within the region POR.

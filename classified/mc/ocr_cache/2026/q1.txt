@@ -1,0 +1,9 @@
+1. Flasks X and Y are identical except that for their outer surfaces: X is black and Y is silvery. Each flask
+contains the same amount of water initially at 25 °C, sealed and equipped with a temperature sensor. The
+flasks are then placed in the same outdoor environment at 30 °C with sunlight. After 20 minutes,
+
+A. the water in X is hotter as a black surface is a better absorber of radiation.
+B. the water in X is hotter as a black surface is a better emitter of radiation.
+
+Cc. the water in Y is hotter as a silvery surface is a poorer absorber of radiation.
+D. the water in Y is hotter as a silvery surface is a poorer emitter of radiation.

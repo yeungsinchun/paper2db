@@ -1,0 +1,11 @@
+Two identical scoops of ice-cream are transferred from a refrigerator into paper cup XY and vacuum
+flask Y shown above. Under room temperature, the time required for the ice-cream in the containers to
+melt completely is fx and ty respectively. What is the expected result and explanation ?
+
+A. tx > ty as the vacuum flask reduces heat loss to the surroundings.
+
+B. ty > ty as the vacuum flask retains the heat.
+
+Cc. ty > ty as the vacuum flask keeps things cold by releasing heat into the surroundings.
+
+D. ty > ty as the vacuum flask reduces the rate of heat gain from the surroundings.

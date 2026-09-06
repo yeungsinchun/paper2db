@@ -1,0 +1,31 @@
+10. (a) Inthe circuit shown in Figure 10.1, a 12 V battery of negligible internal resistance is connected with a
+thermistor R and a resistor of resistance 120 Q. The graph shows the variation of the thermistor’s
+resistance with temperature.
+
+Thermistor’s resistance
+300 EET TET en <j
+R cai i ais Cer cee eee meee
+A FS 150 a4 { i \ fai; t 4 Lp Lf {4 am 14 +--+ |
+: Ceereee eT RE EEE errr
+4 i { ‘me Lot 4 td :
+a . 0 .
+g Figure 10.1 : 0 10 20 30 40 50 |
+o / Temperature /"C
+Q |
+5 (i) Find the resistance of the thermistor R at 25°C. (1 mark) |”
+£
+& f
+Bi (ii) | What is the potential difference Vag across A and B at 25°C ? (2 marks) ;
+‘S :
+2 “TS
+g
+3 :
+an GURIER Re URe LENA ROKRNNEE RENE REN MRER EOE REPRO PANT RERER TET NeRn eRe sen an SeE RAs Sewanee eee SHES FOES ES SUNS aL SUS e seen Reena RoR Neneh S aR S RRR ERAS eM RN en RSH a ‘
+=f 5
+Z <
+(b) Kelly wants to confirm the above calculation by measuring Vag
+using a voltmeter of about 1 kQ resistance. She finds that the
+reading registered is slightly different from the value found in 12 V R
+(a) despite making careful measurements. Explain why this is =
+so. Suggest how the accuracy of the measurement could be A voltmeter
+improved. (3 marks)

@@ -1,0 +1,8 @@
+25. Two wires X and Y of the same length are made from different materials. The radius of X is half that
+of ¥. When the two wires are connected in parallel to the same power supply, the current flowing
+through each wire is the same. What is the ratio of the resistivity of the material of X to that of Y ?
+
+A. 1:4
+B. 4:1
+c. LZ
+D. 2:1

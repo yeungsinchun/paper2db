@@ -1,0 +1,8 @@
+6.
+a ground
+A block of mass m is placed on a wedge of mass Mas shown. The system remains at rest. What is the
+normal force exerted on the wedge by the ground ?
+A. Mg
+B. (M+ m)g
+Cc. Mg +mg cos@
+Dz Mg +mg tand

@@ -1,0 +1,15 @@
+8. An object of mass 2 kg moves with velocity 1 m s™ initially. It is acted upon by a force F which varies
+with time ¢ as shown in the graph. The force and the object’s velocity are in the same direction. Find
+the speed of the object at r=3 s.
+
+FINA
+of TT TT TT TT
+It TT TT TT
+iP TENET TTT
+See \Gennn
+LTT TPN TT
+0 1 2 3 t/s
+A. 1.5ms?
+B. 25ms7
+Cc. 3.5mst
+D. 4.5ms

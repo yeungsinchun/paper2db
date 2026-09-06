@@ -1,0 +1,25 @@
+4,
+trampoline qb
+gymnast — ;
+Figure 4.1
+—_— | 1.5 m trampoline
+LY YX /
+Figure 4.1 shows a trampoline gymnast of mass 50 kg performing a straight jump. Her feet are 1.5 m above the
+trampoline at the maximum height. Neglect air resistance and assume that the gymnast maintains this posture
+throughout the jump. (g= 9.81 ms”)
+(a) Find the kinetic energy of the gymnast just as her feet touch the trampoline on the way down from her
+jump. (2 marks)
+ou 3)
+A) —s
+E S
+v 1:3)
+& a
+& (b) After touching the trampoline, the gymnast keeps on moving downward for 0.40 m further before she stops. 2
+od I
+= (i) Describe the energy transfer to the trampoline by the gymnast after touching the trampoline. &
+2 (2 marks) a
+= 5
+iz P=
+5 5
+eG g
+(ii) Estimate the average force exerted by the gymnast on the trampoline. (2 marks)

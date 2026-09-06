@@ -1,0 +1,12 @@
+32. s
+foo
+OF
+aa
+OOF
+In the above circuit, the cell has negligible internal resistance. When switch S is closed, both bulbs are
+not lit. The voltmeter has a reading but the ammeter reads zero. If only one fault has been developed
+in the circuit, which of the following is possible ?
+A. Bulb X has been shorted accidentally.
+B. Bulb Y has been shorted accidentally.
+Cc. Bulb X is burnt out and becomes open circuit.
+Dz. Bulb Y is burnt out and becomes open circuit.

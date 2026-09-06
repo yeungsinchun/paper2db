@@ -1,0 +1,12 @@
+15. In the set-up below, different stationary wave patterns are formed on an elastic string by adjusting the
+frequency f of the vibrator.
+. stand
+“TT 1
+Which statements are correct when f increases ?
+(1) The number of antinodes increases.
+(2) The speed of the waves on the string increases.
+(3) The frequency of the waves produced in air by the string increases.
+A. (1) and (2) only
+B. (1) and (3) only
+Cc. (2) and (3) only
+D. (1), (2) and (3)

@@ -1,0 +1,15 @@
+14,
+Xx
+MMMM HA HH cH
+
+The figure shows three media X, Y and Z separated by parallel boundaries. A light ray travelling from X
+into Y then undergoes total internal reflection at the boundary between Y and Z. Arrange in descending
+order the speed of light in the respective media.
+
+A. XYZ
+
+B. XZY
+
+on YZX
+
+Dz. ZXY

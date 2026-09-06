@@ -1,0 +1,7 @@
+24, —
+Three identical resistors are arranged as shown. The rated power of each resistor is 12 W. If no
+resistor exceeds its rated power, what is the maximum power dissipation in such an arrangement ?
+A. 16W
+B. 18 W
+Cc. 20W
+D. 24W

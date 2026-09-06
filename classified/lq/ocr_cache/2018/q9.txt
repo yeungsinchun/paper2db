@@ -1,0 +1,20 @@
+9. (a) |
+ainifarm a BRRNIS STi: Gers foseee Toe
+Se ae e272 ASE s eal
+field B\_ 1
+ue e e e e a;
+I ! ;
+Figure 9.1 L rae resistor
+0 ® e e ® @1
+1 1
+1 © C) @ C) e @!
+[ae ee eee, Ape cee Ui neck pereiemnereremcre an: aeneeeee al |
+Q
+Figure 9.1 shows a metal rod PQ of length L moving with constant velocity v across a uniform magnetic
+field B pointing out of the paper. An e.m.f. € is induced across rod PQ as it cuts the field lines. When the
+rod is connected to a resistor outside the field, a current J flows in the circuit.
+(i) Indicate the direction of J in Figure 9.1. : (1 mark)
+(ii) Explain why an external force F is required to maintain the uniform motion of rod PQ. Find F in
+terms of the physical quantities given. (3 marks)
+(iii) This set-up works as a generator. By considering the mechanical power input by external force F to
+the set-up, show that & = BLv. (2 marks)

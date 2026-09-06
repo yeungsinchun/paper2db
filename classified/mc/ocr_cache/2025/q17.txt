@@ -1,0 +1,7 @@
+*17. The light from a sodium lamp consists of two wavelengths 589.00 nm and 589.59 nm. Find the angle
+between these two spectral lines in the second-order after the light passes through a diffraction grating
+of 600 lines per mm.
+A. 0.058°
+B. 0.041°
+Cc. 0.022°
+D. 0.021°

@@ -1,0 +1,11 @@
+*28. The graph shows the waveform of a sinusoidal alternating p.d. applied across a 10 Q resistor.
+p.d./V
+2bL-----------
+0.01
+0 0.02 time/s
+Find the root-mean-square current in this 10 Q resistor and the average power dissipated by it.
+root-mean-square current / A average power / W
+A 0.14 0.2
+B. 0.14 0.4
+Cc. 0.2 0.2
+D. 0.2 0.4

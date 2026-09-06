@@ -1,0 +1,7 @@
+3. Peter adds 50 g of milk at 20°C to 350 g of tea at 80°C, what is the final temperature of the mixture ?
+Given: Specific heat capacity of milk = 3800 J kg! °c
+Specific heat capacity of tea = 4200 J kg! °c
+A, 50.0°C
+B. 72.5°C
+fon 731°C
+D. 774°C

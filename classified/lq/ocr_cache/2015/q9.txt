@@ -1,0 +1,29 @@
+9. Figure 9.1 shows a set-up for demonstrating one of Faraday’s discoveries. A light metal rod is free to rotate
+about point P while its lower end just touches some conducting liquid in a metallic container.
+S PP
+Diagram NOT drawn to scale
+6 om
+Aca B
+Figure 9.1 ’ 1X OX ‘
+eft 1X GK X: right
+6 of} x!
+] | conducting liquid L container
+battery
+A uniform magnetic field pointing into the paper is applied over the region ABCD containing part of the rod.
+When switch S is closed, the rod ‘kicks’ out and leaves the liquid surface.
+(a) State the direction (to the left / to the right / into the paper / out of the paper) that the rod ‘kicks’ and
+describe the subsequent motion of the rod. (3 marks)
+J Ko:
+I I
+2 2
+= (b) When switch S is closed, the initial moment about point P that makes the rod ‘kick’ out is 7.2 x 10° N m. =
+2 Assume that the magnetic force acts at the midpoint of the part of the rod within the magnetic field. s
+2 (i) Calculate the magnetic force acting on the rod at that instant. (2 marks)
+=
+& J
+Fos S
+= ‘al
+5 5
+< 4
+(ii) Hence, find the strength B of the magnetic field if the current flowing through the rod is 3.2 A when
+the circuit is closed. (2 marks)

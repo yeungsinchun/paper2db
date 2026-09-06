@@ -1,0 +1,17 @@
+10. A 1-kg trolley with a 0.5-kg block placed on its horizontal platform is resting on a smooth horizontal
+floor. The block is then given a sharp push to the right. At an instant after the push, the block and the
+trolley are moving to the right at 2 m s"' and 0.5 m s” respectively as observed from the floor.
+
+2ms! :
+
+—> 0.5 ms"!
+
+> lkg
+0.5 kg
+smooth horizontal floor
+Finally, they travel together with the same speed v. Find v. Neglect air resistance.
+
+A. 0.5mst
+B. Imst
+cC. 1.5ms?
+D. 2ms"

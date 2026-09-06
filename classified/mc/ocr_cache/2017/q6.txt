@@ -1,0 +1,9 @@
+6. A block is released from rest on an inclined plane as shown. The inclined plane makes an angle of 30°
+to the horizontal. The block moves with uniform acceleration, and travels a distance of | m in the first
+3s. Determine the acceleration of the block.
+
+30° TS
+A. 0.22 ms?
+B. 0.33 ms?
+Cc. 4.91 ms?
+Dz. Cannot be determined as the frictional force acting on the block is unknown.

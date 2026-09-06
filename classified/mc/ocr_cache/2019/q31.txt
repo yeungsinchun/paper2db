@@ -1,0 +1,12 @@
+31. A radioactive source emits a, B and y radiations.
+eae ~e-4--- | |e @------
+radioactive NS
+source .
+cardboard 5 mm thick 10 mm thick
+aluminum sheet lead sheet
+Which statement about the radiation(s) detected at positions X, Y, Z indicated in the figure is correct ?
+A. No radiation from the radioactive source is detected at Z.
+B. Both £ and y radiations can be detected at Y.
+c. a radiation can only be detected at X but not at Y and Z.
+Dz. # radiation can only be detected at_X but not at Y and Z.
+IN

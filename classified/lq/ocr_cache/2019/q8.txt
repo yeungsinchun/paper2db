@@ -1,0 +1,31 @@
+8. Figure 8.1 shows a household electrical wiring circuit. The mains cable (containing live wire L and
+neutral wire N) is connected to a consumer unit via a kilowatt-hour meter M. At the consumer unit, the wires
+branch out into a number of parallel circuits.
+
+Consumer unit
+P.O
+M. Ld fuse K
+mm) 14 | | ll
+—=ra 30A
+To 220 V N Earth
+, — -
+mains supply“ ©&2._ 28 L 7
+Figure 8.1
+mains socket O O
+(front view)
+3 (a) Indicate on Figure 8.1 how the mains socket should be connected to wires _X, Y and Z. (1 mark) 3
+w aw
+E (b) Lighting sets Z; and L, of power ratings 300 W and 450 W respectively are connected in parallel to the s
+zy branch with fuse K. 2
+ie) Re}
+oe (i) State one advantage of connecting Z, and Z, in parallel instead of in series to the branch. (1 mark) =
+= 2
+oO o
+| |
+§ §
+= (ii) If fuses marked 3 A, 5 A, 10 A and 13 A are available, which one is the most suitable to be fuse K ? =
+= Explain your choice. (3 marks) | 3
+5 5
+= ES
+a tee e wee weneenwe wenn en weer ec ene scene sew nwwe ee ew eee ene rerwswe nese rnewmeneeewe ween w een wrw ene ee meee eee ee new ene nnn nce ner enneeeneee eee ewenecs weno nweeeeeeeneeceeeeee n
+< <

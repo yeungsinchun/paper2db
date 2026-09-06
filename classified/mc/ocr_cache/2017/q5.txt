@@ -1,0 +1,7 @@
+5. Which of the following statements about the motion of any two objects is correct ?
+A. The object that takes a shorter time to complete the same path must have greater
+average speed.
+B. The object that travels a greater distance in 1 s must have greater average velocity.
+Cc. The object with greater velocity must have greater acceleration.
+D. If the two objects have the same acceleration, they must be moving in the same
+direction.

@@ -1,0 +1,9 @@
+13. Acar P of mass 1000 kg moves with a speed of 20 ms and makes a head-on collision with a car Q of
+mass 1500 kg, which was moving with a speed of 10 ms! in the opposite direction before the
+collision. The two cars stick together after the collision. Find their common velocity immediately after
+the collision.
+
+A. 2ms'' along the original direction of P
+B. 2ms'' along the original direction of Q
+c 14 ms‘ along the original direction of P
+D. 14 ms‘ along the original direction of Q

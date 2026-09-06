@@ -1,0 +1,14 @@
+22. When measuring electromagnetic waves from outer space on the Earth’s surface, the percentage of
+absorption by the atmosphere for various wavelengths of electromagnetic waves is shown below.
+percentage of absorption visible light
+oo
+100%
+50%
+0% wavelength
+Otnm tnm 10m 100nm 1pm 10pm 100pm 1mm tem 10cm 1m 10m 100m
+Referring to this absorption graph, determine which statement below is correct.
+A. Gamma rays from galaxies can be observed on Earth’s surface.
+B. Nearly all ultra-violet radiation can reach Earth’s surface.
+on Infra-red radiation from stars can reach Earth’s surface without absorption.
+D. GHz radio waves (wavelength about 0.5 m) are the best for communications between
+ground station and space station in the upper atmosphere.

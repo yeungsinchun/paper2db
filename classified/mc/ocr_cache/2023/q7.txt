@@ -1,0 +1,14 @@
+7. A bob is suspended from the ceiling of a train moving along a horizontal east-west rail.
+i west east
+| <5
+\
+120°
+"'O bob
+'
+The bob slants towards east and makes an angle of 20° with the vertical as shown. What is the direction
+and magnitude of the acceleration of the train? (g=9.81 m s~)
+direction magnitude
+A. due west 3.36 ms?
+B. due west 3.57ms*
+c. due east 3.36 ms?
+Dz due east 3.57m s*

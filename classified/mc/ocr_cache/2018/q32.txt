@@ -1,0 +1,9 @@
+*32, X and Y are two radioactive nuclides. The ratio of the mass of an atom of X to that of an atom of Y is
+1:2. The half-lives of X and Y are T and 27 respectively. If two samples consisting of purely Y and Y
+respectively have the same initial mass, find the ratio of the number of undecayed nuclei of X to that
+of Y after a period of 47.
+
+A. 1:4
+B. 12
+c. Tel
+Dz 2:1

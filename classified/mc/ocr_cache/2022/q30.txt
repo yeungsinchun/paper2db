@@ -1,0 +1,9 @@
+*30. Arrange the following in ascending order of power delivered when each of them is connected to the same
+resistor.
+ql) a 100 Hz sinusoidal a.c. of peak voltage 2 V
+(2) a 50 Hz sinusoidal a.c. of r.m.s. voltage 2 V
+(3) a steady d.c. of voltage 1.5 V
+A. (1) B) 2)
+B. (2) B) (1)
+c. (2) GB)
+D. 2) (1) 6)

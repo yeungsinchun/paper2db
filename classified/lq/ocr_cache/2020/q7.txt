@@ -1,0 +1,35 @@
+7. Figure 7.1 shows an optical fibre which consists of a cylindrical glass core of refractive index n , enclosed by
+a transparent cladding of refractive index n,.
+cladding (refractive index n,)
+A glass core (refractive index n,) C _
+— a 5
+ie)
+j=]
+Be ea
+eS fe)
+Figure 7.1
+As shown in Figure 7.1, a point light source at O emits monochromatic light in all directions. Inside the fibre,
+light can reach the right end of the fibre through many different paths making angles 6 with the axis OD. Two
+of these paths, OD and OABC, have been drawn for reference. Light ray OA makes an angle of 30° with the
+axis OD and is incident at the core-cladding boundary at A with an angle of incidence ia.
+(a) (i) Find ig. (1 mark)
+oJ ae)
+OR lala en es oO
+“ <
+iss} las
+o oO
+ao) a=)
+E atest ; Ng 6
+= (ii) If i, is just greater than the critical angle of that boundary, estimate —= . (2 marks) | ©
+E "ec E
+5p OD
+I 5
+o o
+s s
+=| =
+o oO
+= =
+a 2
+ra r=
+(iii) What phenomenon occurs at point A ? State the condition needs to be satisfied by @ such that this
+phenomenon fails to occur. (2 marks)

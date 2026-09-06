@@ -1,0 +1,12 @@
+*32. The half-lives of some radioisotopes are tabulated below.
+phosphorus-32 14.3 days
+2:60 years
+Which of the following statements is/are correct ?
+(1) The activity of carbon-11 must be the highest.
+(2) The decay constant of phosphorus-32 is larger than that of carbon-11.
+(3) If the initial activity of sodium-22 is 1520 Bg, its activity would be lower than 380 Bq after
+6 years.
+A. (1) only
+B. (3) only
+[on (1) and (2) only
+D. (2) and (3) only

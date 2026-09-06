@@ -1,0 +1,14 @@
+15. The figure shows a typical set-up of Young’s double slit experiment.
+distance between the double
+‘ slit and the screen, L '
+. ——
+monochromatic H L
+light source H
+single slit double slit of Sereen
+of width w separation d
+Which combination below is the best setting for displaying an observable fringe pattern on the screen ?
+w d L
+A. 0.1 mm Imm 10m
+B. 0.1 mm Imm lm
+Cc. Imm 0.1 mm Im
+D. Imm 0.1 mm 0.1m

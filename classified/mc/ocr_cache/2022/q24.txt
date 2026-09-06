@@ -1,0 +1,14 @@
+*24, +0
+?
+'
+Mb ~-~~-~-~----%----N
+H r .
+'
+o+o
+Two positive point charges +Q are fixed as shown above. MN is the perpendicular bisector of the line
+joining the charges. Which graph correctly shows the variation of the electric field strength E on line MN
+with distance r from M?
+A. E B. E
+i r L r
+Cc. E Dz E
+0 LE r 0 \ r

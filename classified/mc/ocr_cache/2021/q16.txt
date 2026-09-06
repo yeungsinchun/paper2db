@@ -1,0 +1,9 @@
+16. In Young’s double slit experiment employing monochromatic light, how will the interference patterr
+change if the separation a of the double slit is reduced ?
+(1) The pattern will become brighter.
+(2) The number of fringes that can be observed will increase.
+GB) The fringe separation of the pattern will become larger.
+A. (1) only
+B. (3) only
+lon (1) and (2) only
+D. (2) and (3) only

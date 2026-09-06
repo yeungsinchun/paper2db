@@ -1,0 +1,15 @@
+*4
+x Y
+
+Vessel X of volume V and vessel ¥ of volume 2V are connected by a short narrow tube as shown.
+Initially, tap S is closed and the same kind of ideal gas at the same temperature is contained in X and Y
+at pressure 2p and p respectively. The tap S is then opened and equilibrium state is finally reached with
+the temperature unchanged. Which statement is INCORRECT ?
+
+A. Before S is opened, both vessels contain the same number of gas molecules.
+
+B. Before S is opened, the average kinetic energy of the gas molecules in both vessels is
+
+the same.
+Cc. When S is opened, a net flow of gas from X to ¥ occurs.
+D. When equilibrium is reached, the gas pressure becomes $e .

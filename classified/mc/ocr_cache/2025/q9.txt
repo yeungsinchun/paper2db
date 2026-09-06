@@ -1,0 +1,15 @@
+*9,
+Xx u
+04
+Q
+X and Y are two points on an incline making an angle @ with the horizontal. A particle projected
+horizontally from X with speed u lands at Yas shown. Which expression correctly gives its time of flight
+from X to Y? Neglect air resistance.
+A. usin 0
+2g
+B. u tan 0
+2g
+c 2u sind
+&
+D. 2u tan
+&

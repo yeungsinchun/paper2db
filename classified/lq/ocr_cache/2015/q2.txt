@@ -1,0 +1,15 @@
+*2. The aqua-lung (a cylinder containing compressed air) for divers has a capacity of 1.0 x 10° cm®. When the
+aqua-lung is filled, the air inside has a pressure of 210 atm (atmospheric pressure) at 24°C. The air in the
+aqua-lung is allowed to expand through a pressure-reducing valve until its pressure equals that of the
+surrounding water before it is supplied to divers. Assume that the temperature of the air inside the aqua-lung is
+always equal to that of the surrounding water.
+
+(a) A diver stays in water of temperature 24°C and pressure 2.0 atm at a depth of 10 m. Find the total volume
+
+of air (in cm’) available for the diver from the aqua-lung at this water pressure. (2 marks)
+od ao)
+3S) | ee ee eS a ene eS a ee a ean Fr.
+wd
+% a
+2 2
+: (b) The supply of air in (a) is sufficient for the diver to remain at such a depth for 1 hour. B

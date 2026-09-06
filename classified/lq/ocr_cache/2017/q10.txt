@@ -1,0 +1,48 @@
+10. Dust may adhere to the surfaces of photos and films due to electrostatic attraction. To remove the dust
+effectively, a special brush with a thin slice of polonium-210 (719Po ) fixed near the brush hair as shown in
+Figure 10.1 may be used. Polonium-210 undergoes @ decay and the daughter nucleus lead (Pb) is stable.
+= as ae ie
+Figure 10.1 f SS ee
+brush hair thin slice of polonium-210
+(a) Write a nuclear equation for the decay of polonium-210. (2 marks)
+(b) Briefly explain how the @ particles help clean the charged dust. (2 marks)
+I 3
+o oO
+eo) 2
+IG of Sev oper oremseemrnrnenoenentinzmnnrine snettn ean prone nnnrnncn nn ataRAEN go aT ATRIOS I eA RED SSIS EAS MRR OA aS
+= S
+ee a
+a a
+oD nanan ee te enn e enna nnn nnn e nee ee ee tee eee eee etna e ene eee e een nne renee nen een n ree e nn ene eee e eee ne ene a nena nnnn enn en eee neem ene renee een naneen anna seenee eee
+5 a
+: (c) Briefly explain why the polonium-210 slice must be fixed near to the brush hair. (1 mark) E
+s c=}
+| =|
+E st iicde nati nvea VEE LebenoCEa tears ax eet nsec en nenc eau levee na wlneii san au a enau uo even ocunEe nearer c uur anendeayueseNaLeELeEEaeg E
+= ‘e
+s nate t nt entre nec e te nc ee nee er eee nee ne eet ee een nent nenneneene een nee nae nem eee nen eee een eee ene een een eens Es
+2 ; 5
+2 *(d)The manufacturer recommends that the brush should be returned to the factory for replacement of the | 2
+3 polonium-210 slice every year. Taking the activity of a newly replaced polonium-210 slice as 1 unit, find g
+its activity after one year (365 days). Given: half-life of polonium-210 is 138 days. (2 marks)
+END OF PAPER
+Sources of materials used in this paper will be acknowledged in the booklet HKDSE Question Papers published by
+the Hong Kong Examinations and Assessment Authority at a later stage.
+Answers written in the margins will not be marked.
+(
+List of data, formulae and relationships
+Data
+molar gas constant R=8.31Jmol'K"
+Avogadro constant Na = 6.02 x 10” mol!
+acceleration due to gravity g=9.81 ms” (close to the Earth)
+universal gravitational constant G=6.67* 10" Nm’ kg”
+speed of light in vacuum c= 3.00 x 10°ms™
+charge of electron e= 160 10"C
+electron rest mass me= 9.11 x 107! kg
+permittivity of free space & = 8.85 x 10°? C2 N 7m?
+permeability of free space fo = 4n x 107H mm
+atomic mass unit u= 1.661 x 107’ kg (1 u is equivalent to 931 MeV)
+astronomical unit AU = 1.50 x 10''m
+light year ly =9.46 x 10° m
+parsec pe = 3.09 x 10’° m =3.26 ly = 206265 AU
+Stefan constant o=567x 10° Wm°?K*

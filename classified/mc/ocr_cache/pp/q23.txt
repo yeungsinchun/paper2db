@@ -1,0 +1,6 @@
+*23. Yellow light of wavelength 590 nm is incident normally on a diffraction grating with 400 lines per m
+Find the difference in angular positions for the third order and the fourth order bright fringes.
+A. 13,7°
+B. 25.7°
+fon 45.1°
+D. 70.7°

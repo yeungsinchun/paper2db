@@ -1,0 +1,6 @@
+31 A radioactive nuclide plutonium-239 (“9,Pu) becomes a stable lead-207 isotope (*g3Pb) after a series
+of a and B decays. Find the number of / decays in the process.
+A. 3
+B. 4
+Cc. 5
+D. 6

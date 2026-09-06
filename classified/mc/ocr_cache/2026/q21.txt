@@ -1,0 +1,9 @@
+21. Two small charged spheres exert an electrostatic force of magnitude F on each other. If the amount of
+charge on each sphere is doubled and the distance between them is also doubled, the magnitude of the
+electrostatic force becomes
+
+a £,
+2
+B. F.
+c. 2F.
+Dz. 4F.

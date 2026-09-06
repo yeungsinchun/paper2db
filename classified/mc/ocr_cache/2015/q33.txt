@@ -1,0 +1,10 @@
+*33, A piece of wood found in an archaeological site is dated using carbon-14 dating method. It registers a
+corrected count rate of 11.0 counts per minute while a fresh wood sample cut from the same kind of
+trees gives a corrected count rate of 15,6 counts per minute. What is the approximate age of the wood
+found in the archaeological site ? Given: half-life of carbon-14 is 5730 years.
+
+A. 890 years
+B. 1300 years
+Cc. 2000 years .
+D. 2900 years
+END OF SECTION A

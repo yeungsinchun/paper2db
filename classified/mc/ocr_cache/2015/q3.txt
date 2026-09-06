@@ -1,0 +1,8 @@
+3. When an object P is in contact with another object Q, heat flows from P to Q. P must have a higher
+qd) temperature.
+(2) internal energy.
+(G3) specific heat capacity.
+A. (1) only
+B. (3) only
+c. (1) and (2) only
+D. (1) and (3) only

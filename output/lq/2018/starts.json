@@ -1,0 +1,65 @@
+{
+  "questions": [
+    {
+      "q": 1,
+      "page_from": 0,
+      "page_to": 0,
+      "y": 371.8
+    },
+    {
+      "q": 2,
+      "page_from": 1,
+      "page_to": 1,
+      "y": 470.0
+    },
+    {
+      "q": 3,
+      "page_from": 2,
+      "page_to": 3,
+      "y": 229.1
+    },
+    {
+      "q": 4,
+      "page_from": 4,
+      "page_to": 5,
+      "y": 262.7
+    },
+    {
+      "q": 5,
+      "page_from": 6,
+      "page_to": 7,
+      "y": 225.5
+    },
+    {
+      "q": 6,
+      "page_from": 8,
+      "page_to": 9,
+      "y": 240.0
+    },
+    {
+      "q": 7,
+      "page_from": 10,
+      "page_to": 11,
+      "y": 218.2
+    },
+    {
+      "q": 8,
+      "page_from": 12,
+      "page_to": 13,
+      "y": 101.8
+    },
+    {
+      "q": 9,
+      "page_from": 14,
+      "page_to": 15,
+      "y": 230.0
+    },
+    {
+      "q": 10,
+      "page_from": 16,
+      "page_to": 17,
+      "y": 232.7
+    }
+  ],
+  "pages": 18
+}

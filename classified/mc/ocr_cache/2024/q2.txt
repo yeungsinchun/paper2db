@@ -1,0 +1,12 @@
+Which statement below is correct ?
+A. P has a higher melting point than Q.
+B. The specific latent heat of fusion of P is smaller than that of Q.
+c. The specific heat capacity of solid P is greater than that of solid Q.
+D. At temperature 72, P is gas while Q is solid.
+2. If 0.5 kg of water at 50 °C is mixed with 2.0 kg of ice at 0 °C, what is the final temperature of the mixture ?
+Given: specific heat capacity of water = 4200 J kg"! °C~!
+specific latent heat of fusion of ice = 3.34 x 10° J kg"!
+A. 54°C
+B. 0°Cc
+Cc. 10°C
+D. 25°C

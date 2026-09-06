@@ -1,0 +1,18 @@
+*27. A coil of radius 2 cm is placed inside a square region of uniform magnetic field pointing out of the paper
+as shown.
+10 cm
+a
+coil ee oe ee ew ew ow
+a square region of .*
+uniform magnetic field ve coe 10cm
+
+‘The magnetic field decreases uniformly from a strength of 5.0 T to 3.0 T in 0.8 s. What is the magnitude
+of the e.m.f. induced in the coil ?
+
+A. 2.5x 107 V
+
+B. 3.1107 V
+
+c. 3.1x 107 V
+
+D. 6.2x 103 V

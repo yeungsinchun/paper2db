@@ -1,0 +1,17 @@
+19. Two loudspeakers separated by 1.00 m along the y-axis emit coherent sound waves which are in phase.
+When a microphone is moved along the x-axis, only one maximum is detected at a distance of 0.53 m as
+shown. Find the wavelength of the sound waves.
+
+y
+aN
+Hl
+1
+1.00 m {|
+i
+i
+<I>
+microphone
+A. 0.60 m
+B. 0.75 m
+on 1.00 m
+Dz 1.20m

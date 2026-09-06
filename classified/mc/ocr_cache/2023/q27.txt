@@ -1,0 +1,14 @@
+27. A solenoid is tightly wound around a smooth horizontal glass tube as shown. A movable aluminium ring
+is threaded on the right side of the tube.
+glass tube
+a) aluminium
+ot ring
+Ss o—|
+Q)
+Initially the ring is at rest and the 2-way switch S is in open circuit. In what direction would the ring
+move at the moment when S is connected in turns to (1) and (2) ?
+when Sis connected to (1) when S is connected to (2)
+A. to the left to the left
+B. to the right to the right
+Lon to the right to the left
+Dz to the left to the right

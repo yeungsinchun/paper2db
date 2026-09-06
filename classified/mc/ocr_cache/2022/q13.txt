@@ -1,0 +1,18 @@
+*13. A marble leaves the edge of a table at point X with a horizontal speed v and hits the ground at a certain
+point as shown.
+x y
+ground ‘
+
+If the marble leaves the table at a higher speed, which of the following would remain unchanged ?
+Neglect air resistance.
+0) the time of flight of the marble in the air
+(2) the acceleration of the marble during its flight in air
+(3) the horizontal distance between X and the landing point
+
+A. (1) only
+
+B. (3) only
+
+Cc. (1) and (2) only
+
+Dz. (2) and (3) only

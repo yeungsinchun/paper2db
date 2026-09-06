@@ -1,0 +1,6 @@
+*13. A satellite orbits the Earth in a circular orbit of radius r with a period of 24 hours. The period of another
+satellite which orbits the Earth in a circular orbit of radius 2r is
+A. less than 24 hours.
+B. 24 hours.
+c. between 24 hours and 48 hours.
+D. more than 48 hours.
