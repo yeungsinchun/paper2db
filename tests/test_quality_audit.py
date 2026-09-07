@@ -24,6 +24,28 @@ def load_module(name: str, path: Path):
 
 
 class TestQualityAudit(unittest.TestCase):
+    def test_relative_output_path_exits_zero(self) -> None:
+        with tempfile.TemporaryDirectory(dir=ROOT) as tmp:
+            rel_out = Path(tmp).name + "/quality_audit.json"
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts" / "quality_audit.py"),
+                    "--output",
+                    rel_out,
+                ],
+                cwd=ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            out_file = ROOT / rel_out
+            self.assertTrue(out_file.is_file())
+            report = json.loads(out_file.read_text(encoding="utf-8"))
+            self.assertIn("summary", report)
+            self.assertIn(f"Wrote {rel_out}", result.stdout)
+
     def test_report_counts_overrides_toward_five_percent(self) -> None:
         result = subprocess.run(
             [

@@ -422,7 +422,12 @@ def main() -> None:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     summary = report["summary"]
-    print(f"Wrote {args.output.relative_to(ROOT)}")
+    output_path = args.output.resolve()
+    try:
+        displayed = output_path.relative_to(ROOT)
+    except ValueError:
+        displayed = output_path
+    print(f"Wrote {displayed}")
     print(
         f"MC  failures={summary['mc']['failure_count']}/"
         f"{summary['mc']['questions']} "
