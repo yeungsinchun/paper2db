@@ -1,0 +1,516 @@
+{
+  "summary": {
+    "failure_definitions": {
+      "counted": [
+        "missing_crop",
+        "missing_classified",
+        "uncertain",
+        "tiny_crop",
+        "few_year_crops",
+        "override_tuned"
+      ],
+      "not_counted": [
+        "missing_answer_png",
+        "very_tall_lq",
+        "book_order_inversion_warning"
+      ]
+    },
+    "mc": {
+      "questions": 573,
+      "failure_count": 72,
+      "manual_tuning_rate": 0.1257,
+      "failures": [
+        {
+          "kind": "override_tuned",
+          "year": "2015",
+          "q": "6"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2015",
+          "q": "7"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2015",
+          "q": "9"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2016",
+          "q": "4"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2016",
+          "q": "6"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2018",
+          "q": "32"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "1"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "2"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "3"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "4"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "5"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "6"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "7"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "8"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "9"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "10"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "11"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "12"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "13"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "14"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "15"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "16"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "17"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "18"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "19"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "20"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "21"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "22"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "23"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "24"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "25"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "26"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "27"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "28"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "29"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "30"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "31"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "32"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "33"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "1"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "2"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "3"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "4"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "5"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "6"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "7"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "8"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "9"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "10"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "11"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "12"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "13"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "14"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "15"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "16"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "17"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "18"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "19"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "20"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "21"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "22"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "23"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "24"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "25"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "26"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "27"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "28"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "29"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "30"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "31"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "32"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "33"
+        }
+      ],
+      "book_order_inversions": []
+    },
+    "lq": {
+      "questions": 167,
+      "failure_count": 0,
+      "manual_tuning_rate": 0.0,
+      "failures": [],
+      "missing_answer_png_count": 35,
+      "missing_answer_by_year": {
+        "2013": 3,
+        "2015": 2,
+        "2017": 4,
+        "2021": 2,
+        "2026": 12,
+        "pp": 12
+      }
+    },
+    "combined": {
+      "questions": 740,
+      "failure_count": 72,
+      "manual_tuning_rate": 0.0973
+    },
+    "overrides_historical": {
+      "total_questions": 72,
+      "by_year": {
+        "2015": 3,
+        "2016": 2,
+        "2018": 1,
+        "2019": 33,
+        "2020": 33
+      }
+    },
+    "passes_5pct_bar": false
+  },
+  "assets": {
+    "anchors": [
+      {
+        "label": "2024 MC anchor page 1",
+        "path": "img/anchor-2024-page01.png",
+        "note": "Blue dots must sit beside question numbers with a clear gap."
+      },
+      {
+        "label": "2024 MC anchor page 2",
+        "path": "img/anchor-2024-page02.png",
+        "note": "Blue dots must sit beside question numbers with a clear gap."
+      },
+      {
+        "label": "2024 MC anchor page 3",
+        "path": "img/anchor-2024-page03.png",
+        "note": "Blue dots must sit beside question numbers with a clear gap."
+      }
+    ],
+    "mc_crops": [
+      {
+        "label": "MC 2012 Q1",
+        "path": "img/mc-2012-q1.png",
+        "note": "Empty stem + options; no answer bleed."
+      },
+      {
+        "label": "MC 2012 Q15",
+        "path": "img/mc-2012-q15.png",
+        "note": "Empty stem + options; no answer bleed."
+      },
+      {
+        "label": "MC 2024 Q1",
+        "path": "img/mc-2024-q1.png",
+        "note": "Empty stem + options; no answer bleed."
+      },
+      {
+        "label": "MC 2024 Q4",
+        "path": "img/mc-2024-q4.png",
+        "note": "Empty stem + options; no answer bleed."
+      },
+      {
+        "label": "MC 2025 Q1",
+        "path": "img/mc-2025-q1.png",
+        "note": "Empty stem + options; no answer bleed."
+      }
+    ],
+    "lq_crops": [
+      {
+        "label": "LQ 2012 Q1",
+        "path": "img/lq-2012-q1-fit.png",
+        "note": "Whole exam page stack (pages 0..1 (2-page stack)); no within-page crop. Scaled to show every page."
+      },
+      {
+        "label": "LQ 2012 Q4",
+        "path": "img/lq-2012-q4-fit.png",
+        "note": "Whole exam page stack (pages 4..5 (2-page stack)); no within-page crop. Scaled to show every page."
+      },
+      {
+        "label": "LQ 2024 Q10",
+        "path": "img/lq-2024-q10-fit.png",
+        "note": "Whole exam page stack (pages 10..11 (2-page stack)); no within-page crop. Scaled to show every page."
+      },
+      {
+        "label": "LQ 2025 Q3",
+        "path": "img/lq-2025-q3-fit.png",
+        "note": "Whole exam page stack (pages 2..3 (2-page stack)); no within-page crop. Scaled to show every page."
+      }
+    ],
+    "mc_classified": [
+      {
+        "label": "Bank: 02_Heat_Capacity / 2012_q1.png",
+        "path": "img/classified-mc-2012_q1.png",
+        "note": "classified/mc/01_Heat_and_Gases/02_Heat_Capacity/2012_q1.png"
+      },
+      {
+        "label": "Bank: 05_Motion / 2024_q4.png",
+        "path": "img/classified-mc-2024_q4.png",
+        "note": "classified/mc/02_Force_and_Motion/05_Motion/2024_q4.png"
+      },
+      {
+        "label": "Bank: 13_Wave_Motion / 2012_q15.png",
+        "path": "img/classified-mc-2012_q15.png",
+        "note": "classified/mc/03A_Wave_Motion/13_Wave_Motion/2012_q15.png"
+      }
+    ],
+    "lq_classified": [
+      {
+        "label": "Bank: 03_Change_of_State / 2012-q1.png",
+        "path": "img/classified-lq-2012-q1-fit.png",
+        "note": "classified/lq/01_Heat_and_Gases/03_Change_of_State/2012-q1.png (whole-page stack fit preview)"
+      },
+      {
+        "label": "Bank: 09_Momentum / 2012-q4.png",
+        "path": "img/classified-lq-2012-q4-fit.png",
+        "note": "classified/lq/02_Force_and_Motion/09_Momentum/2012-q4.png (whole-page stack fit preview)"
+      }
+    ]
+  },
+  "audit_path": "classified/quality_audit.json"
+}

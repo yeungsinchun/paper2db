@@ -43,7 +43,7 @@ FRONT_MATTER_RE = re.compile(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("source", type=Path, help="Marking-scheme PDF (e.g. answer/2019ans.pdf)")
+    parser.add_argument("source", type=Path, help="Marking-scheme PDF (e.g. paper/ans/2019ans.pdf)")
     parser.add_argument("output_dir", type=Path)
     parser.add_argument("--max-questions", type=int, default=12)
     parser.add_argument("--scale", type=float, default=2.0)

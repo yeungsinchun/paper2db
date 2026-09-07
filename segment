@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-"""Segment an HKDSE Physics exam PDF (MC question PNGs, or LQ page splits).
+"""Segment one HKDSE Physics exam PDF (low-level; prefer ./pipeline).
 
-Paper 1A (MC) two-step workflow:
+For a reproducible full run over paper/{mc,lq,ans}/, use:
+
+  ./pipeline
+
+Paper 1A (MC) two-step workflow for a single PDF:
   Step 1 - place anchors (blue dots) for review:
     ./segment paper.pdf output/2012-intermediate --step anchors
     Review output/2012-intermediate/anchor.pdf
@@ -9,7 +13,7 @@ Paper 1A (MC) two-step workflow:
     ./segment paper.pdf output/2012 --step split --intermediate output/2012-intermediate
 
 Paper 1B (LQ): pages-only split (pages/, starts.json, combined.pdf). Does not
-write or delete q*.png; use scripts/crop_lq_from_pages.py for question crops.
+write or delete q*.png; ./pipeline runs crop_lq_from_pages afterward.
 Page renders under output/**/pages/ are gitignored.
 
 Usage:
@@ -293,7 +297,7 @@ def parse_args() -> argparse.Namespace:
         "--overrides",
         type=Path,
         default=None,
-        help="MC overrides JSON: {question: [page, x, y], ...} (auto for 2015/2016 if present)",
+        help="MC overrides JSON: {question: [page, x, y], ...} (auto: scripts/overrides_YYYY.json)",
     )
     parser.add_argument(
         "--max-scale",
