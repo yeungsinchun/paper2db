@@ -464,22 +464,22 @@
       {
         "label": "LQ 2012 Q1",
         "path": "img/lq-2012-q1.png",
-        "note": "Full long-question crop from the paper (may span pages)."
+        "note": "Whole exam page(s) for the question (page_from..page_to); no within-page crop."
       },
       {
         "label": "LQ 2012 Q2",
         "path": "img/lq-2012-q2.png",
-        "note": "Full long-question crop from the paper (may span pages)."
+        "note": "Whole exam page(s) for the question (page_from..page_to); no within-page crop."
       },
       {
         "label": "LQ 2024 Q1",
         "path": "img/lq-2024-q1.png",
-        "note": "Full long-question crop from the paper (may span pages)."
+        "note": "Whole exam page(s) for the question (page_from..page_to); no within-page crop."
       },
       {
         "label": "LQ 2025 Q1",
         "path": "img/lq-2025-q1.png",
-        "note": "Full long-question crop from the paper (may span pages)."
+        "note": "Whole exam page(s) for the question (page_from..page_to); no within-page crop."
       }
     ],
     "mc_classified": [

@@ -77,6 +77,14 @@
       background: #0f0d14; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden;
     }
     .shot img { width: 100%; height: auto; display: block; background: #fff; }
+    .gallery-lq {
+      display: grid; grid-template-columns: 1fr; gap: 18px;
+    }
+    .gallery-lq .shot-body {
+      max-height: min(70vh, 900px); overflow: auto; background: #fff;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .gallery-lq .shot img { width: min(100%, 720px); margin: 0 auto; }
     .shot-cap { padding: 10px 12px; display: grid; gap: 4px; }
     .shot-cap strong { font-size: 0.92rem; }
     .shot-cap span { color: #a89bb8; font-size: 0.8rem; overflow-wrap: anywhere; }
@@ -170,7 +178,7 @@
       <div style="overflow-x:auto">
         <table class="stages">
           <thead><tr><th>Step</th><th>Stage</th><th>Output</th></tr></thead>
-          <tbody><tr><td>1. MC anchors</td><td><code>mc-anchors</code></td><td>Blue dots on each Paper 1A PDF → output/<year>-intermediate/anchor.pdf</td></tr><tr><td>2. MC split</td><td><code>mc-split</code></td><td>Crop empty qN.png + combined.pdf under output/<year>/</td></tr><tr><td>3. LQ pages</td><td><code>lq-pages</code></td><td>Export pages + starts.json under output/lq/<year>/</td></tr><tr><td>4. LQ crops</td><td><code>lq-crops</code></td><td>Full-question crops + questions.pdf</td></tr><tr><td>5. LQ answers</td><td><code>lq-answers</code></td><td>Marking-scheme answer crops under ans/</td></tr><tr><td>6. Keys</td><td><code>keys</code></td><td>MC answer keys → classified/mc/answer_keys.json</td></tr><tr><td>7. Classify MC</td><td><code>classify-mc</code></td><td>27 syllabus sections (LLM if keyed, else keywords)</td></tr><tr><td>8. Classify LQ</td><td><code>classify-lq</code></td><td>Same sections for long questions (LLM if keyed, else keywords)</td></tr><tr><td>9. Section PDFs</td><td><code>section-pdfs</code></td><td>Per-section combined.pdf / questions.pdf</td></tr><tr><td>10. Lavish</td><td><code>lavish</code></td><td>HTML reviews under .lavish/</td></tr></tbody>
+          <tbody><tr><td>1. MC anchors</td><td><code>mc-anchors</code></td><td>Blue dots on each Paper 1A PDF → output/<year>-intermediate/anchor.pdf</td></tr><tr><td>2. MC split</td><td><code>mc-split</code></td><td>Crop empty qN.png + combined.pdf under output/<year>/</td></tr><tr><td>3. LQ pages</td><td><code>lq-pages</code></td><td>Export pages + starts.json under output/lq/<year>/</td></tr><tr><td>4. LQ pages→PNG</td><td><code>lq-crops</code></td><td>Whole exam page stack per question + questions.pdf</td></tr><tr><td>5. LQ answers</td><td><code>lq-answers</code></td><td>Marking-scheme answer crops under ans/</td></tr><tr><td>6. Keys</td><td><code>keys</code></td><td>MC answer keys → classified/mc/answer_keys.json</td></tr><tr><td>7. Classify MC</td><td><code>classify-mc</code></td><td>27 syllabus sections (LLM if keyed, else keywords)</td></tr><tr><td>8. Classify LQ</td><td><code>classify-lq</code></td><td>Same sections for long questions (LLM if keyed, else keywords)</td></tr><tr><td>9. Section PDFs</td><td><code>section-pdfs</code></td><td>Per-section combined.pdf / questions.pdf</td></tr><tr><td>10. Lavish</td><td><code>lavish</code></td><td>HTML reviews under .lavish/</td></tr></tbody>
         </table>
       </div>
       <div class="cmd" style="margin-top:14px">./pipeline
@@ -276,35 +284,35 @@ python scripts/quality_audit.py --strict</div>
     </section>
 
     <section class="block" id="lq-crops">
-      <h2>Step C - LQ crops (final per-question)</h2>
-      <p class="lede">Long questions are taller and often multi-page. Review PDF: <code>output/lq/&lt;year&gt;/questions.pdf</code>.</p>
-      <div class="gallery">
+      <h2>Step C - LQ whole pages (final per-question)</h2>
+      <p class="lede">Long questions are whole exam page(s) only (<code>page_from</code>..<code>page_to</code>) - no within-page crop. Scroll inside each card. Review PDF: <code>output/lq/&lt;year&gt;/questions.pdf</code>.</p>
+      <div class="gallery gallery-lq">
 <article class="shot">
-  <img src="img/lq-2012-q1.png" alt="LQ 2012 Q1" loading="lazy" />
+  <div class="shot-body"><img src="img/lq-2012-q1.png" alt="LQ 2012 Q1" loading="lazy" /></div>
   <div class="shot-cap">
     <strong>LQ 2012 Q1</strong>
-    <span>Full long-question crop from the paper (may span pages).</span>
+    <span>Whole exam page(s) for the question (page_from..page_to); no within-page crop.</span>
   </div>
 </article>
 <article class="shot">
-  <img src="img/lq-2012-q2.png" alt="LQ 2012 Q2" loading="lazy" />
+  <div class="shot-body"><img src="img/lq-2012-q2.png" alt="LQ 2012 Q2" loading="lazy" /></div>
   <div class="shot-cap">
     <strong>LQ 2012 Q2</strong>
-    <span>Full long-question crop from the paper (may span pages).</span>
+    <span>Whole exam page(s) for the question (page_from..page_to); no within-page crop.</span>
   </div>
 </article>
 <article class="shot">
-  <img src="img/lq-2024-q1.png" alt="LQ 2024 Q1" loading="lazy" />
+  <div class="shot-body"><img src="img/lq-2024-q1.png" alt="LQ 2024 Q1" loading="lazy" /></div>
   <div class="shot-cap">
     <strong>LQ 2024 Q1</strong>
-    <span>Full long-question crop from the paper (may span pages).</span>
+    <span>Whole exam page(s) for the question (page_from..page_to); no within-page crop.</span>
   </div>
 </article>
 <article class="shot">
-  <img src="img/lq-2025-q1.png" alt="LQ 2025 Q1" loading="lazy" />
+  <div class="shot-body"><img src="img/lq-2025-q1.png" alt="LQ 2025 Q1" loading="lazy" /></div>
   <div class="shot-cap">
     <strong>LQ 2025 Q1</strong>
-    <span>Full long-question crop from the paper (may span pages).</span>
+    <span>Whole exam page(s) for the question (page_from..page_to); no within-page crop.</span>
   </div>
 </article></div>
     </section>
@@ -336,16 +344,16 @@ python scripts/quality_audit.py --strict</div>
   </div>
 </article></div>
       <h3 style="margin:18px 0 10px;color:#d4a574;font-size:1rem">LQ samples</h3>
-      <div class="gallery">
+      <div class="gallery gallery-lq">
 <article class="shot">
-  <img src="img/classified-lq-2012-q1.png" alt="Bank: 03_Change_of_State / 2012-q1.png" loading="lazy" />
+  <div class="shot-body"><img src="img/classified-lq-2012-q1.png" alt="Bank: 03_Change_of_State / 2012-q1.png" loading="lazy" /></div>
   <div class="shot-cap">
     <strong>Bank: 03_Change_of_State / 2012-q1.png</strong>
     <span>classified/lq/01_Heat_and_Gases/03_Change_of_State/2012-q1.png</span>
   </div>
 </article>
 <article class="shot">
-  <img src="img/classified-lq-2012-q4.png" alt="Bank: 09_Momentum / 2012-q4.png" loading="lazy" />
+  <div class="shot-body"><img src="img/classified-lq-2012-q4.png" alt="Bank: 09_Momentum / 2012-q4.png" loading="lazy" /></div>
   <div class="shot-cap">
     <strong>Bank: 09_Momentum / 2012-q4.png</strong>
     <span>classified/lq/02_Force_and_Motion/09_Momentum/2012-q4.png</span>

@@ -257,13 +257,14 @@ def stage_lq_crops(years: list[str] | None, *, force: bool, yes: bool) -> None:
     papers = discover_lq_papers(years)
     need = [year for _, year in papers if force or not lq_crops_ready(year)]
     if not need:
-        print("skip lq-crops: all selected years already cropped")
+        print("skip lq-crops: all selected years already have whole-page PNGs")
         return
     run_script("crop_lq_from_pages.py", "--years", *need)
     pause(
-        "LQ CROP REVIEW (optional but recommended)\n\n"
-        "Skim output/lq/<year>/questions.pdf (or combined.pdf) for cut-off\n"
-        "questions or wrong starts. Fix starts.json and re-run lq-crops if needed.\n\n"
+        "LQ PAGE REVIEW (optional but recommended)\n\n"
+        "Skim output/lq/<year>/questions.pdf. Each qN.png is whole exam page(s)\n"
+        "(page_from..page_to) - no within-page crop. Fix starts.json and re-run\n"
+        "lq-pages / lq-crops if a question's page range is wrong.\n\n"
         + "\n".join(f"  output/lq/{y}/questions.pdf" for y in need),
         yes=yes,
     )

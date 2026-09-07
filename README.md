@@ -58,7 +58,7 @@ When no API key is set, both MC and LQ use the keyword classifiers.
 1. **mc-anchors** - blue dots on each MC paper; **you must review** `output/<year>-intermediate/anchor.pdf`
 2. **mc-split** - crop clean `qN.png` into `output/<year>/`
 3. **lq-pages** - export LQ pages + `starts.json`
-4. **lq-crops** - full-question crops + `questions.pdf`
+4. **lq-crops** - whole exam page stack per question (`page_from`..`page_to`) + `questions.pdf` (no within-page crop)
 5. **lq-answers** - marking-scheme answer crops under `ans/`
 6. **keys** - MC keys + correct-% → `classified/mc/answer_keys.json`
 7. **classify-mc** - 27 syllabus sections (LLM if keyed, else keywords)
@@ -86,7 +86,7 @@ Captain review surface: `.lavish/pipeline-review/index.html` (step-by-step inter
 
 1. **Anchors** - every blue dot beside the question number with a clear gap (not on options or diagrams). Wrong anchors poison every later step. Use `scripts/overrides_YYYY.json` for hard pages (each counts toward the 5% budget).
 2. **Uncertain MC** - skim `classified/mc/uncertain.csv` and spot-check a few section folders.
-3. **LQ crops** - skim `output/lq/<year>/questions.pdf` if a year looks truncated.
+3. **LQ pages** - skim `output/lq/<year>/questions.pdf` if a question's page range looks wrong (`starts.json`).
 4. Trust the section review PDFs under `classified/*/.../combined.pdf` (or `questions.pdf`) rather than browsing PNG lists.
 5. Skim `.lavish/pipeline-review/` for the measured rates before accepting a new year.
 

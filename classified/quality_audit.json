@@ -16,43 +16,78 @@
       {
         "kind": "very_tall_lq",
         "year": "2012",
+        "q": "q1",
+        "h": 13952,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2012",
+        "q": "q2",
+        "h": 6976,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2012",
+        "q": "q3",
+        "h": 6976,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2012",
         "q": "q4",
-        "h": 5208,
+        "h": 13952,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
         "kind": "very_tall_lq",
         "year": "2012",
         "q": "q5",
-        "h": 5079,
+        "h": 13952,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
         "kind": "very_tall_lq",
         "year": "2012",
         "q": "q6",
-        "h": 5186,
+        "h": 6976,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
         "kind": "very_tall_lq",
         "year": "2012",
         "q": "q7",
-        "h": 5204,
+        "h": 20928,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
         "kind": "very_tall_lq",
         "year": "2012",
         "q": "q8",
-        "h": 5131,
+        "h": 13952,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2012",
+        "q": "q9",
+        "h": 13952,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
         "kind": "very_tall_lq",
         "year": "2012",
         "q": "q10",
-        "h": 6260,
+        "h": 6976,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2012",
+        "q": "q11",
+        "h": 6976,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
@@ -570,56 +605,91 @@
         "kind": "very_tall_lq",
         "year": "2024",
         "q": "q12",
-        "h": 8133,
+        "h": 9360,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2025",
+        "q": "q1",
+        "h": 5100,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2025",
+        "q": "q2",
+        "h": 5100,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
         "kind": "very_tall_lq",
         "year": "2025",
         "q": "q3",
-        "h": 8858,
+        "h": 10200,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
         "kind": "very_tall_lq",
         "year": "2025",
         "q": "q4",
-        "h": 5026,
+        "h": 5100,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2025",
+        "q": "q5",
+        "h": 5100,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
         "kind": "very_tall_lq",
         "year": "2025",
         "q": "q6",
-        "h": 9079,
+        "h": 10200,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
         "kind": "very_tall_lq",
         "year": "2025",
         "q": "q7",
-        "h": 8957,
+        "h": 10200,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2025",
+        "q": "q8",
+        "h": 5100,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2025",
+        "q": "q9",
+        "h": 5100,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
         "kind": "very_tall_lq",
         "year": "2025",
         "q": "q10",
-        "h": 8740,
+        "h": 10200,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
         "kind": "very_tall_lq",
         "year": "2025",
         "q": "q11",
-        "h": 9241,
+        "h": 10200,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
         "kind": "very_tall_lq",
         "year": "2025",
         "q": "q12",
-        "h": 12701,
+        "h": 15300,
         "note": "often multi-page with answer lines; not a failure"
       },
       {
@@ -700,8 +770,8 @@
         "note": "often multi-page with answer lines; not a failure"
       }
     ],
-    "height_median": 5074,
-    "height_max": 12886,
+    "height_median": 5101,
+    "height_max": 20928,
     "missing_questions_pdf": []
   },
   "mc_classification": {

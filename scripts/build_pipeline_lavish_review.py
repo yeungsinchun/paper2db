@@ -98,7 +98,7 @@ def collect_assets() -> dict:
                 {
                     "label": f"LQ {year} Q{question}",
                     "path": rel,
-                    "note": "Full long-question crop from the paper (may span pages).",
+                    "note": "Whole exam page(s) for the question (page_from..page_to); no within-page crop.",
                 }
             )
 
@@ -187,7 +187,7 @@ def write_html(audit: dict, assets: dict) -> None:
         ("1. MC anchors", "mc-anchors", "Blue dots on each Paper 1A PDF → output/<year>-intermediate/anchor.pdf"),
         ("2. MC split", "mc-split", "Crop empty qN.png + combined.pdf under output/<year>/"),
         ("3. LQ pages", "lq-pages", "Export pages + starts.json under output/lq/<year>/"),
-        ("4. LQ crops", "lq-crops", "Full-question crops + questions.pdf"),
+        ("4. LQ pages→PNG", "lq-crops", "Whole exam page stack per question + questions.pdf"),
         ("5. LQ answers", "lq-answers", "Marking-scheme answer crops under ans/"),
         ("6. Keys", "keys", "MC answer keys → classified/mc/answer_keys.json"),
         ("7. Classify MC", "classify-mc", "27 syllabus sections (LLM if keyed, else keywords)"),
@@ -196,22 +196,30 @@ def write_html(audit: dict, assets: dict) -> None:
         ("10. Lavish", "lavish", "HTML reviews under .lavish/"),
     ]
 
-    def gallery(items: list[dict]) -> str:
+    def gallery(items: list[dict], *, variant: str = "") -> str:
         if not items:
             return '<p class="muted">No sample assets found for this step.</p>'
         cards = []
+        tall = variant == "lq"
         for item in items:
+            img = (
+                f'<div class="shot-body"><img src="{item["path"]}" alt="{item["label"]}" '
+                f'loading="lazy" /></div>'
+                if tall
+                else f'<img src="{item["path"]}" alt="{item["label"]}" loading="lazy" />'
+            )
             cards.append(
                 f"""
 <article class="shot">
-  <img src="{item['path']}" alt="{item['label']}" loading="lazy" />
+  {img}
   <div class="shot-cap">
     <strong>{item['label']}</strong>
     <span>{item['note']}</span>
   </div>
 </article>"""
             )
-        return '<div class="gallery">' + "".join(cards) + "</div>"
+        klass = "gallery gallery-lq" if tall else "gallery"
+        return f'<div class="{klass}">' + "".join(cards) + "</div>"
 
     stage_rows = "".join(
         f"<tr><td>{name}</td><td><code>{code}</code></td><td>{desc}</td></tr>"
@@ -311,6 +319,14 @@ def write_html(audit: dict, assets: dict) -> None:
       background: #0f0d14; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; overflow: hidden;
     }}
     .shot img {{ width: 100%; height: auto; display: block; background: #fff; }}
+    .gallery-lq {{
+      display: grid; grid-template-columns: 1fr; gap: 18px;
+    }}
+    .gallery-lq .shot-body {{
+      max-height: min(70vh, 900px); overflow: auto; background: #fff;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }}
+    .gallery-lq .shot img {{ width: min(100%, 720px); margin: 0 auto; }}
     .shot-cap {{ padding: 10px 12px; display: grid; gap: 4px; }}
     .shot-cap strong {{ font-size: 0.92rem; }}
     .shot-cap span {{ color: #a89bb8; font-size: 0.8rem; overflow-wrap: anywhere; }}
@@ -454,9 +470,9 @@ python scripts/quality_audit.py --strict</div>
     </section>
 
     <section class="block" id="lq-crops">
-      <h2>Step C - LQ crops (final per-question)</h2>
-      <p class="lede">Long questions are taller and often multi-page. Review PDF: <code>output/lq/&lt;year&gt;/questions.pdf</code>.</p>
-      {gallery(assets['lq_crops'])}
+      <h2>Step C - LQ whole pages (final per-question)</h2>
+      <p class="lede">Long questions are whole exam page(s) only (<code>page_from</code>..<code>page_to</code>) - no within-page crop. Scroll inside each card. Review PDF: <code>output/lq/&lt;year&gt;/questions.pdf</code>.</p>
+      {gallery(assets['lq_crops'], variant="lq")}
     </section>
 
     <section class="block" id="classified">
@@ -465,7 +481,7 @@ python scripts/quality_audit.py --strict</div>
       <h3 style="margin:0 0 10px;color:#d4a574;font-size:1rem">MC samples</h3>
       {gallery(assets['mc_classified'])}
       <h3 style="margin:18px 0 10px;color:#d4a574;font-size:1rem">LQ samples</h3>
-      {gallery(assets['lq_classified'])}
+      {gallery(assets['lq_classified'], variant="lq")}
     </section>
 
     <section class="block" id="reviews">
