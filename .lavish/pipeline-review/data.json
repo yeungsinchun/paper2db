@@ -6,20 +6,381 @@
         "missing_classified",
         "uncertain",
         "tiny_crop",
-        "few_year_crops"
+        "few_year_crops",
+        "override_tuned"
       ],
       "not_counted": [
         "missing_answer_png",
-        "override_baked_in",
         "very_tall_lq",
         "book_order_inversion_warning"
       ]
     },
     "mc": {
       "questions": 573,
-      "failure_count": 0,
-      "manual_tuning_rate": 0.0,
-      "failures": [],
+      "failure_count": 72,
+      "manual_tuning_rate": 0.1257,
+      "failures": [
+        {
+          "kind": "override_tuned",
+          "year": "2015",
+          "q": "6"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2015",
+          "q": "7"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2015",
+          "q": "9"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2016",
+          "q": "4"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2016",
+          "q": "6"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2018",
+          "q": "32"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "1"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "2"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "3"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "4"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "5"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "6"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "7"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "8"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "9"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "10"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "11"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "12"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "13"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "14"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "15"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "16"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "17"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "18"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "19"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "20"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "21"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "22"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "23"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "24"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "25"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "26"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "27"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "28"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "29"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "30"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "31"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "32"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2019",
+          "q": "33"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "1"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "2"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "3"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "4"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "5"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "6"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "7"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "8"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "9"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "10"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "11"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "12"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "13"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "14"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "15"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "16"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "17"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "18"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "19"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "20"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "21"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "22"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "23"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "24"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "25"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "26"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "27"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "28"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "29"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "30"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "31"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "32"
+        },
+        {
+          "kind": "override_tuned",
+          "year": "2020",
+          "q": "33"
+        }
+      ],
       "book_order_inversions": []
     },
     "lq": {
@@ -39,8 +400,8 @@
     },
     "combined": {
       "questions": 740,
-      "failure_count": 0,
-      "manual_tuning_rate": 0.0
+      "failure_count": 72,
+      "manual_tuning_rate": 0.0973
     },
     "overrides_historical": {
       "total_questions": 72,
@@ -52,7 +413,7 @@
         "2020": 33
       }
     },
-    "passes_5pct_bar": true
+    "passes_5pct_bar": false
   },
   "assets": {
     "anchors": [

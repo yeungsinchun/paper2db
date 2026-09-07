@@ -4,7 +4,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - Day-to-day entry is `./pipeline` (stages via `--list-stages`, `--from`, `--only`, `--years`, `--force`, `--yes`). Prefer it over calling `scripts/*.py` or `./segment` directly.
 - Quality bar and failure definitions: `python scripts/quality_audit.py` → `classified/quality_audit.json`. Captain walkthrough: `.lavish/pipeline-review/`. MC/LQ banks: `.lavish/classified-review/` and `.lavish/lq-classified-review/`.
-- Human gates that matter: review `output/<year>-intermediate/anchor.pdf` before MC split; skim `classified/mc/uncertain.csv` after classify. Hard MC pages live in `scripts/overrides_YYYY.json`.
+- Human gates that matter: review `output/<year>-intermediate/anchor.pdf` before MC split; skim `classified/mc/uncertain.csv` after classify. Hard MC pages live in `scripts/overrides_YYYY.json` (each counts toward the ≤5% manual-tuning budget).
 - Intermediate dirs (`output/*-intermediate/`, page PNGs) are gitignored; regenerate with `./pipeline --only mc-anchors --years YYYY --force --yes` when you need anchor evidence.
 
 ## Maintaining this file

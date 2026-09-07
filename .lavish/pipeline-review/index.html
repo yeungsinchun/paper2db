@@ -105,7 +105,7 @@
 <body>
   <div class="wrap">
     <header class="hero">
-      <div class="status ok">PASS (<=5% manual tuning)</div>
+      <div class="status bad">FAIL (above 5%)</div>
       <h1>paper2db pipeline evidence</h1>
       <p>
         One command (<code>./pipeline</code>) turns HKDSE Physics PDFs into classified empty
@@ -115,8 +115,8 @@
       <div class="stats">
         <div class="stat">
           <div class="k">MC manual tuning</div>
-          <div class="v">0.00%</div>
-          <div class="s">0 / 573 questions</div>
+          <div class="v">12.57%</div>
+          <div class="s">72 / 573 questions</div>
         </div>
         <div class="stat">
           <div class="k">LQ manual tuning</div>
@@ -125,8 +125,8 @@
         </div>
         <div class="stat">
           <div class="k">Combined</div>
-          <div class="v">0.00%</div>
-          <div class="s">0 / 740 questions</div>
+          <div class="v">9.73%</div>
+          <div class="s">72 / 740 questions</div>
         </div>
       </div>
     </header>
@@ -136,7 +136,7 @@
       <p class="lede">Day-to-day entry is <code>./pipeline</code>. Scripts under <code>scripts/</code> and <code>segment</code> are internals.</p>
       <div class="flow" aria-label="pipeline stages diagram">
         <svg viewBox="0 0 980 170" width="100%" role="img" id="pipeline-flow">
-          <title>PDF papers flow through eleven stages into classified crops and Lavish reviews</title>
+          <title>PDF papers flow through ten stages into classified crops and Lavish reviews</title>
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="#8ec5c0" />
@@ -165,7 +165,7 @@
       <div class="overflow-x-auto">
         <table class="stages">
           <thead><tr><th>Step</th><th>Stage</th><th>Output</th></tr></thead>
-          <tbody><tr><td>1. MC anchors</td><td><code>mc-anchors</code></td><td>Blue dots on each Paper 1A PDF → output/<year>-intermediate/anchor.pdf</td></tr><tr><td>2. MC split</td><td><code>mc-split</code></td><td>Crop empty qN.png + combined.pdf under output/<year>/</td></tr><tr><td>3. LQ pages</td><td><code>lq-pages</code></td><td>Export pages + starts.json under output/lq/<year>/</td></tr><tr><td>4. LQ crops</td><td><code>lq-crops</code></td><td>Full-question crops + questions.pdf</td></tr><tr><td>5. LQ answers</td><td><code>lq-answers</code></td><td>Marking-scheme answer crops under ans/</td></tr><tr><td>6. Keys</td><td><code>keys</code></td><td>MC answer keys → classified/mc/answer_keys.json</td></tr><tr><td>7. Classify MC</td><td><code>classify-mc</code></td><td>27 syllabus sections (LLM if keyed, else keywords)</td></tr><tr><td>8. Classify LQ</td><td><code>classify-lq</code></td><td>Same sections for long questions</td></tr><tr><td>9. Section PDFs</td><td><code>section-pdfs</code></td><td>Per-section combined.pdf / questions.pdf</td></tr><tr><td>10. Performance</td><td><code>performance</code></td><td>LQ candidate-performance JSON</td></tr><tr><td>11. Lavish</td><td><code>lavish</code></td><td>HTML reviews under .lavish/</td></tr></tbody>
+          <tbody><tr><td>1. MC anchors</td><td><code>mc-anchors</code></td><td>Blue dots on each Paper 1A PDF → output/<year>-intermediate/anchor.pdf</td></tr><tr><td>2. MC split</td><td><code>mc-split</code></td><td>Crop empty qN.png + combined.pdf under output/<year>/</td></tr><tr><td>3. LQ pages</td><td><code>lq-pages</code></td><td>Export pages + starts.json under output/lq/<year>/</td></tr><tr><td>4. LQ crops</td><td><code>lq-crops</code></td><td>Full-question crops + questions.pdf</td></tr><tr><td>5. LQ answers</td><td><code>lq-answers</code></td><td>Marking-scheme answer crops under ans/</td></tr><tr><td>6. Keys</td><td><code>keys</code></td><td>MC answer keys → classified/mc/answer_keys.json</td></tr><tr><td>7. Classify MC</td><td><code>classify-mc</code></td><td>27 syllabus sections (LLM if keyed, else keywords)</td></tr><tr><td>8. Classify LQ</td><td><code>classify-lq</code></td><td>Same sections for long questions (LLM if keyed, else keywords)</td></tr><tr><td>9. Section PDFs</td><td><code>section-pdfs</code></td><td>Per-section combined.pdf / questions.pdf</td></tr><tr><td>10. Lavish</td><td><code>lavish</code></td><td>HTML reviews under .lavish/</td></tr></tbody>
         </table>
       </div>
       <div class="cmd" style="margin-top:14px">./pipeline
@@ -177,26 +177,26 @@ python scripts/quality_audit.py --strict</div>
 
     <section class="block" id="quality">
       <h2>What counts as a failure</h2>
-      <p class="lede">Only these events count toward the &lt;=5% manual-tuning budget. Historical override files are already baked in and are not re-counted on steady-state runs.</p>
+      <p class="lede">These events count toward the &lt;=5% manual-tuning budget, including every question listed in <code>scripts/overrides_YYYY.json</code>.</p>
       <div class="two">
         <div class="listbox">
           <h3>Counted</h3>
-          <ul><li><code>missing_crop</code></li><li><code>missing_classified</code></li><li><code>uncertain</code></li><li><code>tiny_crop</code></li><li><code>few_year_crops</code></li></ul>
+          <ul><li><code>missing_crop</code></li><li><code>missing_classified</code></li><li><code>uncertain</code></li><li><code>tiny_crop</code></li><li><code>few_year_crops</code></li><li><code>override_tuned</code></li></ul>
         </div>
         <div class="listbox">
           <h3>Not counted</h3>
-          <ul><li><code>missing_answer_png</code></li><li><code>override_baked_in</code></li><li><code>very_tall_lq</code></li><li><code>book_order_inversion_warning</code></li></ul>
+          <ul><li><code>missing_answer_png</code></li><li><code>very_tall_lq</code></li><li><code>book_order_inversion_warning</code></li></ul>
           <p class="muted" style="margin:10px 0 0;font-size:0.85rem">
             LQ missing answers: 35
-            (often no ans PDF for 2026/pp). Historical overrides:
-            72 questions across
+            (often no ans PDF for 2026/pp). Override-tuned questions
+            (counted above): 72 across
             5 years.
           </p>
         </div>
       </div>
       <div class="overflow-x-auto" style="margin-top:16px">
         <table class="stages">
-          <thead><tr><th>Override year</th><th>Questions tuned (one-time)</th></tr></thead>
+          <thead><tr><th>Override year</th><th>Questions tuned (counted)</th></tr></thead>
           <tbody><tr><td>2015</td><td>3</td></tr><tr><td>2016</td><td>2</td></tr><tr><td>2018</td><td>1</td></tr><tr><td>2019</td><td>33</td></tr><tr><td>2020</td><td>33</td></tr></tbody>
         </table>
       </div>
@@ -386,7 +386,7 @@ python scripts/quality_audit.py --strict</div>
       }
       window.lavish.queuePrompt(parts.join(' '), {
         tag: 'pipeline-verdict',
-        data: { verdict, note, mc_rate: 0.0, lq_rate: 0.0, combined_rate: 0.0 }
+        data: { verdict, note, mc_rate: 0.1257, lq_rate: 0.0, combined_rate: 0.0973 }
       });
       if (typeof window.lavish.sendQueuedPrompts === 'function') window.lavish.sendQueuedPrompts();
       return false;

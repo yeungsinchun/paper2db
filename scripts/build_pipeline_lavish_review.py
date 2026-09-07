@@ -38,6 +38,16 @@ def copy_sample(src: Path, dest_name: str) -> str | None:
     return f"img/{dest_name}"
 
 
+def existing_sample(dest_name: str) -> str | None:
+    if (IMG / dest_name).is_file():
+        return f"img/{dest_name}"
+    return None
+
+
+def resolve_sample(src: Path, dest_name: str) -> str | None:
+    return copy_sample(src, dest_name) or existing_sample(dest_name)
+
+
 def collect_assets() -> dict:
     assets: dict[str, list[dict]] = {
         "anchors": [],
@@ -48,9 +58,10 @@ def collect_assets() -> dict:
     }
 
     for page in range(1, 4):
-        rel = copy_sample(
+        dest_name = f"anchor-2024-page{page:02d}.png"
+        rel = resolve_sample(
             ROOT / "output" / "2024-intermediate" / f"page{page:02d}.png",
-            f"anchor-2024-page{page:02d}.png",
+            dest_name,
         )
         if rel:
             assets["anchors"].append(
@@ -62,9 +73,10 @@ def collect_assets() -> dict:
             )
 
     for year, question in (("2012", 1), ("2012", 15), ("2024", 1), ("2024", 4), ("2025", 1)):
-        rel = copy_sample(
+        dest_name = f"mc-{year}-q{question}.png"
+        rel = resolve_sample(
             ROOT / "output" / year / f"q{question}.png",
-            f"mc-{year}-q{question}.png",
+            dest_name,
         )
         if rel:
             assets["mc_crops"].append(
@@ -76,9 +88,10 @@ def collect_assets() -> dict:
             )
 
     for year, question in (("2012", 1), ("2012", 2), ("2024", 1), ("2025", 1)):
-        rel = copy_sample(
+        dest_name = f"lq-{year}-q{question}.png"
+        rel = resolve_sample(
             ROOT / "output" / "lq" / year / f"q{question}.png",
-            f"lq-{year}-q{question}.png",
+            dest_name,
         )
         if rel:
             assets["lq_crops"].append(
@@ -114,13 +127,14 @@ def collect_assets() -> dict:
             # Fall back to any PNG in that section folder.
             candidates = list(src.parent.glob("*.png"))
             src = candidates[0] if candidates else src
-        rel = copy_sample(src, f"classified-mc-{src.name}")
+        dest_name = f"classified-mc-{src.name}"
+        rel = resolve_sample(src, dest_name)
         if rel:
             assets["mc_classified"].append(
                 {
                     "label": f"Bank: {src.parent.name} / {src.name}",
                     "path": rel,
-                    "note": str(src.relative_to(ROOT)),
+                    "note": str(src.relative_to(ROOT)) if src.is_file() else dest_name,
                 }
             )
 
@@ -143,13 +157,14 @@ def collect_assets() -> dict:
             candidates = list(src.parent.glob("*-q*.png"))
             candidates = [c for c in candidates if "-ans" not in c.name]
             src = candidates[0] if candidates else src
-        rel = copy_sample(src, f"classified-lq-{src.name}")
+        dest_name = f"classified-lq-{src.name}"
+        rel = resolve_sample(src, dest_name)
         if rel:
             assets["lq_classified"].append(
                 {
                     "label": f"Bank: {src.parent.name} / {src.name}",
                     "path": rel,
-                    "note": str(src.relative_to(ROOT)),
+                    "note": str(src.relative_to(ROOT)) if src.is_file() else dest_name,
                 }
             )
 
@@ -176,10 +191,9 @@ def write_html(audit: dict, assets: dict) -> None:
         ("5. LQ answers", "lq-answers", "Marking-scheme answer crops under ans/"),
         ("6. Keys", "keys", "MC answer keys → classified/mc/answer_keys.json"),
         ("7. Classify MC", "classify-mc", "27 syllabus sections (LLM if keyed, else keywords)"),
-        ("8. Classify LQ", "classify-lq", "Same sections for long questions"),
+        ("8. Classify LQ", "classify-lq", "Same sections for long questions (LLM if keyed, else keywords)"),
         ("9. Section PDFs", "section-pdfs", "Per-section combined.pdf / questions.pdf"),
-        ("10. Performance", "performance", "LQ candidate-performance JSON"),
-        ("11. Lavish", "lavish", "HTML reviews under .lavish/"),
+        ("10. Lavish", "lavish", "HTML reviews under .lavish/"),
     ]
 
     def gallery(items: list[dict]) -> str:
@@ -356,7 +370,7 @@ def write_html(audit: dict, assets: dict) -> None:
       <p class="lede">Day-to-day entry is <code>./pipeline</code>. Scripts under <code>scripts/</code> and <code>segment</code> are internals.</p>
       <div class="flow" aria-label="pipeline stages diagram">
         <svg viewBox="0 0 980 170" width="100%" role="img" id="pipeline-flow">
-          <title>PDF papers flow through eleven stages into classified crops and Lavish reviews</title>
+          <title>PDF papers flow through ten stages into classified crops and Lavish reviews</title>
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="#8ec5c0" />
@@ -397,7 +411,7 @@ python scripts/quality_audit.py --strict</div>
 
     <section class="block" id="quality">
       <h2>What counts as a failure</h2>
-      <p class="lede">Only these events count toward the &lt;=5% manual-tuning budget. Historical override files are already baked in and are not re-counted on steady-state runs.</p>
+      <p class="lede">These events count toward the &lt;=5% manual-tuning budget, including every question listed in <code>scripts/overrides_YYYY.json</code>.</p>
       <div class="two">
         <div class="listbox">
           <h3>Counted</h3>
@@ -408,15 +422,15 @@ python scripts/quality_audit.py --strict</div>
           <ul>{not_counted}</ul>
           <p class="muted" style="margin:10px 0 0;font-size:0.85rem">
             LQ missing answers: {lq['missing_answer_png_count']}
-            (often no ans PDF for 2026/pp). Historical overrides:
-            {overrides['total_questions']} questions across
+            (often no ans PDF for 2026/pp). Override-tuned questions
+            (counted above): {overrides['total_questions']} across
             {len(overrides['by_year'])} years.
           </p>
         </div>
       </div>
       <div class="overflow-x-auto" style="margin-top:16px">
         <table class="stages">
-          <thead><tr><th>Override year</th><th>Questions tuned (one-time)</th></tr></thead>
+          <thead><tr><th>Override year</th><th>Questions tuned (counted)</th></tr></thead>
           <tbody>{override_rows}</tbody>
         </table>
       </div>
@@ -513,9 +527,7 @@ python scripts/quality_audit.py --strict</div>
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    if IMG.exists():
-        shutil.rmtree(IMG)
-    IMG.mkdir(parents=True)
+    IMG.mkdir(parents=True, exist_ok=True)
     audit = ensure_audit()
     assets = collect_assets()
     write_html(audit, assets)

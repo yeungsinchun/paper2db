@@ -21,14 +21,11 @@ KEY_RE = re.compile(
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     root = Path(__file__).resolve().parents[1]
-    default_answers = root / "paper" / "ans"
-    if not default_answers.is_dir():
-        default_answers = root / "answer"
     parser.add_argument(
         "--answers",
         type=Path,
-        default=default_answers,
-        help="Marking-scheme PDF folder (default: paper/ans, else answer/)",
+        default=root / "paper" / "ans",
+        help="Marking-scheme PDF folder (default: paper/ans)",
     )
     parser.add_argument(
         "--output",

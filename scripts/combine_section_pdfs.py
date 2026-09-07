@@ -19,9 +19,7 @@ import pymupdf as fitz
 
 ROOT = Path(__file__).resolve().parents[1]
 CLASSIFIED = ROOT / "classified" / "mc"
-_CLASSIFIED_KEYS = ROOT / "classified" / "mc" / "answer_keys.json"
-_LEGACY_KEYS = ROOT / "processed" / "MC" / "answer_keys.json"
-DEFAULT_KEYS = _CLASSIFIED_KEYS if _CLASSIFIED_KEYS.is_file() else _LEGACY_KEYS
+DEFAULT_KEYS = ROOT / "classified" / "mc" / "answer_keys.json"
 
 PNG_RE = re.compile(r"^(?P<year>\d{4}|pp|sap)_q(?P<q>\d+)\.png$", re.I)
 YEAR_RANK = {

@@ -35,6 +35,7 @@ class TestPipelineCli(unittest.TestCase):
         )
         lines = [line.strip() for line in result.stdout.splitlines() if line.strip()]
         self.assertEqual(lines, list(load_pipeline().STAGES))
+        self.assertNotIn("performance", lines)
 
     def test_unknown_only_stage_exits(self) -> None:
         result = subprocess.run(
@@ -76,7 +77,7 @@ class TestPipelineHelpers(unittest.TestCase):
             ["keys", "classify-mc", "classify-lq"],
         )
 
-    def test_keys_stage_copies_legacy_when_missing(self) -> None:
+    def test_keys_stage_uses_paper_ans_only(self) -> None:
         pipe = self.pipe
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
@@ -87,15 +88,65 @@ class TestPipelineHelpers(unittest.TestCase):
                 json.dumps({"2012": {"1": {"Correct Option": "A"}}}) + "\n",
                 encoding="utf-8",
             )
+            (tmp_path / "paper" / "ans").mkdir(parents=True)
             dest = tmp_path / "classified" / "mc" / "answer_keys.json"
+            calls: list[tuple[str, tuple[str, ...]]] = []
+
+            def fake_run(script_name: str, *args: str) -> None:
+                calls.append((script_name, args))
+
             with mock.patch.object(pipe, "ROOT", tmp_path):
-                pipe.stage_keys(force=False)
-                self.assertTrue(dest.is_file())
-                payload = json.loads(dest.read_text(encoding="utf-8"))
-                self.assertEqual(payload["2012"]["1"]["Correct Option"], "A")
-                mtime = dest.stat().st_mtime
-                pipe.stage_keys(force=False)
-                self.assertEqual(dest.stat().st_mtime, mtime)
+                with mock.patch.object(pipe, "run_script", side_effect=fake_run):
+                    pipe.stage_keys(force=False)
+            self.assertEqual(calls[0][0], "extract_answer_keys.py")
+            self.assertIn(str(tmp_path / "paper" / "ans"), calls[0][1])
+            self.assertFalse(dest.is_file())
+
+    def test_keys_stage_fails_without_paper_ans(self) -> None:
+        pipe = self.pipe
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            with mock.patch.object(pipe, "ROOT", tmp_path):
+                with self.assertRaises(SystemExit) as raised:
+                    pipe.stage_keys(force=True)
+            self.assertIn("paper/ans", str(raised.exception))
+
+    def test_force_mc_split_fails_when_intermediates_missing(self) -> None:
+        pipe = self.pipe
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            paper = tmp_path / "paper" / "mc"
+            paper.mkdir(parents=True)
+            (paper / "2099p1a.pdf").write_bytes(b"%PDF-1.4")
+            year_dir = tmp_path / "output" / "2099"
+            year_dir.mkdir(parents=True)
+            from PIL import Image
+
+            for index in range(1, 31):
+                Image.new("RGB", (400, 120), (255, 255, 255)).save(
+                    year_dir / f"q{index}.png"
+                )
+            (year_dir / "combined.pdf").write_bytes(b"%PDF-1.4")
+            with mock.patch.object(pipe, "ROOT", tmp_path):
+                with self.assertRaises(SystemExit) as raised:
+                    pipe.stage_mc_split(["2099"], force=True)
+            self.assertIn("Run mc-anchors first", str(raised.exception))
+
+    def test_classify_lq_uses_llm_when_keyed(self) -> None:
+        pipe = self.pipe
+        calls: list[str] = []
+
+        def fake_run(script_name: str, *args: str) -> None:
+            calls.append(script_name)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            with mock.patch.object(pipe, "ROOT", tmp_path):
+                with mock.patch.object(pipe, "has_llm_key", return_value=True):
+                    with mock.patch.object(pipe, "run_script", side_effect=fake_run):
+                        with mock.patch.dict("os.environ", {}, clear=False):
+                            pipe.stage_classify_lq(None, force=True)
+        self.assertEqual(calls, ["classify_lq_llm.py"])
 
 
 class TestAnswerKeyDefaults(unittest.TestCase):
@@ -108,7 +159,7 @@ class TestAnswerKeyDefaults(unittest.TestCase):
         self.assertEqual(args.answers, ROOT / "paper" / "ans")
         self.assertEqual(args.output, ROOT / "classified" / "mc" / "answer_keys.json")
 
-    def test_combine_section_pdfs_prefers_classified_keys(self) -> None:
+    def test_combine_section_pdfs_uses_classified_keys(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         import combine_section_pdfs as csp
 

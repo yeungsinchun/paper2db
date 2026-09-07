@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """HKDSE Physics paper2db - single entry point for the full pipeline.
 
-Reads PDFs under paper/{mc,lq,ans,performance}/ and writes:
+Reads PDFs under paper/{mc,lq,ans}/ and writes:
   output/<year>/          MC question crops + combined.pdf
   output/lq/<year>/       LQ pages, question crops, answer crops
   classified/mc/          MC section folders, CSVs, section PDFs, answer keys
-  classified/lq/          LQ section folders, CSVs, section PDFs, performance
+  classified/lq/          LQ section folders, CSVs, section PDFs
   .lavish/pipeline-review/        step-by-step HTML (intermediates + finals)
   .lavish/classified-review/      MC section bank HTML
   .lavish/lq-classified-review/   LQ section bank HTML
@@ -28,7 +28,6 @@ from __future__ import annotations
 import argparse
 import os
 import re
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -46,7 +45,6 @@ STAGES = (
     "classify-mc",
     "classify-lq",
     "section-pdfs",
-    "performance",
     "lavish",
 )
 
@@ -113,11 +111,10 @@ def discover_lq_papers(years: list[str] | None) -> list[tuple[Path, str]]:
 
 
 def discover_answer_pdfs(years: list[str] | None) -> list[tuple[Path, str]]:
-    """Prefer paper/ans; fall back to legacy answer/."""
     ans_dir = ROOT / "paper" / "ans"
-    if not ans_dir.is_dir():
-        ans_dir = ROOT / "answer"
     papers: list[tuple[Path, str]] = []
+    if not ans_dir.is_dir():
+        return papers
     for path in sorted(ans_dir.glob("*ans.pdf")):
         # Skip *ans2.pdf (handled separately if needed); glob is *ans.pdf only.
         label = path.name[: -len("ans.pdf")]
@@ -227,8 +224,6 @@ def stage_mc_split(years: list[str] | None, *, force: bool) -> None:
             continue
         inter = intermediate_dir(year)
         if not (inter / "anchor.pdf").is_file() and not (inter / "anchored.pdf").is_file():
-            if mc_output_ready(year):
-                continue
             raise SystemExit(
                 f"Missing {inter / 'anchor.pdf'} for {year}. Run mc-anchors first."
             )
@@ -277,7 +272,7 @@ def stage_lq_crops(years: list[str] | None, *, force: bool, yes: bool) -> None:
 def stage_lq_answers(years: list[str] | None, *, force: bool) -> None:
     answers = discover_answer_pdfs(years)
     if not answers:
-        print("No answer PDFs found under paper/ans (or answer/).")
+        print("No answer PDFs found under paper/ans.")
         return
     for pdf, year in answers:
         out = ROOT / "output" / "lq" / year / "ans"
@@ -300,18 +295,12 @@ def answer_keys_path() -> Path:
 
 def stage_keys(*, force: bool) -> None:
     dest = answer_keys_path()
-    legacy = ROOT / "processed" / "MC" / "answer_keys.json"
     if dest.is_file() and not force:
         print(f"skip keys: {dest.relative_to(ROOT)} exists (use --force to refresh)")
         return
-    if legacy.is_file() and not dest.is_file() and not force:
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(legacy, dest)
-        print(f"Copied legacy keys -> {dest.relative_to(ROOT)}")
-        return
     ans_dir = ROOT / "paper" / "ans"
     if not ans_dir.is_dir():
-        ans_dir = ROOT / "answer"
+        raise SystemExit(f"Missing {ans_dir}. Place marking-scheme PDFs there.")
     run_script(
         "extract_answer_keys.py",
         "--answers",
@@ -363,33 +352,26 @@ def stage_classify_lq(years: list[str] | None, *, force: bool) -> None:
     year_args: list[str] = []
     if years:
         year_args = ["--years", *years]
-    if has_llm_key() and os.environ.get("PAPER2DB_LQ_LLM", "").lower() in {
-        "1",
-        "true",
-        "yes",
-    }:
-        print("=== classify-lq: LLM (PAPER2DB_LQ_LLM set) ===")
+    if has_llm_key():
+        print("=== classify-lq: LLM ===")
         run_script("classify_lq_llm.py", *year_args)
     else:
-        print("=== classify-lq: keywords (default; set PAPER2DB_LQ_LLM=1 for LLM) ===")
+        print(
+            "=== classify-lq: keywords "
+            "(set LLM_API_KEY / OPENAI_API_KEY / TOGETHER_API_KEY for LLM) ==="
+        )
         run_script("classify_lq_keywords.py", *year_args)
 
 
 def stage_section_pdfs() -> None:
     keys = answer_keys_path()
     if not keys.is_file():
-        legacy = ROOT / "processed" / "MC" / "answer_keys.json"
-        if legacy.is_file():
-            keys = legacy
+        raise SystemExit(
+            f"Missing {keys}. Run keys stage first "
+            "(./pipeline --only keys)."
+        )
     run_script("combine_section_pdfs.py", "--keys", str(keys))
     run_script("combine_lq_section_pdfs.py")
-
-
-def stage_performance(years: list[str] | None) -> None:
-    year_args: list[str] = []
-    if years:
-        year_args = ["--years", *years]
-    run_script("extract_lq_performance.py", *year_args)
 
 
 def stage_lavish() -> None:
@@ -514,8 +496,6 @@ def main() -> None:
             stage_classify_lq(years, force=args.force)
         elif stage == "section-pdfs":
             stage_section_pdfs()
-        elif stage == "performance":
-            stage_performance(years)
         elif stage == "lavish":
             stage_lavish()
         else:

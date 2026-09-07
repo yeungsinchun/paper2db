@@ -7,11 +7,10 @@ Failure definitions (count toward the captain's <=5% manual-tuning budget):
   uncertain          - MC Uncertain=yes (needs human skim)
   tiny_crop          - crop width/height below usable threshold
   few_year_crops     - year folder has far fewer crops than a full paper
+  override_tuned     - scripts/overrides_YYYY.json entry (human anchor tuning)
 
 Not counted as failures (documented separately):
   missing_answer_png - LQ answer crop absent (often no ans PDF for that year)
-  override_baked_in  - historical scripts/overrides_YYYY.json entries already
-                       applied; steady-state re-runs do not need them again
   very_tall_lq       - LQ crops intentionally include answer lines (multi-page)
 
 Exit code 0 always when writing a report; use --strict to exit 1 if the
@@ -261,13 +260,17 @@ def audit_lq_classification(rows: list[dict[str, str]]) -> dict:
 def override_stats() -> dict:
     total = 0
     by_year: dict[str, int] = {}
+    items: list[dict] = []
     for path in sorted((ROOT / "scripts").glob("overrides_*.json")):
         payload = json.loads(path.read_text(encoding="utf-8"))
-        count = len(payload) if isinstance(payload, dict) else 0
+        if not isinstance(payload, dict):
+            continue
         year = path.stem.replace("overrides_", "")
-        by_year[year] = count
-        total += count
-    return {"total_questions": total, "by_year": by_year}
+        by_year[year] = len(payload)
+        total += len(payload)
+        for question in sorted(payload, key=lambda value: int(str(value))):
+            items.append({"year": year, "q": str(question)})
+    return {"total_questions": total, "by_year": by_year, "items": items}
 
 
 def summarize(
@@ -284,6 +287,10 @@ def summarize(
         + [
             {"kind": "missing_classified", **item}
             for item in mc_class["missing_classified"]
+        ]
+        + [
+            {"kind": "override_tuned", "year": item["year"], "q": item["q"]}
+            for item in overrides.get("items", [])
         ]
     )
     lq_failure_events = (
@@ -311,10 +318,10 @@ def summarize(
                 "uncertain",
                 "tiny_crop",
                 "few_year_crops",
+                "override_tuned",
             ],
             "not_counted": [
                 "missing_answer_png",
-                "override_baked_in",
                 "very_tall_lq",
                 "book_order_inversion_warning",
             ],
@@ -341,7 +348,10 @@ def summarize(
             "failure_count": combined_fail,
             "manual_tuning_rate": round(combined_rate, 4),
         },
-        "overrides_historical": overrides,
+        "overrides_historical": {
+            "total_questions": overrides["total_questions"],
+            "by_year": overrides["by_year"],
+        },
         "passes_5pct_bar": combined_rate <= 0.05 and mc_rate <= 0.05 and lq_rate <= 0.05,
     }
 
@@ -433,7 +443,7 @@ def main() -> None:
         f"{summary['lq']['missing_answer_png_count']}"
     )
     print(
-        f"Historical override qs (baked-in, not counted): "
+        f"Override-tuned qs (counted toward budget): "
         f"{summary['overrides_historical']['total_questions']}"
     )
     print(f"Passes <=5% bar: {summary['passes_5pct_bar']}")

@@ -23,7 +23,7 @@ That one command walks every stage from `paper/` PDFs to `classified/` section f
 ./pipeline --list-stages
 ```
 
-Optional LLM for MC classification (better than keywords when available):
+Optional LLM for MC and LQ classification (better than keywords when available):
 
 ```bash
 export LLM_API_KEY=...           # or OPENAI_API_KEY / TOGETHER_API_KEY
@@ -32,7 +32,7 @@ export LLM_MODEL=meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
 ./pipeline --from classify-mc --force
 ```
 
-LQ defaults to keyword classification. Set `PAPER2DB_LQ_LLM=1` to use the LLM path instead.
+When no API key is set, both MC and LQ use the keyword classifiers.
 
 ## Layout
 
@@ -41,11 +41,11 @@ LQ defaults to keyword classification. Set `PAPER2DB_LQ_LLM=1` to use the LLM pa
 | `paper/mc/` | Paper 1A PDFs (`2012p1a.pdf`, `ppp1a.pdf`, ...) |
 | `paper/lq/` | Paper 1B PDFs |
 | `paper/ans/` | Marking schemes (`2012ans.pdf`, ...) |
-| `paper/performance/` | Candidate-performance notes (markdown) |
+| `paper/performance/` | Candidate-performance notes (markdown; optional, not a pipeline stage) |
 | `output/<year>/` | MC question PNGs + `combined.pdf` |
 | `output/lq/<year>/` | LQ pages, `qN.png`, `ans/qN.png`, review PDFs |
 | `classified/mc/` | Section folders, CSVs, `answer_keys.json`, section PDFs |
-| `classified/lq/` | Same for long questions + `candidate_performance.json` |
+| `classified/lq/` | Same for long questions (+ optional `candidate_performance.json`) |
 | `scripts/` | Stage implementations (called by `./pipeline`) |
 | `segment` | Low-level single-PDF tool (prefer `./pipeline`) |
 | `.lavish/pipeline-review/` | Step-by-step HTML evidence for captain review |
@@ -62,14 +62,15 @@ LQ defaults to keyword classification. Set `PAPER2DB_LQ_LLM=1` to use the LLM pa
 5. **lq-answers** - marking-scheme answer crops under `ans/`
 6. **keys** - MC keys + correct-% → `classified/mc/answer_keys.json`
 7. **classify-mc** - 27 syllabus sections (LLM if keyed, else keywords)
-8. **classify-lq** - same sections for LQ
+8. **classify-lq** - same sections for LQ (LLM if keyed, else keywords)
 9. **section-pdfs** - per-section `combined.pdf` / `questions.pdf` (+ answer PDFs)
-10. **performance** - LQ candidate-performance JSON
-11. **lavish** - quality audit + HTML reviews under `.lavish/` (pipeline walkthrough, MC banks, LQ banks)
+10. **lavish** - quality audit + HTML reviews under `.lavish/` (pipeline walkthrough, MC banks, LQ banks)
+
+Candidate-performance extraction stays available as `python scripts/extract_lq_performance.py` when needed; it is not part of `./pipeline`.
 
 ## Quality bar
 
-Target: **≤5%** of questions need human manual tuning after a designed run (overrides already in `scripts/overrides_YYYY.json`).
+Target: **≤5%** of questions need human manual tuning, including every entry in `scripts/overrides_YYYY.json`.
 
 ```bash
 ./pipeline --only lavish
@@ -77,13 +78,13 @@ Target: **≤5%** of questions need human manual tuning after a designed run (ov
 python scripts/quality_audit.py --strict
 ```
 
-`classified/quality_audit.json` counts as failures: missing crop, missing classified copy, uncertain flag, tiny crop, incomplete year folder. It does **not** count baked-in overrides, missing LQ answer PNGs when no ans PDF exists, or tall LQ crops.
+`classified/quality_audit.json` counts as failures: missing crop, missing classified copy, uncertain flag, tiny crop, incomplete year folder, and override-tuned questions. It does **not** count missing LQ answer PNGs when no ans PDF exists, or tall LQ crops.
 
 Captain review surface: `.lavish/pipeline-review/index.html` (step-by-step intermediates + finals). Full banks: `.lavish/classified-review/` (MC) and `.lavish/lq-classified-review/` (LQ).
 
 ## Quality checklist (minimal human work)
 
-1. **Anchors** - every blue dot beside the question number with a clear gap (not on options or diagrams). Wrong anchors poison every later step. Use `scripts/overrides_YYYY.json` for hard pages.
+1. **Anchors** - every blue dot beside the question number with a clear gap (not on options or diagrams). Wrong anchors poison every later step. Use `scripts/overrides_YYYY.json` for hard pages (each counts toward the 5% budget).
 2. **Uncertain MC** - skim `classified/mc/uncertain.csv` and spot-check a few section folders.
 3. **LQ crops** - skim `output/lq/<year>/questions.pdf` if a year looks truncated.
 4. Trust the section review PDFs under `classified/*/.../combined.pdf` (or `questions.pdf`) rather than browsing PNG lists.
