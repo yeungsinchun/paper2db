@@ -1,0 +1,995 @@
+{
+  "mc_crops": {
+    "crop_count": 573,
+    "years": 17,
+    "failures": [],
+    "warnings": [],
+    "height_median": 445,
+    "height_max": 1060,
+    "missing_combined_pdf": []
+  },
+  "lq_crops": {
+    "crop_count": 167,
+    "years": 16,
+    "failures": [],
+    "warnings": [
+      {
+        "kind": "very_tall_lq",
+        "year": "2012",
+        "q": "q4",
+        "h": 5208,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2012",
+        "q": "q5",
+        "h": 5079,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2012",
+        "q": "q6",
+        "h": 5186,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2012",
+        "q": "q7",
+        "h": 5204,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2012",
+        "q": "q8",
+        "h": 5131,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2012",
+        "q": "q10",
+        "h": 6260,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2013",
+        "q": "q7",
+        "h": 5220,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2014",
+        "q": "q2",
+        "h": 5146,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2014",
+        "q": "q3",
+        "h": 5216,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2014",
+        "q": "q4",
+        "h": 5089,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2014",
+        "q": "q7",
+        "h": 5246,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2014",
+        "q": "q8",
+        "h": 5179,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2014",
+        "q": "q9",
+        "h": 5196,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2014",
+        "q": "q10",
+        "h": 5052,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2015",
+        "q": "q3",
+        "h": 5304,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2015",
+        "q": "q4",
+        "h": 5183,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2015",
+        "q": "q5",
+        "h": 5186,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2015",
+        "q": "q6",
+        "h": 5187,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2015",
+        "q": "q7",
+        "h": 5185,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2015",
+        "q": "q8",
+        "h": 5172,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2015",
+        "q": "q9",
+        "h": 5206,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2015",
+        "q": "q10",
+        "h": 5067,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2016",
+        "q": "q1",
+        "h": 5102,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2016",
+        "q": "q2",
+        "h": 5182,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2016",
+        "q": "q3",
+        "h": 5065,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2016",
+        "q": "q4",
+        "h": 5171,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2016",
+        "q": "q5",
+        "h": 5285,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2016",
+        "q": "q6",
+        "h": 5180,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2016",
+        "q": "q7",
+        "h": 5176,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2016",
+        "q": "q8",
+        "h": 5196,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2016",
+        "q": "q9",
+        "h": 5065,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2017",
+        "q": "q10",
+        "h": 6174,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2018",
+        "q": "q3",
+        "h": 5171,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2018",
+        "q": "q4",
+        "h": 5101,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2018",
+        "q": "q5",
+        "h": 5153,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2018",
+        "q": "q6",
+        "h": 5116,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2018",
+        "q": "q7",
+        "h": 5076,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2018",
+        "q": "q8",
+        "h": 5214,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2018",
+        "q": "q9",
+        "h": 5140,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2018",
+        "q": "q10",
+        "h": 5062,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2019",
+        "q": "q1",
+        "h": 5032,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2019",
+        "q": "q2",
+        "h": 5159,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2019",
+        "q": "q3",
+        "h": 5204,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2019",
+        "q": "q4",
+        "h": 5177,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2019",
+        "q": "q7",
+        "h": 5184,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2019",
+        "q": "q8",
+        "h": 5310,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2019",
+        "q": "q9",
+        "h": 5136,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2019",
+        "q": "q10",
+        "h": 7694,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2020",
+        "q": "q1",
+        "h": 5015,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2020",
+        "q": "q2",
+        "h": 5249,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2020",
+        "q": "q3",
+        "h": 5197,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2020",
+        "q": "q4",
+        "h": 5085,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2020",
+        "q": "q7",
+        "h": 5179,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2020",
+        "q": "q8",
+        "h": 5178,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2020",
+        "q": "q9",
+        "h": 5178,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2020",
+        "q": "q10",
+        "h": 5055,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2021",
+        "q": "q2",
+        "h": 5153,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2021",
+        "q": "q3",
+        "h": 5159,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2021",
+        "q": "q4",
+        "h": 5158,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2021",
+        "q": "q5",
+        "h": 5282,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2021",
+        "q": "q6",
+        "h": 7718,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2021",
+        "q": "q7",
+        "h": 5161,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2022",
+        "q": "q1",
+        "h": 5012,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2022",
+        "q": "q2",
+        "h": 5211,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2022",
+        "q": "q3",
+        "h": 5025,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2022",
+        "q": "q4",
+        "h": 5249,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2022",
+        "q": "q5",
+        "h": 5058,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2022",
+        "q": "q6",
+        "h": 5267,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2022",
+        "q": "q7",
+        "h": 5190,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2022",
+        "q": "q8",
+        "h": 5170,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2023",
+        "q": "q1",
+        "h": 5047,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2023",
+        "q": "q2",
+        "h": 5193,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2023",
+        "q": "q3",
+        "h": 5173,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2023",
+        "q": "q4",
+        "h": 5188,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2023",
+        "q": "q5",
+        "h": 5154,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2023",
+        "q": "q6",
+        "h": 5183,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2023",
+        "q": "q7",
+        "h": 5099,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2023",
+        "q": "q8",
+        "h": 5283,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2023",
+        "q": "q9",
+        "h": 5029,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2024",
+        "q": "q12",
+        "h": 8133,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2025",
+        "q": "q3",
+        "h": 8858,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2025",
+        "q": "q4",
+        "h": 5026,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2025",
+        "q": "q6",
+        "h": 9079,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2025",
+        "q": "q7",
+        "h": 8957,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2025",
+        "q": "q10",
+        "h": 8740,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2025",
+        "q": "q11",
+        "h": 9241,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2025",
+        "q": "q12",
+        "h": 12701,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2026",
+        "q": "q2",
+        "h": 5074,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2026",
+        "q": "q3",
+        "h": 6135,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2026",
+        "q": "q4",
+        "h": 6170,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2026",
+        "q": "q9",
+        "h": 6205,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2026",
+        "q": "q10",
+        "h": 5995,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2026",
+        "q": "q11",
+        "h": 6328,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "2026",
+        "q": "q12",
+        "h": 7366,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "pp",
+        "q": "q8",
+        "h": 5186,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "pp",
+        "q": "q9",
+        "h": 5199,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "pp",
+        "q": "q11",
+        "h": 5152,
+        "note": "often multi-page with answer lines; not a failure"
+      },
+      {
+        "kind": "very_tall_lq",
+        "year": "pp",
+        "q": "q12",
+        "h": 12886,
+        "note": "often multi-page with answer lines; not a failure"
+      }
+    ],
+    "height_median": 5074,
+    "height_max": 12886,
+    "missing_questions_pdf": []
+  },
+  "mc_classification": {
+    "row_count": 573,
+    "uncertain_count": 0,
+    "missing_crop_count": 0,
+    "missing_classified_count": 0,
+    "book_order_inversion_count": 0,
+    "per_year": {
+      "2012": 36,
+      "2013": 36,
+      "2014": 33,
+      "2015": 33,
+      "2016": 33,
+      "2017": 33,
+      "2018": 33,
+      "2019": 33,
+      "2020": 33,
+      "2021": 33,
+      "2022": 33,
+      "2023": 33,
+      "2024": 33,
+      "2025": 33,
+      "2026": 33,
+      "pp": 36,
+      "sap": 36
+    },
+    "uncertain": [],
+    "missing_crop": [],
+    "missing_classified": [],
+    "book_order_inversions": []
+  },
+  "lq_classification": {
+    "row_count": 167,
+    "missing_crop_count": 0,
+    "missing_classified_count": 0,
+    "missing_answer_png_count": 35,
+    "per_year": {
+      "2012": 11,
+      "2013": 11,
+      "2014": 10,
+      "2015": 10,
+      "2016": 9,
+      "2017": 10,
+      "2018": 10,
+      "2019": 10,
+      "2020": 10,
+      "2021": 9,
+      "2022": 10,
+      "2023": 9,
+      "2024": 12,
+      "2025": 12,
+      "2026": 12,
+      "pp": 12
+    },
+    "missing_crop": [],
+    "missing_classified": [],
+    "missing_answer_png": [
+      {
+        "year": "2013",
+        "q": "8",
+        "answer": ""
+      },
+      {
+        "year": "2013",
+        "q": "9",
+        "answer": ""
+      },
+      {
+        "year": "2013",
+        "q": "11",
+        "answer": ""
+      },
+      {
+        "year": "2015",
+        "q": "1",
+        "answer": ""
+      },
+      {
+        "year": "2015",
+        "q": "8",
+        "answer": ""
+      },
+      {
+        "year": "2017",
+        "q": "3",
+        "answer": ""
+      },
+      {
+        "year": "2017",
+        "q": "4",
+        "answer": ""
+      },
+      {
+        "year": "2017",
+        "q": "6",
+        "answer": ""
+      },
+      {
+        "year": "2017",
+        "q": "8",
+        "answer": ""
+      },
+      {
+        "year": "2021",
+        "q": "4",
+        "answer": ""
+      },
+      {
+        "year": "2021",
+        "q": "5",
+        "answer": ""
+      },
+      {
+        "year": "2026",
+        "q": "1",
+        "answer": ""
+      },
+      {
+        "year": "2026",
+        "q": "2",
+        "answer": ""
+      },
+      {
+        "year": "2026",
+        "q": "3",
+        "answer": ""
+      },
+      {
+        "year": "2026",
+        "q": "4",
+        "answer": ""
+      },
+      {
+        "year": "2026",
+        "q": "5",
+        "answer": ""
+      },
+      {
+        "year": "2026",
+        "q": "6",
+        "answer": ""
+      },
+      {
+        "year": "2026",
+        "q": "7",
+        "answer": ""
+      },
+      {
+        "year": "2026",
+        "q": "8",
+        "answer": ""
+      },
+      {
+        "year": "2026",
+        "q": "9",
+        "answer": ""
+      },
+      {
+        "year": "2026",
+        "q": "10",
+        "answer": ""
+      },
+      {
+        "year": "2026",
+        "q": "11",
+        "answer": ""
+      },
+      {
+        "year": "2026",
+        "q": "12",
+        "answer": ""
+      },
+      {
+        "year": "pp",
+        "q": "1",
+        "answer": ""
+      },
+      {
+        "year": "pp",
+        "q": "2",
+        "answer": ""
+      },
+      {
+        "year": "pp",
+        "q": "3",
+        "answer": ""
+      },
+      {
+        "year": "pp",
+        "q": "4",
+        "answer": ""
+      },
+      {
+        "year": "pp",
+        "q": "5",
+        "answer": ""
+      },
+      {
+        "year": "pp",
+        "q": "6",
+        "answer": ""
+      },
+      {
+        "year": "pp",
+        "q": "7",
+        "answer": ""
+      },
+      {
+        "year": "pp",
+        "q": "8",
+        "answer": ""
+      },
+      {
+        "year": "pp",
+        "q": "9",
+        "answer": ""
+      },
+      {
+        "year": "pp",
+        "q": "10",
+        "answer": ""
+      },
+      {
+        "year": "pp",
+        "q": "11",
+        "answer": ""
+      },
+      {
+        "year": "pp",
+        "q": "12",
+        "answer": ""
+      }
+    ]
+  },
+  "summary": {
+    "failure_definitions": {
+      "counted": [
+        "missing_crop",
+        "missing_classified",
+        "uncertain",
+        "tiny_crop",
+        "few_year_crops"
+      ],
+      "not_counted": [
+        "missing_answer_png",
+        "override_baked_in",
+        "very_tall_lq",
+        "book_order_inversion_warning"
+      ]
+    },
+    "mc": {
+      "questions": 573,
+      "failure_count": 0,
+      "manual_tuning_rate": 0.0,
+      "failures": [],
+      "book_order_inversions": []
+    },
+    "lq": {
+      "questions": 167,
+      "failure_count": 0,
+      "manual_tuning_rate": 0.0,
+      "failures": [],
+      "missing_answer_png_count": 35,
+      "missing_answer_by_year": {
+        "2013": 3,
+        "2015": 2,
+        "2017": 4,
+        "2021": 2,
+        "2026": 12,
+        "pp": 12
+      }
+    },
+    "combined": {
+      "questions": 740,
+      "failure_count": 0,
+      "manual_tuning_rate": 0.0
+    },
+    "overrides_historical": {
+      "total_questions": 72,
+      "by_year": {
+        "2015": 3,
+        "2016": 2,
+        "2018": 1,
+        "2019": 33,
+        "2020": 33
+      }
+    },
+    "passes_5pct_bar": true
+  }
+}

@@ -48,6 +48,10 @@ LQ defaults to keyword classification. Set `PAPER2DB_LQ_LLM=1` to use the LLM pa
 | `classified/lq/` | Same for long questions + `candidate_performance.json` |
 | `scripts/` | Stage implementations (called by `./pipeline`) |
 | `segment` | Low-level single-PDF tool (prefer `./pipeline`) |
+| `.lavish/pipeline-review/` | Step-by-step HTML evidence for captain review |
+| `.lavish/classified-review/` | MC section bank HTML |
+| `.lavish/lq-classified-review/` | LQ section bank HTML |
+| `classified/quality_audit.json` | Measured crop/classification failure rates |
 
 ## Stages
 
@@ -61,7 +65,21 @@ LQ defaults to keyword classification. Set `PAPER2DB_LQ_LLM=1` to use the LLM pa
 8. **classify-lq** - same sections for LQ
 9. **section-pdfs** - per-section `combined.pdf` / `questions.pdf` (+ answer PDFs)
 10. **performance** - LQ candidate-performance JSON
-11. **lavish** - HTML review under `.lavish/lq-classified-review/`
+11. **lavish** - quality audit + HTML reviews under `.lavish/` (pipeline walkthrough, MC banks, LQ banks)
+
+## Quality bar
+
+Target: **≤5%** of questions need human manual tuning after a designed run (overrides already in `scripts/overrides_YYYY.json`).
+
+```bash
+./pipeline --only lavish
+# or:
+python scripts/quality_audit.py --strict
+```
+
+`classified/quality_audit.json` counts as failures: missing crop, missing classified copy, uncertain flag, tiny crop, incomplete year folder. It does **not** count baked-in overrides, missing LQ answer PNGs when no ans PDF exists, or tall LQ crops.
+
+Captain review surface: `.lavish/pipeline-review/index.html` (step-by-step intermediates + finals). Full banks: `.lavish/classified-review/` (MC) and `.lavish/lq-classified-review/` (LQ).
 
 ## Quality checklist (minimal human work)
 
@@ -69,6 +87,7 @@ LQ defaults to keyword classification. Set `PAPER2DB_LQ_LLM=1` to use the LLM pa
 2. **Uncertain MC** - skim `classified/mc/uncertain.csv` and spot-check a few section folders.
 3. **LQ crops** - skim `output/lq/<year>/questions.pdf` if a year looks truncated.
 4. Trust the section review PDFs under `classified/*/.../combined.pdf` (or `questions.pdf`) rather than browsing PNG lists.
+5. Skim `.lavish/pipeline-review/` for the measured rates before accepting a new year.
 
 ## Low-level tools
 

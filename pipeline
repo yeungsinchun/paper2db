@@ -6,7 +6,10 @@ Reads PDFs under paper/{mc,lq,ans,performance}/ and writes:
   output/lq/<year>/       LQ pages, question crops, answer crops
   classified/mc/          MC section folders, CSVs, section PDFs, answer keys
   classified/lq/          LQ section folders, CSVs, section PDFs, performance
-  .lavish/lq-classified-review/   optional HTML review UI
+  .lavish/pipeline-review/        step-by-step HTML (intermediates + finals)
+  .lavish/classified-review/      MC section bank HTML
+  .lavish/lq-classified-review/   LQ section bank HTML
+  classified/quality_audit.json   crop/classification failure rates
 
 Human gates (skipped with --yes, but paths are still printed):
   1. After MC anchors - review each intermediate/anchor.pdf (blue dot beside
@@ -390,7 +393,10 @@ def stage_performance(years: list[str] | None) -> None:
 
 
 def stage_lavish() -> None:
+    run_script("quality_audit.py")
+    run_script("build_mc_lavish_review.py")
     run_script("build_lq_lavish_review.py")
+    run_script("build_pipeline_lavish_review.py")
 
 
 def parse_stage_list(raw: str | None) -> list[str] | None:
@@ -519,7 +525,11 @@ def main() -> None:
     print("Review PDFs:")
     print("  MC sections: classified/mc/<book>/<section>/combined.pdf")
     print("  LQ sections: classified/lq/<book>/<section>/questions.pdf")
-    print("  LQ lavish:   .lavish/lq-classified-review/ (if lavish stage ran)")
+    print("Lavish HTML (if lavish stage ran):")
+    print("  Pipeline walkthrough: .lavish/pipeline-review/")
+    print("  MC banks:             .lavish/classified-review/")
+    print("  LQ banks:             .lavish/lq-classified-review/")
+    print("  Quality audit JSON:   classified/quality_audit.json")
 
 
 if __name__ == "__main__":
