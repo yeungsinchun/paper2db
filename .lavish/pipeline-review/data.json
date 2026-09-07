@@ -463,23 +463,23 @@
     "lq_crops": [
       {
         "label": "LQ 2012 Q1",
-        "path": "img/lq-2012-q1.png",
-        "note": "Whole exam page(s) for the question (page_from..page_to); no within-page crop."
+        "path": "img/lq-2012-q1-fit.png",
+        "note": "Whole exam page stack (pages 0..1 (2-page stack)); no within-page crop. Scaled to show every page."
       },
       {
-        "label": "LQ 2012 Q2",
-        "path": "img/lq-2012-q2.png",
-        "note": "Whole exam page(s) for the question (page_from..page_to); no within-page crop."
+        "label": "LQ 2012 Q4",
+        "path": "img/lq-2012-q4-fit.png",
+        "note": "Whole exam page stack (pages 4..5 (2-page stack)); no within-page crop. Scaled to show every page."
       },
       {
-        "label": "LQ 2024 Q1",
-        "path": "img/lq-2024-q1.png",
-        "note": "Whole exam page(s) for the question (page_from..page_to); no within-page crop."
+        "label": "LQ 2024 Q10",
+        "path": "img/lq-2024-q10-fit.png",
+        "note": "Whole exam page stack (pages 10..11 (2-page stack)); no within-page crop. Scaled to show every page."
       },
       {
-        "label": "LQ 2025 Q1",
-        "path": "img/lq-2025-q1.png",
-        "note": "Whole exam page(s) for the question (page_from..page_to); no within-page crop."
+        "label": "LQ 2025 Q3",
+        "path": "img/lq-2025-q3-fit.png",
+        "note": "Whole exam page stack (pages 2..3 (2-page stack)); no within-page crop. Scaled to show every page."
       }
     ],
     "mc_classified": [
@@ -502,13 +502,13 @@
     "lq_classified": [
       {
         "label": "Bank: 03_Change_of_State / 2012-q1.png",
-        "path": "img/classified-lq-2012-q1.png",
-        "note": "classified/lq/01_Heat_and_Gases/03_Change_of_State/2012-q1.png"
+        "path": "img/classified-lq-2012-q1-fit.png",
+        "note": "classified/lq/01_Heat_and_Gases/03_Change_of_State/2012-q1.png (whole-page stack fit preview)"
       },
       {
         "label": "Bank: 09_Momentum / 2012-q4.png",
-        "path": "img/classified-lq-2012-q4.png",
-        "note": "classified/lq/02_Force_and_Motion/09_Momentum/2012-q4.png"
+        "path": "img/classified-lq-2012-q4-fit.png",
+        "note": "classified/lq/02_Force_and_Motion/09_Momentum/2012-q4.png (whole-page stack fit preview)"
       }
     ]
   },

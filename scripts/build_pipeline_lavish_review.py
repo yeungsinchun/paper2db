@@ -8,11 +8,16 @@ import subprocess
 import sys
 from pathlib import Path
 
+from PIL import Image
+
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / "scripts"
 OUT = ROOT / ".lavish" / "pipeline-review"
 IMG = OUT / "img"
 AUDIT_JSON = ROOT / "classified" / "quality_audit.json"
+
+# Tall multi-page stacks exceed browser decode limits; raise for preview work.
+Image.MAX_IMAGE_PIXELS = 250_000_000
 
 
 def python_executable() -> str:
@@ -46,6 +51,28 @@ def existing_sample(dest_name: str) -> str | None:
 
 def resolve_sample(src: Path, dest_name: str) -> str | None:
     return copy_sample(src, dest_name) or existing_sample(dest_name)
+
+
+def write_lq_fit_preview(src: Path, dest_name: str, *, max_width: int = 720) -> str | None:
+    """Scale a whole-page LQ stack so the full page_from..page_to stack is visible.
+
+    Scroll-clipped full-res cards can look like within-page crops in screenshots;
+    these fit previews prove the artifact is whole exam page(s).
+    """
+    if not src.is_file():
+        return existing_sample(dest_name)
+    dest = IMG / dest_name
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    with Image.open(src) as im:
+        rgb = im.convert("RGB")
+        if rgb.width > max_width:
+            ratio = max_width / rgb.width
+            rgb = rgb.resize(
+                (max_width, max(1, int(rgb.height * ratio))),
+                Image.Resampling.LANCZOS,
+            )
+        rgb.save(dest, format="PNG", optimize=True)
+    return f"img/{dest_name}"
 
 
 def collect_assets() -> dict:
@@ -87,18 +114,26 @@ def collect_assets() -> dict:
                 }
             )
 
-    for year, question in (("2012", 1), ("2012", 2), ("2024", 1), ("2025", 1)):
-        dest_name = f"lq-{year}-q{question}.png"
-        rel = resolve_sample(
-            ROOT / "output" / "lq" / year / f"q{question}.png",
-            dest_name,
-        )
+    # Prefer multi-page stacks so Step C screenshots cannot be mistaken for
+    # within-page crops. Fit previews show the entire page_from..page_to stack.
+    for year, question, pages_note in (
+        ("2012", 1, "pages 0..1 (2-page stack)"),
+        ("2012", 4, "pages 4..5 (2-page stack)"),
+        ("2024", 10, "pages 10..11 (2-page stack)"),
+        ("2025", 3, "pages 2..3 (2-page stack)"),
+    ):
+        src = ROOT / "output" / "lq" / year / f"q{question}.png"
+        dest_name = f"lq-{year}-q{question}-fit.png"
+        rel = write_lq_fit_preview(src, dest_name)
         if rel:
             assets["lq_crops"].append(
                 {
                     "label": f"LQ {year} Q{question}",
                     "path": rel,
-                    "note": "Whole exam page(s) for the question (page_from..page_to); no within-page crop.",
+                    "note": (
+                        f"Whole exam page stack ({pages_note}); "
+                        "no within-page crop. Scaled to show every page."
+                    ),
                 }
             )
 
@@ -139,32 +174,42 @@ def collect_assets() -> dict:
             )
 
     lq_samples = [
-        ROOT
-        / "classified"
-        / "lq"
-        / "01_Heat_and_Gases"
-        / "03_Change_of_State"
-        / "2012-q1.png",
-        ROOT
-        / "classified"
-        / "lq"
-        / "02_Force_and_Motion"
-        / "09_Momentum"
-        / "2012-q4.png",
+        (
+            ROOT
+            / "classified"
+            / "lq"
+            / "01_Heat_and_Gases"
+            / "03_Change_of_State"
+            / "2012-q1.png",
+            "2012-q1",
+        ),
+        (
+            ROOT
+            / "classified"
+            / "lq"
+            / "02_Force_and_Motion"
+            / "09_Momentum"
+            / "2012-q4.png",
+            "2012-q4",
+        ),
     ]
-    for src in lq_samples:
+    for src, stem in lq_samples:
         if not src.is_file():
             candidates = list(src.parent.glob("*-q*.png"))
             candidates = [c for c in candidates if "-ans" not in c.name]
             src = candidates[0] if candidates else src
-        dest_name = f"classified-lq-{src.name}"
-        rel = resolve_sample(src, dest_name)
+            stem = src.stem if src.is_file() else stem
+        dest_name = f"classified-lq-{stem}-fit.png"
+        rel = write_lq_fit_preview(src, dest_name)
         if rel:
             assets["lq_classified"].append(
                 {
                     "label": f"Bank: {src.parent.name} / {src.name}",
                     "path": rel,
-                    "note": str(src.relative_to(ROOT)) if src.is_file() else dest_name,
+                    "note": (
+                        f"{src.relative_to(ROOT) if src.is_file() else dest_name} "
+                        "(whole-page stack fit preview)"
+                    ),
                 }
             )
 
@@ -323,8 +368,10 @@ def write_html(audit: dict, assets: dict) -> None:
       display: grid; grid-template-columns: 1fr; gap: 18px;
     }}
     .gallery-lq .shot-body {{
-      max-height: min(70vh, 900px); overflow: auto; background: #fff;
+      /* Fit previews already show the full page stack; do not scroll-clip. */
+      background: #fff;
       border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 8px 0;
     }}
     .gallery-lq .shot img {{ width: min(100%, 720px); margin: 0 auto; }}
     .shot-cap {{ padding: 10px 12px; display: grid; gap: 4px; }}
@@ -471,7 +518,7 @@ python scripts/quality_audit.py --strict</div>
 
     <section class="block" id="lq-crops">
       <h2>Step C - LQ whole pages (final per-question)</h2>
-      <p class="lede">Long questions are whole exam page(s) only (<code>page_from</code>..<code>page_to</code>) - no within-page crop. Scroll inside each card. Review PDF: <code>output/lq/&lt;year&gt;/questions.pdf</code>.</p>
+      <p class="lede">Long questions are whole exam page(s) only (<code>page_from</code>..<code>page_to</code>) - no within-page crop. Samples below are multi-page stacks scaled so every page is visible (not scroll-clipped tops). Review PDF: <code>output/lq/&lt;year&gt;/questions.pdf</code>.</p>
       {gallery(assets['lq_crops'], variant="lq")}
     </section>
 

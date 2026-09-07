@@ -81,8 +81,10 @@
       display: grid; grid-template-columns: 1fr; gap: 18px;
     }
     .gallery-lq .shot-body {
-      max-height: min(70vh, 900px); overflow: auto; background: #fff;
+      /* Fit previews already show the full page stack; do not scroll-clip. */
+      background: #fff;
       border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 8px 0;
     }
     .gallery-lq .shot img { width: min(100%, 720px); margin: 0 auto; }
     .shot-cap { padding: 10px 12px; display: grid; gap: 4px; }
@@ -285,34 +287,34 @@ python scripts/quality_audit.py --strict</div>
 
     <section class="block" id="lq-crops">
       <h2>Step C - LQ whole pages (final per-question)</h2>
-      <p class="lede">Long questions are whole exam page(s) only (<code>page_from</code>..<code>page_to</code>) - no within-page crop. Scroll inside each card. Review PDF: <code>output/lq/&lt;year&gt;/questions.pdf</code>.</p>
+      <p class="lede">Long questions are whole exam page(s) only (<code>page_from</code>..<code>page_to</code>) - no within-page crop. Samples below are multi-page stacks scaled so every page is visible (not scroll-clipped tops). Review PDF: <code>output/lq/&lt;year&gt;/questions.pdf</code>.</p>
       <div class="gallery gallery-lq">
 <article class="shot">
-  <div class="shot-body"><img src="img/lq-2012-q1.png" alt="LQ 2012 Q1" loading="lazy" /></div>
+  <div class="shot-body"><img src="img/lq-2012-q1-fit.png" alt="LQ 2012 Q1" loading="lazy" /></div>
   <div class="shot-cap">
     <strong>LQ 2012 Q1</strong>
-    <span>Whole exam page(s) for the question (page_from..page_to); no within-page crop.</span>
+    <span>Whole exam page stack (pages 0..1 (2-page stack)); no within-page crop. Scaled to show every page.</span>
   </div>
 </article>
 <article class="shot">
-  <div class="shot-body"><img src="img/lq-2012-q2.png" alt="LQ 2012 Q2" loading="lazy" /></div>
+  <div class="shot-body"><img src="img/lq-2012-q4-fit.png" alt="LQ 2012 Q4" loading="lazy" /></div>
   <div class="shot-cap">
-    <strong>LQ 2012 Q2</strong>
-    <span>Whole exam page(s) for the question (page_from..page_to); no within-page crop.</span>
+    <strong>LQ 2012 Q4</strong>
+    <span>Whole exam page stack (pages 4..5 (2-page stack)); no within-page crop. Scaled to show every page.</span>
   </div>
 </article>
 <article class="shot">
-  <div class="shot-body"><img src="img/lq-2024-q1.png" alt="LQ 2024 Q1" loading="lazy" /></div>
+  <div class="shot-body"><img src="img/lq-2024-q10-fit.png" alt="LQ 2024 Q10" loading="lazy" /></div>
   <div class="shot-cap">
-    <strong>LQ 2024 Q1</strong>
-    <span>Whole exam page(s) for the question (page_from..page_to); no within-page crop.</span>
+    <strong>LQ 2024 Q10</strong>
+    <span>Whole exam page stack (pages 10..11 (2-page stack)); no within-page crop. Scaled to show every page.</span>
   </div>
 </article>
 <article class="shot">
-  <div class="shot-body"><img src="img/lq-2025-q1.png" alt="LQ 2025 Q1" loading="lazy" /></div>
+  <div class="shot-body"><img src="img/lq-2025-q3-fit.png" alt="LQ 2025 Q3" loading="lazy" /></div>
   <div class="shot-cap">
-    <strong>LQ 2025 Q1</strong>
-    <span>Whole exam page(s) for the question (page_from..page_to); no within-page crop.</span>
+    <strong>LQ 2025 Q3</strong>
+    <span>Whole exam page stack (pages 2..3 (2-page stack)); no within-page crop. Scaled to show every page.</span>
   </div>
 </article></div>
     </section>
@@ -346,17 +348,17 @@ python scripts/quality_audit.py --strict</div>
       <h3 style="margin:18px 0 10px;color:#d4a574;font-size:1rem">LQ samples</h3>
       <div class="gallery gallery-lq">
 <article class="shot">
-  <div class="shot-body"><img src="img/classified-lq-2012-q1.png" alt="Bank: 03_Change_of_State / 2012-q1.png" loading="lazy" /></div>
+  <div class="shot-body"><img src="img/classified-lq-2012-q1-fit.png" alt="Bank: 03_Change_of_State / 2012-q1.png" loading="lazy" /></div>
   <div class="shot-cap">
     <strong>Bank: 03_Change_of_State / 2012-q1.png</strong>
-    <span>classified/lq/01_Heat_and_Gases/03_Change_of_State/2012-q1.png</span>
+    <span>classified/lq/01_Heat_and_Gases/03_Change_of_State/2012-q1.png (whole-page stack fit preview)</span>
   </div>
 </article>
 <article class="shot">
-  <div class="shot-body"><img src="img/classified-lq-2012-q4.png" alt="Bank: 09_Momentum / 2012-q4.png" loading="lazy" /></div>
+  <div class="shot-body"><img src="img/classified-lq-2012-q4-fit.png" alt="Bank: 09_Momentum / 2012-q4.png" loading="lazy" /></div>
   <div class="shot-cap">
     <strong>Bank: 09_Momentum / 2012-q4.png</strong>
-    <span>classified/lq/02_Force_and_Motion/09_Momentum/2012-q4.png</span>
+    <span>classified/lq/02_Force_and_Motion/09_Momentum/2012-q4.png (whole-page stack fit preview)</span>
   </div>
 </article></div>
     </section>
