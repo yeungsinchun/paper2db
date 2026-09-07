@@ -163,8 +163,10 @@ class TestAnswerKeyDefaults(unittest.TestCase):
         sys.path.insert(0, str(ROOT / "scripts"))
         import combine_section_pdfs as csp
 
+        with mock.patch.object(sys, "argv", ["combine_section_pdfs.py"]):
+            args = csp.parse_args()
         self.assertEqual(
-            csp.DEFAULT_KEYS.resolve(),
+            args.keys.resolve(),
             (ROOT / "classified" / "mc" / "answer_keys.json").resolve(),
         )
 

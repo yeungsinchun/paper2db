@@ -44,7 +44,17 @@ class TestQualityAudit(unittest.TestCase):
         summary = report["summary"]
         overrides = summary["overrides_historical"]["total_questions"]
         self.assertGreaterEqual(overrides, 1)
+        override_failures = [
+            item
+            for item in summary["mc"]["failures"]
+            if item.get("kind") == "override_tuned"
+        ]
+        self.assertEqual(len(override_failures), overrides)
         self.assertGreaterEqual(summary["mc"]["failure_count"], overrides)
+        expected_mc_rate = summary["mc"]["failure_count"] / summary["mc"]["questions"]
+        self.assertAlmostEqual(
+            summary["mc"]["manual_tuning_rate"], round(expected_mc_rate, 4)
+        )
         self.assertIn("override_tuned", summary["failure_definitions"]["counted"])
         self.assertNotIn(
             "override_baked_in", summary["failure_definitions"]["not_counted"]
@@ -52,8 +62,9 @@ class TestQualityAudit(unittest.TestCase):
         self.assertNotIn(
             "override_tuned", summary["failure_definitions"]["not_counted"]
         )
-        # Current repo has 72 MC overrides (~12.6%), so the bar fails honestly.
-        self.assertFalse(summary["passes_5pct_bar"])
+        override_rate = overrides / summary["mc"]["questions"]
+        if override_rate > 0.05:
+            self.assertFalse(summary["passes_5pct_bar"])
         self.assertGreater(summary["mc"]["questions"], 100)
         self.assertGreater(summary["lq"]["questions"], 50)
 
