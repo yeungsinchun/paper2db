@@ -233,17 +233,16 @@ def write_html(audit: dict, assets: dict) -> None:
     status_text = "PASS (<=5% manual tuning)" if passes else "FAIL (above 5%)"
 
     html = f"""<!DOCTYPE html>
-<html lang="en" data-theme="luxury">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>paper2db pipeline review</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/daisyui.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/themes.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.2.4/dist/index.global.js"></script>
   <style>
     *, *::before, *::after {{ box-sizing: border-box; }}
-    :where(.grid, .flex) > * {{ min-width: 0; }}
+    :where(.rate-grid, .two-col, .gallery, .review-hero) > * {{ min-width: 0; }}
+    p, h1, h2, h3, li, td, th, .shot-cap span {{ overflow-wrap: anywhere; }}
+    img, svg {{ max-width: 100%; height: auto; }}
     body {{
       margin: 0;
       min-height: 100vh;
@@ -255,34 +254,35 @@ def write_html(audit: dict, assets: dict) -> None:
       font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
     }}
     .wrap {{ max-width: 1120px; margin: 0 auto; padding: 28px 18px 80px; }}
-    .hero {{
+    .review-hero {{
       display: grid; gap: 14px; margin-bottom: 28px;
       padding: 22px 22px 20px; border-radius: 18px;
       background: linear-gradient(160deg, rgba(29,26,36,0.96), rgba(20,18,26,0.92));
       border: 1px solid rgba(255,255,255,0.08);
     }}
-    .hero h1 {{
+    .review-hero h1 {{
       margin: 0; font-family: "Iowan Old Style", Palatino, Georgia, serif;
       font-size: clamp(1.8rem, 3vw, 2.6rem); letter-spacing: -0.02em;
+      line-height: 1.15;
     }}
-    .hero p {{ margin: 0; color: #b7acc6; line-height: 1.5; max-width: 62ch; }}
-    .status {{
-      display: inline-flex; align-items: center; gap: 8px;
+    .review-hero p {{ margin: 0; color: #b7acc6; line-height: 1.5; max-width: 62ch; }}
+    .verdict-pill {{
+      display: inline-flex; align-items: center; gap: 8px; width: fit-content;
       padding: 8px 12px; border-radius: 999px; font-weight: 700; font-size: 0.9rem;
     }}
-    .status.ok {{ background: rgba(125,207,154,0.16); color: #9ee0b4; border: 1px solid rgba(125,207,154,0.35); }}
-    .status.bad {{ background: rgba(232,139,139,0.16); color: #f0b0b0; border: 1px solid rgba(232,139,139,0.35); }}
-    .stats {{
+    .verdict-pill.ok {{ background: rgba(125,207,154,0.16); color: #9ee0b4; border: 1px solid rgba(125,207,154,0.35); }}
+    .verdict-pill.bad {{ background: rgba(232,139,139,0.16); color: #f0b0b0; border: 1px solid rgba(232,139,139,0.35); }}
+    .rate-grid {{
       display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
     }}
-    @media (max-width: 800px) {{ .stats {{ grid-template-columns: 1fr; }} }}
-    .stat {{
+    @media (max-width: 800px) {{ .rate-grid {{ grid-template-columns: 1fr; }} }}
+    .rate-card {{
       background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
       border-radius: 14px; padding: 14px 16px;
     }}
-    .stat .k {{ color: #a89bb8; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }}
-    .stat .v {{ font-size: 1.6rem; font-weight: 800; margin-top: 4px; font-family: ui-monospace, Menlo, monospace; }}
-    .stat .s {{ color: #a89bb8; font-size: 0.85rem; margin-top: 4px; }}
+    .rate-card .k {{ color: #a89bb8; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }}
+    .rate-card .v {{ font-size: 1.6rem; font-weight: 800; margin-top: 4px; font-family: ui-monospace, Menlo, monospace; }}
+    .rate-card .s {{ color: #a89bb8; font-size: 0.85rem; margin-top: 4px; }}
     section.block {{
       margin: 28px 0; padding: 20px; border-radius: 18px;
       background: rgba(29,26,36,0.88); border: 1px solid rgba(255,255,255,0.08);
@@ -314,10 +314,10 @@ def write_html(audit: dict, assets: dict) -> None:
     .shot-cap {{ padding: 10px 12px; display: grid; gap: 4px; }}
     .shot-cap strong {{ font-size: 0.92rem; }}
     .shot-cap span {{ color: #a89bb8; font-size: 0.8rem; overflow-wrap: anywhere; }}
-    .two {{
+    .two-col {{
       display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
     }}
-    @media (max-width: 800px) {{ .two {{ grid-template-columns: 1fr; }} }}
+    @media (max-width: 800px) {{ .two-col {{ grid-template-columns: 1fr; }} }}
     .listbox {{
       background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
       border-radius: 12px; padding: 12px 14px;
@@ -332,32 +332,37 @@ def write_html(audit: dict, assets: dict) -> None:
     .cmd {{
       background: #0b0910; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
       padding: 12px 14px; font-family: ui-monospace, Menlo, monospace; font-size: 0.85rem;
-      color: #cfe8e4; overflow-x: auto;
+      color: #cfe8e4; overflow-x: auto; white-space: pre-wrap;
+    }}
+    .verdict-btn {{
+      margin-top: 12px; border: 1px solid rgba(212,165,116,0.45);
+      background: rgba(212,165,116,0.22); color: #f0d2ad;
+      border-radius: 10px; padding: 8px 14px; cursor: pointer; font: inherit;
     }}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header class="hero">
-      <div class="status {status_class}">{status_text}</div>
+    <header class="review-hero">
+      <div class="verdict-pill {status_class}">{status_text}</div>
       <h1>paper2db pipeline evidence</h1>
       <p>
         One command (<code>./pipeline</code>) turns HKDSE Physics PDFs into classified empty
         question crops for MC and long questions. This page walks the stages with intermediate
         artifacts, final banks, and the measured manual-tuning rate.
       </p>
-      <div class="stats">
-        <div class="stat">
+      <div class="rate-grid">
+        <div class="rate-card">
           <div class="k">MC manual tuning</div>
           <div class="v">{pct(mc['manual_tuning_rate'])}</div>
           <div class="s">{mc['failure_count']} / {mc['questions']} questions</div>
         </div>
-        <div class="stat">
+        <div class="rate-card">
           <div class="k">LQ manual tuning</div>
           <div class="v">{pct(lq['manual_tuning_rate'])}</div>
           <div class="s">{lq['failure_count']} / {lq['questions']} questions</div>
         </div>
-        <div class="stat">
+        <div class="rate-card">
           <div class="k">Combined</div>
           <div class="v">{pct(combined['manual_tuning_rate'])}</div>
           <div class="s">{combined['failure_count']} / {combined['questions']} questions</div>
@@ -396,7 +401,7 @@ def write_html(audit: dict, assets: dict) -> None:
           <text x="490" y="150" text-anchor="middle" fill="#a89bb8" font-size="12">Human gates: review anchor.pdf, then uncertain.csv (usually empty)</text>
         </svg>
       </div>
-      <div class="overflow-x-auto">
+      <div style="overflow-x:auto">
         <table class="stages">
           <thead><tr><th>Step</th><th>Stage</th><th>Output</th></tr></thead>
           <tbody>{stage_rows}</tbody>
@@ -412,7 +417,7 @@ python scripts/quality_audit.py --strict</div>
     <section class="block" id="quality">
       <h2>What counts as a failure</h2>
       <p class="lede">These events count toward the &lt;=5% manual-tuning budget, including every question listed in <code>scripts/overrides_YYYY.json</code>.</p>
-      <div class="two">
+      <div class="two-col">
         <div class="listbox">
           <h3>Counted</h3>
           <ul>{counted}</ul>
@@ -428,7 +433,7 @@ python scripts/quality_audit.py --strict</div>
           </p>
         </div>
       </div>
-      <div class="overflow-x-auto" style="margin-top:16px">
+      <div style="overflow-x:auto;margin-top:16px">
         <table class="stages">
           <thead><tr><th>Override year</th><th>Questions tuned (counted)</th></tr></thead>
           <tbody>{override_rows}</tbody>
@@ -479,7 +484,7 @@ python scripts/quality_audit.py --strict</div>
           <span class="muted" style="font-size:0.8rem">Note</span>
           <input name="note" type="text" placeholder="optional note" style="padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.12);background:#120f18;color:#f3eef8" />
         </label>
-        <button type="submit" class="btn btn-primary" style="margin-top:12px">Queue verdict</button>
+        <button type="submit" class="verdict-btn">Queue verdict</button>
       </form>
     </section>
   </div>
