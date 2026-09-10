@@ -162,6 +162,32 @@ class TestSection25Heading(unittest.TestCase):
             finally:
                 document.close()
 
+    def test_bare_qn_label_uses_year_parent_directory(self) -> None:
+        png_pdf = load_module("png_pdf", SCRIPTS / "png_pdf.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            mc_dir = Path(tmp) / "2012"
+            ans_dir = Path(tmp) / "lq" / "2012" / "ans"
+            pp_dir = Path(tmp) / "pp"
+            mc_dir.mkdir()
+            ans_dir.mkdir(parents=True)
+            pp_dir.mkdir()
+            mc_png = mc_dir / "q1.png"
+            ans_png = ans_dir / "q1.png"
+            pp_png = pp_dir / "q3.png"
+            _write_png(mc_png, (400, 180))
+            _write_png(ans_png, (400, 180))
+            _write_png(pp_png, (400, 180))
+            self.assertEqual(png_pdf.png_item_label(mc_png), "2012 Q1")
+            self.assertEqual(png_pdf.png_item_label(ans_png), "2012 Q1")
+            self.assertEqual(png_pdf.png_item_label(pp_png), "pp Q3")
+            dest = png_pdf.combine_pngs_to_pdf(mc_dir, overwrite=True)
+            document = fitz.open(dest)
+            try:
+                self.assertIn("2012 Q1", document[0].get_text())
+                self.assertNotIn("Q1\n", document[0].get_text().replace("2012 Q1", ""))
+            finally:
+                document.close()
+
     def test_question_page_carries_year_and_question_number(self) -> None:
         png_pdf = load_module("png_pdf", SCRIPTS / "png_pdf.py")
         section = load_module(

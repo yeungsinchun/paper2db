@@ -217,7 +217,7 @@ def main() -> None:
     print(f"\nDone: {total_pdfs} section pairs, {total_pages} question pages")
     if missing_examples:
         print(
-            "Examples without correct % (placed last):",
+            "Examples without correct %:",
             ", ".join(missing_examples),
         )
 

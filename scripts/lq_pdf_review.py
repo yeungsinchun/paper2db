@@ -68,7 +68,7 @@ def write_year_review_pdfs(year: str) -> None:
         for item in questions:
             qn = int(item["q"])
             page_from = int(item["page_from"])
-            if qn not in first_q_page:
+            if page_from not in first_q_page:
                 first_q_page[page_from] = qn
         try:
             for pno in range(len(src)):

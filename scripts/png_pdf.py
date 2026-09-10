@@ -13,6 +13,7 @@ A4_WIDTH = 595.0
 A4_HEIGHT = 842.0
 A4_MARGIN = 36.0
 YEAR_Q_PNG = re.compile(r"^(?P<year>\d{4}|pp|sap)[_-]q(?P<q>\d+)$", re.I)
+YEAR_DIR = re.compile(r"^(?P<year>\d{4}|pp|sap)$", re.I)
 BARE_Q_PNG = re.compile(r"^q(?P<q>\d+)$", re.I)
 LABEL_BAND = 16.0
 
@@ -25,7 +26,12 @@ def png_item_label(path: Path) -> str | None:
         return f"{found.group('year')} Q{int(found.group('q'))}"
     found = BARE_Q_PNG.fullmatch(stem)
     if found:
-        return f"Q{int(found.group('q'))}"
+        q = int(found.group("q"))
+        for parent in path.parents:
+            year = YEAR_DIR.fullmatch(parent.name)
+            if year:
+                return f"{year.group('year')} Q{q}"
+        return f"Q{q}"
     return None
 
 
