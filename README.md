@@ -42,8 +42,8 @@ When no API key is set, both MC and LQ use the keyword classifiers.
 | `paper/lq/` | Paper 1B PDFs |
 | `paper/ans/` | Marking schemes (`2012ans.pdf`, ...) |
 | `paper/performance/` | Candidate-performance notes (markdown; optional, not a pipeline stage) |
-| `output/<year>/` | MC question PNGs + `combined.pdf` |
-| `output/lq/<year>/` | LQ pages, `qN.png`, `ans/qN.png`, review PDFs |
+| `output/<year>/` | MC question PNGs + A4 `combined.pdf` |
+| `output/lq/<year>/` | LQ pages, `qN.png`, `ans/qN.png`, A4 review PDFs |
 | `classified/mc/` | Section folders, CSVs, `answer_keys.json`, section PDFs |
 | `classified/lq/` | Same for long questions (+ optional `candidate_performance.json`) |
 | `scripts/` | Stage implementations (called by `./pipeline`) |
@@ -56,14 +56,14 @@ When no API key is set, both MC and LQ use the keyword classifiers.
 ## Stages
 
 1. **mc-anchors** - blue dots on each MC paper; **you must review** `output/<year>-intermediate/anchor.pdf`
-2. **mc-split** - crop clean `qN.png` into `output/<year>/`
+2. **mc-split** - crop clean `qN.png` into `output/<year>/` + A4 `combined.pdf`
 3. **lq-pages** - export LQ pages + `starts.json`
-4. **lq-crops** - whole exam page stack per question (`page_from`..`page_to`) + `questions.pdf` (no within-page crop)
+4. **lq-crops** - whole exam page stack per question (`page_from`..`page_to`); A4 `questions.pdf` from the source paper (no within-page crop)
 5. **lq-answers** - marking-scheme answer crops under `ans/`
 6. **keys** - MC keys + correct-% → `classified/mc/answer_keys.json`
 7. **classify-mc** - 27 syllabus sections (LLM if keyed, else keywords)
 8. **classify-lq** - same sections for LQ (LLM if keyed, else keywords)
-9. **section-pdfs** - per-section `combined.pdf` / `questions.pdf` (+ answer PDFs)
+9. **section-pdfs** - per-section A4 `combined.pdf` / `questions.pdf` (+ answer PDFs)
 10. **lavish** - quality audit + HTML reviews under `.lavish/` (pipeline walkthrough, MC banks, LQ banks)
 
 Candidate-performance extraction stays available as `python scripts/extract_lq_performance.py` when needed; it is not part of `./pipeline`.
@@ -87,7 +87,7 @@ Captain review surface: `.lavish/pipeline-review/index.html` (step-by-step inter
 1. **Anchors** - every blue dot beside the question number with a clear gap (not on options or diagrams). Wrong anchors poison every later step. Use `scripts/overrides_YYYY.json` for hard pages (each counts toward the 5% budget).
 2. **Uncertain MC** - skim `classified/mc/uncertain.csv` and spot-check a few section folders.
 3. **LQ pages** - skim `output/lq/<year>/questions.pdf` if a question's page range looks wrong (`starts.json`).
-4. Trust the section review PDFs under `classified/*/.../combined.pdf` (or `questions.pdf`) rather than browsing PNG lists.
+4. Trust the section review PDFs under `classified/*/.../combined.pdf` (or `questions.pdf`) rather than browsing PNG lists. Those PDFs are portrait A4 with year and question labels.
 5. Skim `.lavish/pipeline-review/` for the measured rates before accepting a new year.
 
 ## Low-level tools

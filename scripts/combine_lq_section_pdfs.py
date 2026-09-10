@@ -2,8 +2,8 @@
 """Build per-section LQ review PDFs under classified/lq/.
 
 For each syllabus section that has at least one primary LQ:
-  - questions.pdf  - question crops (year order)
-  - answers.pdf    - marking-scheme answer crops (same order; skips missing)
+  - questions.pdf  - whole source Paper 1B pages (year then Q; A4)
+  - answers.pdf    - marking-scheme answer crops packed on A4 (same order; skips missing)
   - performance.pdf - candidate-performance notes as text pages
 
 Skips empty sections. Overwrites existing PDFs by default.
@@ -82,7 +82,7 @@ def resolve_answer_png(row: dict) -> Path | None:
 
 
 def write_image_pdf(paths: list[Path], dest: Path, *, title: str | None = None) -> int:
-    """A4 pages with images stacked in order. Optional title page if title set."""
+    """Stack images on portrait A4. Optional chapter heading on the first page."""
     if not paths:
         return 0
     doc = fitz.open()

@@ -1,4 +1,4 @@
-"""Combine generated page/question PNGs into one review PDF."""
+"""Combine generated page/question PNGs into one portrait-A4 review PDF."""
 from __future__ import annotations
 
 import re
@@ -19,7 +19,11 @@ LABEL_BAND = 16.0
 
 
 def png_item_label(path: Path) -> str | None:
-    """Year and question from a crop filename: 2012_q36.png -> 2012 Q36."""
+    """Year and question from a crop path: 2012_q36.png -> 2012 Q36.
+
+    Bare qN.png takes the year from an ancestor directory named {year}|pp|sap
+    (output/lq/2013/q2.png -> 2013 Q2; output/lq/2012/ans/q1.png -> 2012 Q1).
+    """
     stem = path.stem
     found = YEAR_Q_PNG.fullmatch(stem)
     if found:
@@ -118,7 +122,10 @@ def place_pngs_on_a4(
     *,
     title: str | None = None,
 ) -> None:
-    """Place PNGs one after another on portrait A4 pages, after an optional title."""
+    """Place PNGs one after another on portrait A4 pages.
+
+    Optional chapter heading goes on the first page; crops flow immediately under it.
+    """
     flow = A4Flow(document, title=title)
     for path in paths:
         flow.add(path)
@@ -200,7 +207,7 @@ def combine_pngs_to_pdf(
     *,
     overwrite: bool = False,
 ) -> Path | None:
-    """Write a review PDF from PNGs. Skip if that PDF already exists unless overwrite."""
+    """Write a portrait-A4 review PDF from PNGs. Skip if that PDF already exists unless overwrite."""
     paths = collect_review_pngs(directory)
     if not paths:
         return None
