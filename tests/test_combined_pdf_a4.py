@@ -130,6 +130,45 @@ class TestSection25Heading(unittest.TestCase):
             finally:
                 document.close()
 
+    def test_question_page_carries_year_and_question_number(self) -> None:
+        png_pdf = load_module("png_pdf", SCRIPTS / "png_pdf.py")
+        section = load_module(
+            "combine_section_pdfs", SCRIPTS / "combine_section_pdfs.py"
+        )
+        lq = load_module(
+            "combine_lq_section_pdfs", SCRIPTS / "combine_lq_section_pdfs.py"
+        )
+        self.assertEqual(png_pdf.png_item_label(Path("2012_q36.png")), "2012 Q36")
+        self.assertEqual(png_pdf.png_item_label(Path("2026-q12.png")), "2026 Q12")
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            mc_png = directory / "2012_q36.png"
+            lq_png = directory / "2026-q12.png"
+            _write_png(mc_png, (828, 315))
+            _write_png(lq_png, (600, 400))
+            mc_pdf = directory / "combined.pdf"
+            section.write_combined(
+                [mc_png], mc_pdf, title="ch25 Radiation and Radioactivity"
+            )
+            document = fitz.open(mc_pdf)
+            try:
+                self.assertIn("ch25 Radiation and Radioactivity", document[0].get_text())
+                self.assertIn("2012 Q36", document[0].get_text())
+                self.assertIn("2012 Q36", document[1].get_text())
+            finally:
+                document.close()
+            lq_pdf = directory / "questions.pdf"
+            lq.write_image_pdf(
+                [lq_png], lq_pdf, title="ch25 Radiation and Radioactivity"
+            )
+            document = fitz.open(lq_pdf)
+            try:
+                self.assertIn("ch25 Radiation and Radioactivity", document[0].get_text())
+                self.assertIn("2026 Q12", document[0].get_text())
+                self.assertIn("2026 Q12", document[1].get_text())
+            finally:
+                document.close()
+
 
 if __name__ == "__main__":
     unittest.main()

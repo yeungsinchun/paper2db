@@ -22,6 +22,7 @@ from png_pdf import (
     A4_WIDTH,
     insert_png_on_a4,
     insert_session_heading,
+    png_item_label,
     section_heading_title,
 )
 
@@ -112,7 +113,8 @@ def write_combined(
     document = fitz.open()
     try:
         if title:
-            insert_session_heading(document, title)
+            labels = [lab for path in paths if (lab := png_item_label(path))]
+            insert_session_heading(document, title, item_labels=labels)
         for path in paths:
             insert_png_on_a4(document, path)
         dest.parent.mkdir(parents=True, exist_ok=True)
