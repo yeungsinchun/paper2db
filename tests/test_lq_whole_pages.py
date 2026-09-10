@@ -4,16 +4,21 @@ from __future__ import annotations
 import importlib.machinery
 import importlib.util
 import json
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
+import pymupdf as fitz
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def load_module(name: str, path: Path):
+    scripts = str(ROOT / "scripts")
+    if scripts not in sys.path:
+        sys.path.insert(0, scripts)
     loader = importlib.machinery.SourceFileLoader(name, str(path))
     spec = importlib.util.spec_from_loader(loader.name, loader)
     assert spec and spec.loader
@@ -55,6 +60,102 @@ class TestLqWholePages(unittest.TestCase):
             self.assertEqual(out.size, (200, 600))
             self.assertEqual(out.getpixel((0, 10)), (0, 0, 0))
             self.assertEqual(out.getpixel((0, 590)), (0, 0, 0))
+
+
+    def test_lq_review_pdf_is_a4_whole_pages_not_png_crop(self) -> None:
+        png_pdf = load_module("png_pdf", ROOT / "scripts" / "png_pdf.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            src_path = Path(tmp) / "src.pdf"
+            doc = fitz.open()
+            page = doc.new_page(width=500, height=700)
+            page.insert_text((40, 80), "TOP-MARK", fontsize=14)
+            page.insert_text((40, 650), "BOTTOM-MARK", fontsize=14)
+            page = doc.new_page(width=500, height=700)
+            page.insert_text((40, 80), "PAGE-TWO", fontsize=14)
+            doc.save(src_path)
+            doc.close()
+            dest = Path(tmp) / "out.pdf"
+            document = fitz.open()
+            src_doc = fitz.open(src_path)
+            try:
+                png_pdf.append_pdf_page_a4(
+                    document,
+                    src_doc,
+                    0,
+                    title="ch25 Radiation and Radioactivity",
+                    label="2026 Q12",
+                )
+                png_pdf.append_pdf_page_a4(document, src_doc, 1)
+                document.save(dest)
+            finally:
+                src_doc.close()
+                document.close()
+            out = fitz.open(dest)
+            try:
+                self.assertEqual(len(out), 2)
+                self.assertEqual(out[0].rect.width, 595.0)
+                self.assertEqual(out[0].rect.height, 842.0)
+                text0 = out[0].get_text()
+                self.assertIn("ch25 Radiation and Radioactivity", text0)
+                self.assertIn("2026 Q12", text0)
+                self.assertIn("TOP-MARK", text0)
+                self.assertIn("BOTTOM-MARK", text0)
+                self.assertIn("PAGE-TWO", out[1].get_text())
+            finally:
+                out.close()
+
+    def test_year_review_labels_first_question_on_each_start_page(self) -> None:
+        review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            paper = Path(tmp) / "paper"
+            paper.mkdir()
+            src = fitz.open()
+            try:
+                for index in range(10):
+                    page = src.new_page(width=500, height=700)
+                    page.insert_text((40, 80), f"PAGE-{index}", fontsize=14)
+                src.save(paper / "2012p1b.pdf")
+            finally:
+                src.close()
+            out = Path(tmp) / "lq" / "2012"
+            out.mkdir(parents=True)
+            (out / "starts.json").write_text(
+                json.dumps(
+                    {
+                        "questions": [
+                            {"q": 1, "page_from": 0, "page_to": 0},
+                            {"q": 2, "page_from": 0, "page_to": 1},
+                            {"q": 5, "page_from": 6, "page_to": 7},
+                            {"q": 6, "page_from": 8, "page_to": 8},
+                            {"q": 7, "page_from": 9, "page_to": 9},
+                            {"q": 9, "page_from": 4, "page_to": 4},
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            review.PAPER_LQ = paper
+            review.OUTPUT_LQ = Path(tmp) / "lq"
+            review.write_year_review_pdfs("2012")
+            document = fitz.open(out / "combined.pdf")
+            try:
+                texts = [page.get_text() for page in document]
+                self.assertIn("2012 Q1", texts[0])
+                self.assertNotIn("2012 Q2", texts[0])
+                self.assertIn("2012 Q5", texts[6])
+                self.assertIn("2012 Q6", texts[8])
+                self.assertIn("2012 Q7", texts[9])
+                self.assertIn("2012 Q9", texts[4])
+            finally:
+                document.close()
+
+    def test_empty_section_questions_pdf_returns_without_error(self) -> None:
+        review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            dest = Path(tmp) / "questions.pdf"
+            written = review.write_section_questions_pdf([("2099", 1)], dest)
+            self.assertEqual(written, 0)
+            self.assertFalse(dest.is_file())
 
 
 if __name__ == "__main__":

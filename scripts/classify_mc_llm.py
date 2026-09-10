@@ -10,7 +10,7 @@ Pipeline:
        classified/mc/uncertain.csv
        classified/mc/summary.json
        classified/mc_classification.csv|json  (top-level split naming)
-  4. Optionally rebuild per-section combined.pdf (easiest -> hardest) + answer.pdf
+  4. Optionally rebuild per-section combined.pdf (year order) + answer.pdf
 
 Partial --years/--limit runs merge into existing mc_ocr.* / classification.*
 and only refresh touched section PNGs. A full apply aborts if decisions do not
