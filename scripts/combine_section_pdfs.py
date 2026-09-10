@@ -17,7 +17,13 @@ from pathlib import Path
 
 import pymupdf as fitz
 
-from png_pdf import A4_HEIGHT, A4_WIDTH, insert_png_on_a4
+from png_pdf import (
+    A4_HEIGHT,
+    A4_WIDTH,
+    insert_png_on_a4,
+    insert_session_heading,
+    section_heading_title,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 CLASSIFIED = ROOT / "classified" / "mc"
@@ -97,15 +103,29 @@ def sort_key(
     return (has_pct, neg_pct, YEAR_RANK.get(year, 99), q)
 
 
-def write_combined(paths: list[Path], dest: Path) -> None:
+def write_combined(
+    paths: list[Path],
+    dest: Path,
+    *,
+    title: str | None = None,
+) -> None:
     document = fitz.open()
     try:
+        if title:
+            insert_session_heading(document, title)
         for path in paths:
             insert_png_on_a4(document, path)
         dest.parent.mkdir(parents=True, exist_ok=True)
         document.save(dest, garbage=4, deflate=True)
     finally:
         document.close()
+
+
+def heading_for_section_dir(section: Path) -> str:
+    match = re.match(r"^(\d{2})_(.+)$", section.name)
+    assert match
+    name = match.group(2).replace("_", " ")
+    return section_heading_title(int(match.group(1)), name)
 
 
 def write_answer_pdf(
@@ -186,7 +206,7 @@ def main() -> None:
         if combined.is_file() and answers.is_file() and not args.overwrite:
             print(f"Keeping {combined.relative_to(args.classified)}")
             continue
-        write_combined(ordered, combined)
+        write_combined(ordered, combined, title=heading_for_section_dir(section))
         section_label = section.name.replace("_", " ")
         write_answer_pdf(ordered, answers, keys, section_label)
         total_pdfs += 1

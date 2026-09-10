@@ -43,6 +43,23 @@ def insert_png_on_a4(document: fitz.Document, path: Path) -> None:
         image.close()
 
 
+def section_heading_title(section_num: int, section_name: str) -> str:
+    """Session heading for a classified section bank, e.g. ch25 Radiation and Radioactivity."""
+    return f"ch{section_num} {section_name}"
+
+
+def insert_session_heading(
+    document: fitz.Document,
+    title: str,
+    subtitle: str | None = None,
+) -> None:
+    """A4 first page with the section session heading."""
+    page = document.new_page(width=A4_WIDTH, height=A4_HEIGHT)
+    page.insert_text((40, 60), title, fontsize=16, fontname="helv")
+    if subtitle:
+        page.insert_text((40, 86), subtitle, fontsize=11, fontname="helv")
+
+
 def _numeric_pngs(directory: Path, pattern: re.Pattern[str]) -> list[Path]:
     matched: list[tuple[int, Path]] = []
     for path in directory.glob("*.png"):

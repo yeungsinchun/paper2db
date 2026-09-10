@@ -90,5 +90,46 @@ class TestCombinedPdfA4(unittest.TestCase):
                 document.close()
 
 
+SECTION_25_HEADING = "ch25 Radiation and Radioactivity"
+MC_25 = (
+    ROOT
+    / "classified"
+    / "mc"
+    / "05_Radioactivity_and_Nuclear_Energy"
+    / "25_Radiation_and_Radioactivity"
+    / "combined.pdf"
+)
+LQ_25 = (
+    ROOT
+    / "classified"
+    / "lq"
+    / "05_Radioactivity_and_Nuclear_Energy"
+    / "25_Radiation_and_Radioactivity"
+    / "questions.pdf"
+)
+
+
+class TestSection25Heading(unittest.TestCase):
+    def test_heading_title_format(self) -> None:
+        png_pdf = load_module("png_pdf", SCRIPTS / "png_pdf.py")
+        self.assertEqual(
+            png_pdf.section_heading_title(25, "Radiation and Radioactivity"),
+            SECTION_25_HEADING,
+        )
+
+    def test_section_25_mc_and_lq_open_with_heading(self) -> None:
+        self.assertTrue(MC_25.is_file(), MC_25)
+        self.assertTrue(LQ_25.is_file(), LQ_25)
+        for path in (MC_25, LQ_25):
+            document = fitz.open(path)
+            try:
+                page = document[0]
+                self.assertEqual(page.rect.width, A4_WIDTH)
+                self.assertEqual(page.rect.height, A4_HEIGHT)
+                self.assertIn(SECTION_25_HEADING, page.get_text())
+            finally:
+                document.close()
+
+
 if __name__ == "__main__":
     unittest.main()

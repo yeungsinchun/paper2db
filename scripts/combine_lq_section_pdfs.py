@@ -21,6 +21,7 @@ from pathlib import Path
 import pymupdf as fitz
 
 from classify_mc_llm import BOOK_NAMES, SECTION_BY_NUM, SECTIONS, year_key
+from png_pdf import insert_png_on_a4, insert_session_heading, section_heading_title
 
 ROOT = Path(__file__).resolve().parents[1]
 CLASSIFIED_LQ = ROOT / "classified" / "lq"
@@ -80,35 +81,19 @@ def resolve_answer_png(row: dict) -> Path | None:
 
 
 def write_image_pdf(paths: list[Path], dest: Path, *, title: str | None = None) -> int:
-    """One PDF page per image. Optional title page if title set."""
+    """One A4 page per image. Optional title page if title set."""
     if not paths:
         return 0
     doc = fitz.open()
     try:
         if title:
-            page = doc.new_page(width=595, height=842)
-            page.insert_text((40, 60), title, fontsize=16, fontname="helv")
-            page.insert_text(
-                (40, 86),
-                f"{len(paths)} item(s)",
-                fontsize=11,
-                fontname="helv",
+            insert_session_heading(
+                doc,
+                title,
+                subtitle=f"{len(paths)} item(s)",
             )
         for path in paths:
-            image = fitz.open(path)
-            try:
-                rect = image[0].rect
-                # Cap very tall crops so PDF viewers stay usable.
-                max_h = 2000.0
-                width, height = rect.width, rect.height
-                if height > max_h:
-                    scale = max_h / height
-                    width *= scale
-                    height *= scale
-                page = doc.new_page(width=width, height=height)
-                page.insert_image(page.rect, filename=str(path))
-            finally:
-                image.close()
+            insert_png_on_a4(doc, path)
         dest.parent.mkdir(parents=True, exist_ok=True)
         doc.save(dest, garbage=4, deflate=True)
     finally:
@@ -178,9 +163,24 @@ def main() -> None:
     written = 0
     for num, _book, _folder, name in SECTIONS:
         items = by_primary.get(num) or []
-        if not items:
-            continue
         out_dir = section_dir(num)
+        heading = section_heading_title(num, name)
+        if not items:
+            folder_pngs = sorted(
+                p
+                for p in out_dir.glob("*.png")
+                if "-ans" not in p.name.lower()
+            )
+            if not folder_pngs:
+                continue
+            out_dir.mkdir(parents=True, exist_ok=True)
+            nq = write_image_pdf(folder_pngs, out_dir / "questions.pdf", title=heading)
+            written += 1
+            print(
+                f"{heading}: questions.pdf ({nq}) from folder PNGs -> "
+                f"{out_dir.relative_to(ROOT)}"
+            )
+            continue
         out_dir.mkdir(parents=True, exist_ok=True)
         label = f"S{num:02d} {name}"
 
@@ -210,7 +210,7 @@ def main() -> None:
             print(f"Keeping {out_dir.relative_to(ROOT)}")
             continue
 
-        nq = write_image_pdf(q_paths, q_pdf)
+        nq = write_image_pdf(q_paths, q_pdf, title=heading)
         na = write_image_pdf(a_paths, a_pdf)
         np_ = write_performance_pdf(perf_items, p_pdf, section_label=label)
         written += 1
