@@ -77,6 +77,32 @@ class TestCombinedPdfA4(unittest.TestCase):
             finally:
                 document.close()
 
+    def test_combined_questions_sorted_by_year_then_number(self) -> None:
+        section = load_module(
+            "combine_section_pdfs", SCRIPTS / "combine_section_pdfs.py"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            names = ["2019_q2.png", "2012_q36.png", "2012_q1.png", "pp_q1.png"]
+            paths = [directory / name for name in names]
+            for path in paths:
+                _write_png(path, (828, 200))
+            ordered = sorted(paths, key=section.sort_key)
+            dest = directory / "combined.pdf"
+            section.write_combined(ordered, dest)
+            document = fitz.open(dest)
+            try:
+                labels = [
+                    span["text"].strip()
+                    for block in document[0].get_text("dict")["blocks"]
+                    for line in block.get("lines", [])
+                    for span in line.get("spans", [])
+                    if span.get("text", "").strip()
+                ]
+                self.assertEqual(labels, ["2012 Q1", "2012 Q36", "2019 Q2", "pp Q1"])
+            finally:
+                document.close()
+
     def test_question_that_does_not_fit_starts_next_page(self) -> None:
         png_pdf = load_module("png_pdf", SCRIPTS / "png_pdf.py")
         with tempfile.TemporaryDirectory() as tmp:

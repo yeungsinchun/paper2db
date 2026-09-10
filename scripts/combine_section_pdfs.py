@@ -2,9 +2,8 @@
 """Write per-section question + answer PDFs under classified/mc/.
 
 For each section folder:
-  - combined.pdf: question PNGs sorted easiest -> hardest by Correct %
-    (higher % first). Items without a known % (pp/sap/2022/2026, deleted,
-    missing keys) are placed last.
+  - combined.pdf: question PNGs sorted by year, then question number
+    (pp/sap after numbered years).
   - answer.pdf: same order, one page per question listing year, Q#, answer,
     and correct percentage.
 """
@@ -87,19 +86,12 @@ def pngs_in_section(section: Path) -> list[Path]:
     return sorted(p for p in section.glob("*.png") if PNG_RE.fullmatch(p.name))
 
 
-def sort_key(
-    path: Path,
-    percentages: dict[tuple[str, int], int | None],
-) -> tuple:
+def sort_key(path: Path) -> tuple:
     match = PNG_RE.fullmatch(path.name)
     assert match
     year = match.group("year")
     q = int(match.group("q"))
-    pct = percentages.get((year, q))
-    # Easiest first: higher % first. Missing % -> last.
-    has_pct = 0 if pct is not None else 1
-    neg_pct = -(pct if pct is not None else 0)
-    return (has_pct, neg_pct, YEAR_RANK.get(year, 99), q)
+    return (YEAR_RANK.get(year, 99), q)
 
 
 def write_combined(
@@ -130,7 +122,7 @@ def write_answer_pdf(
     keys: dict[tuple[str, int], dict],
     section_label: str,
 ) -> None:
-    """One summary page listing every question in the same hard->easy order."""
+    """One summary page listing every question in year then Q order."""
     document = fitz.open()
     try:
         page_width, page_height = A4_WIDTH, A4_HEIGHT
@@ -142,7 +134,7 @@ def write_answer_pdf(
         y += 28
         page.insert_text(
             (margin, y + 11),
-            "Order matches combined.pdf (easiest -> hardest by correct %).",
+            "Order matches combined.pdf (year, then question number).",
             fontsize=9,
             fontname="helv",
         )
@@ -196,7 +188,7 @@ def main() -> None:
         pngs = pngs_in_section(section)
         if not pngs:
             continue
-        ordered = sorted(pngs, key=lambda p: sort_key(p, percentages))
+        ordered = sorted(pngs, key=sort_key)
         combined = section / "combined.pdf"
         answers = section / "answer.pdf"
         if combined.is_file() and answers.is_file() and not args.overwrite:
