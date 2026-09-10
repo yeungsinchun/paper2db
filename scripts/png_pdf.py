@@ -100,28 +100,10 @@ def section_heading_title(section_num: int, section_name: str) -> str:
     return f"ch{section_num} {section_name}"
 
 
-def insert_session_heading(
-    document: fitz.Document,
-    title: str,
-    subtitle: str | None = None,
-    item_labels: list[str] | None = None,
-) -> None:
-    """A4 first page with the section session heading."""
+def insert_session_heading(document: fitz.Document, title: str) -> None:
+    """A4 first page with the section session heading only."""
     page = document.new_page(width=A4_WIDTH, height=A4_HEIGHT)
     page.insert_text((40, 60), title, fontsize=16, fontname="helv")
-    y = 86.0
-    if subtitle:
-        page.insert_text((40, y), subtitle, fontsize=11, fontname="helv")
-        y += 18
-    if item_labels:
-        page.insert_text((40, y), "Items:", fontsize=11, fontname="helv")
-        y += 16
-        for label in item_labels:
-            if y > A4_HEIGHT - 40:
-                page = document.new_page(width=A4_WIDTH, height=A4_HEIGHT)
-                y = 40
-            page.insert_text((40, y), label, fontsize=11, fontname="helv")
-            y += 14
 
 
 def _numeric_pngs(directory: Path, pattern: re.Pattern[str]) -> list[Path]:

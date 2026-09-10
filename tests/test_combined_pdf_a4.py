@@ -131,6 +131,7 @@ class TestSection25Heading(unittest.TestCase):
                 self.assertEqual(page.rect.width, A4_WIDTH)
                 self.assertEqual(page.rect.height, A4_HEIGHT)
                 self.assertIn(SECTION_25_HEADING, page.get_text())
+                self.assertNotIn("Items:", page.get_text())
             finally:
                 document.close()
 
@@ -157,7 +158,7 @@ class TestSection25Heading(unittest.TestCase):
             document = fitz.open(mc_pdf)
             try:
                 self.assertIn("ch25 Radiation and Radioactivity", document[0].get_text())
-                self.assertIn("2012 Q36", document[0].get_text())
+                self.assertNotIn("2012 Q36", document[0].get_text())
                 self.assertIn("2012 Q36", document[1].get_text())
             finally:
                 document.close()
@@ -168,7 +169,7 @@ class TestSection25Heading(unittest.TestCase):
             document = fitz.open(lq_pdf)
             try:
                 self.assertIn("ch25 Radiation and Radioactivity", document[0].get_text())
-                self.assertIn("2026 Q12", document[0].get_text())
+                self.assertNotIn("2026 Q12", document[0].get_text())
                 self.assertIn("2026 Q12", document[1].get_text())
             finally:
                 document.close()
