@@ -141,7 +141,6 @@ def write_section_questions_pdf(
             finally:
                 src.close()
         if written == 0:
-            document.close()
             return 0
         document.save(dest, garbage=4, deflate=True)
     finally:

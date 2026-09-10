@@ -231,6 +231,46 @@ class TestSection25Heading(unittest.TestCase):
             finally:
                 document.close()
 
+    def test_title_page_crop_stays_within_bottom_margin(self) -> None:
+        png_pdf = load_module("png_pdf", SCRIPTS / "png_pdf.py")
+        lq = load_module(
+            "combine_lq_section_pdfs", SCRIPTS / "combine_lq_section_pdfs.py"
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            png = Path(tmp) / "2026-q12.png"
+            _write_png(png, (2097, 7366))
+            dest = Path(tmp) / "answers.pdf"
+            lq.write_image_pdf(
+                [png], dest, title="ch25 Radiation and Radioactivity"
+            )
+            document = fitz.open(dest)
+            try:
+                page = document[0]
+                self.assertEqual(page.rect.width, A4_WIDTH)
+                self.assertEqual(page.rect.height, A4_HEIGHT)
+                images = page.get_image_info()
+                self.assertTrue(images)
+                self.assertLessEqual(
+                    images[0]["bbox"][3], A4_HEIGHT - png_pdf.A4_MARGIN + 0.5
+                )
+                self.assertIn("ch25 Radiation and Radioactivity", page.get_text())
+                self.assertIn("2026 Q12", page.get_text())
+            finally:
+                document.close()
+
+    def test_classified_lq_answers_pdf_pages_are_a4(self) -> None:
+        answers = sorted((ROOT / "classified" / "lq").glob("*/*/answers.pdf"))
+        self.assertGreaterEqual(len(answers), 1)
+        for path in answers:
+            document = fitz.open(path)
+            try:
+                self.assertGreaterEqual(len(document), 1, path)
+                page = document[0]
+                self.assertEqual(page.rect.width, A4_WIDTH, path)
+                self.assertEqual(page.rect.height, A4_HEIGHT, path)
+            finally:
+                document.close()
+
     def _assert_label_top_right(self, page: fitz.Page, label: str) -> None:
         midpoint = page.rect.width / 2
         found = False

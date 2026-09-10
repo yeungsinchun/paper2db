@@ -97,8 +97,9 @@ class A4Flow:
         remaining = A4_HEIGHT - A4_MARGIN - self.y
         if self.page is None or block_h > remaining + 0.5:
             self._new_page()
+            remaining = A4_HEIGHT - A4_MARGIN - self.y
             dest_w, dest_h = _scale_png(
-                src_w, src_h, max_w=printable_w, max_h=full_h - label_h
+                src_w, src_h, max_w=printable_w, max_h=remaining - label_h
             )
         assert self.page is not None
         if label:

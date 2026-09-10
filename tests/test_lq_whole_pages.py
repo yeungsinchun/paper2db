@@ -149,6 +149,14 @@ class TestLqWholePages(unittest.TestCase):
             finally:
                 document.close()
 
+    def test_empty_section_questions_pdf_returns_without_error(self) -> None:
+        review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            dest = Path(tmp) / "questions.pdf"
+            written = review.write_section_questions_pdf([("2099", 1)], dest)
+            self.assertEqual(written, 0)
+            self.assertFalse(dest.is_file())
+
 
 if __name__ == "__main__":
     unittest.main()
