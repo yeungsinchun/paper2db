@@ -9,6 +9,39 @@ import pymupdf as fitz
 QUESTION_PNG = re.compile(r"^q(\d+)\.png$", re.I)
 PAGE_PNG = re.compile(r"^page(\d+)\.png$", re.I)
 
+A4_WIDTH = 595.0
+A4_HEIGHT = 842.0
+A4_MARGIN = 36.0
+# Rotate only when a landscape source would be a thin unreadable strip on portrait A4.
+MIN_PORTRAIT_FIT_HEIGHT = 72.0
+
+
+def insert_png_on_a4(document: fitz.Document, path: Path) -> None:
+    """Place one PNG on a new A4 page, scaled to fit, aspect ratio preserved."""
+    image = fitz.open(path)
+    try:
+        rect = image[0].rect
+        src_w, src_h = rect.width, rect.height
+        page_w, page_h = A4_WIDTH, A4_HEIGHT
+        printable_w = page_w - 2 * A4_MARGIN
+        printable_h = page_h - 2 * A4_MARGIN
+        scale = min(printable_w / src_w, printable_h / src_h)
+        if src_w > src_h and src_h * scale < MIN_PORTRAIT_FIT_HEIGHT:
+            page_w, page_h = A4_HEIGHT, A4_WIDTH
+            printable_w = page_w - 2 * A4_MARGIN
+            printable_h = page_h - 2 * A4_MARGIN
+            scale = min(printable_w / src_w, printable_h / src_h)
+        dest_w, dest_h = src_w * scale, src_h * scale
+        x0 = (page_w - dest_w) / 2
+        y0 = (page_h - dest_h) / 2
+        page = document.new_page(width=page_w, height=page_h)
+        page.insert_image(
+            fitz.Rect(x0, y0, x0 + dest_w, y0 + dest_h),
+            filename=str(path),
+        )
+    finally:
+        image.close()
+
 
 def _numeric_pngs(directory: Path, pattern: re.Pattern[str]) -> list[Path]:
     matched: list[tuple[int, Path]] = []
@@ -46,13 +79,7 @@ def combine_pngs_to_pdf(
     document = fitz.open()
     try:
         for path in paths:
-            image = fitz.open(path)
-            try:
-                rect = image[0].rect
-                page = document.new_page(width=rect.width, height=rect.height)
-                page.insert_image(page.rect, filename=str(path))
-            finally:
-                image.close()
+            insert_png_on_a4(document, path)
         document.save(dest, garbage=4, deflate=True)
     finally:
         document.close()

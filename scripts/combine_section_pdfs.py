@@ -17,6 +17,8 @@ from pathlib import Path
 
 import pymupdf as fitz
 
+from png_pdf import A4_HEIGHT, A4_WIDTH, insert_png_on_a4
+
 ROOT = Path(__file__).resolve().parents[1]
 CLASSIFIED = ROOT / "classified" / "mc"
 DEFAULT_KEYS = ROOT / "classified" / "mc" / "answer_keys.json"
@@ -99,13 +101,7 @@ def write_combined(paths: list[Path], dest: Path) -> None:
     document = fitz.open()
     try:
         for path in paths:
-            image = fitz.open(path)
-            try:
-                rect = image[0].rect
-                page = document.new_page(width=rect.width, height=rect.height)
-                page.insert_image(page.rect, filename=str(path))
-            finally:
-                image.close()
+            insert_png_on_a4(document, path)
         dest.parent.mkdir(parents=True, exist_ok=True)
         document.save(dest, garbage=4, deflate=True)
     finally:
@@ -121,7 +117,7 @@ def write_answer_pdf(
     """One summary page listing every question in the same hard->easy order."""
     document = fitz.open()
     try:
-        page_width, page_height = 595.0, 842.0  # A4
+        page_width, page_height = A4_WIDTH, A4_HEIGHT
         margin = 40.0
         y = margin
         page = document.new_page(width=page_width, height=page_height)
