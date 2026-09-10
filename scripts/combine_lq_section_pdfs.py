@@ -21,7 +21,8 @@ from pathlib import Path
 import pymupdf as fitz
 
 from classify_mc_llm import BOOK_NAMES, SECTION_BY_NUM, SECTIONS, year_key
-from png_pdf import place_pngs_on_a4, section_heading_title
+from png_pdf import YEAR_Q_PNG, place_pngs_on_a4, section_heading_title
+from lq_pdf_review import write_section_questions_pdf
 
 ROOT = Path(__file__).resolve().parents[1]
 CLASSIFIED_LQ = ROOT / "classified" / "lq"
@@ -167,7 +168,14 @@ def main() -> None:
             if not folder_pngs:
                 continue
             out_dir.mkdir(parents=True, exist_ok=True)
-            nq = write_image_pdf(folder_pngs, out_dir / "questions.pdf", title=heading)
+            items_yq: list[tuple[str, int]] = []
+            for path in folder_pngs:
+                found = YEAR_Q_PNG.fullmatch(path.stem)
+                if found:
+                    items_yq.append((found.group("year"), int(found.group("q"))))
+            nq = write_section_questions_pdf(
+                items_yq, out_dir / "questions.pdf", title=heading
+            )
             written += 1
             print(
                 f"{heading}: questions.pdf ({nq}) from folder PNGs -> "
@@ -177,14 +185,10 @@ def main() -> None:
         out_dir.mkdir(parents=True, exist_ok=True)
         label = f"S{num:02d} {name}"
 
-        q_paths: list[Path] = []
         a_paths: list[Path] = []
         perf_items: list[tuple[str, int, str]] = []
         for row in items:
             year, qn = row["Year"], int(row["Question"])
-            q_png = resolve_question_png(row)
-            if q_png:
-                q_paths.append(q_png)
             a_png = resolve_answer_png(row)
             if a_png:
                 a_paths.append(a_png)
@@ -203,7 +207,8 @@ def main() -> None:
             print(f"Keeping {out_dir.relative_to(ROOT)}")
             continue
 
-        nq = write_image_pdf(q_paths, q_pdf, title=heading)
+        pdf_items = [(row["Year"], int(row["Question"])) for row in items]
+        nq = write_section_questions_pdf(pdf_items, q_pdf, title=heading)
         na = write_image_pdf(a_paths, a_pdf)
         np_ = write_performance_pdf(perf_items, p_pdf, section_label=label)
         written += 1

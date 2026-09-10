@@ -117,6 +117,53 @@ def place_pngs_on_a4(
         flow.add(path)
 
 
+def append_pdf_page_a4(
+    document: fitz.Document,
+    src: fitz.Document,
+    pno: int,
+    *,
+    title: str | None = None,
+    label: str | None = None,
+) -> None:
+    """Copy one source PDF page onto a new portrait A4 page (no raster crop)."""
+    page = document.new_page(width=A4_WIDTH, height=A4_HEIGHT)
+    header = 0.0
+    if title:
+        page.insert_text(
+            (A4_MARGIN, A4_MARGIN + 12),
+            title,
+            fontsize=16,
+            fontname="helv",
+        )
+        header = 28.0
+    if label:
+        width = fitz.get_text_length(label, fontname="helv", fontsize=11)
+        page.insert_text(
+            (A4_WIDTH - A4_MARGIN - width, A4_MARGIN + 12),
+            label,
+            fontsize=11,
+            fontname="helv",
+        )
+        header = max(header, 28.0)
+    printable = fitz.Rect(
+        A4_MARGIN,
+        A4_MARGIN + header,
+        A4_WIDTH - A4_MARGIN,
+        A4_HEIGHT - A4_MARGIN,
+    )
+    src_page = src[pno]
+    src_w, src_h = src_page.rect.width, src_page.rect.height
+    scale = min(printable.width / src_w, printable.height / src_h)
+    dest_w, dest_h = src_w * scale, src_h * scale
+    target = fitz.Rect(
+        printable.x0,
+        printable.y0,
+        printable.x0 + dest_w,
+        printable.y0 + dest_h,
+    )
+    page.show_pdf_page(target, src, pno)
+
+
 def section_heading_title(section_num: int, section_name: str) -> str:
     """Session heading for a classified section bank, e.g. ch25 Radiation and Radioactivity."""
     return f"ch{section_num} {section_name}"

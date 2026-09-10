@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import pymupdf as fitz
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -55,6 +56,49 @@ class TestLqWholePages(unittest.TestCase):
             self.assertEqual(out.size, (200, 600))
             self.assertEqual(out.getpixel((0, 10)), (0, 0, 0))
             self.assertEqual(out.getpixel((0, 590)), (0, 0, 0))
+
+
+    def test_lq_review_pdf_is_a4_whole_pages_not_png_crop(self) -> None:
+        png_pdf = load_module("png_pdf", ROOT / "scripts" / "png_pdf.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            src_path = Path(tmp) / "src.pdf"
+            doc = fitz.open()
+            page = doc.new_page(width=500, height=700)
+            page.insert_text((40, 80), "TOP-MARK", fontsize=14)
+            page.insert_text((40, 650), "BOTTOM-MARK", fontsize=14)
+            page = doc.new_page(width=500, height=700)
+            page.insert_text((40, 80), "PAGE-TWO", fontsize=14)
+            doc.save(src_path)
+            doc.close()
+            dest = Path(tmp) / "out.pdf"
+            document = fitz.open()
+            src_doc = fitz.open(src_path)
+            try:
+                png_pdf.append_pdf_page_a4(
+                    document,
+                    src_doc,
+                    0,
+                    title="ch25 Radiation and Radioactivity",
+                    label="2026 Q12",
+                )
+                png_pdf.append_pdf_page_a4(document, src_doc, 1)
+                document.save(dest)
+            finally:
+                src_doc.close()
+                document.close()
+            out = fitz.open(dest)
+            try:
+                self.assertEqual(len(out), 2)
+                self.assertEqual(out[0].rect.width, 595.0)
+                self.assertEqual(out[0].rect.height, 842.0)
+                text0 = out[0].get_text()
+                self.assertIn("ch25 Radiation and Radioactivity", text0)
+                self.assertIn("2026 Q12", text0)
+                self.assertIn("TOP-MARK", text0)
+                self.assertIn("BOTTOM-MARK", text0)
+                self.assertIn("PAGE-TWO", out[1].get_text())
+            finally:
+                out.close()
 
 
 if __name__ == "__main__":

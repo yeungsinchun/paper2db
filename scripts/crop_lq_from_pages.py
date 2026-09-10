@@ -17,7 +17,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from png_pdf import combine_pngs_to_pdf  # noqa: E402
+from lq_pdf_review import write_year_review_pdfs  # noqa: E402
 from preprocess_lq import crisp_scan, load_page_pngs, stitch_vertical  # noqa: E402
 
 Image.MAX_IMAGE_PIXELS = 250_000_000
@@ -71,7 +71,7 @@ def build_year(year_dir: Path) -> int:
         )
         written += 1
 
-    combine_pngs_to_pdf(year_dir, output=year_dir / "questions.pdf", overwrite=True)
+    write_year_review_pdfs(year_dir.name)
     return written
 
 
