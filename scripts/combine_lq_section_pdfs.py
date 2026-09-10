@@ -22,8 +22,8 @@ import pymupdf as fitz
 
 from classify_mc_llm import BOOK_NAMES, SECTION_BY_NUM, SECTIONS, year_key
 from png_pdf import (
-    insert_png_on_a4,
     insert_session_heading,
+    place_pngs_on_a4,
     png_item_label,
     section_heading_title,
 )
@@ -86,7 +86,7 @@ def resolve_answer_png(row: dict) -> Path | None:
 
 
 def write_image_pdf(paths: list[Path], dest: Path, *, title: str | None = None) -> int:
-    """One A4 page per image. Optional title page if title set."""
+    """A4 pages with images stacked in order. Optional title page if title set."""
     if not paths:
         return 0
     doc = fitz.open()
@@ -94,8 +94,7 @@ def write_image_pdf(paths: list[Path], dest: Path, *, title: str | None = None) 
         if title:
             labels = [lab for path in paths if (lab := png_item_label(path))]
             insert_session_heading(doc, title, item_labels=labels)
-        for path in paths:
-            insert_png_on_a4(doc, path)
+        place_pngs_on_a4(doc, paths)
         dest.parent.mkdir(parents=True, exist_ok=True)
         doc.save(dest, garbage=4, deflate=True)
     finally:

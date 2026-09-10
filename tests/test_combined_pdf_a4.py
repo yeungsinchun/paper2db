@@ -37,17 +37,18 @@ class TestCombinedPdfA4(unittest.TestCase):
         png_pdf = load_module("png_pdf", SCRIPTS / "png_pdf.py")
         with tempfile.TemporaryDirectory() as tmp:
             directory = Path(tmp)
-            _write_png(directory / "q1.png", (1100, 420))
-            _write_png(directory / "q2.png", (400, 900))
+            _write_png(directory / "q1.png", (1100, 200))
+            _write_png(directory / "q2.png", (400, 180))
             dest = png_pdf.combine_pngs_to_pdf(directory, overwrite=True)
             self.assertIsNotNone(dest)
             document = fitz.open(dest)
             try:
-                self.assertEqual(len(document), 2)
-                for page in document:
-                    width, height = page.rect.width, page.rect.height
-                    self.assertEqual(width, A4_WIDTH)
-                    self.assertEqual(height, A4_HEIGHT)
+                self.assertEqual(len(document), 1)
+                page = document[0]
+                self.assertEqual(page.rect.width, A4_WIDTH)
+                self.assertEqual(page.rect.height, A4_HEIGHT)
+                self.assertIn("Q1", page.get_text())
+                self.assertIn("Q2", page.get_text())
             finally:
                 document.close()
 
@@ -67,25 +68,28 @@ class TestCombinedPdfA4(unittest.TestCase):
             section.write_combined(paths, dest)
             document = fitz.open(dest)
             try:
-                self.assertEqual(len(document), 2)
-                for page in document:
-                    self.assertEqual(page.rect.width, A4_WIDTH)
-                    self.assertEqual(page.rect.height, A4_HEIGHT)
+                self.assertEqual(len(document), 1)
+                page = document[0]
+                self.assertEqual(page.rect.width, A4_WIDTH)
+                self.assertEqual(page.rect.height, A4_HEIGHT)
+                self.assertIn("2019 Q1", page.get_text())
+                self.assertIn("2019 Q2", page.get_text())
             finally:
                 document.close()
 
-    def test_extreme_landscape_rotates_to_a4_landscape(self) -> None:
+    def test_question_that_does_not_fit_starts_next_page(self) -> None:
         png_pdf = load_module("png_pdf", SCRIPTS / "png_pdf.py")
         with tempfile.TemporaryDirectory() as tmp:
             directory = Path(tmp)
-            _write_png(directory / "q1.png", (2000, 40))
+            _write_png(directory / "q1.png", (400, 900))
+            _write_png(directory / "q2.png", (400, 900))
             dest = png_pdf.combine_pngs_to_pdf(directory, overwrite=True)
             document = fitz.open(dest)
             try:
-                self.assertEqual(len(document), 1)
-                page = document[0]
-                self.assertEqual(page.rect.width, A4_HEIGHT)
-                self.assertEqual(page.rect.height, A4_WIDTH)
+                self.assertGreaterEqual(len(document), 2)
+                self.assertIn("Q1", document[0].get_text())
+                self.assertIn("Q2", document[1].get_text())
+                self.assertNotIn("Q2", document[0].get_text())
             finally:
                 document.close()
 
