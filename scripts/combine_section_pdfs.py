@@ -20,7 +20,6 @@ import pymupdf as fitz
 from png_pdf import (
     A4_HEIGHT,
     A4_WIDTH,
-    insert_session_heading,
     place_pngs_on_a4,
     section_heading_title,
 )
@@ -111,9 +110,7 @@ def write_combined(
 ) -> None:
     document = fitz.open()
     try:
-        if title:
-            insert_session_heading(document, title)
-        place_pngs_on_a4(document, paths)
+        place_pngs_on_a4(document, paths, title=title)
         dest.parent.mkdir(parents=True, exist_ok=True)
         document.save(dest, garbage=4, deflate=True)
     finally:

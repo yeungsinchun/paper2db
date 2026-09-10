@@ -49,14 +49,36 @@ def _scale_png(src_w: float, src_h: float, *, max_w: float, max_h: float) -> tup
 class A4Flow:
     """Stack crops top to bottom on portrait A4; start a new page when one does not fit."""
 
-    def __init__(self, document: fitz.Document) -> None:
+    def __init__(self, document: fitz.Document, title: str | None = None) -> None:
         self.document = document
+        self.title = title
         self.page: fitz.Page | None = None
         self.y = A4_MARGIN
+        self._wrote_title = False
 
     def _new_page(self) -> None:
         self.page = self.document.new_page(width=A4_WIDTH, height=A4_HEIGHT)
         self.y = A4_MARGIN
+        if self.title and not self._wrote_title:
+            self.page.insert_text(
+                (A4_MARGIN, A4_MARGIN + 12),
+                self.title,
+                fontsize=16,
+                fontname="helv",
+            )
+            self.y = A4_MARGIN + 28
+            self._wrote_title = True
+
+    def _insert_label_top_right(self, label: str) -> None:
+        assert self.page is not None
+        width = fitz.get_text_length(label, fontname="helv", fontsize=11)
+        x = A4_WIDTH - A4_MARGIN - width
+        self.page.insert_text(
+            (x, self.y + 10),
+            label,
+            fontsize=11,
+            fontname="helv",
+        )
 
     def add(self, path: Path) -> None:
         label = png_item_label(path)
@@ -74,12 +96,7 @@ class A4Flow:
             )
         assert self.page is not None
         if label:
-            self.page.insert_text(
-                (A4_MARGIN, self.y + 10),
-                label,
-                fontsize=11,
-                fontname="helv",
-            )
+            self._insert_label_top_right(label)
             self.y += label_h
         self.page.insert_image(
             fitz.Rect(A4_MARGIN, self.y, A4_MARGIN + dest_w, self.y + dest_h),
@@ -88,9 +105,14 @@ class A4Flow:
         self.y += dest_h + ITEM_GAP
 
 
-def place_pngs_on_a4(document: fitz.Document, paths: list[Path]) -> None:
-    """Place PNGs one after another on portrait A4 pages."""
-    flow = A4Flow(document)
+def place_pngs_on_a4(
+    document: fitz.Document,
+    paths: list[Path],
+    *,
+    title: str | None = None,
+) -> None:
+    """Place PNGs one after another on portrait A4 pages, after an optional title."""
+    flow = A4Flow(document, title=title)
     for path in paths:
         flow.add(path)
 
@@ -98,12 +120,6 @@ def place_pngs_on_a4(document: fitz.Document, paths: list[Path]) -> None:
 def section_heading_title(section_num: int, section_name: str) -> str:
     """Session heading for a classified section bank, e.g. ch25 Radiation and Radioactivity."""
     return f"ch{section_num} {section_name}"
-
-
-def insert_session_heading(document: fitz.Document, title: str) -> None:
-    """A4 first page with the section session heading only."""
-    page = document.new_page(width=A4_WIDTH, height=A4_HEIGHT)
-    page.insert_text((40, 60), title, fontsize=16, fontname="helv")
 
 
 def _numeric_pngs(directory: Path, pattern: re.Pattern[str]) -> list[Path]:

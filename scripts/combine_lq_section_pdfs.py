@@ -21,7 +21,7 @@ from pathlib import Path
 import pymupdf as fitz
 
 from classify_mc_llm import BOOK_NAMES, SECTION_BY_NUM, SECTIONS, year_key
-from png_pdf import insert_session_heading, place_pngs_on_a4, section_heading_title
+from png_pdf import place_pngs_on_a4, section_heading_title
 
 ROOT = Path(__file__).resolve().parents[1]
 CLASSIFIED_LQ = ROOT / "classified" / "lq"
@@ -86,9 +86,7 @@ def write_image_pdf(paths: list[Path], dest: Path, *, title: str | None = None) 
         return 0
     doc = fitz.open()
     try:
-        if title:
-            insert_session_heading(doc, title)
-        place_pngs_on_a4(doc, paths)
+        place_pngs_on_a4(doc, paths, title=title)
         dest.parent.mkdir(parents=True, exist_ok=True)
         doc.save(dest, garbage=4, deflate=True)
     finally:

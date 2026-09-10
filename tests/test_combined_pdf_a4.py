@@ -130,8 +130,9 @@ class TestSection25Heading(unittest.TestCase):
                 page = document[0]
                 self.assertEqual(page.rect.width, A4_WIDTH)
                 self.assertEqual(page.rect.height, A4_HEIGHT)
-                self.assertIn(SECTION_25_HEADING, page.get_text())
-                self.assertNotIn("Items:", page.get_text())
+                text = page.get_text()
+                self.assertIn(SECTION_25_HEADING, text)
+                self.assertNotIn("Items:", text)
             finally:
                 document.close()
 
@@ -157,9 +158,11 @@ class TestSection25Heading(unittest.TestCase):
             )
             document = fitz.open(mc_pdf)
             try:
-                self.assertIn("ch25 Radiation and Radioactivity", document[0].get_text())
-                self.assertNotIn("2012 Q36", document[0].get_text())
-                self.assertIn("2012 Q36", document[1].get_text())
+                self.assertEqual(len(document), 1)
+                page = document[0]
+                self.assertIn("ch25 Radiation and Radioactivity", page.get_text())
+                self.assertIn("2012 Q36", page.get_text())
+                self._assert_label_top_right(page, "2012 Q36")
             finally:
                 document.close()
             lq_pdf = directory / "questions.pdf"
@@ -168,11 +171,25 @@ class TestSection25Heading(unittest.TestCase):
             )
             document = fitz.open(lq_pdf)
             try:
-                self.assertIn("ch25 Radiation and Radioactivity", document[0].get_text())
-                self.assertNotIn("2026 Q12", document[0].get_text())
-                self.assertIn("2026 Q12", document[1].get_text())
+                self.assertEqual(len(document), 1)
+                page = document[0]
+                self.assertIn("ch25 Radiation and Radioactivity", page.get_text())
+                self.assertIn("2026 Q12", page.get_text())
+                self._assert_label_top_right(page, "2026 Q12")
             finally:
                 document.close()
+
+    def _assert_label_top_right(self, page: fitz.Page, label: str) -> None:
+        midpoint = page.rect.width / 2
+        found = False
+        for block in page.get_text("dict")["blocks"]:
+            for line in block.get("lines", []):
+                for span in line.get("spans", []):
+                    if span.get("text", "").strip() != label:
+                        continue
+                    found = True
+                    self.assertGreater(span["bbox"][0], midpoint)
+        self.assertTrue(found, label)
 
 
 if __name__ == "__main__":
