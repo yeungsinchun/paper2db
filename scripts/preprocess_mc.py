@@ -15,6 +15,8 @@ from pathlib import Path
 import pymupdf as fitz
 from PIL import Image, ImageDraw, ImageOps
 
+from formula_sheet import is_formula_sheet_page as is_formula_sheet
+
 MARKER_RGB = (13, 77, 242)
 STRIP_LEFT = 25.0
 STRIP_RIGHT = 120.0
@@ -123,11 +125,6 @@ def page_text(page: fitz.Page, scale: float = 1.5) -> str:
     del result, image, pixmap
     gc.collect()
     return text
-
-
-def is_formula_sheet(page: fitz.Page) -> bool:
-    text = page_text(page)
-    return "formula sheet" in text or "data sheet" in text or "physical constants" in text
 
 
 def _parse_conf(raw: str) -> float:
