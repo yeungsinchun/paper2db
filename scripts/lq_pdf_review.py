@@ -68,6 +68,14 @@ def exported_page_count(meta: dict, questions: list[dict] | None = None) -> int:
     return max(int(item["page_to"]) for item in questions) + 1
 
 
+def pdf_page_offset(year: str, src_len: int) -> int:
+    """Cover pages skipped by preprocess_lq / export_pdf_pages."""
+    n_exported = exported_page_count(load_starts_meta(year))
+    if n_exported in {src_len - 1, (src_len - 1) * 2}:
+        return 1
+    return 0
+
+
 def question_range(year: str, qn: int) -> tuple[int, int] | None:
     for item in load_starts(year):
         if int(item["q"]) == qn:

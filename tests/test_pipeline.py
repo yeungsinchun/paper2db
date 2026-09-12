@@ -4,6 +4,7 @@ from __future__ import annotations
 import importlib.machinery
 import importlib.util
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -147,6 +148,64 @@ class TestPipelineHelpers(unittest.TestCase):
                         with mock.patch.dict("os.environ", {}, clear=False):
                             pipe.stage_classify_lq(None, force=True)
         self.assertEqual(calls, ["classify_lq_llm.py"])
+
+    def test_lq_crops_ready_rejects_y_crop_and_missing_pages(self) -> None:
+        pipe = self.pipe
+        from PIL import Image
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            year_dir = tmp_path / "output" / "lq" / "2099"
+            pages = year_dir / "pages"
+            pages.mkdir(parents=True)
+            Image.new("RGB", (100, 200), (255, 255, 255)).save(pages / "page000.png")
+            Image.new("RGB", (100, 200), (255, 255, 255)).save(pages / "page001.png")
+            (year_dir / "starts.json").write_text(
+                json.dumps(
+                    {
+                        "pages": 2,
+                        "questions": [{"q": 1, "page_from": 0, "page_to": 1}],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            Image.new("RGB", (100, 80), (255, 255, 255)).save(year_dir / "q1.png")
+            with mock.patch.object(pipe, "ROOT", tmp_path):
+                self.assertFalse(pipe.lq_crops_ready("2099"))
+            Image.new("RGB", (100, 400), (255, 255, 255)).save(year_dir / "q1.png")
+            with mock.patch.object(pipe, "ROOT", tmp_path):
+                self.assertTrue(pipe.lq_crops_ready("2099"))
+            shutil.rmtree(pages)
+            with mock.patch.object(pipe, "ROOT", tmp_path):
+                self.assertFalse(pipe.lq_crops_ready("2099"))
+
+    def test_lq_pages_keeps_existing_starts_json(self) -> None:
+        pipe = self.pipe
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            paper = tmp_path / "paper" / "lq"
+            paper.mkdir(parents=True)
+            (paper / "2099p1b.pdf").write_bytes(b"%PDF-1.4")
+            year_dir = tmp_path / "output" / "lq" / "2099"
+            year_dir.mkdir(parents=True)
+            starts = year_dir / "starts.json"
+            original = '{"questions":[],"pages":1}\n'
+            starts.write_text(original, encoding="utf-8")
+            calls: list[tuple[str, tuple[str, ...]]] = []
+
+            def fake_run(script_name: str, *args: str) -> None:
+                calls.append((script_name, args))
+
+            def fake_segment(*_args: str) -> None:
+                raise AssertionError("must not re-detect starts")
+
+            with mock.patch.object(pipe, "ROOT", tmp_path):
+                with mock.patch.object(pipe, "run_script", side_effect=fake_run):
+                    with mock.patch.object(pipe, "run_segment", side_effect=fake_segment):
+                        pipe.stage_lq_pages(["2099"], force=False)
+            self.assertEqual(starts.read_text(encoding="utf-8"), original)
+            self.assertEqual(calls[0][0], "crop_lq_from_pages.py")
+            self.assertIn("--pages-only", calls[0][1])
 
 
 class TestAnswerKeyDefaults(unittest.TestCase):
