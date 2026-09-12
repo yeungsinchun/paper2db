@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Build LQ review PDFs by splitting source Paper 1B PDFs onto A4 pages.
 
-No PNG raster and no within-page crop. page_from..page_to from starts.json
-are whole exam pages.
+No PNG raster and no within-page crop. starts.json page_from..page_to are
+exam-page indices (optional cover and 2-up spreads), not raw PDF pages.
 """
 from __future__ import annotations
 

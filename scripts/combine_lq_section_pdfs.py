@@ -6,7 +6,8 @@ For each syllabus section that has at least one primary LQ:
   - answers.pdf    - marking-scheme answer crops packed on A4 (same order; skips missing)
   - performance.pdf - candidate-performance notes as text pages
 
-Skips empty sections. Overwrites existing PDFs by default.
+A section with no primary CSV rows still gets questions.pdf when the
+folder already has year-qN.png stems. Overwrites existing PDFs by default.
 """
 from __future__ import annotations
 
