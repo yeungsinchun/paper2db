@@ -407,6 +407,72 @@ class TestCommittedLqWholePages(unittest.TestCase):
         finally:
             questions.close()
 
+    def test_2015_combined_does_not_label_cover_as_q1(self) -> None:
+        path = ROOT / "output" / "lq" / "2015" / "combined.pdf"
+        self.assertTrue(path.is_file())
+        document = fitz.open(path)
+        try:
+            texts = [page.get_text() for page in document]
+            self.assertGreaterEqual(len(texts), 19)
+            self.assertNotIn("2015 Q1", texts[0])
+            self.assertIn("2015 Q1", texts[1])
+            joined = "\n".join(texts)
+            self.assertIn("2015 Q7", joined)
+            self.assertIn("2015 Q10", joined)
+        finally:
+            document.close()
+
+    def test_2015_questions_pdf_includes_q7_to_q10(self) -> None:
+        questions = fitz.open(ROOT / "output" / "lq" / "2015" / "questions.pdf")
+        try:
+            texts = [page.get_text() for page in questions]
+            self.assertGreaterEqual(len(texts), 18)
+            self.assertIn("2015 Q1", texts[0])
+            joined = "\n".join(texts)
+            for qn in (7, 8, 9, 10):
+                self.assertIn(f"2015 Q{qn}", joined)
+        finally:
+            questions.close()
+
+    def test_classified_keeps_2015_q7_q8_q10(self) -> None:
+        cases = (
+            (
+                ROOT
+                / "classified"
+                / "lq"
+                / "03A_Wave_Motion"
+                / "15_Interference_and_Stationary_Wave"
+                / "questions.pdf",
+                "2015 Q7",
+            ),
+            (
+                ROOT
+                / "classified"
+                / "lq"
+                / "04_Electricity_and_Magnetism"
+                / "21_Circuit_and_Power"
+                / "questions.pdf",
+                "2015 Q8",
+            ),
+            (
+                ROOT
+                / "classified"
+                / "lq"
+                / "05_Radioactivity_and_Nuclear_Energy"
+                / "27_Nuclear_Energy"
+                / "questions.pdf",
+                "2015 Q10",
+            ),
+        )
+        for path, label in cases:
+            self.assertTrue(path.is_file(), path)
+            document = fitz.open(path)
+            try:
+                joined = "\n".join(page.get_text() for page in document)
+                self.assertIn(label, joined)
+            finally:
+                document.close()
+
 
 if __name__ == "__main__":
     unittest.main()
