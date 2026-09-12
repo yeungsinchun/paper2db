@@ -19,6 +19,7 @@ import pymupdf as fitz
 import numpy as np
 from PIL import Image, ImageDraw, ImageOps
 
+from formula_sheet import refresh_starts_meta
 from png_pdf import combine_pngs_to_pdf
 
 # Hi-res Paper 1B crops can exceed Pillow's default ~89 MP limit.
@@ -727,16 +728,27 @@ def process_one(
                     "y": round(float(y), 1),
                 }
             )
-        meta_path = output_dir / "starts.json"
-        meta_path.write_text(
-            json.dumps({"questions": questions_meta, "pages": len(full_pages)}, indent=2)
-            + "\n",
-            encoding="utf-8",
+        meta = refresh_starts_meta(
+            {"questions": questions_meta, "pages": len(full_pages)},
+            doc,
         )
-        print(f"  wrote {meta_path.name} ({len(questions_meta)} questions)")
+        questions_meta = list(meta["questions"])
+        formula_png = {int(i) for i in (meta.get("formula_pages") or [])}
+        meta_path = output_dir / "starts.json"
+        meta_path.write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
+        print(
+            f"  wrote {meta_path.name} ({len(questions_meta)} questions"
+            + (f", excluded formula pages {sorted(formula_png)}" if formula_png else "")
+            + ")"
+        )
 
-        # Review PDF = full exam pages (not question crops).
-        combine_pngs_to_pdf(pages_out, output=output_dir / "combined.pdf", overwrite=True)
+        # Review PDF = exam pages without trailing data/formulae sheets.
+        combine_pngs_to_pdf(
+            pages_out,
+            output=output_dir / "combined.pdf",
+            overwrite=True,
+            exclude_page_indices=formula_png,
+        )
 
         if not crop_questions_flag:
             return len(questions_meta)

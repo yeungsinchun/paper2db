@@ -193,12 +193,25 @@ def _numeric_pngs(directory: Path, pattern: re.Pattern[str]) -> list[Path]:
     return [path for _, path in matched]
 
 
-def collect_review_pngs(directory: Path) -> list[Path]:
+def collect_review_pngs(
+    directory: Path,
+    *,
+    exclude_page_indices: set[int] | None = None,
+) -> list[Path]:
     """Prefer qN.png; otherwise pageNN.png. Numeric order."""
     questions = _numeric_pngs(directory, QUESTION_PNG)
     if questions:
         return questions
-    return _numeric_pngs(directory, PAGE_PNG)
+    pages = _numeric_pngs(directory, PAGE_PNG)
+    if not exclude_page_indices:
+        return pages
+    kept: list[Path] = []
+    for path in pages:
+        found = PAGE_PNG.fullmatch(path.name)
+        if found and int(found.group(1)) in exclude_page_indices:
+            continue
+        kept.append(path)
+    return kept
 
 
 def combine_pngs_to_pdf(
@@ -206,9 +219,12 @@ def combine_pngs_to_pdf(
     output: Path | None = None,
     *,
     overwrite: bool = False,
+    exclude_page_indices: set[int] | None = None,
 ) -> Path | None:
     """Write a portrait-A4 review PDF from PNGs. Skip if that PDF already exists unless overwrite."""
-    paths = collect_review_pngs(directory)
+    paths = collect_review_pngs(
+        directory, exclude_page_indices=exclude_page_indices
+    )
     if not paths:
         return None
     dest = output or (directory / "combined.pdf")

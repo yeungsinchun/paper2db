@@ -13,6 +13,11 @@ from pathlib import Path
 
 import pymupdf as fitz
 
+from formula_sheet import (
+    exported_index_to_pdf,
+    exported_range_to_pdf_pages,
+    formula_pdf_indices,
+)
 from png_pdf import append_pdf_page_a4
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,11 +44,27 @@ def lq_source_pdf(year: str) -> Path | None:
     return None
 
 
-def load_starts(year: str) -> list[dict]:
+def load_starts_meta(year: str) -> dict:
     path = OUTPUT_LQ / year / "starts.json"
     if not path.is_file():
-        return []
-    return list(json.loads(path.read_text(encoding="utf-8")).get("questions") or [])
+        return {"questions": [], "pages": 0}
+    data = json.loads(path.read_text(encoding="utf-8"))
+    data.setdefault("questions", [])
+    return data
+
+
+def load_starts(year: str) -> list[dict]:
+    return list(load_starts_meta(year).get("questions") or [])
+
+
+def exported_page_count(meta: dict, questions: list[dict] | None = None) -> int:
+    questions = questions if questions is not None else list(meta.get("questions") or [])
+    stored = int(meta.get("pages") or 0)
+    if stored:
+        return stored
+    if not questions:
+        return 0
+    return max(int(item["page_to"]) for item in questions) + 1
 
 
 def question_range(year: str, qn: int) -> tuple[int, int] | None:
@@ -53,26 +74,63 @@ def question_range(year: str, qn: int) -> tuple[int, int] | None:
     return None
 
 
+def skip_formula_pdf_pages(src: fitz.Document, meta: dict) -> set[int]:
+    if "formula_pdf_pages" in meta:
+        stored = {int(i) for i in (meta.get("formula_pdf_pages") or [])}
+        if stored:
+            first = min(stored)
+            return set(range(first, len(src))) if first < len(src) else stored
+        return set()
+    n_exported = exported_page_count(meta)
+    if "formula_pages" in meta:
+        exported = {int(i) for i in (meta.get("formula_pages") or [])}
+        if exported and n_exported:
+            found: set[int] = set()
+            for png_i in exported:
+                found.update(exported_index_to_pdf(png_i, n_exported, len(src)))
+            if found:
+                return set(range(min(found), len(src)))
+        return set()
+    from_index = 0
+    questions = list(meta.get("questions") or [])
+    if questions:
+        last_from = max(int(item["page_from"]) for item in questions)
+        mapped = exported_index_to_pdf(last_from, n_exported or len(src), len(src))
+        if mapped:
+            from_index = mapped[0]
+    return formula_pdf_indices(src, from_index=from_index)
+
+
 def write_year_review_pdfs(year: str) -> None:
     source = lq_source_pdf(year)
     if source is None or not source.is_file():
         print(f"skip LQ PDF review {year}: missing paper/lq PDF")
         return
-    questions = load_starts(year)
+    meta = load_starts_meta(year)
+    questions = list(meta.get("questions") or [])
     out_dir = OUTPUT_LQ / year
     out_dir.mkdir(parents=True, exist_ok=True)
     src = fitz.open(source)
     try:
+        n_exported = exported_page_count(meta, questions)
+        formula_pdf = skip_formula_pdf_pages(src, meta)
         combined = fitz.open()
-        first_q_page = {}
+        first_q_pdf: dict[int, int] = {}
         for item in questions:
             qn = int(item["q"])
-            page_from = int(item["page_from"])
-            if page_from not in first_q_page:
-                first_q_page[page_from] = qn
+            mapped = exported_range_to_pdf_pages(
+                int(item["page_from"]),
+                int(item["page_from"]),
+                n_exported or len(src),
+                len(src),
+            )
+            if mapped and mapped[0] not in first_q_pdf:
+                first_q_pdf[mapped[0]] = qn
         try:
             for pno in range(len(src)):
-                qn = first_q_page.get(pno)
+                if pno in formula_pdf:
+                    continue
+                qn = first_q_pdf.get(pno)
                 label = f"{year} Q{qn}" if qn is not None else None
                 append_pdf_page_a4(combined, src, pno, label=label)
             dest = out_dir / "combined.pdf"
@@ -87,12 +145,16 @@ def write_year_review_pdfs(year: str) -> None:
                 qn = int(item["q"])
                 page_from = int(item["page_from"])
                 page_to = int(item["page_to"])
-                if page_from >= len(src):
-                    continue
-                page_to = min(page_to, len(src) - 1)
-                for pno in range(page_from, page_to + 1):
-                    label = f"{year} Q{qn}" if pno == page_from else None
+                pdf_pages = exported_range_to_pdf_pages(
+                    page_from, page_to, n_exported or len(src), len(src)
+                )
+                first = True
+                for pno in pdf_pages:
+                    if pno in formula_pdf:
+                        continue
+                    label = f"{year} Q{qn}" if first else None
                     append_pdf_page_a4(questions_pdf, src, pno, label=label)
+                    first = False
             dest = out_dir / "questions.pdf"
             questions_pdf.save(dest, garbage=4, deflate=True)
             print(
@@ -127,16 +189,23 @@ def write_section_questions_pdf(
             page_from, page_to = span
             src = fitz.open(source)
             try:
-                if page_from >= len(src):
-                    continue
-                page_to = min(page_to, len(src) - 1)
-                for pno in range(page_from, page_to + 1):
+                meta = load_starts_meta(year)
+                n_exported = exported_page_count(meta)
+                formula_pdf = skip_formula_pdf_pages(src, meta)
+                pdf_pages = exported_range_to_pdf_pages(
+                    page_from, page_to, n_exported or len(src), len(src)
+                )
+                first = True
+                for pno in pdf_pages:
+                    if pno in formula_pdf:
+                        continue
                     heading = title if (title and not title_used) else None
-                    label = f"{year} Q{qn}" if pno == page_from else None
+                    label = f"{year} Q{qn}" if first else None
                     append_pdf_page_a4(
                         document, src, pno, title=heading, label=label
                     )
                     title_used = True
+                    first = False
                     written += 1
             finally:
                 src.close()

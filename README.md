@@ -58,7 +58,7 @@ When no API key is set, both MC and LQ use the keyword classifiers.
 1. **mc-anchors** - blue dots on each MC paper; **you must review** `output/<year>-intermediate/anchor.pdf`
 2. **mc-split** - crop clean `qN.png` into `output/<year>/` + A4 `combined.pdf`
 3. **lq-pages** - export LQ pages + `starts.json`
-4. **lq-crops** - whole exam page stack per question (`page_from`..`page_to`); A4 `questions.pdf` from the source paper (no within-page crop)
+4. **lq-crops** - whole exam page stack per question (`page_from`..`page_to`); A4 `questions.pdf` from the source paper (no within-page crop; trailing data/formulae sheets excluded)
 5. **lq-answers** - marking-scheme answer crops under `ans/`
 6. **keys** - MC keys + correct-% → `classified/mc/answer_keys.json`
 7. **classify-mc** - 27 syllabus sections (LLM if keyed, else keywords)

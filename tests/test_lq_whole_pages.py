@@ -8,6 +8,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import pymupdf as fitz
 from PIL import Image
@@ -148,6 +149,95 @@ class TestLqWholePages(unittest.TestCase):
                 self.assertIn("2012 Q9", texts[4])
             finally:
                 document.close()
+
+    def test_last_question_stack_and_pdf_exclude_formulae_sheet(self) -> None:
+        crop = load_module("crop_lq_from_pages", ROOT / "scripts" / "crop_lq_from_pages.py")
+        preprocess = load_module("preprocess_lq", ROOT / "scripts" / "preprocess_lq.py")
+        review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            paper = tmp_path / "paper"
+            paper.mkdir()
+            src_path = paper / "2099p1b.pdf"
+            doc = fitz.open()
+            try:
+                page = doc.new_page(width=400, height=500)
+                page.insert_text((40, 80), "1. A trolley moves at constant speed.", fontsize=14)
+                page.insert_text((40, 120), "QUESTION-BODY", fontsize=14)
+                page = doc.new_page(width=400, height=500)
+                page.insert_text(
+                    (40, 80),
+                    "List of data, formulae and relationships",
+                    fontsize=14,
+                )
+                page.insert_text((40, 120), "molar gas constant R = 8.31", fontsize=12)
+                page = doc.new_page(width=400, height=500)
+                page.insert_text((40, 80), "Rectilinear motion v = u + at", fontsize=14)
+                page.insert_text((40, 120), "SHEET-CONTINUATION", fontsize=14)
+                doc.save(src_path)
+            finally:
+                doc.close()
+
+            out = tmp_path / "lq" / "2099"
+            out.mkdir(parents=True)
+            with mock.patch.object(
+                preprocess, "find_question_starts", return_value=[(1, 0, 20.0)]
+            ):
+                written = preprocess.process_one(
+                    src_path,
+                    out,
+                    cover_pages=0,
+                    scale=1.0,
+                    max_questions=12,
+                    crop_questions_flag=False,
+                )
+            self.assertEqual(written, 1)
+            meta = json.loads((out / "starts.json").read_text(encoding="utf-8"))
+            self.assertEqual(meta["questions"][0]["page_from"], 0)
+            self.assertEqual(meta["questions"][0]["page_to"], 0)
+            self.assertEqual(meta["formula_pages"], [1, 2])
+
+            review.PAPER_LQ = paper
+            review.OUTPUT_LQ = tmp_path / "lq"
+            crop.lq_source_pdf = review.lq_source_pdf
+            crop.write_year_review_pdfs = review.write_year_review_pdfs
+            written_crops = crop.build_year(out)
+            self.assertEqual(written_crops, 1)
+            stacked = Image.open(out / "q1.png")
+            try:
+                self.assertEqual(stacked.size[1], 500)
+            finally:
+                stacked.close()
+
+            questions_pdf = fitz.open(out / "questions.pdf")
+            try:
+                texts = "\n".join(page.get_text() for page in questions_pdf)
+                self.assertEqual(len(questions_pdf), 1)
+                self.assertIn("QUESTION-BODY", texts)
+                self.assertNotIn("formulae and relationships", texts.lower())
+                self.assertNotIn("SHEET-CONTINUATION", texts)
+            finally:
+                questions_pdf.close()
+
+            combined = fitz.open(out / "combined.pdf")
+            try:
+                texts = "\n".join(page.get_text() for page in combined)
+                self.assertNotIn("formulae and relationships", texts.lower())
+                self.assertNotIn("SHEET-CONTINUATION", texts)
+                self.assertIn("QUESTION-BODY", texts)
+            finally:
+                combined.close()
+
+            dest = tmp_path / "section-questions.pdf"
+            written_section = review.write_section_questions_pdf([("2099", 1)], dest)
+            self.assertEqual(written_section, 1)
+            section = fitz.open(dest)
+            try:
+                text = section[0].get_text()
+                self.assertIn("QUESTION-BODY", text)
+                self.assertNotIn("formulae and relationships", text.lower())
+            finally:
+                section.close()
 
     def test_empty_section_questions_pdf_returns_without_error(self) -> None:
         review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")

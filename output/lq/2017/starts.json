@@ -57,9 +57,17 @@
     {
       "q": 10,
       "page_from": 16,
-      "page_to": 18,
+      "page_to": 16,
       "y": 80.0
     }
   ],
-  "pages": 19
+  "pages": 19,
+  "formula_pages": [
+    17,
+    18
+  ],
+  "formula_pdf_pages": [
+    18,
+    19
+  ]
 }
