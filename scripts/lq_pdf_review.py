@@ -39,11 +39,15 @@ def lq_source_pdf(year: str) -> Path | None:
     return None
 
 
-def load_starts(year: str) -> list[dict]:
+def load_starts_meta(year: str) -> dict:
     path = OUTPUT_LQ / year / "starts.json"
     if not path.is_file():
-        return []
-    return list(json.loads(path.read_text(encoding="utf-8")).get("questions") or [])
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_starts(year: str) -> list[dict]:
+    return list(load_starts_meta(year).get("questions") or [])
 
 
 def question_range(year: str, qn: int) -> tuple[int, int] | None:
@@ -51,6 +55,18 @@ def question_range(year: str, qn: int) -> tuple[int, int] | None:
         if int(item["q"]) == qn:
             return int(item["page_from"]), int(item["page_to"])
     return None
+
+
+def pdf_page_offset(year: str, src_len: int) -> int:
+    """Map starts.json exam-page indices onto the source PDF.
+
+    preprocess_lq skips the cover (default cover_pages=1), so starts.json
+    page 0 is source PDF page 1 whenever the PDF has one extra page.
+    """
+    pages = load_starts_meta(year).get("pages")
+    if isinstance(pages, int) and src_len == pages + 1:
+        return 1
+    return 0
 
 
 def write_year_review_pdfs(year: str) -> None:
@@ -63,6 +79,7 @@ def write_year_review_pdfs(year: str) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     src = fitz.open(source)
     try:
+        offset = pdf_page_offset(year, len(src))
         combined = fitz.open()
         first_q_page = {}
         for item in questions:
@@ -72,7 +89,8 @@ def write_year_review_pdfs(year: str) -> None:
                 first_q_page[page_from] = qn
         try:
             for pno in range(len(src)):
-                qn = first_q_page.get(pno)
+                exam_index = pno - offset
+                qn = first_q_page.get(exam_index) if exam_index >= 0 else None
                 label = f"{year} Q{qn}" if qn is not None else None
                 append_pdf_page_a4(combined, src, pno, label=label)
             dest = out_dir / "combined.pdf"
@@ -87,11 +105,13 @@ def write_year_review_pdfs(year: str) -> None:
                 qn = int(item["q"])
                 page_from = int(item["page_from"])
                 page_to = int(item["page_to"])
-                if page_from >= len(src):
+                src_from = page_from + offset
+                src_to = page_to + offset
+                if src_from >= len(src):
                     continue
-                page_to = min(page_to, len(src) - 1)
-                for pno in range(page_from, page_to + 1):
-                    label = f"{year} Q{qn}" if pno == page_from else None
+                src_to = min(src_to, len(src) - 1)
+                for pno in range(src_from, src_to + 1):
+                    label = f"{year} Q{qn}" if pno == src_from else None
                     append_pdf_page_a4(questions_pdf, src, pno, label=label)
             dest = out_dir / "questions.pdf"
             questions_pdf.save(dest, garbage=4, deflate=True)
@@ -127,12 +147,15 @@ def write_section_questions_pdf(
             page_from, page_to = span
             src = fitz.open(source)
             try:
-                if page_from >= len(src):
+                offset = pdf_page_offset(year, len(src))
+                src_from = page_from + offset
+                src_to = page_to + offset
+                if src_from >= len(src):
                     continue
-                page_to = min(page_to, len(src) - 1)
-                for pno in range(page_from, page_to + 1):
+                src_to = min(src_to, len(src) - 1)
+                for pno in range(src_from, src_to + 1):
                     heading = title if (title and not title_used) else None
-                    label = f"{year} Q{qn}" if pno == page_from else None
+                    label = f"{year} Q{qn}" if pno == src_from else None
                     append_pdf_page_a4(
                         document, src, pno, title=heading, label=label
                     )

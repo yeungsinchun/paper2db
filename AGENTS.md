@@ -4,7 +4,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - Day-to-day entry is `./pipeline` (stages via `--list-stages`, `--from`, `--only`, `--years`, `--force`, `--yes`). Prefer it over calling `scripts/*.py` or `./segment` directly.
 - Quality bar and failure definitions: `python scripts/quality_audit.py` → `classified/quality_audit.json`. Captain walkthrough: `.lavish/pipeline-review/` (LQ Step C uses multi-page fit previews so whole `page_from`..`page_to` stacks are visible). PR screenshot pack: `.lavish/pr-evidence/`. MC/LQ banks: `.lavish/classified-review/` and `.lavish/lq-classified-review/`.
-- Human gates that matter: review `output/<year>-intermediate/anchor.pdf` before MC split; skim `classified/mc/uncertain.csv` after classify. Hard MC pages live in `scripts/overrides_YYYY.json` (each counts toward the ≤5% manual-tuning budget). LQ uses whole exam pages only (`page_from`..`page_to`) - no within-page crop.
+- Human gates that matter: review `output/<year>-intermediate/anchor.pdf` before MC split; skim `classified/mc/uncertain.csv` after classify. Hard MC pages live in `scripts/overrides_YYYY.json` (each counts toward the ≤5% manual-tuning budget). LQ uses whole exam pages only (`page_from`..`page_to`) - no within-page crop. `output/**/pages/` is gitignored; `scripts/crop_lq_from_pages.py` exports missing pages from `paper/lq` without rewriting `starts.json`, then restacks `qN.png`. Answer crops under `ans/` stay cropped.
 - Intermediate dirs (`output/*-intermediate/`, page PNGs) are gitignored; regenerate with `./pipeline --only mc-anchors --years YYYY --force --yes` when you need anchor evidence.
 
 ## Maintaining this file

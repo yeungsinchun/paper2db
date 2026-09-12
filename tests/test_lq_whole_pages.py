@@ -157,6 +157,139 @@ class TestLqWholePages(unittest.TestCase):
             self.assertEqual(written, 0)
             self.assertFalse(dest.is_file())
 
+    def test_year_review_skips_cover_when_starts_pages_is_one_less(self) -> None:
+        review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            paper = Path(tmp) / "paper"
+            paper.mkdir()
+            src = fitz.open()
+            try:
+                for index in range(11):
+                    page = src.new_page(width=500, height=700)
+                    page.insert_text((40, 80), f"PAGE-{index}", fontsize=14)
+                src.save(paper / "2012p1b.pdf")
+            finally:
+                src.close()
+            out = Path(tmp) / "lq" / "2012"
+            out.mkdir(parents=True)
+            (out / "starts.json").write_text(
+                json.dumps(
+                    {
+                        "pages": 10,
+                        "questions": [
+                            {"q": 1, "page_from": 0, "page_to": 0},
+                            {"q": 2, "page_from": 0, "page_to": 1},
+                            {"q": 9, "page_from": 4, "page_to": 5},
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            review.PAPER_LQ = paper
+            review.OUTPUT_LQ = Path(tmp) / "lq"
+            review.write_year_review_pdfs("2012")
+            combined = fitz.open(out / "combined.pdf")
+            try:
+                texts = [page.get_text() for page in combined]
+                self.assertIn("PAGE-0", texts[0])
+                self.assertNotIn("2012 Q1", texts[0])
+                self.assertIn("2012 Q1", texts[1])
+                self.assertIn("PAGE-1", texts[1])
+                self.assertIn("2012 Q9", texts[5])
+                self.assertIn("PAGE-5", texts[5])
+            finally:
+                combined.close()
+            questions = fitz.open(out / "questions.pdf")
+            try:
+                first = questions[0].get_text()
+                self.assertIn("2012 Q1", first)
+                self.assertIn("PAGE-1", first)
+                self.assertNotIn("PAGE-0", first)
+            finally:
+                questions.close()
+
+    def test_sync_classified_copies_question_png_not_answer_crop(self) -> None:
+        crop = load_module("crop_lq_from_pages", ROOT / "scripts" / "crop_lq_from_pages.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            src_dir = root / "output" / "lq" / "2099"
+            src_dir.mkdir(parents=True)
+            Image.new("RGB", (50, 80), (255, 255, 255)).save(src_dir / "q1.png")
+            classified = (
+                root
+                / "classified"
+                / "lq"
+                / "01_Heat_and_Gases"
+                / "03_Change_of_State"
+            )
+            classified.mkdir(parents=True)
+            Image.new("RGB", (20, 10), (0, 0, 0)).save(classified / "2099-q1-ans.png")
+            csv_path = root / "classified" / "lq" / "classification.csv"
+            csv_path.write_text(
+                "Year,Question,Primary,AllSections,Reason,PNG,AnswerPNG\n"
+                "2099,1,3,3,test,output/lq/2099/q1.png,output/lq/2099/ans/q1.png\n",
+                encoding="utf-8",
+            )
+            crop.ROOT = root
+            copied = crop.sync_classified_question_pngs(["2099"])
+            self.assertEqual(copied, 1)
+            with Image.open(classified / "2099-q1.png") as question:
+                self.assertEqual(question.size, (50, 80))
+            with Image.open(classified / "2099-q1-ans.png") as answer:
+                self.assertEqual(answer.size, (20, 10))
+
+
+class TestCommittedLqWholePages(unittest.TestCase):
+    def test_2026_pdf_offset_skips_cover(self) -> None:
+        review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")
+        source = review.lq_source_pdf("2026")
+        self.assertIsNotNone(source)
+        document = fitz.open(source)
+        try:
+            self.assertEqual(review.pdf_page_offset("2026", len(document)), 1)
+        finally:
+            document.close()
+
+    def test_2026_q1_is_full_exam_page_not_part_a_ycrop(self) -> None:
+        path = ROOT / "output" / "lq" / "2026" / "q1.png"
+        self.assertTrue(path.is_file())
+        image = Image.open(path)
+        width, height = image.size
+        image.close()
+        # Leftover y-crop was 2065x1024 (wider than tall, part (a) only).
+        self.assertGreater(height, width)
+        self.assertGreater(height, 2000)
+
+    def test_2012_q9_includes_continuation_page(self) -> None:
+        Image.MAX_IMAGE_PIXELS = 250_000_000
+        path = ROOT / "output" / "lq" / "2012" / "q9.png"
+        self.assertTrue(path.is_file())
+        with Image.open(path) as image:
+            width, height = image.size
+        # Two stacked exam pages. A single leftover page is ~1.4x width.
+        self.assertGreater(height / width, 2.0)
+
+    def test_2026_combined_does_not_label_cover_as_q1(self) -> None:
+        path = ROOT / "output" / "lq" / "2026" / "combined.pdf"
+        self.assertTrue(path.is_file())
+        document = fitz.open(path)
+        try:
+            self.assertNotIn("2026 Q1", document[0].get_text())
+            self.assertIn("2026 Q1", document[1].get_text())
+        finally:
+            document.close()
+
+    def test_2012_questions_pdf_q9_starts_on_exam_page_not_previous(self) -> None:
+        questions = fitz.open(ROOT / "output" / "lq" / "2012" / "questions.pdf")
+        try:
+            texts = [page.get_text() for page in questions]
+            q9 = next(i for i, text in enumerate(texts) if "2012 Q9" in text)
+            # Continuation page is unlabeled and immediately follows.
+            self.assertGreaterEqual(len(questions), q9 + 2)
+            self.assertNotIn("2012 Q9", questions[q9 + 1].get_text())
+        finally:
+            questions.close()
+
 
 if __name__ == "__main__":
     unittest.main()

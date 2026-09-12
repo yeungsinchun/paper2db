@@ -26,6 +26,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import subprocess
@@ -134,13 +135,71 @@ def mc_output_ready(year: str) -> bool:
 
 def lq_pages_ready(year: str) -> bool:
     year_dir = ROOT / "output" / "lq" / year
-    return (year_dir / "starts.json").is_file() and (year_dir / "pages").is_dir()
+    pages = year_dir / "pages"
+    return (
+        (year_dir / "starts.json").is_file()
+        and pages.is_dir()
+        and any(pages.glob("page*.png"))
+    )
+
+
+def _png_size(path: Path) -> tuple[int, int]:
+    """Width and height from a PNG IHDR (no raster decode)."""
+    import struct
+
+    with path.open("rb") as fh:
+        signature = fh.read(8)
+        if signature != b"\x89PNG\r\n\x1a\n":
+            raise ValueError(f"{path} is not a PNG")
+        _length, chunk = struct.unpack(">I4s", fh.read(8))
+        if chunk != b"IHDR":
+            raise ValueError(f"{path} is missing IHDR")
+        width, height = struct.unpack(">II", fh.read(8))
+        return int(width), int(height)
+
+
+def _page_png_sizes(pages_dir: Path) -> list[tuple[int, int]]:
+    sizes: list[tuple[int, int]] = []
+    index = 0
+    while True:
+        path = pages_dir / f"page{index:03d}.png"
+        if not path.is_file():
+            break
+        sizes.append(_png_size(path))
+        index += 1
+    return sizes
 
 
 def lq_crops_ready(year: str) -> bool:
+    """True only when every qN.png is a whole page_from..page_to stack.
+
+    Leftover within-page y-crops (or qN.png with no pages/ export) are not ready.
+    """
     year_dir = ROOT / "output" / "lq" / year
-    pngs = list(year_dir.glob("q*.png"))
-    return len(pngs) >= 8
+    meta_path = year_dir / "starts.json"
+    pages_dir = year_dir / "pages"
+    if not meta_path.is_file() or not pages_dir.is_dir():
+        return False
+    questions = json.loads(meta_path.read_text(encoding="utf-8")).get("questions") or []
+    if not questions:
+        return False
+    page_sizes = _page_png_sizes(pages_dir)
+    if not page_sizes:
+        return False
+    for item in questions:
+        dest = year_dir / f"q{int(item['q'])}.png"
+        if not dest.is_file():
+            return False
+        page_from = int(item["page_from"])
+        page_to = int(item["page_to"])
+        if page_from < 0 or page_to >= len(page_sizes) or page_to < page_from:
+            return False
+        expected_w = max(size[0] for size in page_sizes[page_from : page_to + 1])
+        expected_h = sum(size[1] for size in page_sizes[page_from : page_to + 1])
+        width, height = _png_size(dest)
+        if abs(width - expected_w) > 2 or abs(height - expected_h) > 2:
+            return False
+    return True
 
 
 def lq_answers_ready(year: str) -> bool:
@@ -246,7 +305,13 @@ def stage_lq_pages(years: list[str] | None, *, force: bool) -> None:
     for pdf, year in papers:
         out = ROOT / "output" / "lq" / year
         if lq_pages_ready(year) and not force:
-            print(f"skip lq-pages {year}: starts.json already present")
+            print(f"skip lq-pages {year}: starts.json and pages/ already present")
+            continue
+        starts = out / "starts.json"
+        if starts.is_file() and not force:
+            print(f"\n=== LQ pages export (keep starts.json): {year} ({pdf.name}) ===")
+            out.mkdir(parents=True, exist_ok=True)
+            run_script("crop_lq_from_pages.py", "--years", year, "--pages-only")
             continue
         print(f"\n=== LQ pages: {year} ({pdf.name}) ===")
         out.mkdir(parents=True, exist_ok=True)
