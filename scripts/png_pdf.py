@@ -140,7 +140,7 @@ def append_pdf_page_a4(
     label: str | None = None,
     clip: fitz.Rect | None = None,
 ) -> None:
-    """Copy one source PDF page onto a new portrait A4 page (no raster crop)."""
+    """Copy one source PDF page (or clip) onto a new portrait A4 page (no raster crop)."""
     page = document.new_page(width=A4_WIDTH, height=A4_HEIGHT)
     header = 0.0
     if title:

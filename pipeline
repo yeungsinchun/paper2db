@@ -3,7 +3,7 @@
 
 Reads PDFs under paper/{mc,lq,ans}/ and writes:
   output/<year>/          MC question crops + combined.pdf
-  output/lq/<year>/       LQ pages, question crops, answer crops
+  output/lq/<year>/       LQ pages, whole-page qN.png, answer crops, A4 review PDFs
   classified/mc/          MC section folders, CSVs, section PDFs, answer keys
   classified/lq/          LQ section folders, CSVs, section PDFs
   .lavish/pipeline-review/        step-by-step HTML (intermediates + finals)
