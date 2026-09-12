@@ -3,6 +3,7 @@
 """Split HKDSE Physics Paper 1B (LQ) into upright full pages (+ optional crops).
 
 Default: export exam pages and starts.json (no within-page question crops).
+starts.json ranges omit trailing data/formulae sheets (see formula_sheet.py).
 Answer crops stay in preprocess_lq_answers.py.
 """
 from __future__ import annotations

@@ -86,7 +86,7 @@ Captain review surface: `.lavish/pipeline-review/index.html` (step-by-step inter
 
 1. **Anchors** - every blue dot beside the question number with a clear gap (not on options or diagrams). Wrong anchors poison every later step. Use `scripts/overrides_YYYY.json` for hard pages (each counts toward the 5% budget).
 2. **Uncertain MC** - skim `classified/mc/uncertain.csv` and spot-check a few section folders.
-3. **LQ pages** - skim `output/lq/<year>/questions.pdf` if a question's page range looks wrong (`starts.json`).
+3. **LQ pages** - skim `output/lq/<year>/questions.pdf` if a question's page range looks wrong (`starts.json`). The last question should stop before any trailing data/formulae sheet.
 4. Trust the section review PDFs under `classified/*/.../combined.pdf` (or `questions.pdf`) rather than browsing PNG lists. Those PDFs are portrait A4 with year and question labels.
 5. Skim `.lavish/pipeline-review/` for the measured rates before accepting a new year.
 

@@ -2,7 +2,8 @@
 """Build LQ review PDFs by splitting source Paper 1B PDFs onto A4 pages.
 
 No PNG raster and no within-page crop. page_from..page_to from starts.json
-are whole exam pages.
+are whole exam pages. Trailing data/formulae sheets are omitted
+(see formula_sheet.py).
 """
 from __future__ import annotations
 

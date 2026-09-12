@@ -20,7 +20,7 @@ from pathlib import Path
 
 import pymupdf as fitz
 
-from classify_mc_llm import BOOK_NAMES, SECTION_BY_NUM, SECTIONS, year_key
+from classify_mc_llm import SECTION_BY_NUM, SECTIONS, year_key
 from png_pdf import YEAR_Q_PNG, place_pngs_on_a4, section_heading_title
 from lq_pdf_review import write_section_questions_pdf
 
