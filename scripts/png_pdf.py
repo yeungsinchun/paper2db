@@ -138,6 +138,7 @@ def append_pdf_page_a4(
     *,
     title: str | None = None,
     label: str | None = None,
+    clip: fitz.Rect | None = None,
 ) -> None:
     """Copy one source PDF page onto a new portrait A4 page (no raster crop)."""
     page = document.new_page(width=A4_WIDTH, height=A4_HEIGHT)
@@ -165,8 +166,8 @@ def append_pdf_page_a4(
         A4_WIDTH - A4_MARGIN,
         A4_HEIGHT - A4_MARGIN,
     )
-    src_page = src[pno]
-    src_w, src_h = src_page.rect.width, src_page.rect.height
+    src_rect = clip if clip is not None else src[pno].rect
+    src_w, src_h = src_rect.width, src_rect.height
     scale = min(printable.width / src_w, printable.height / src_h)
     dest_w, dest_h = src_w * scale, src_h * scale
     target = fitz.Rect(
@@ -175,7 +176,7 @@ def append_pdf_page_a4(
         printable.x0 + dest_w,
         printable.y0 + dest_h,
     )
-    page.show_pdf_page(target, src, pno)
+    page.show_pdf_page(target, src, pno, clip=clip)
 
 
 def section_heading_title(section_num: int, section_name: str) -> str:
