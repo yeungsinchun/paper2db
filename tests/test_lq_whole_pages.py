@@ -208,6 +208,97 @@ class TestLqWholePages(unittest.TestCase):
             finally:
                 questions.close()
 
+    def _write_two_up_fixture(self, review, tmp: Path, *, extra_q: dict | None = None):
+        paper = tmp / "paper"
+        paper.mkdir()
+        src = fitz.open()
+        try:
+            cover = src.new_page(width=500, height=700)
+            cover.insert_text((40, 80), "COVER-MARK", fontsize=14)
+            for index in range(3):
+                page = src.new_page(width=1000, height=700)
+                page.insert_text((40, 80), f"LEFT-{index}", fontsize=14)
+                page.insert_text((540, 80), f"RIGHT-{index}", fontsize=14)
+            src.save(paper / "2099p1b.pdf")
+        finally:
+            src.close()
+        out = tmp / "lq" / "2099"
+        out.mkdir(parents=True)
+        questions = [
+            {"q": 1, "page_from": 0, "page_to": 0},
+            {"q": 2, "page_from": 1, "page_to": 1},
+            {"q": 3, "page_from": 4, "page_to": 5},
+        ]
+        if extra_q is not None:
+            questions.append(extra_q)
+        (out / "starts.json").write_text(
+            json.dumps({"pages": 6, "questions": questions}),
+            encoding="utf-8",
+        )
+        review.PAPER_LQ = paper
+        review.OUTPUT_LQ = tmp / "lq"
+        return out
+
+    def test_year_review_maps_two_up_cover_and_keeps_high_pages(self) -> None:
+        review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            out = self._write_two_up_fixture(review, Path(tmp))
+            self.assertEqual(review.pdf_page_offset("2099", 4), 1)
+            self.assertEqual(review.source_page_layout(6, 4), (1, 2))
+            self.assertEqual(review.map_exam_page("2099", 4, 4), (3, 0))
+            self.assertEqual(review.map_exam_page("2099", 5, 4), (3, 1))
+            review.write_year_review_pdfs("2099")
+            combined = fitz.open(out / "combined.pdf")
+            try:
+                texts = [page.get_text() for page in combined]
+                self.assertEqual(len(texts), 7)
+                self.assertIn("COVER-MARK", texts[0])
+                self.assertNotIn("2099 Q1", texts[0])
+                self.assertIn("2099 Q1", texts[1])
+                self.assertIn("LEFT-0", texts[1])
+                self.assertNotIn("RIGHT-0", texts[1])
+                self.assertNotIn("COVER-MARK", texts[1])
+                self.assertIn("2099 Q3", texts[5])
+                self.assertIn("LEFT-2", texts[5])
+                self.assertIn("RIGHT-2", texts[6])
+            finally:
+                combined.close()
+            questions = fitz.open(out / "questions.pdf")
+            try:
+                texts = [page.get_text() for page in questions]
+                self.assertEqual(len(texts), 4)
+                self.assertIn("2099 Q1", texts[0])
+                self.assertIn("LEFT-0", texts[0])
+                self.assertNotIn("COVER-MARK", texts[0])
+                self.assertNotIn("RIGHT-0", texts[0])
+                self.assertIn("2099 Q3", texts[2])
+                self.assertIn("LEFT-2", texts[2])
+                self.assertIn("RIGHT-2", texts[3])
+            finally:
+                questions.close()
+            dest = Path(tmp) / "section.pdf"
+            written = review.write_section_questions_pdf([("2099", 3)], dest)
+            self.assertEqual(written, 2)
+            section = fitz.open(dest)
+            try:
+                texts = [page.get_text() for page in section]
+                self.assertIn("2099 Q3", texts[0])
+                self.assertIn("LEFT-2", texts[0])
+                self.assertIn("RIGHT-2", texts[1])
+            finally:
+                section.close()
+
+    def test_year_review_fails_on_out_of_range_exam_pages(self) -> None:
+        review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")
+        with tempfile.TemporaryDirectory() as tmp:
+            self._write_two_up_fixture(
+                review,
+                Path(tmp),
+                extra_q={"q": 9, "page_from": 10, "page_to": 11},
+            )
+            with self.assertRaises(SystemExit):
+                review.write_year_review_pdfs("2099")
+
     def test_sync_classified_copies_question_png_not_answer_crop(self) -> None:
         crop = load_module("crop_lq_from_pages", ROOT / "scripts" / "crop_lq_from_pages.py")
         with tempfile.TemporaryDirectory() as tmp:
@@ -247,6 +338,32 @@ class TestCommittedLqWholePages(unittest.TestCase):
         document = fitz.open(source)
         try:
             self.assertEqual(review.pdf_page_offset("2026", len(document)), 1)
+            self.assertEqual(
+                review.source_page_layout(
+                    review.load_starts_meta("2026").get("pages"), len(document)
+                ),
+                (1, 1),
+            )
+        finally:
+            document.close()
+
+    def test_2015_layout_is_cover_plus_two_up_spreads(self) -> None:
+        review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")
+        source = review.lq_source_pdf("2015")
+        self.assertIsNotNone(source)
+        document = fitz.open(source)
+        try:
+            src_len = len(document)
+            self.assertEqual(
+                review.source_page_layout(
+                    review.load_starts_meta("2015").get("pages"), src_len
+                ),
+                (1, 2),
+            )
+            self.assertEqual(review.pdf_page_offset("2015", src_len), 1)
+            self.assertEqual(review.map_exam_page("2015", 0, src_len), (1, 0))
+            self.assertEqual(review.map_exam_page("2015", 10, src_len), (6, 0))
+            self.assertEqual(review.map_exam_page("2015", 17, src_len), (9, 1))
         finally:
             document.close()
 

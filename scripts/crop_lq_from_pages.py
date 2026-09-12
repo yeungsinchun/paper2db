@@ -174,11 +174,6 @@ def main() -> None:
         action="store_true",
         help="Export missing pages/ without rewriting starts.json or qN.png",
     )
-    parser.add_argument(
-        "--skip-classified-sync",
-        action="store_true",
-        help="Do not copy rebuilt qN.png into classified/lq section folders",
-    )
     args = parser.parse_args()
     root = ROOT / "output" / "lq"
     total = 0
@@ -199,8 +194,7 @@ def main() -> None:
         print(f"Exported pages/ for {len(selected)} years")
         return
     print(f"Wrote {total} whole-page LQ question PNGs")
-    if not args.skip_classified_sync:
-        sync_classified_question_pngs(args.years)
+    sync_classified_question_pngs(args.years)
 
 
 if __name__ == "__main__":
