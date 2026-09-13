@@ -3,7 +3,9 @@
 
 Captain rule: long questions use full page_from..page_to pages only.
 Answer ruling stays on the page; marking-scheme answer crops are separate
-under ans/. Trailing data/formulae sheets are dropped from the stack.
+under ans/. Trailing data/formulae sheets and blank insert pages are dropped
+from the stack. Existing qN.png files are always rewritten so a stale
+within-page y-crop cannot survive a range-unchanged rebuild.
 """
 from __future__ import annotations
 
@@ -85,10 +87,6 @@ def build_year(year_dir: Path) -> int:
         print(f"  skip {year_dir.name}: missing starts")
         return 0
     meta = json.loads(meta_path.read_text(encoding="utf-8"))
-    old_ranges = {
-        int(item["q"]): (int(item["page_from"]), int(item["page_to"]))
-        for item in (meta.get("questions") or [])
-    }
     source = lq_source_pdf(year_dir.name)
     doc = fitz.open(source) if source is not None and source.is_file() else None
     try:
@@ -129,28 +127,23 @@ def build_year(year_dir: Path) -> int:
             )
             written += 1
     else:
+        for old in year_dir.glob("q*.png"):
+            old.unlink()
         for item in questions:
             question = int(item["q"])
-            new_range = (int(item["page_from"]), int(item["page_to"]))
             dest = year_dir / f"q{question}.png"
-            if old_ranges.get(question) == new_range and dest.is_file():
-                written += 1
-                continue
             stacked = stack_question_from_pdf(year_dir.name, item, meta)
             if stacked is None:
-                if dest.is_file():
-                    written += 1
-                else:
-                    print(
-                        f"  skip {year_dir.name} q{question}: "
-                        f"no pages/ and no source PDF stack"
-                    )
+                print(
+                    f"  skip {year_dir.name} q{question}: "
+                    f"no pages/ and no source PDF stack"
+                )
                 continue
             stacked.save(dest, format="PNG", optimize=False)
             print(
                 f"  {year_dir.name} q{question}.png "
                 f"{stacked.size[0]}x{stacked.size[1]} "
-                f"(pages {new_range[0]}..{new_range[1]}, from source PDF)"
+                f"(pages {int(item['page_from'])}..{int(item['page_to'])}, from source PDF)"
             )
             written += 1
 

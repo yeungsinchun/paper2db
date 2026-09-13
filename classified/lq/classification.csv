@@ -130,6 +130,7 @@ Year,Question,Primary,AllSections,Reason,PNG,AnswerPNG
 2024,10,9,9,"keywords: momentum, collision, conservation of momentum",output/lq/2024/q10.png,output/lq/2024/ans/q10.png
 2024,11,21,21,"keywords: resistance, circuit",output/lq/2024/q11.png,output/lq/2024/ans/q11.png
 2024,12,26,26,"keywords: half-life, activity, decay constant",output/lq/2024/q12.png,output/lq/2024/ans/q12.png
+2024,13,26,26,"keywords: half-life, activity, decay constant",output/lq/2024/q13.png,output/lq/2024/ans/q13.png
 2025,1,2,2,"keywords: specific heat, heat capacity",output/lq/2025/q1.png,output/lq/2025/ans/q1.png
 2025,2,21,21,"keywords: resistance; primary=max(S8,S10,S21)",output/lq/2025/q2.png,output/lq/2025/ans/q2.png
 2025,3,5,5,keywords: velocity-time,output/lq/2025/q3.png,output/lq/2025/ans/q3.png
@@ -154,15 +155,17 @@ Year,Question,Primary,AllSections,Reason,PNG,AnswerPNG
 2026,10,18,18,"keywords: refractive index, critical angle",output/lq/2026/q10.png,
 2026,11,5,5,"keywords: velocity-time, displacement-time",output/lq/2026/q11.png,
 2026,12,27,27;25,keywords: nuclear equation; dual with S25 (significant earlier part),output/lq/2026/q12.png,
-pp,1,4,4,fallback: gas cues,output/lq/pp/q1.png,
-pp,2,8,8,"keywords: kinetic energy, power",output/lq/pp/q2.png,
-pp,3,10,10,"keywords: projectile, horizontal range, angle of projection",output/lq/pp/q3.png,
-pp,4,5,5,fallback: weak keyword match -> Motion,output/lq/pp/q4.png,
-pp,5,13,13,keywords: wavelength,output/lq/pp/q5.png,
-pp,6,24,24,"keywords: generator; primary=max(S16,S24)",output/lq/pp/q6.png,
-pp,7,24,24,keywords: generator,output/lq/pp/q7.png,
-pp,8,22,22,"keywords: mains, domestic, live wire, neutral wire",output/lq/pp/q8.png,
-pp,9,5,5,fallback: weak keyword match -> Motion,output/lq/pp/q9.png,
-pp,10,5,5,fallback: weak keyword match -> Motion,output/lq/pp/q10.png,
-pp,11,21,21,keywords: resistance,output/lq/pp/q11.png,
-pp,12,24,24,"keywords: transformer; primary=max(S22,S24)",output/lq/pp/q12.png,
+pp,1,4,4,fallback: gas cues,output/lq/pp/q1.png,output/lq/pp/ans/q1.png
+pp,2,8,8,"keywords: kinetic energy, power",output/lq/pp/q2.png,output/lq/pp/ans/q2.png
+pp,3,10,10,"keywords: projectile, horizontal range, angle of projection",output/lq/pp/q3.png,output/lq/pp/ans/q3.png
+pp,4,5,5,fallback: weak keyword match -> Motion,output/lq/pp/q4.png,output/lq/pp/ans/q4.png
+pp,5,13,13,keywords: wavelength,output/lq/pp/q5.png,output/lq/pp/ans/q5.png
+pp,6,24,24,"keywords: generator; primary=max(S16,S24)",output/lq/pp/q6.png,output/lq/pp/ans/q6.png
+pp,7,24,24,keywords: generator,output/lq/pp/q7.png,output/lq/pp/ans/q7.png
+pp,8,22,22,"keywords: mains, domestic, live wire, neutral wire",output/lq/pp/q8.png,output/lq/pp/ans/q8.png
+pp,9,5,5,fallback: weak keyword match -> Motion,output/lq/pp/q9.png,output/lq/pp/ans/q9.png
+pp,10,5,5,fallback: weak keyword match -> Motion,output/lq/pp/q10.png,output/lq/pp/ans/q10.png
+pp,11,21,21,keywords: resistance,output/lq/pp/q11.png,output/lq/pp/ans/q11.png
+pp,12,24,24,"keywords: transformer; primary=max(S22,S24)",output/lq/pp/q12.png,output/lq/pp/ans/q12.png
+pp,13,24,24,"keywords: transformer; primary=max(S8,S22,S24)",output/lq/pp/q13.png,output/lq/pp/ans/q13.png
+pp,14,27,27;26,"keywords: fission, mev; dual with S26 (significant earlier part)",output/lq/pp/q14.png,output/lq/pp/ans/q14.png

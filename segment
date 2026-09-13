@@ -19,7 +19,7 @@ Page renders under output/**/pages/ are gitignored.
 Usage:
   ./segment paper.pdf output_dir/
   ./segment paper.pdf output_dir/ --type mc
-  ./segment paper.pdf output_dir/ --type lq --questions 12
+  ./segment paper.pdf output_dir/ --type lq --questions 16
 """
 from __future__ import annotations
 
@@ -285,7 +285,7 @@ def parse_args() -> argparse.Namespace:
         "--questions",
         type=int,
         default=None,
-        help="Question count (default: 36 for MC, 12 for LQ)",
+        help="Question count (default: 36 for MC, 16 for LQ)",
     )
     parser.add_argument(
         "--cover-pages",
@@ -348,7 +348,7 @@ def main() -> None:
     if args.step != "all":
         raise SystemExit("--step anchors/split only applies to MC papers")
 
-    max_questions = args.questions if args.questions is not None else 12
+    max_questions = args.questions if args.questions is not None else 16
     print("=== LQ: split exam pages (no question crops) ===")
     count = segment_lq(
         pdf,

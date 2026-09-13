@@ -1,8 +1,12 @@
-"""Detect HKDSE data / formulae sheets so they are not treated as exam questions.
+"""Detect trailing Paper 1B inserts so they are not treated as exam questions.
 
-Matches the official Paper 1B title plus the MC preprocess phrases. Once a
-sheet page is found, every later page is treated as part of the same trailing
-insert (continuation pages often list constants without repeating the title).
+Matches the official data/formulae sheet title plus blank HKEAA insert pages
+("Do not write on this page"). Once such a page is found, every later page is
+treated as part of the same trailing insert (formula continuation pages often
+list constants without repeating the title).
+
+A one-line "Sources of materials..." acknowledgement on the last question page
+is not an insert page; that page stays with the question.
 """
 from __future__ import annotations
 
@@ -22,12 +26,24 @@ FORMULA_SHEET_PHRASES = (
     "list of data",
     "formulae and relationships",
 )
+# Distinct from the per-question footer "Answers written in the margins...".
+INSERT_PAGE_PHRASES = (
+    "do not write on this page",
+    "answers written on this page will not be marked",
+)
 SCAN_WATERMARK_RE = re.compile(r"provided by|dse\.life", re.I)
 
 
 def is_formula_sheet_text(text: str) -> bool:
     lowered = text.lower()
     return any(phrase in lowered for phrase in FORMULA_SHEET_PHRASES)
+
+
+def is_trailing_insert_text(text: str) -> bool:
+    lowered = text.lower()
+    return is_formula_sheet_text(lowered) or any(
+        phrase in lowered for phrase in INSERT_PAGE_PHRASES
+    )
 
 
 def _ocr_png_bytes(data: bytes) -> str:
@@ -74,6 +90,22 @@ def is_formula_sheet_page(page: fitz.Page, *, ocr: bool = True) -> bool:
     return is_formula_sheet_text(ocr_pdf_page_text(page))
 
 
+def is_trailing_insert_page(page: fitz.Page, *, ocr: bool = True) -> bool:
+    native = page.get_text("text")
+    if is_trailing_insert_text(native):
+        return True
+    if not ocr:
+        return False
+    stripped = native.strip()
+    if (
+        stripped
+        and not SCAN_WATERMARK_RE.search(stripped)
+        and len(stripped) >= 6
+    ):
+        return False
+    return is_trailing_insert_text(ocr_pdf_page_text(page))
+
+
 def is_formula_sheet_image(image: Image.Image) -> bool:
     return is_formula_sheet_text(ocr_image_text(image))
 
@@ -90,7 +122,7 @@ def formula_pdf_indices(doc: fitz.Document, *, from_index: int = 0) -> set[int]:
     flags = [False] * len(doc)
     start = max(0, from_index)
     for index in range(start, len(doc)):
-        flags[index] = is_formula_sheet_page(doc[index])
+        flags[index] = is_trailing_insert_page(doc[index])
     return extend_trailing_hits(flags)
 
 
@@ -179,14 +211,14 @@ def clip_question_ranges(
 
 
 def refresh_starts_meta(meta: dict[str, Any], doc: fitz.Document | None) -> dict[str, Any]:
-    """Clip starts.json ranges and record formula/data sheet page indices."""
+    """Clip starts.json ranges and record trailing formula/insert page indices."""
     questions = [dict(item) for item in (meta.get("questions") or [])]
     n_exported = int(meta.get("pages") or 0)
     if not n_exported and questions:
         n_exported = max(int(item["page_to"]) for item in questions) + 1
     formula_pdf = {int(i) for i in (meta.get("formula_pdf_pages") or [])}
     formula_png = {int(i) for i in (meta.get("formula_pages") or [])}
-    if doc is not None and not formula_pdf and not formula_png:
+    if doc is not None:
         n_pdf = len(doc)
         from_index = 0
         if questions:
@@ -198,10 +230,8 @@ def refresh_starts_meta(meta: dict[str, Any], doc: fitz.Document | None) -> dict
         formula_png = exported_formula_indices(
             formula_pdf, n_exported or n_pdf, n_pdf
         )
-    elif doc is not None and formula_pdf and not formula_png:
-        formula_png = exported_formula_indices(
-            formula_pdf, n_exported or len(doc), len(doc)
-        )
+    elif formula_pdf and not formula_png:
+        formula_png = exported_formula_indices(formula_pdf, n_exported, n_exported)
     questions = clip_question_ranges(questions, formula_png)
     updated = dict(meta)
     updated["questions"] = questions

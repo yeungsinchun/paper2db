@@ -69,8 +69,14 @@
     {
       "q": 12,
       "page_from": 14,
-      "page_to": 17,
+      "page_to": 15,
       "y": 228.9
+    },
+    {
+      "q": 13,
+      "page_from": 16,
+      "page_to": 17,
+      "y": 80.0
     }
   ],
   "pages": 18,

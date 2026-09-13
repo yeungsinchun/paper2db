@@ -3,7 +3,8 @@
 """Split HKDSE Physics Paper 1B (LQ) into upright full pages (+ optional crops).
 
 Default: export exam pages and starts.json (no within-page question crops).
-starts.json ranges omit trailing data/formulae sheets (see formula_sheet.py).
+starts.json ranges omit trailing data/formulae sheets and blank insert pages
+(see formula_sheet.py).
 Answer crops stay in preprocess_lq_answers.py.
 """
 from __future__ import annotations
@@ -65,7 +66,7 @@ def parse_args() -> argparse.Namespace:
         default=9.0,
         help="Cap for auto native scale (memory / file size). ~8.3 ≈ 600 dpi.",
     )
-    parser.add_argument("--max-questions", type=int, default=12)
+    parser.add_argument("--max-questions", type=int, default=16)
     return parser.parse_args()
 
 
