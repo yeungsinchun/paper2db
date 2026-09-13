@@ -11,7 +11,7 @@ Failure definitions (count toward the captain's <=5% manual-tuning budget):
 
 Not counted as failures (documented separately):
   missing_answer_png - LQ answer crop absent (often no ans PDF for that year)
-  very_tall_lq       - LQ crops intentionally include answer lines (multi-page)
+  very_tall_lq       - LQ whole-page stacks are often tall (not a failure)
 
 Exit code 0 always when writing a report; use --strict to exit 1 if the
 manual-tuning rate exceeds --max-rate (default 0.05).

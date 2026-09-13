@@ -6,14 +6,13 @@ For each syllabus section that has at least one primary LQ:
   - answers.pdf    - marking-scheme answer crops packed on A4 (same order; skips missing)
   - performance.pdf - candidate-performance notes as text pages
 
-Skips empty sections. Overwrites existing PDFs by default.
+Skips sections with no classification rows. Overwrites existing PDFs by default.
 """
 from __future__ import annotations
 
 import argparse
 import csv
 import json
-import re
 import textwrap
 from collections import defaultdict
 from pathlib import Path
@@ -28,8 +27,6 @@ ROOT = Path(__file__).resolve().parents[1]
 CLASSIFIED_LQ = ROOT / "classified" / "lq"
 CSV_PATH = CLASSIFIED_LQ / "classification.csv"
 PERF_PATH = CLASSIFIED_LQ / "candidate_performance.json"
-
-YEAR_RE = re.compile(r"^(?P<year>\d{4}|pp|sap)$", re.I)
 
 
 def parse_args() -> argparse.Namespace:
@@ -53,19 +50,6 @@ def load_performance() -> dict[str, dict[str, str]]:
 def section_dir(section_num: int) -> Path:
     book, folder, _name = SECTION_BY_NUM[section_num]
     return CLASSIFIED_LQ / book / folder
-
-
-def resolve_question_png(row: dict) -> Path | None:
-    year, q = row["Year"], row["Question"]
-    candidates = [
-        ROOT / (row.get("PNG") or ""),
-        section_dir(int(row["Primary"])) / f"{year}-q{q}.png",
-        ROOT / "output" / "lq" / year / f"q{q}.png",
-    ]
-    for path in candidates:
-        if path.is_file():
-            return path
-    return None
 
 
 def resolve_answer_png(row: dict) -> Path | None:

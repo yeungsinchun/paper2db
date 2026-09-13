@@ -51,7 +51,6 @@ sys.path.insert(0, str(SCRIPTS))
 import pymupdf as fitz  # noqa: E402
 from PIL import Image  # noqa: E402
 
-from png_pdf import combine_pngs_to_pdf  # noqa: E402
 from preprocess_lq import process_one as segment_lq  # noqa: E402
 
 

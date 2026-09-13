@@ -111,22 +111,6 @@ def _image_bytes(image: Image.Image) -> bytes:
     return buffer.getvalue()
 
 
-def page_text(page: fitz.Page, scale: float = 1.5) -> str:
-    pixmap = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False)
-    image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
-    result = subprocess.run(
-        ["tesseract", "stdin", "stdout", "--psm", "6"],
-        input=_image_bytes(image),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.DEVNULL,
-        check=True,
-    )
-    text = result.stdout.decode("utf-8", errors="ignore").lower()
-    del result, image, pixmap
-    gc.collect()
-    return text
-
-
 def _parse_conf(raw: str) -> float:
     try:
         value = float(raw)
