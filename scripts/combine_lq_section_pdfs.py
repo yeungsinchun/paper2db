@@ -21,7 +21,7 @@ from pathlib import Path
 import pymupdf as fitz
 
 from classify_mc_llm import SECTION_BY_NUM, SECTIONS, year_key
-from png_pdf import YEAR_Q_PNG, place_pngs_on_a4, section_heading_title
+from png_pdf import place_pngs_on_a4, section_heading_title
 from lq_pdf_review import write_section_questions_pdf
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -160,27 +160,6 @@ def main() -> None:
         out_dir = section_dir(num)
         heading = section_heading_title(num, name)
         if not items:
-            folder_pngs = sorted(
-                p
-                for p in out_dir.glob("*.png")
-                if "-ans" not in p.name.lower()
-            )
-            if not folder_pngs:
-                continue
-            out_dir.mkdir(parents=True, exist_ok=True)
-            items_yq: list[tuple[str, int]] = []
-            for path in folder_pngs:
-                found = YEAR_Q_PNG.fullmatch(path.stem)
-                if found:
-                    items_yq.append((found.group("year"), int(found.group("q"))))
-            nq = write_section_questions_pdf(
-                items_yq, out_dir / "questions.pdf", title=heading
-            )
-            written += 1
-            print(
-                f"{heading}: questions.pdf ({nq}) from folder PNGs -> "
-                f"{out_dir.relative_to(ROOT)}"
-            )
             continue
         out_dir.mkdir(parents=True, exist_ok=True)
         label = f"S{num:02d} {name}"

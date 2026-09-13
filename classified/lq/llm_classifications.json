@@ -791,9 +791,9 @@
   },
   "2024-q12": {
     "sections": [
-      26
+      23
     ],
-    "reason": "keywords: half-life, activity, decay constant"
+    "reason": "keywords: magnetic field; primary=max(S22,S23)"
   },
   "2025-q1": {
     "sections": [
@@ -1009,9 +1009,9 @@
   },
   "pp-q12": {
     "sections": [
-      24
+      5
     ],
-    "reason": "keywords: transformer; primary=max(S22,S24)"
+    "reason": "fallback: weak keyword match -> Motion"
   },
   "2024-q13": {
     "sections": [
