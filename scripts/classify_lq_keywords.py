@@ -129,8 +129,6 @@ SECTION_KEYWORDS: dict[int, list[tuple[str, float]]] = {
         ("parallel", 1),
         ("resistance", 2),
         ("circuit", 1),
-        ("circuit diagram", 3),
-        ("voltage sensor", 4),
         ("kilowatt", 2),
         ("electrical power", 2),
     ],
