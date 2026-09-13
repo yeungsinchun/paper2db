@@ -166,6 +166,6 @@ pp,8,22,22,"keywords: mains, domestic, live wire, neutral wire",output/lq/pp/q8.
 pp,9,5,5,fallback: weak keyword match -> Motion,output/lq/pp/q9.png,output/lq/pp/ans/q9.png
 pp,10,5,5,fallback: weak keyword match -> Motion,output/lq/pp/q10.png,output/lq/pp/ans/q10.png
 pp,11,21,21,keywords: resistance,output/lq/pp/q11.png,output/lq/pp/ans/q11.png
-pp,12,5,5,fallback: weak keyword match -> Motion,output/lq/pp/q12.png,output/lq/pp/ans/q12.png
+pp,12,21,21,"keywords: circuit, circuit diagram, voltage sensor",output/lq/pp/q12.png,output/lq/pp/ans/q12.png
 pp,13,24,24,"keywords: transformer; primary=max(S8,S22,S24)",output/lq/pp/q13.png,output/lq/pp/ans/q13.png
 pp,14,27,27;26,"keywords: fission, mev; dual with S26 (significant earlier part)",output/lq/pp/q14.png,output/lq/pp/ans/q14.png

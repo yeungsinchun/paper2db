@@ -166,6 +166,6 @@ pp,8,22,AC and Domestic Electricity,Electricity and Magnetism,22,AC and Domestic
 pp,9,5,Motion,Force and Motion,5,Motion,fallback: weak keyword match -> Motion,output/lq/pp/q9.png,output/lq/pp/ans/q9.png,
 pp,10,5,Motion,Force and Motion,5,Motion,fallback: weak keyword match -> Motion,output/lq/pp/q10.png,output/lq/pp/ans/q10.png,
 pp,11,21,Circuit and Power,Electricity and Magnetism,21,Circuit and Power,keywords: resistance,output/lq/pp/q11.png,output/lq/pp/ans/q11.png,
-pp,12,5,Motion,Force and Motion,5,Motion,fallback: weak keyword match -> Motion,output/lq/pp/q12.png,output/lq/pp/ans/q12.png,
+pp,12,21,Circuit and Power,Electricity and Magnetism,21,Circuit and Power,"keywords: circuit, circuit diagram, voltage sensor",output/lq/pp/q12.png,output/lq/pp/ans/q12.png,
 pp,13,24,Electromagnetic Induction,Electricity and Magnetism,24,Electromagnetic Induction,"keywords: transformer; primary=max(S8,S22,S24)",output/lq/pp/q13.png,output/lq/pp/ans/q13.png,
 pp,14,27,Nuclear Energy,Radioactivity and Nuclear Energy,27;26,Nuclear Energy; Rate of Decay and Uses of Radionuclides,"keywords: fission, mev; dual with S26 (significant earlier part)",output/lq/pp/q14.png,output/lq/pp/ans/q14.png,

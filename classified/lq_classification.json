@@ -2173,12 +2173,12 @@
   {
     "Year": "pp",
     "Question": 12,
-    "PrimarySection": 5,
-    "PrimaryName": "Motion",
-    "PrimaryBook": "Force and Motion",
-    "AllSections": "5",
-    "AllSectionNames": "Motion",
-    "Reason": "fallback: weak keyword match -> Motion",
+    "PrimarySection": 21,
+    "PrimaryName": "Circuit and Power",
+    "PrimaryBook": "Electricity and Magnetism",
+    "AllSections": "21",
+    "AllSectionNames": "Circuit and Power",
+    "Reason": "keywords: circuit, circuit diagram, voltage sensor",
     "PNG": "output/lq/pp/q12.png",
     "AnswerPNG": "output/lq/pp/ans/q12.png",
     "CandidatePerformance": ""

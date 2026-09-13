@@ -1009,9 +1009,9 @@
   },
   "pp-q12": {
     "sections": [
-      5
+      21
     ],
-    "reason": "fallback: weak keyword match -> Motion"
+    "reason": "keywords: circuit, circuit diagram, voltage sensor"
   },
   "2024-q13": {
     "sections": [
