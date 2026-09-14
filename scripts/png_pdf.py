@@ -131,6 +131,26 @@ def place_pngs_on_a4(
         flow.add(path)
 
 
+def _upright_source(
+    src: fitz.Document, pno: int
+) -> tuple[fitz.Document, int, bool]:
+    """Return a page whose mediabox matches on-screen orientation.
+
+    `show_pdf_page` copies the unrotated mediabox and ignores /Rotate 90/270,
+    so landscape scans (e.g. 2026 Paper 1B) land sideways on A4. Flatten those
+    pages first so packing uses the display rect.
+    """
+    if src[pno].rotation % 360 == 0:
+        return src, pno, False
+    one = fitz.open()
+    try:
+        one.insert_pdf(src, from_page=pno, to_page=pno)
+        flat = fitz.open("pdf", one.convert_to_pdf())
+    finally:
+        one.close()
+    return flat, 0, True
+
+
 def append_pdf_page_a4(
     document: fitz.Document,
     src: fitz.Document,
@@ -166,17 +186,23 @@ def append_pdf_page_a4(
         A4_WIDTH - A4_MARGIN,
         A4_HEIGHT - A4_MARGIN,
     )
-    src_rect = clip if clip is not None else src[pno].rect
-    src_w, src_h = src_rect.width, src_rect.height
-    scale = min(printable.width / src_w, printable.height / src_h)
-    dest_w, dest_h = src_w * scale, src_h * scale
-    target = fitz.Rect(
-        printable.x0,
-        printable.y0,
-        printable.x0 + dest_w,
-        printable.y0 + dest_h,
-    )
-    page.show_pdf_page(target, src, pno, clip=clip)
+    packed, packed_pno, owned = _upright_source(src, pno)
+    try:
+        src_page = packed[packed_pno]
+        src_rect = clip if clip is not None else src_page.rect
+        src_w, src_h = src_rect.width, src_rect.height
+        scale = min(printable.width / src_w, printable.height / src_h)
+        dest_w, dest_h = src_w * scale, src_h * scale
+        target = fitz.Rect(
+            printable.x0,
+            printable.y0,
+            printable.x0 + dest_w,
+            printable.y0 + dest_h,
+        )
+        page.show_pdf_page(target, packed, packed_pno, clip=clip)
+    finally:
+        if owned:
+            packed.close()
 
 
 def section_heading_title(section_num: int, section_name: str) -> str:

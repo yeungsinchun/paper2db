@@ -105,6 +105,34 @@ class TestLqWholePages(unittest.TestCase):
             finally:
                 out.close()
 
+    def test_append_pdf_page_a4_honors_2026_rotate_270(self) -> None:
+        png_pdf = load_module("png_pdf", ROOT / "scripts" / "png_pdf.py")
+        source = ROOT / "paper" / "lq" / "2026p1b.pdf"
+        self.assertTrue(source.is_file())
+        src = fitz.open(source)
+        try:
+            exam = src[1]
+            self.assertEqual(exam.rotation % 360, 270)
+            self.assertGreater(exam.mediabox.width, exam.mediabox.height)
+            self.assertGreater(exam.rect.height, exam.rect.width)
+            dest = fitz.open()
+            try:
+                png_pdf.append_pdf_page_a4(dest, src, 1, label="2026 Q1")
+                packed = dest[0]
+                self.assertEqual(packed.rect.width, 595.0)
+                self.assertEqual(packed.rect.height, 842.0)
+                infos = packed.get_image_info()
+                self.assertTrue(infos)
+                bbox = fitz.Rect(infos[0]["bbox"])
+                self.assertGreater(bbox.height, bbox.width)
+                self.assertLessEqual(bbox.x1, packed.rect.width + 1.0)
+                self.assertLessEqual(bbox.y1, packed.rect.height + 1.0)
+                self.assertGreaterEqual(bbox.x0, -1.0)
+            finally:
+                dest.close()
+        finally:
+            src.close()
+
     def test_year_review_labels_first_question_on_each_start_page(self) -> None:
         review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")
         with tempfile.TemporaryDirectory() as tmp:
