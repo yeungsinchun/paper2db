@@ -2,9 +2,8 @@
 """Write per-section question + answer PDFs under classified/mc/.
 
 For each section folder:
-  - combined.pdf: question PNGs sorted easiest -> hardest by Correct %
-    (higher % first). Items without a known % (pp/sap/2022/2026, deleted,
-    missing keys) are placed last.
+  - combined.pdf: question PNGs sorted by year, then question number
+    (pp/sap after numbered years).
   - answer.pdf: same order, one page per question listing year, Q#, answer,
     and correct percentage.
 """
@@ -16,6 +15,13 @@ import re
 from pathlib import Path
 
 import pymupdf as fitz
+
+from png_pdf import (
+    A4_HEIGHT,
+    A4_WIDTH,
+    place_pngs_on_a4,
+    section_heading_title,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 CLASSIFIED = ROOT / "classified" / "mc"
@@ -80,36 +86,34 @@ def pngs_in_section(section: Path) -> list[Path]:
     return sorted(p for p in section.glob("*.png") if PNG_RE.fullmatch(p.name))
 
 
-def sort_key(
-    path: Path,
-    percentages: dict[tuple[str, int], int | None],
-) -> tuple:
+def sort_key(path: Path) -> tuple:
     match = PNG_RE.fullmatch(path.name)
     assert match
     year = match.group("year")
     q = int(match.group("q"))
-    pct = percentages.get((year, q))
-    # Easiest first: higher % first. Missing % -> last.
-    has_pct = 0 if pct is not None else 1
-    neg_pct = -(pct if pct is not None else 0)
-    return (has_pct, neg_pct, YEAR_RANK.get(year, 99), q)
+    return (YEAR_RANK.get(year, 99), q)
 
 
-def write_combined(paths: list[Path], dest: Path) -> None:
+def write_combined(
+    paths: list[Path],
+    dest: Path,
+    *,
+    title: str | None = None,
+) -> None:
     document = fitz.open()
     try:
-        for path in paths:
-            image = fitz.open(path)
-            try:
-                rect = image[0].rect
-                page = document.new_page(width=rect.width, height=rect.height)
-                page.insert_image(page.rect, filename=str(path))
-            finally:
-                image.close()
+        place_pngs_on_a4(document, paths, title=title)
         dest.parent.mkdir(parents=True, exist_ok=True)
         document.save(dest, garbage=4, deflate=True)
     finally:
         document.close()
+
+
+def heading_for_section_dir(section: Path) -> str:
+    match = re.match(r"^(\d{2})_(.+)$", section.name)
+    assert match
+    name = match.group(2).replace("_", " ")
+    return section_heading_title(int(match.group(1)), name)
 
 
 def write_answer_pdf(
@@ -118,10 +122,10 @@ def write_answer_pdf(
     keys: dict[tuple[str, int], dict],
     section_label: str,
 ) -> None:
-    """One summary page listing every question in the same hard->easy order."""
+    """One summary page listing every question in year then Q order."""
     document = fitz.open()
     try:
-        page_width, page_height = 595.0, 842.0  # A4
+        page_width, page_height = A4_WIDTH, A4_HEIGHT
         margin = 40.0
         y = margin
         page = document.new_page(width=page_width, height=page_height)
@@ -130,7 +134,7 @@ def write_answer_pdf(
         y += 28
         page.insert_text(
             (margin, y + 11),
-            "Order matches combined.pdf (easiest -> hardest by correct %).",
+            "Order matches combined.pdf (year, then question number).",
             fontsize=9,
             fontname="helv",
         )
@@ -184,13 +188,13 @@ def main() -> None:
         pngs = pngs_in_section(section)
         if not pngs:
             continue
-        ordered = sorted(pngs, key=lambda p: sort_key(p, percentages))
+        ordered = sorted(pngs, key=sort_key)
         combined = section / "combined.pdf"
         answers = section / "answer.pdf"
         if combined.is_file() and answers.is_file() and not args.overwrite:
             print(f"Keeping {combined.relative_to(args.classified)}")
             continue
-        write_combined(ordered, combined)
+        write_combined(ordered, combined, title=heading_for_section_dir(section))
         section_label = section.name.replace("_", " ")
         write_answer_pdf(ordered, answers, keys, section_label)
         total_pdfs += 1
@@ -213,7 +217,7 @@ def main() -> None:
     print(f"\nDone: {total_pdfs} section pairs, {total_pages} question pages")
     if missing_examples:
         print(
-            "Examples without correct % (placed last):",
+            "Examples without correct %:",
             ", ".join(missing_examples),
         )
 

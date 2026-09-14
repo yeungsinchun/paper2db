@@ -791,9 +791,9 @@
   },
   "2024-q12": {
     "sections": [
-      26
+      23
     ],
-    "reason": "keywords: half-life, activity, decay constant"
+    "reason": "keywords: magnetic field; primary=max(S22,S23)"
   },
   "2025-q1": {
     "sections": [
@@ -1009,8 +1009,27 @@
   },
   "pp-q12": {
     "sections": [
+      21
+    ],
+    "reason": "keywords: circuit, circuit diagram, voltage sensor"
+  },
+  "2024-q13": {
+    "sections": [
+      26
+    ],
+    "reason": "keywords: half-life, activity, decay constant"
+  },
+  "pp-q13": {
+    "sections": [
       24
     ],
-    "reason": "keywords: transformer; primary=max(S22,S24)"
+    "reason": "keywords: transformer; primary=max(S8,S22,S24)"
+  },
+  "pp-q14": {
+    "sections": [
+      27,
+      26
+    ],
+    "reason": "keywords: fission, mev; dual with S26 (significant earlier part)"
   }
 }

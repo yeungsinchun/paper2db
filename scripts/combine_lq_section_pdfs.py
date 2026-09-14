@@ -2,32 +2,31 @@
 """Build per-section LQ review PDFs under classified/lq/.
 
 For each syllabus section that has at least one primary LQ:
-  - questions.pdf  - question crops (year order)
-  - answers.pdf    - marking-scheme answer crops (same order; skips missing)
+  - questions.pdf  - whole source Paper 1B pages (year then Q; A4)
+  - answers.pdf    - marking-scheme answer crops packed on A4 (same order; skips missing)
   - performance.pdf - candidate-performance notes as text pages
 
-Skips empty sections. Overwrites existing PDFs by default.
+Skips sections with no classification rows. Overwrites existing PDFs by default.
 """
 from __future__ import annotations
 
 import argparse
 import csv
 import json
-import re
 import textwrap
 from collections import defaultdict
 from pathlib import Path
 
 import pymupdf as fitz
 
-from classify_mc_llm import BOOK_NAMES, SECTION_BY_NUM, SECTIONS, year_key
+from classify_mc_llm import SECTION_BY_NUM, SECTIONS, year_key
+from png_pdf import place_pngs_on_a4, section_heading_title
+from lq_pdf_review import write_section_questions_pdf
 
 ROOT = Path(__file__).resolve().parents[1]
 CLASSIFIED_LQ = ROOT / "classified" / "lq"
 CSV_PATH = CLASSIFIED_LQ / "classification.csv"
 PERF_PATH = CLASSIFIED_LQ / "candidate_performance.json"
-
-YEAR_RE = re.compile(r"^(?P<year>\d{4}|pp|sap)$", re.I)
 
 
 def parse_args() -> argparse.Namespace:
@@ -53,19 +52,6 @@ def section_dir(section_num: int) -> Path:
     return CLASSIFIED_LQ / book / folder
 
 
-def resolve_question_png(row: dict) -> Path | None:
-    year, q = row["Year"], row["Question"]
-    candidates = [
-        ROOT / (row.get("PNG") or ""),
-        section_dir(int(row["Primary"])) / f"{year}-q{q}.png",
-        ROOT / "output" / "lq" / year / f"q{q}.png",
-    ]
-    for path in candidates:
-        if path.is_file():
-            return path
-    return None
-
-
 def resolve_answer_png(row: dict) -> Path | None:
     year, q = row["Year"], row["Question"]
     candidates = [
@@ -80,35 +66,12 @@ def resolve_answer_png(row: dict) -> Path | None:
 
 
 def write_image_pdf(paths: list[Path], dest: Path, *, title: str | None = None) -> int:
-    """One PDF page per image. Optional title page if title set."""
+    """Stack images on portrait A4. Optional chapter heading on the first page."""
     if not paths:
         return 0
     doc = fitz.open()
     try:
-        if title:
-            page = doc.new_page(width=595, height=842)
-            page.insert_text((40, 60), title, fontsize=16, fontname="helv")
-            page.insert_text(
-                (40, 86),
-                f"{len(paths)} item(s)",
-                fontsize=11,
-                fontname="helv",
-            )
-        for path in paths:
-            image = fitz.open(path)
-            try:
-                rect = image[0].rect
-                # Cap very tall crops so PDF viewers stay usable.
-                max_h = 2000.0
-                width, height = rect.width, rect.height
-                if height > max_h:
-                    scale = max_h / height
-                    width *= scale
-                    height *= scale
-                page = doc.new_page(width=width, height=height)
-                page.insert_image(page.rect, filename=str(path))
-            finally:
-                image.close()
+        place_pngs_on_a4(doc, paths, title=title)
         dest.parent.mkdir(parents=True, exist_ok=True)
         doc.save(dest, garbage=4, deflate=True)
     finally:
@@ -178,20 +141,17 @@ def main() -> None:
     written = 0
     for num, _book, _folder, name in SECTIONS:
         items = by_primary.get(num) or []
+        out_dir = section_dir(num)
+        heading = section_heading_title(num, name)
         if not items:
             continue
-        out_dir = section_dir(num)
         out_dir.mkdir(parents=True, exist_ok=True)
         label = f"S{num:02d} {name}"
 
-        q_paths: list[Path] = []
         a_paths: list[Path] = []
         perf_items: list[tuple[str, int, str]] = []
         for row in items:
             year, qn = row["Year"], int(row["Question"])
-            q_png = resolve_question_png(row)
-            if q_png:
-                q_paths.append(q_png)
             a_png = resolve_answer_png(row)
             if a_png:
                 a_paths.append(a_png)
@@ -210,7 +170,8 @@ def main() -> None:
             print(f"Keeping {out_dir.relative_to(ROOT)}")
             continue
 
-        nq = write_image_pdf(q_paths, q_pdf)
+        pdf_items = [(row["Year"], int(row["Question"])) for row in items]
+        nq = write_section_questions_pdf(pdf_items, q_pdf, title=heading)
         na = write_image_pdf(a_paths, a_pdf)
         np_ = write_performance_pdf(perf_items, p_pdf, section_label=label)
         written += 1

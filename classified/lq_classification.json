@@ -1692,15 +1692,28 @@
   {
     "Year": 2024,
     "Question": 12,
+    "PrimarySection": 23,
+    "PrimaryName": "Electromagnetism",
+    "PrimaryBook": "Electricity and Magnetism",
+    "AllSections": "23",
+    "AllSectionNames": "Electromagnetism",
+    "Reason": "keywords: magnetic field; primary=max(S22,S23)",
+    "PNG": "output/lq/2024/q12.png",
+    "AnswerPNG": "output/lq/2024/ans/q12.png",
+    "CandidatePerformance": "Candidates did poorly in this question. Most knew the direction of the magnetic field in (a) but failed to sketch precisely the field pattern. In explaining the electromagnetic induction between the transmitting and receiving coils in (b)(i), quite a number of the candidates failed to spell out explicitly that the transmitting coil produced a changing magnetic field. In (b)(ii), very few candidates realised that the amplitude of the voltage induced in coil *R* would double when the frequency was doubled. In (c), not many candidates realised that the use of non-metallic back covers for mobile phones was to facilitate the passage of magnetic field between the transmitting and receiving coils. Some wrongly thought that 'electric shock may occur as metals are conductors' or 'current may flow through the metallic cover and cause a heating effect'."
+  },
+  {
+    "Year": 2024,
+    "Question": 13,
     "PrimarySection": 26,
     "PrimaryName": "Rate of Decay and Uses of Radionuclides",
     "PrimaryBook": "Radioactivity and Nuclear Energy",
     "AllSections": "26",
     "AllSectionNames": "Rate of Decay and Uses of Radionuclides",
     "Reason": "keywords: half-life, activity, decay constant",
-    "PNG": "output/lq/2024/q12.png",
-    "AnswerPNG": "output/lq/2024/ans/q12.png",
-    "CandidatePerformance": "Candidates did poorly in this question. Most knew the direction of the magnetic field in (a) but failed to sketch precisely the field pattern. In explaining the electromagnetic induction between the transmitting and receiving coils in (b)(i), quite a number of the candidates failed to spell out explicitly that the transmitting coil produced a changing magnetic field. In (b)(ii), very few candidates realised that the amplitude of the voltage induced in coil *R* would double when the frequency was doubled. In (c), not many candidates realised that the use of non-metallic back covers for mobile phones was to facilitate the passage of magnetic field between the transmitting and receiving coils. Some wrongly thought that 'electric shock may occur as metals are conductors' or 'current may flow through the metallic cover and cause a heating effect'."
+    "PNG": "output/lq/2024/q13.png",
+    "AnswerPNG": "output/lq/2024/ans/q13.png",
+    "CandidatePerformance": "Candidates' performance was satisfactory. Many obtained the correct numerical answers in (a)(i)(ii). In (a)(iii), not many candidates realised that radon, being a gas and an α-emitter, would be harmful to human when inhaled since α particles have limited penetrating power. A few wrongly held that it was the α particles being inhaled instead of radon. Part (b) was well answered except for the omission of arrows for indication by some candidates."
   },
   {
     "Year": 2025,
@@ -2024,7 +2037,7 @@
     "AllSectionNames": "Gas Law and Kinetic Theory",
     "Reason": "fallback: gas cues",
     "PNG": "output/lq/pp/q1.png",
-    "AnswerPNG": "",
+    "AnswerPNG": "output/lq/pp/ans/q1.png",
     "CandidatePerformance": ""
   },
   {
@@ -2037,7 +2050,7 @@
     "AllSectionNames": "Work, Energy and Power",
     "Reason": "keywords: kinetic energy, power",
     "PNG": "output/lq/pp/q2.png",
-    "AnswerPNG": "",
+    "AnswerPNG": "output/lq/pp/ans/q2.png",
     "CandidatePerformance": ""
   },
   {
@@ -2050,7 +2063,7 @@
     "AllSectionNames": "Projectile Motion",
     "Reason": "keywords: projectile, horizontal range, angle of projection",
     "PNG": "output/lq/pp/q3.png",
-    "AnswerPNG": "",
+    "AnswerPNG": "output/lq/pp/ans/q3.png",
     "CandidatePerformance": ""
   },
   {
@@ -2063,7 +2076,7 @@
     "AllSectionNames": "Motion",
     "Reason": "fallback: weak keyword match -> Motion",
     "PNG": "output/lq/pp/q4.png",
-    "AnswerPNG": "",
+    "AnswerPNG": "output/lq/pp/ans/q4.png",
     "CandidatePerformance": ""
   },
   {
@@ -2076,7 +2089,7 @@
     "AllSectionNames": "Wave Motion",
     "Reason": "keywords: wavelength",
     "PNG": "output/lq/pp/q5.png",
-    "AnswerPNG": "",
+    "AnswerPNG": "output/lq/pp/ans/q5.png",
     "CandidatePerformance": ""
   },
   {
@@ -2089,7 +2102,7 @@
     "AllSectionNames": "Electromagnetic Induction",
     "Reason": "keywords: generator; primary=max(S16,S24)",
     "PNG": "output/lq/pp/q6.png",
-    "AnswerPNG": "",
+    "AnswerPNG": "output/lq/pp/ans/q6.png",
     "CandidatePerformance": ""
   },
   {
@@ -2102,7 +2115,7 @@
     "AllSectionNames": "Electromagnetic Induction",
     "Reason": "keywords: generator",
     "PNG": "output/lq/pp/q7.png",
-    "AnswerPNG": "",
+    "AnswerPNG": "output/lq/pp/ans/q7.png",
     "CandidatePerformance": ""
   },
   {
@@ -2115,7 +2128,7 @@
     "AllSectionNames": "AC and Domestic Electricity",
     "Reason": "keywords: mains, domestic, live wire, neutral wire",
     "PNG": "output/lq/pp/q8.png",
-    "AnswerPNG": "",
+    "AnswerPNG": "output/lq/pp/ans/q8.png",
     "CandidatePerformance": ""
   },
   {
@@ -2128,7 +2141,7 @@
     "AllSectionNames": "Motion",
     "Reason": "fallback: weak keyword match -> Motion",
     "PNG": "output/lq/pp/q9.png",
-    "AnswerPNG": "",
+    "AnswerPNG": "output/lq/pp/ans/q9.png",
     "CandidatePerformance": ""
   },
   {
@@ -2141,7 +2154,7 @@
     "AllSectionNames": "Motion",
     "Reason": "fallback: weak keyword match -> Motion",
     "PNG": "output/lq/pp/q10.png",
-    "AnswerPNG": "",
+    "AnswerPNG": "output/lq/pp/ans/q10.png",
     "CandidatePerformance": ""
   },
   {
@@ -2154,20 +2167,46 @@
     "AllSectionNames": "Circuit and Power",
     "Reason": "keywords: resistance",
     "PNG": "output/lq/pp/q11.png",
-    "AnswerPNG": "",
+    "AnswerPNG": "output/lq/pp/ans/q11.png",
     "CandidatePerformance": ""
   },
   {
     "Year": "pp",
     "Question": 12,
+    "PrimarySection": 21,
+    "PrimaryName": "Circuit and Power",
+    "PrimaryBook": "Electricity and Magnetism",
+    "AllSections": "21",
+    "AllSectionNames": "Circuit and Power",
+    "Reason": "keywords: circuit, circuit diagram, voltage sensor",
+    "PNG": "output/lq/pp/q12.png",
+    "AnswerPNG": "output/lq/pp/ans/q12.png",
+    "CandidatePerformance": ""
+  },
+  {
+    "Year": "pp",
+    "Question": 13,
     "PrimarySection": 24,
     "PrimaryName": "Electromagnetic Induction",
     "PrimaryBook": "Electricity and Magnetism",
     "AllSections": "24",
     "AllSectionNames": "Electromagnetic Induction",
-    "Reason": "keywords: transformer; primary=max(S22,S24)",
-    "PNG": "output/lq/pp/q12.png",
-    "AnswerPNG": "",
+    "Reason": "keywords: transformer; primary=max(S8,S22,S24)",
+    "PNG": "output/lq/pp/q13.png",
+    "AnswerPNG": "output/lq/pp/ans/q13.png",
+    "CandidatePerformance": ""
+  },
+  {
+    "Year": "pp",
+    "Question": 14,
+    "PrimarySection": 27,
+    "PrimaryName": "Nuclear Energy",
+    "PrimaryBook": "Radioactivity and Nuclear Energy",
+    "AllSections": "27;26",
+    "AllSectionNames": "Nuclear Energy; Rate of Decay and Uses of Radionuclides",
+    "Reason": "keywords: fission, mev; dual with S26 (significant earlier part)",
+    "PNG": "output/lq/pp/q14.png",
+    "AnswerPNG": "output/lq/pp/ans/q14.png",
     "CandidatePerformance": ""
   }
 ]
