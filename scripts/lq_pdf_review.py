@@ -3,8 +3,9 @@
 
 No PNG raster and no within-page crop. starts.json page_from..page_to are
 exam-page indices (optional cover and 2-up spreads), not raw PDF pages.
-Trailing data/formulae sheets and blank insert pages are omitted
-(see formula_sheet.py).
+Year combined.pdf and questions.pdf both start at the first exam page;
+booklet covers are not copied. Trailing data/formulae sheets and blank
+insert pages are omitted (see formula_sheet.py).
 """
 from __future__ import annotations
 
@@ -221,7 +222,6 @@ def write_year_review_pdfs(year: str) -> None:
     src = fitz.open(source)
     try:
         src_len = len(src)
-        cover, _spread = starts_source_layout(year, src_len)
         exam_count = starts_exam_count(year, src_len)
         formula_pdf = skip_formula_pdf_pages(src, meta)
         for item in questions:
@@ -236,8 +236,8 @@ def write_year_review_pdfs(year: str) -> None:
                 first_q_page[page_from] = qn
         combined = fitz.open()
         try:
-            if cover and 0 not in formula_pdf:
-                append_pdf_page_a4(combined, src, 0)
+            # Exam pages only. Booklet covers stay in paper/lq; questions.pdf
+            # already skips them, and combined.pdf should match that start.
             for exam_index in range(exam_count):
                 qn = first_q_page.get(exam_index)
                 label = f"{year} Q{qn}" if qn is not None else None

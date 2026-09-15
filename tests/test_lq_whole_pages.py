@@ -506,12 +506,11 @@ class TestLqWholePages(unittest.TestCase):
             combined = fitz.open(out / "combined.pdf")
             try:
                 texts = [page.get_text() for page in combined]
-                self.assertIn("PAGE-0", texts[0])
-                self.assertNotIn("2012 Q1", texts[0])
-                self.assertIn("2012 Q1", texts[1])
-                self.assertIn("PAGE-1", texts[1])
-                self.assertIn("2012 Q9", texts[5])
-                self.assertIn("PAGE-5", texts[5])
+                self.assertNotIn("PAGE-0", texts[0])
+                self.assertIn("2012 Q1", texts[0])
+                self.assertIn("PAGE-1", texts[0])
+                self.assertIn("2012 Q9", texts[4])
+                self.assertIn("PAGE-5", texts[4])
             finally:
                 combined.close()
             questions = fitz.open(out / "questions.pdf")
@@ -566,16 +565,14 @@ class TestLqWholePages(unittest.TestCase):
             combined = fitz.open(out / "combined.pdf")
             try:
                 texts = [page.get_text() for page in combined]
-                self.assertEqual(len(texts), 7)
-                self.assertIn("COVER-MARK", texts[0])
-                self.assertNotIn("2099 Q1", texts[0])
-                self.assertIn("2099 Q1", texts[1])
-                self.assertIn("LEFT-0", texts[1])
-                self.assertNotIn("RIGHT-0", texts[1])
-                self.assertNotIn("COVER-MARK", texts[1])
-                self.assertIn("2099 Q3", texts[5])
-                self.assertIn("LEFT-2", texts[5])
-                self.assertIn("RIGHT-2", texts[6])
+                self.assertEqual(len(texts), 6)
+                self.assertNotIn("COVER-MARK", "".join(texts))
+                self.assertIn("2099 Q1", texts[0])
+                self.assertIn("LEFT-0", texts[0])
+                self.assertNotIn("RIGHT-0", texts[0])
+                self.assertIn("2099 Q3", texts[4])
+                self.assertIn("LEFT-2", texts[4])
+                self.assertIn("RIGHT-2", texts[5])
             finally:
                 combined.close()
             questions = fitz.open(out / "questions.pdf")
@@ -701,13 +698,12 @@ class TestCommittedLqWholePages(unittest.TestCase):
         # Two stacked exam pages. A single leftover page is ~1.4x width.
         self.assertGreater(height / width, 2.0)
 
-    def test_2026_combined_does_not_label_cover_as_q1(self) -> None:
+    def test_2026_combined_starts_at_q1_not_cover(self) -> None:
         path = ROOT / "output" / "lq" / "2026" / "combined.pdf"
         self.assertTrue(path.is_file())
         document = fitz.open(path)
         try:
-            self.assertNotIn("2026 Q1", document[0].get_text())
-            self.assertIn("2026 Q1", document[1].get_text())
+            self.assertIn("2026 Q1", document[0].get_text())
         finally:
             document.close()
 
@@ -722,15 +718,14 @@ class TestCommittedLqWholePages(unittest.TestCase):
         finally:
             questions.close()
 
-    def test_2015_combined_does_not_label_cover_as_q1(self) -> None:
+    def test_2015_combined_starts_at_q1_not_cover(self) -> None:
         path = ROOT / "output" / "lq" / "2015" / "combined.pdf"
         self.assertTrue(path.is_file())
         document = fitz.open(path)
         try:
             texts = [page.get_text() for page in document]
-            self.assertGreaterEqual(len(texts), 19)
-            self.assertNotIn("2015 Q1", texts[0])
-            self.assertIn("2015 Q1", texts[1])
+            self.assertGreaterEqual(len(texts), 18)
+            self.assertIn("2015 Q1", texts[0])
             joined = "\n".join(texts)
             self.assertIn("2015 Q7", joined)
             self.assertIn("2015 Q10", joined)
