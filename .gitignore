@@ -6,3 +6,4 @@ output/*-intermediate/
 output/*-test/
 output/*/intermediate/
 output/**/pages/
+.lavish/pr6-lq-review/
