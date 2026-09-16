@@ -36,14 +36,14 @@ When no API key is set, both MC and LQ use the keyword classifiers.
 
 ## Regenerating `output/` and `classified/`
 
-`output/`, `classified/` and `.lavish/` are build products and are **not committed** (see `.gitignore`); a fresh clone has only `paper/`, `answer/` and the scripts. Rebuild everything from source with:
+Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.gitignore`). Rebuild them from `paper/` with:
 
 ```bash
 ./pipeline --force --yes      # all years, all stages, no review prompts
 ./pipeline --years 2025 --force --yes   # one year
 ```
 
-The only files under those trees that git tracks are hand-tuned inputs the pipeline reads rather than regenerates: `output/lq/<year>/starts.json` (LQ page ranges), `classified/*/llm_classifications.json` (LLM section decisions, editable and replayable with `--from-json`) and `classified/lq/candidate_performance.json` (from `scripts/extract_lq_performance.py`). Everything else is reproducible from `paper/` with `./pipeline`, so never `git add` crops, section PDFs or `.lavish/` HTML.
+The only files under `output/` and `classified/` that git tracks are hand-tuned inputs the pipeline reads rather than regenerates: `output/lq/<year>/starts.json` (LQ page ranges), `classified/*/llm_classifications.json` (LLM section decisions, editable and replayable with `--from-json`) and `classified/lq/candidate_performance.json` (from `scripts/extract_lq_performance.py`). Everything else is reproducible from `paper/` with `./pipeline`, so never `git add` crops, section PDFs or `.lavish/` HTML.
 
 ## Layout
 
