@@ -47,6 +47,8 @@ class TestQualityAudit(unittest.TestCase):
             self.assertIn(f"Wrote {rel_out}", result.stdout)
 
     def test_report_counts_overrides_toward_five_percent(self) -> None:
+        if not (ROOT / "classified" / "mc" / "classification.csv").is_file():
+            self.skipTest("classified/ not built (run ./pipeline)")
         result = subprocess.run(
             [
                 sys.executable,

@@ -16,39 +16,54 @@ SCRIPTS = ROOT / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
 
-class TestGitignorePages(unittest.TestCase):
-    """gitignore must ignore LQ page-render caches (git is the consumer)."""
+class TestGitignoreGenerated(unittest.TestCase):
+    """Generated crops/banks are gitignored; hand-tuned inputs stay tracked."""
 
-    def test_pages_paths_are_ignored(self) -> None:
-        probe = "output/lq/2099/pages/page01.png"
+    @staticmethod
+    def _ignored(path: str) -> bool:
         result = subprocess.run(
-            ["git", "check-ignore", "-v", probe],
+            ["git", "check-ignore", "-q", "--no-index", path],
             cwd=ROOT,
             check=False,
             capture_output=True,
             text=True,
         )
-        self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("output/**/pages/", result.stdout)
+        return result.returncode == 0
 
-    def test_question_crops_and_combined_not_ignored(self) -> None:
+    def test_generated_outputs_are_ignored(self) -> None:
         for path in (
+            "output/lq/2099/pages/page01.png",
             "output/lq/2024/q1.png",
+            "output/lq/2024/ans/q1.png",
             "output/lq/2024/combined.pdf",
-            "output/lq/2026/q1.png",
+            "output/2024/q1.png",
+            "output/2024/combined.pdf",
+            "output/2024-intermediate/anchor.pdf",
+            "reconstructed/mc/combined.pdf",
+            "reconstructed/mc/2024/q1.png",
+            "reconstructed/lq/2024/q1.png",
+            "reconstructed/lq/2024/pages/page01.png",
+            "classified/mc/answer_keys.json",
+            "classified/mc/ocr_cache/2024/q1.txt",
+            "classified/mc/01_Heat/1_Temperature/combined.pdf",
+            "classified/lq/classification.csv",
+            "classified/lq/01_Heat/1_Temperature/questions.pdf",
+            "classified/mc_classification.json",
+            "classified/quality_audit.json",
+            ".lavish/lq-classified-review/index.html",
         ):
-            result = subprocess.run(
-                ["git", "check-ignore", "-v", path],
-                cwd=ROOT,
-                check=False,
-                capture_output=True,
-                text=True,
-            )
-            self.assertNotEqual(
-                result.returncode,
-                0,
-                f"{path} should not be gitignored: {result.stdout}",
-            )
+            self.assertTrue(self._ignored(path), f"{path} should be gitignored")
+
+    def test_hand_tuned_inputs_not_ignored(self) -> None:
+        for path in (
+            "output/lq/2024/starts.json",
+            "reconstructed/lq/2024/starts.json",
+            "classified/mc/llm_classifications.json",
+            "classified/lq/llm_classifications.json",
+            "classified/lq/candidate_performance.json",
+            "scripts/overrides_2018.json",
+        ):
+            self.assertFalse(self._ignored(path), f"{path} should not be gitignored")
 
 
 class TestClassificationSplitArtifacts(unittest.TestCase):
@@ -60,6 +75,8 @@ class TestClassificationSplitArtifacts(unittest.TestCase):
 
     def test_mc_classification_list_contract(self) -> None:
         path = ROOT / "classified" / "mc_classification.json"
+        if not path.is_file():
+            self.skipTest("classified/ not built (run ./pipeline)")
         rows = json.loads(path.read_text(encoding="utf-8"))
         self.assertIsInstance(rows, list)
         self.assertGreater(len(rows), 100)
@@ -78,6 +95,8 @@ class TestClassificationSplitArtifacts(unittest.TestCase):
 
     def test_lq_classification_list_contract(self) -> None:
         path = ROOT / "classified" / "lq_classification.json"
+        if not path.is_file():
+            self.skipTest("classified/ not built (run ./pipeline)")
         rows = json.loads(path.read_text(encoding="utf-8"))
         self.assertIsInstance(rows, list)
         self.assertGreater(len(rows), 50)
