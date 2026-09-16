@@ -246,9 +246,22 @@ class TestSectionPdfsIncludeEveryListedSection(unittest.TestCase):
                 document.close()
 
 
+def _generated_bank_is_current() -> bool:
+    """True when classified/ was produced from the reconstructed/ layout.
+
+    classification.csv is generated output whose PNG column names the crop it
+    was built from; rows still pointing at output/ come from an older build.
+    """
+    csv_path = ROOT / "classified" / "lq" / "classification.csv"
+    if not csv_path.is_file() or not (ROOT / "reconstructed" / "lq" / "2026" / "starts.json").is_file():
+        return False
+    with csv_path.open(encoding="utf-8") as fh:
+        rows = list(csv.DictReader(fh))
+    return bool(rows) and all(row["PNG"].startswith("reconstructed/") for row in rows)
+
+
 @unittest.skipUnless(
-    (ROOT / "classified" / "lq" / "classification.csv").is_file()
-    and (ROOT / "reconstructed" / "lq" / "2026" / "starts.json").is_file(),
+    _generated_bank_is_current(),
     "classified/ and reconstructed/ are generated (gitignored); run ./pipeline first",
 )
 class TestGeneratedCh25Bank(unittest.TestCase):
