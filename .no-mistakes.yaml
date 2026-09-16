@@ -1,3 +1,9 @@
 # Trusted default-branch config for no-mistakes.
 # This repository has no GitHub Actions workflows.
 no_ci: true
+
+# Unit suite (seconds, no build needed; generated-bank checks skip until
+# ./pipeline has built reconstructed/ and classified/). Run worktrees start
+# without .venv, so bootstrap one. Honored only from the default-branch copy.
+commands:
+  test: 'test -x .venv/bin/python || python3 -m venv .venv; .venv/bin/pip install -q -r requirements.txt && .venv/bin/python -m unittest discover -s tests'

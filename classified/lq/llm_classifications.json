@@ -34,7 +34,7 @@
     "sections": [
       14
     ],
-    "reason": "keywords: ripple tank; primary=max(S7,S13,S14)"
+    "reason": "keywords: ripple tank; primary=max(S13,S14)"
   },
   "2012-q7": {
     "sections": [
@@ -50,10 +50,9 @@
   },
   "2012-q9": {
     "sections": [
-      24,
       22
     ],
-    "reason": "keywords: transformer; dual with S22 (significant earlier part)"
+    "reason": "keywords: mains, live wire, a.c."
   },
   "2012-q10": {
     "sections": [
@@ -63,9 +62,11 @@
   },
   "2012-q11": {
     "sections": [
-      27
+      27,
+      26,
+      25
     ],
-    "reason": "keywords: energy released in the decay, energy released, nuclear equation, mev"
+    "reason": "book5 keywords: energy released in the decay, energy released, mev; also S26 (half-life, activity); also S25 (nuclear equation, equation for the decay, a-particle)"
   },
   "2013-q1": {
     "sections": [
@@ -81,9 +82,9 @@
   },
   "2013-q3": {
     "sections": [
-      21
+      6
     ],
-    "reason": "keywords: resistance; primary=max(S6,S21)"
+    "reason": "keywords: friction"
   },
   "2013-q4": {
     "sections": [
@@ -99,9 +100,9 @@
   },
   "2013-q6": {
     "sections": [
-      26
+      5
     ],
-    "reason": "keywords: activity; primary=max(S21,S26)"
+    "reason": "fallback: weak keyword match -> Motion"
   },
   "2013-q7": {
     "sections": [
@@ -113,37 +114,37 @@
     "sections": [
       19
     ],
-    "reason": "keywords: lens"
+    "reason": "keywords: lens, focal length"
   },
   "2013-q9": {
     "sections": [
       26
     ],
-    "reason": "keywords: half-life, activity, decay constant"
+    "reason": "book5 keywords: half-life, decay constant, dating, activity"
   },
   "2013-q10": {
     "sections": [
       21
     ],
-    "reason": "keywords: resistance, circuit"
+    "reason": "keywords: resistance, internal resistance, circuit, circuit diagram"
   },
   "2013-q11": {
     "sections": [
       20
     ],
-    "reason": "keywords: point charge"
+    "reason": "keywords: point charge, electric field"
   },
   "2014-q1": {
     "sections": [
       2
     ],
-    "reason": "keywords: specific heat, heat capacity"
+    "reason": "keywords: specific heat, heat capacity, temperature rise"
   },
   "2014-q2": {
     "sections": [
-      7
+      4
     ],
-    "reason": "keywords: equilibrium"
+    "reason": "keywords: ideal gas, kinetic theory"
   },
   "2014-q3": {
     "sections": [
@@ -155,7 +156,7 @@
     "sections": [
       6
     ],
-    "reason": "keywords: tension"
+    "reason": "keywords: free-body, tension"
   },
   "2014-q5": {
     "sections": [
@@ -167,7 +168,7 @@
     "sections": [
       19
     ],
-    "reason": "keywords: lens"
+    "reason": "keywords: lens, focal length"
   },
   "2014-q7": {
     "sections": [
@@ -179,7 +180,7 @@
     "sections": [
       22
     ],
-    "reason": "keywords: mains, a.c."
+    "reason": "keywords: mains, fuse, live wire, a.c."
   },
   "2014-q9": {
     "sections": [
@@ -189,15 +190,17 @@
   },
   "2014-q10": {
     "sections": [
-      26
+      26,
+      25
     ],
-    "reason": "keywords: half-life, activity"
+    "reason": "book5 keywords: half-life, age of the, activity; also S25 (bare hands, handled, casing)"
   },
   "2015-q1": {
     "sections": [
-      3
+      3,
+      2
     ],
-    "reason": "keywords: boiling, melting, steam"
+    "reason": "keywords: boiling, melting, steam; dual with S2 (significant earlier part)"
   },
   "2015-q2": {
     "sections": [
@@ -207,15 +210,16 @@
   },
   "2015-q3": {
     "sections": [
-      21
+      8
     ],
-    "reason": "keywords: resistance"
+    "reason": "keywords: mechanical energy"
   },
   "2015-q4": {
     "sections": [
+      6,
       5
     ],
-    "reason": "keywords: velocity-time"
+    "reason": "keywords: free-body; dual with S5 (significant earlier part)"
   },
   "2015-q5": {
     "sections": [
@@ -234,25 +238,26 @@
     "sections": [
       15
     ],
-    "reason": "keywords: interference"
+    "reason": "keywords: interference; primary=max(S14,S15)"
   },
   "2015-q8": {
     "sections": [
+      24,
       21
     ],
-    "reason": "keywords: resistance"
+    "reason": "keywords: transformer; dual with S21 (significant earlier part)"
   },
   "2015-q9": {
     "sections": [
       24
     ],
-    "reason": "keywords: faraday; primary=max(S7,S23,S24)"
+    "reason": "keywords: faraday; primary=max(S23,S24)"
   },
   "2015-q10": {
     "sections": [
       27
     ],
-    "reason": "keywords: fusion, energy released, mev, nucleus"
+    "reason": "book5 keywords: fusion, energy released, mev"
   },
   "2016-q1": {
     "sections": [
@@ -274,46 +279,48 @@
   },
   "2016-q4": {
     "sections": [
-      6
+      9,
+      6,
+      8
     ],
-    "reason": "keywords: newton, free-body"
+    "reason": "keywords: momentum; dual with S6 (significant earlier part)"
   },
   "2016-q5": {
     "sections": [
       19
     ],
-    "reason": "keywords: lens, object distance"
+    "reason": "keywords: lens, focal length, magnification, object distance"
   },
   "2016-q6": {
     "sections": [
-      13
+      14
     ],
-    "reason": "keywords: wavelength; primary=max(S10,S13)"
+    "reason": "keywords: diffraction"
   },
   "2016-q7": {
     "sections": [
       21
     ],
-    "reason": "keywords: series, resistance, circuit"
+    "reason": "keywords: series, resistance, internal resistance, circuit"
   },
   "2016-q8": {
     "sections": [
-      20
+      23
     ],
-    "reason": "keywords: electric field"
+    "reason": "keywords: magnetic field; primary=max(S20,S23)"
   },
   "2016-q9": {
     "sections": [
-      27,
-      26
+      26,
+      25
     ],
-    "reason": "keywords: uranium, nucleus; dual with S26 (significant earlier part)"
+    "reason": "book5 keywords: half-life, age of the; also S25 (are emitted, decay series, a-particle)"
   },
   "2017-q1": {
     "sections": [
-      6
+      2
     ],
-    "reason": "keywords: score-based; primary=max(S1,S6)"
+    "reason": "keywords: specific heat, heat capacity"
   },
   "2017-q2": {
     "sections": [
@@ -329,9 +336,9 @@
   },
   "2017-q4": {
     "sections": [
-      21
+      10
     ],
-    "reason": "keywords: resistance; primary=max(S10,S21)"
+    "reason": "keywords: projected; primary=max(S6,S10)"
   },
   "2017-q5": {
     "sections": [
@@ -341,10 +348,9 @@
   },
   "2017-q6": {
     "sections": [
-      13,
-      5
+      13
     ],
-    "reason": "keywords: wave speed, frequency; dual with S5 (significant earlier part)"
+    "reason": "keywords: wavelength, wave speed, amplitude, frequency; primary=max(S5,S13)"
   },
   "2017-q7": {
     "sections": [
@@ -356,7 +362,7 @@
     "sections": [
       21
     ],
-    "reason": "keywords: resistance, circuit"
+    "reason": "keywords: resistance, circuit, voltage across"
   },
   "2017-q9": {
     "sections": [
@@ -366,10 +372,10 @@
   },
   "2017-q10": {
     "sections": [
-      27,
-      26
+      26,
+      25
     ],
-    "reason": "keywords: nuclear equation, mev, nucleus; dual with S26 (significant earlier part)"
+    "reason": "book5 keywords: half-life, activity; also S25 (nuclear equation, equation for the decay, @ particle)"
   },
   "2018-q1": {
     "sections": [
@@ -381,25 +387,27 @@
     "sections": [
       4
     ],
-    "reason": "keywords: ideal gas"
+    "reason": "keywords: ideal gas, kinetic theory"
   },
   "2018-q3": {
     "sections": [
-      8
+      8,
+      6
     ],
-    "reason": "keywords: kinetic energy; primary=max(S6,S8)"
+    "reason": "keywords: kinetic energy; dual with S6 (significant earlier part)"
   },
   "2018-q4": {
     "sections": [
+      10,
       9
     ],
-    "reason": "keywords: momentum"
+    "reason": "keywords: time of flight; dual with S9 (significant earlier part)"
   },
   "2018-q5": {
     "sections": [
       7
     ],
-    "reason": "keywords: equilibrium"
+    "reason": "keywords: equilibrium; primary=max(S6,S7)"
   },
   "2018-q6": {
     "sections": [
@@ -409,9 +417,9 @@
   },
   "2018-q7": {
     "sections": [
-      14
+      16
     ],
-    "reason": "keywords: diffraction"
+    "reason": "keywords: speed of sound, microphone"
   },
   "2018-q8": {
     "sections": [
@@ -423,13 +431,14 @@
     "sections": [
       24
     ],
-    "reason": "keywords: generator"
+    "reason": "keywords: generator; primary=max(S23,S24)"
   },
   "2018-q10": {
     "sections": [
-      26
+      26,
+      25
     ],
-    "reason": "keywords: half-life; primary=max(S6,S26)"
+    "reason": "book5 keywords: half-life, undecayed; also S25 (ionizing, spark counter, decay series)"
   },
   "2019-q1": {
     "sections": [
@@ -446,9 +455,9 @@
   },
   "2019-q3": {
     "sections": [
-      21
+      6
     ],
-    "reason": "keywords: resistance"
+    "reason": "fallback: force cues"
   },
   "2019-q4": {
     "sections": [
@@ -458,21 +467,22 @@
   },
   "2019-q5": {
     "sections": [
-      14
+      14,
+      13
     ],
-    "reason": "keywords: ripple tank; primary=max(S13,S14)"
+    "reason": "keywords: ripple tank; dual with S13 (significant earlier part)"
   },
   "2019-q6": {
     "sections": [
       19
     ],
-    "reason": "keywords: lens"
+    "reason": "keywords: lens, focal length, magnification"
   },
   "2019-q7": {
     "sections": [
       21
     ],
-    "reason": "keywords: resistance, circuit"
+    "reason": "keywords: resistance, internal resistance, circuit, circuit diagram"
   },
   "2019-q8": {
     "sections": [
@@ -488,9 +498,10 @@
   },
   "2019-q10": {
     "sections": [
-      27
+      27,
+      26
     ],
-    "reason": "keywords: fission, mev, uranium"
+    "reason": "book5 keywords: fission, chain reaction, mev; also S26 (half-life)"
   },
   "2020-q1": {
     "sections": [
@@ -500,9 +511,10 @@
   },
   "2020-q2": {
     "sections": [
+      8,
       4
     ],
-    "reason": "keywords: ideal gas, mole"
+    "reason": "keywords: work done; dual with S4 (significant earlier part)"
   },
   "2020-q3": {
     "sections": [
@@ -512,9 +524,9 @@
   },
   "2020-q4": {
     "sections": [
-      21
+      10
     ],
-    "reason": "keywords: resistance"
+    "reason": "keywords: time of flight; primary=max(S8,S10)"
   },
   "2020-q5": {
     "sections": [
@@ -536,9 +548,9 @@
   },
   "2020-q8": {
     "sections": [
-      22
+      21
     ],
-    "reason": "keywords: fuse; primary=max(S21,S22)"
+    "reason": "keywords: resistance, internal resistance, circuit"
   },
   "2020-q9": {
     "sections": [
@@ -550,7 +562,7 @@
     "sections": [
       27
     ],
-    "reason": "keywords: mev, nucleus; primary=max(S8,S27)"
+    "reason": "book5 keywords: nuclear reaction, bombarded, mev"
   },
   "2021-q1": {
     "sections": [
@@ -573,22 +585,21 @@
   },
   "2021-q4": {
     "sections": [
-      21
+      6
     ],
-    "reason": "keywords: resistance; primary=max(S7,S21)"
+    "reason": "keywords: tension"
   },
   "2021-q5": {
     "sections": [
-      21
+      12
     ],
-    "reason": "keywords: resistance; primary=max(S12,S21)"
+    "reason": "keywords: orbit, satellite"
   },
   "2021-q6": {
     "sections": [
-      19,
-      18
+      19
     ],
-    "reason": "keywords: lens; dual with S18 (significant earlier part)"
+    "reason": "keywords: lens, focal length; primary=max(S18,S19)"
   },
   "2021-q7": {
     "sections": [
@@ -600,19 +611,20 @@
     "sections": [
       21
     ],
-    "reason": "keywords: resistance, circuit"
+    "reason": "keywords: series, resistance, internal resistance, circuit"
   },
   "2021-q9": {
     "sections": [
-      26
+      26,
+      25
     ],
-    "reason": "keywords: half-life"
+    "reason": "book5 keywords: half-life, activity, bq; also S25 (kind of decay, radiation emitted, detected)"
   },
   "2022-q1": {
     "sections": [
       1
     ],
-    "reason": "keywords: thermometer"
+    "reason": "keywords: conduction, thermometer, heat transfer"
   },
   "2022-q2": {
     "sections": [
@@ -622,15 +634,15 @@
   },
   "2022-q3": {
     "sections": [
-      6
+      11
     ],
-    "reason": "keywords: newton"
+    "reason": "keywords: centripetal; primary=max(S6,S11)"
   },
   "2022-q4": {
     "sections": [
-      21
+      8
     ],
-    "reason": "keywords: resistance; primary=max(S8,S21)"
+    "reason": "keywords: kinetic energy"
   },
   "2022-q5": {
     "sections": [
@@ -642,7 +654,7 @@
     "sections": [
       16
     ],
-    "reason": "keywords: sound wave, microphone"
+    "reason": "keywords: sound wave, speed of sound, microphone"
   },
   "2022-q7": {
     "sections": [
@@ -654,7 +666,7 @@
     "sections": [
       21
     ],
-    "reason": "keywords: resistance, circuit"
+    "reason": "keywords: series, resistance, circuit"
   },
   "2022-q9": {
     "sections": [
@@ -666,7 +678,7 @@
     "sections": [
       27
     ],
-    "reason": "keywords: fission, fusion, mev, nucleus"
+    "reason": "book5 keywords: fission, fusion, mev"
   },
   "2023-q1": {
     "sections": [
@@ -676,9 +688,10 @@
   },
   "2023-q2": {
     "sections": [
+      6,
       4
     ],
-    "reason": "keywords: kinetic theory"
+    "reason": "keywords: newton; dual with S4 (significant earlier part)"
   },
   "2023-q3": {
     "sections": [
@@ -708,7 +721,7 @@
     "sections": [
       21
     ],
-    "reason": "keywords: resistance, circuit"
+    "reason": "keywords: resistance, internal resistance, circuit"
   },
   "2023-q8": {
     "sections": [
@@ -718,10 +731,10 @@
   },
   "2023-q9": {
     "sections": [
-      27,
-      26
+      26,
+      25
     ],
-    "reason": "keywords: radium, nucleus; dual with S26 (significant earlier part)"
+    "reason": "book5 keywords: half-life; also S25 (kind of radiation, radiation emitted, safe to)"
   },
   "2024-q1": {
     "sections": [
@@ -745,13 +758,14 @@
     "sections": [
       11
     ],
-    "reason": "keywords: angular speed"
+    "reason": "keywords: centripetal, angular speed"
   },
   "2024-q5": {
     "sections": [
-      4
+      16,
+      13
     ],
-    "reason": "fallback: gas cues"
+    "reason": "keywords: sound wave; dual with S13 (significant earlier part)"
   },
   "2024-q6": {
     "sections": [
@@ -787,13 +801,20 @@
     "sections": [
       21
     ],
-    "reason": "keywords: resistance, circuit"
+    "reason": "keywords: resistance, circuit, voltage across"
   },
   "2024-q12": {
     "sections": [
       23
     ],
     "reason": "keywords: magnetic field; primary=max(S22,S23)"
+  },
+  "2024-q13": {
+    "sections": [
+      26,
+      25
+    ],
+    "reason": "book5 keywords: half-life, decay constant, activity, bq; also S25 (penetrating, decay series, @ particle)"
   },
   "2025-q1": {
     "sections": [
@@ -803,9 +824,9 @@
   },
   "2025-q2": {
     "sections": [
-      21
+      10
     ],
-    "reason": "keywords: resistance; primary=max(S8,S10,S21)"
+    "reason": "keywords: projected; primary=max(S8,S10)"
   },
   "2025-q3": {
     "sections": [
@@ -815,9 +836,10 @@
   },
   "2025-q4": {
     "sections": [
+      11,
       6
     ],
-    "reason": "keywords: free-body"
+    "reason": "keywords: centripetal, angular speed; dual with S6 (significant earlier part)"
   },
   "2025-q5": {
     "sections": [
@@ -835,7 +857,7 @@
     "sections": [
       21
     ],
-    "reason": "keywords: resistance, circuit"
+    "reason": "keywords: resistance, internal resistance, circuit"
   },
   "2025-q8": {
     "sections": [
@@ -851,45 +873,51 @@
   },
   "2025-q10": {
     "sections": [
+      16,
+      13,
       15
     ],
-    "reason": "keywords: stationary wave"
+    "reason": "keywords: sound wave; dual with S13 (significant earlier part)"
   },
   "2025-q11": {
     "sections": [
-      21
+      22
     ],
-    "reason": "keywords: resistance; primary=max(S8,S21)"
+    "reason": "keywords: a.c.; primary=max(S8,S21,S22)"
   },
   "2025-q12": {
     "sections": [
-      26
+      26,
+      25
     ],
-    "reason": "keywords: activity, decay constant"
+    "reason": "book5 keywords: half-life, decay constant, count rate, activity; also S25 (equation to represent the decay, stable)"
   },
   "2026-q1": {
     "sections": [
-      3
+      3,
+      2
     ],
-    "reason": "keywords: latent heat, fusion, boiling, melting"
+    "reason": "keywords: latent heat, fusion, boiling, melting; dual with S2 (significant earlier part)"
   },
   "2026-q2": {
     "sections": [
-      4
+      4,
+      3
     ],
-    "reason": "keywords: ideal gas, gas molecules, pressure of the gas"
+    "reason": "keywords: ideal gas, gas molecules, pressure of the gas, mole; dual with S3 (significant earlier part)"
   },
   "2026-q3": {
     "sections": [
       9
     ],
-    "reason": "keywords: collision"
+    "reason": "keywords: momentum, collision"
   },
   "2026-q4": {
     "sections": [
+      11,
       8
     ],
-    "reason": "keywords: conservation of energy"
+    "reason": "keywords: centripetal; dual with S8 (significant earlier part)"
   },
   "2026-q5": {
     "sections": [
@@ -936,10 +964,10 @@
   },
   "2026-q12": {
     "sections": [
-      27,
+      26,
       25
     ],
-    "reason": "keywords: nuclear equation; dual with S25 (significant earlier part)"
+    "reason": "book5 keywords: half-life, undecayed, activity, bq; also S25 (nuclear equation, type(s) of radiation, detects)"
   },
   "pp-q1": {
     "sections": [
@@ -975,49 +1003,43 @@
     "sections": [
       24
     ],
-    "reason": "keywords: generator; primary=max(S16,S24)"
+    "reason": "keywords: generator; primary=max(S13,S16,S24)"
   },
   "pp-q7": {
     "sections": [
       24
     ],
-    "reason": "keywords: generator"
+    "reason": "keywords: generator; primary=max(S8,S24)"
   },
   "pp-q8": {
     "sections": [
       22
     ],
-    "reason": "keywords: mains, domestic, live wire, neutral wire"
+    "reason": "keywords: mains, fuse, domestic, live wire"
   },
   "pp-q9": {
     "sections": [
-      5
+      1
     ],
-    "reason": "fallback: weak keyword match -> Motion"
+    "reason": "keywords: thermometer"
   },
   "pp-q10": {
     "sections": [
-      5
+      16
     ],
-    "reason": "fallback: weak keyword match -> Motion"
+    "reason": "keywords: speed of sound"
   },
   "pp-q11": {
     "sections": [
-      21
+      12
     ],
-    "reason": "keywords: resistance"
+    "reason": "keywords: orbit"
   },
   "pp-q12": {
     "sections": [
       21
     ],
-    "reason": "keywords: circuit, circuit diagram, voltage sensor"
-  },
-  "2024-q13": {
-    "sections": [
-      26
-    ],
-    "reason": "keywords: half-life, activity, decay constant"
+    "reason": "keywords: circuit, circuit diagram, voltage across"
   },
   "pp-q13": {
     "sections": [
@@ -1028,8 +1050,9 @@
   "pp-q14": {
     "sections": [
       27,
-      26
+      26,
+      25
     ],
-    "reason": "keywords: fission, mev; dual with S26 (significant earlier part)"
+    "reason": "book5 keywords: fission, mev; also S26 (half-life, count rate, activity); also S25 (background radiation)"
   }
 }

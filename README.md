@@ -34,7 +34,7 @@ export LLM_MODEL=meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
 
 When no API key is set, both MC and LQ use the keyword classifiers.
 
-## Regenerating `output/` and `classified/`
+## Regenerating `reconstructed/` and `classified/`
 
 Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.gitignore`). Rebuild them from `paper/` with:
 
@@ -43,7 +43,7 @@ Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.g
 ./pipeline --years 2025 --force --yes   # one year
 ```
 
-The only files under `output/` and `classified/` that git tracks are hand-tuned inputs the pipeline reads rather than regenerates: `output/lq/<year>/starts.json` (LQ page ranges), `classified/*/llm_classifications.json` (LLM section decisions, editable and replayable with `--from-json`) and `classified/lq/candidate_performance.json` (from `scripts/extract_lq_performance.py`). Everything else is reproducible from `paper/` with `./pipeline`, so never `git add` crops, section PDFs or `.lavish/` HTML.
+The only files under `reconstructed/` and `classified/` that git tracks are hand-tuned inputs the pipeline reads rather than regenerates: `reconstructed/lq/<year>/starts.json` (LQ page ranges), `classified/*/llm_classifications.json` (LLM section decisions, editable and replayable with `--from-json`) and `classified/lq/candidate_performance.json` (from `scripts/extract_lq_performance.py`). Everything else is reproducible from `paper/` with `./pipeline`, so never `git add` crops, section PDFs or `.lavish/` HTML.
 
 ## Layout
 
@@ -78,6 +78,14 @@ The only files under `output/` and `classified/` that git tracks are hand-tuned 
 10. **lavish** - quality audit + HTML reviews under `.lavish/` (pipeline walkthrough, MC banks, LQ banks)
 
 Candidate-performance extraction stays available as `python scripts/extract_lq_performance.py` when needed; it is not part of `./pipeline`.
+
+## Tests
+
+```bash
+.venv/bin/python -m unittest discover -s tests   # seconds; needs no build
+```
+
+The suite runs against fixtures (`tests/fixtures/lq_ocr/`, temp trees) and covers the Book 5 listing rule, the reconstructed layout joiner and the upright section-PDF packing. Tests that inspect generated banks (`classified/`, `reconstructed/`) skip until `./pipeline` has built them. A full rebuild takes tens of minutes (page export and OCR dominate), so when evidence is needed build one track - e.g. `./pipeline --only lq-pages,lq-crops,lq-answers,classify-lq,keys,section-pdfs --yes` for the LQ banks (`section-pdfs` needs `keys`) - or one year with `--years`, rather than everything.
 
 ## Quality bar
 
