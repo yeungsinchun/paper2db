@@ -237,7 +237,7 @@ def write_html(audit: dict, assets: dict) -> None:
         ("6. Keys", "keys", "MC answer keys → classified/mc/answer_keys.json"),
         ("7. Classify MC", "classify-mc", "27 syllabus sections (LLM if keyed, else keywords)"),
         ("8. Classify LQ", "classify-lq", "Same sections for long questions (LLM if keyed, else keywords)"),
-        ("9. Section PDFs", "section-pdfs", "Per-section combined.pdf / questions.pdf"),
+        ("9. Section PDFs", "section-pdfs", "Per-section combined.pdf (+ LQ answers/performance)"),
         ("10. Lavish", "lavish", "HTML reviews under .lavish/"),
     ]
 

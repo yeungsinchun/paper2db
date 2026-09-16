@@ -767,7 +767,7 @@ class TestGeneratedLqWholePages(unittest.TestCase):
                 / "lq"
                 / "03A_Wave_Motion"
                 / "15_Interference_and_Stationary_Wave"
-                / "questions.pdf",
+                / "combined.pdf",
                 "2015 Q7",
             ),
             (
@@ -776,7 +776,7 @@ class TestGeneratedLqWholePages(unittest.TestCase):
                 / "lq"
                 / "04_Electricity_and_Magnetism"
                 / "21_Circuit_and_Power"
-                / "questions.pdf",
+                / "combined.pdf",
                 "2015 Q8",
             ),
             (
@@ -785,7 +785,7 @@ class TestGeneratedLqWholePages(unittest.TestCase):
                 / "lq"
                 / "05_Radioactivity_and_Nuclear_Energy"
                 / "27_Nuclear_Energy"
-                / "questions.pdf",
+                / "combined.pdf",
                 "2015 Q10",
             ),
         )

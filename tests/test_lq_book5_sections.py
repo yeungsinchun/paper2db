@@ -3,7 +3,7 @@
 Chapter 25 (Radiation and Radioactivity) used to hold no primary LQ at all:
 the keyword scorer only kept the latest-scoring section, so an alpha-penetration
 part beside a half-life part was filed under ch26 only, and combine_lq_section_pdfs
-only built questions.pdf for primary rows, leaving ch25's PDF stale (rotated,
+only built the section PDF for primary rows, leaving ch25's PDF stale (rotated,
 cut off). Fixtures are the tesseract text of the real Paper 1B stacks.
 """
 from __future__ import annotations
@@ -193,7 +193,7 @@ def _write_paper(path: Path, pages: int, *, landscape_rotated: bool = False) -> 
 
 
 class TestSectionPdfsIncludeEveryListedSection(unittest.TestCase):
-    def test_non_primary_section_gets_questions_pdf_and_stale_pdf_is_removed(self) -> None:
+    def test_non_primary_section_gets_combined_pdf_and_stale_pdfs_are_removed(self) -> None:
         combine = load_module("combine_lq_section_pdfs", SCRIPTS / "combine_lq_section_pdfs.py")
         review = load_module("lq_pdf_review", SCRIPTS / "lq_pdf_review.py")
         with tempfile.TemporaryDirectory() as tmp:
@@ -233,7 +233,11 @@ class TestSectionPdfsIncludeEveryListedSection(unittest.TestCase):
                 )
             ch27 = classified / "05_Radioactivity_and_Nuclear_Energy" / "27_Nuclear_Energy"
             ch27.mkdir(parents=True)
-            (ch27 / "questions.pdf").write_bytes(b"%PDF-1.4 stale")
+            (ch27 / "combined.pdf").write_bytes(b"%PDF-1.4 stale")
+            # Pre-rename name left by an older build in a section that stays populated.
+            ch25 = classified / "05_Radioactivity_and_Nuclear_Energy" / "25_Radiation_and_Radioactivity"
+            ch25.mkdir(parents=True)
+            (ch25 / "questions.pdf").write_bytes(b"%PDF-1.4 legacy")
 
             review.PAPER_LQ = paper
             review.OUTPUT_LQ = root / "reconstructed" / "lq"
@@ -247,11 +251,10 @@ class TestSectionPdfsIncludeEveryListedSection(unittest.TestCase):
             ):
                 combine.main()
 
-            ch25 = classified / "05_Radioactivity_and_Nuclear_Energy" / "25_Radiation_and_Radioactivity"
             ch26 = classified / "05_Radioactivity_and_Nuclear_Energy" / "26_Rate_of_Decay_and_Uses_of_Radionuclides"
             for folder in (ch25, ch26):
                 with self.subTest(folder=folder.name):
-                    document = fitz.open(folder / "questions.pdf")
+                    document = fitz.open(folder / "combined.pdf")
                     try:
                         self.assertEqual(len(document), 2)
                         self.assertIn("2014 Q10", document[0].get_text())
@@ -259,8 +262,9 @@ class TestSectionPdfsIncludeEveryListedSection(unittest.TestCase):
                         self.assertIn("PAGE-3", document[1].get_text())
                     finally:
                         document.close()
-            self.assertIn("ch25 Radiation and Radioactivity", fitz.open(ch25 / "questions.pdf")[0].get_text())
-            self.assertFalse((ch27 / "questions.pdf").exists(), "stale PDF of an empty section must go")
+            self.assertIn("ch25 Radiation and Radioactivity", fitz.open(ch25 / "combined.pdf")[0].get_text())
+            self.assertFalse((ch27 / "combined.pdf").exists(), "stale PDF of an empty section must go")
+            self.assertFalse((ch25 / "questions.pdf").exists(), "pre-rename questions.pdf must go")
 
     def test_rotated_scan_is_packed_upright_and_complete(self) -> None:
         review = load_module("lq_pdf_review", SCRIPTS / "lq_pdf_review.py")
@@ -343,7 +347,7 @@ class TestGeneratedCh25Bank(unittest.TestCase):
             with self.subTest(key=key):
                 self.assertEqual(int(rows[key]["Primary"]), expected[0])
 
-    def test_ch25_folder_and_questions_pdf_cover_every_expected_problem(self) -> None:
+    def test_ch25_folder_and_combined_pdf_cover_every_expected_problem(self) -> None:
         review = load_module("lq_pdf_review", SCRIPTS / "lq_pdf_review.py")
         expected_pages = 0
         for year, qn in EXPECTED_CH25:
@@ -351,7 +355,7 @@ class TestGeneratedCh25Bank(unittest.TestCase):
             span = review.question_range(year, qn)
             assert span is not None
             expected_pages += span[1] - span[0] + 1
-        document = fitz.open(self.CH25 / "questions.pdf")
+        document = fitz.open(self.CH25 / "combined.pdf")
         try:
             self.assertEqual(len(document), expected_pages)
             joined = "\n".join(page.get_text() for page in document)

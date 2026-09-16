@@ -135,7 +135,7 @@ LQ_25 = (
     / "lq"
     / "05_Radioactivity_and_Nuclear_Energy"
     / "25_Radiation_and_Radioactivity"
-    / "questions.pdf"
+    / "combined.pdf"
 )
 
 
@@ -217,7 +217,7 @@ class TestSection25Heading(unittest.TestCase):
                 self._assert_label_top_right(page, "2012 Q36")
             finally:
                 document.close()
-            lq_pdf = directory / "questions.pdf"
+            lq_pdf = directory / "combined.pdf"
             lq.write_image_pdf(
                 [lq_png], lq_pdf, title="ch25 Radiation and Radioactivity"
             )

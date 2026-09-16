@@ -74,7 +74,7 @@ The only files under `reconstructed/` and `classified/` that git tracks are hand
 6. **keys** - MC keys + correct-% → `classified/mc/answer_keys.json`
 7. **classify-mc** - 27 syllabus sections (LLM if keyed, else keywords)
 8. **classify-lq** - same sections for LQ (LLM if keyed, else keywords). Either backend then lists every Book 5 section a radioactivity LQ tests (e.g. 2014 Q10: ch26 activity + ch25 alpha handling; 2012 Q11 keeps 25+26+27), primary = latest section. The keyword scorer OCRs the whole page stack (cache keyed by PNG size under `classified/lq/ocr_cache/`)
-9. **section-pdfs** - per-section A4 `combined.pdf` / `questions.pdf` (+ answer PDFs); an LQ appears in every section it is listed under, not only its primary
+9. **section-pdfs** - per-section A4 `combined.pdf` (+ LQ `answers.pdf` / `performance.pdf`); an LQ appears in every section it is listed under, not only its primary
 10. **lavish** - quality audit + HTML reviews under `.lavish/` (pipeline walkthrough, MC banks, LQ banks)
 
 Candidate-performance extraction stays available as `python scripts/extract_lq_performance.py` when needed; it is not part of `./pipeline`.
@@ -106,7 +106,7 @@ Captain review surface: `.lavish/pipeline-review/index.html` (step-by-step inter
 1. **Anchors** - every blue dot beside the question number with a clear gap (not on options or diagrams). Wrong anchors poison every later step. Use `scripts/overrides_YYYY.json` for hard pages (each counts toward the 5% budget).
 2. **Uncertain MC** - skim `classified/mc/uncertain.csv` and spot-check a few section folders.
 3. **LQ pages** - skim `reconstructed/lq/<year>/questions.pdf` if a question's page range looks wrong (`starts.json`). The last question should stop before any trailing data/formulae sheet or blank "do not write" insert.
-4. Trust the section review PDFs under `classified/*/.../combined.pdf` (or `questions.pdf`) rather than browsing PNG lists. Those PDFs are portrait A4 with year and question labels.
+4. Trust the section review PDFs under `classified/*/.../combined.pdf` rather than browsing PNG lists. Those PDFs are portrait A4 with year and question labels.
 5. Skim `.lavish/pipeline-review/` for the measured rates before accepting a new year.
 
 ## Low-level tools

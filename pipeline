@@ -587,7 +587,7 @@ def main() -> None:
     print("  MC papers:   reconstructed/mc/combined.pdf (per year: reconstructed/mc/<year>/combined.pdf)")
     print("  LQ papers:   reconstructed/lq/combined.pdf (per year: reconstructed/lq/<year>/combined.pdf)")
     print("  MC sections: classified/mc/<book>/<section>/combined.pdf")
-    print("  LQ sections: classified/lq/<book>/<section>/questions.pdf")
+    print("  LQ sections: classified/lq/<book>/<section>/combined.pdf")
     print("Lavish HTML (if lavish stage ran):")
     print("  Pipeline walkthrough: .lavish/pipeline-review/")
     print("  MC banks:             .lavish/classified-review/")

@@ -47,7 +47,7 @@ class TestGitignoreGenerated(unittest.TestCase):
             "classified/mc/ocr_cache/2024/q1.txt",
             "classified/mc/01_Heat/1_Temperature/combined.pdf",
             "classified/lq/classification.csv",
-            "classified/lq/01_Heat/1_Temperature/questions.pdf",
+            "classified/lq/01_Heat/1_Temperature/combined.pdf",
             "classified/mc_classification.json",
             "classified/quality_audit.json",
             ".lavish/lq-classified-review/index.html",

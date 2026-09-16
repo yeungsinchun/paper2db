@@ -2,14 +2,16 @@
 """Build per-section LQ review PDFs under classified/lq/.
 
 For each syllabus section listed in any row's AllSections (primary or not):
-  - questions.pdf  - whole source Paper 1B pages (year then Q; A4)
+  - combined.pdf   - whole source Paper 1B pages (year then Q; A4); same name
+                     as the MC section PDFs
   - answers.pdf    - marking-scheme answer crops packed on A4 (same order; skips missing)
   - performance.pdf - candidate-performance notes as text pages
 
 A cross-topic LQ (e.g. alpha penetration + activity from half-life) therefore
 appears in every section it tests, matching the PNG copies classify_lq_*
 already place there. Sections with no rows get their stale PDFs removed so an
-old build cannot linger. Overwrites existing PDFs by default.
+old build cannot linger, and the pre-rename questions.pdf is removed everywhere.
+Overwrites existing PDFs by default.
 """
 from __future__ import annotations
 
@@ -70,12 +72,14 @@ def rows_by_section(rows: list[dict]) -> dict[int, list[dict]]:
     return by_section
 
 
-SECTION_PDFS = ("questions.pdf", "answers.pdf", "performance.pdf")
+SECTION_PDFS = ("combined.pdf", "answers.pdf", "performance.pdf")
+# Name the question PDF carried before it was aligned with classified/mc/.
+LEGACY_SECTION_PDFS = ("questions.pdf",)
 
 
-def remove_stale_pdfs(out_dir: Path) -> list[Path]:
+def remove_stale_pdfs(out_dir: Path, names: tuple[str, ...] = SECTION_PDFS) -> list[Path]:
     removed = []
-    for name in SECTION_PDFS:
+    for name in names:
         path = out_dir / name
         if path.is_file():
             path.unlink()
@@ -172,6 +176,8 @@ def main() -> None:
         items = by_section.get(num) or []
         out_dir = section_dir(num)
         heading = section_heading_title(num, name)
+        for stale in remove_stale_pdfs(out_dir, LEGACY_SECTION_PDFS):
+            print(f"Removed stale {stale.relative_to(ROOT)} (renamed to combined.pdf)")
         if not items:
             for stale in remove_stale_pdfs(out_dir):
                 print(f"Removed stale {stale.relative_to(ROOT)} (no LQ in section)")
@@ -189,7 +195,7 @@ def main() -> None:
             note = (perf.get(str(year)) or {}).get(str(qn), "")
             perf_items.append((str(year), qn, note))
 
-        q_pdf = out_dir / "questions.pdf"
+        q_pdf = out_dir / "combined.pdf"
         a_pdf = out_dir / "answers.pdf"
         p_pdf = out_dir / "performance.pdf"
         if (
@@ -207,7 +213,7 @@ def main() -> None:
         np_ = write_performance_pdf(perf_items, p_pdf, section_label=label)
         written += 1
         print(
-            f"{label}: questions.pdf ({nq}), answers.pdf ({na}), "
+            f"{label}: combined.pdf ({nq}), answers.pdf ({na}), "
             f"performance.pdf ({np_}) -> {out_dir.relative_to(ROOT)}"
         )
 
