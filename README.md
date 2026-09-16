@@ -73,7 +73,7 @@ The only files under `output/` and `classified/` that git tracks are hand-tuned 
 5. **lq-answers** - marking-scheme answer crops under `ans/`
 6. **keys** - MC keys + correct-% → `classified/mc/answer_keys.json`
 7. **classify-mc** - 27 syllabus sections (LLM if keyed, else keywords)
-8. **classify-lq** - same sections for LQ (LLM if keyed, else keywords). The keyword scorer OCRs the whole page stack (cache keyed by PNG size under `classified/lq/ocr_cache/`) and lists every Book 5 section a radioactivity LQ tests (e.g. 2014 Q10: ch26 activity + ch25 alpha handling), primary = latest section
+8. **classify-lq** - same sections for LQ (LLM if keyed, else keywords). Either backend then lists every Book 5 section a radioactivity LQ tests (e.g. 2014 Q10: ch26 activity + ch25 alpha handling; 2012 Q11 keeps 25+26+27), primary = latest section. The keyword scorer OCRs the whole page stack (cache keyed by PNG size under `classified/lq/ocr_cache/`)
 9. **section-pdfs** - per-section A4 `combined.pdf` / `questions.pdf` (+ answer PDFs); an LQ appears in every section it is listed under, not only its primary
 10. **lavish** - quality audit + HTML reviews under `.lavish/` (pipeline walkthrough, MC banks, LQ banks)
 

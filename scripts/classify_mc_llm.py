@@ -330,7 +330,7 @@ def chat_json(system: str, user: str, *, retries: int = 3) -> dict:
     raise SystemExit(f"LLM call failed after {retries} retries: {last_err}")
 
 
-def normalize_sections(raw: object) -> list[int]:
+def normalize_sections(raw: object, *, limit: int = 2) -> list[int]:
     if not isinstance(raw, list) or not raw:
         return []
     out: list[int] = []
@@ -341,7 +341,7 @@ def normalize_sections(raw: object) -> list[int]:
             continue
         if 1 <= n <= 27 and n not in out:
             out.append(n)
-        if len(out) >= 2:
+        if len(out) >= limit:
             break
     return out
 

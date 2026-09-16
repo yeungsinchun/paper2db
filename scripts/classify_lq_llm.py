@@ -27,6 +27,7 @@ from pathlib import Path
 
 from PIL import Image
 
+from classify_lq_keywords import apply_book5_listings
 from classify_mc_llm import (
     SECTION_BY_NUM,
     SECTIONS,
@@ -36,6 +37,8 @@ from classify_mc_llm import (
     normalize_sections,
     year_key,
 )
+
+LQ_SECTION_LIMIT = 3
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_LQ = ROOT / "reconstructed" / "lq"
@@ -133,6 +136,13 @@ def _ocr_one(args: tuple[str, str, int]) -> dict:
     }
 
 
+def finalize_sections(record: dict, raw_sections: object, reason: str) -> tuple[list[int], str]:
+    sections = normalize_sections(raw_sections, limit=LQ_SECTION_LIMIT)
+    if not sections:
+        raise ValueError(f"bad sections in {raw_sections!r}")
+    return apply_book5_listings(str(record.get("Statement") or ""), sections, reason)
+
+
 def classify_one(record: dict) -> dict:
     user = (
         f"Year {record['Year']} Q{record['Question']}\n\n"
@@ -140,12 +150,11 @@ def classify_one(record: dict) -> dict:
         'JSON only: {"sections":[<primary>, ...], "reason":"<one short sentence>"}'
     )
     parsed = chat_json(SYSTEM_PROMPT, user)
-    sections = normalize_sections(parsed.get("sections"))
-    if not sections:
-        raise ValueError(f"bad sections in {parsed!r}")
+    reason = str(parsed.get("reason") or "").strip()[:240]
+    sections, reason = finalize_sections(record, parsed.get("sections"), reason)
     return {
         "sections": sections,
-        "reason": str(parsed.get("reason") or "").strip()[:240],
+        "reason": reason,
     }
 
 
@@ -228,14 +237,14 @@ def main() -> None:
         for rec in records:
             key = f"{rec['Year']}-q{rec['Question']}"
             d = decisions[key]
-            sections = [int(x) for x in d["sections"]]
+            sections, reason = finalize_sections(rec, d["sections"], d.get("reason", ""))
             rows.append(
                 {
                     "Year": rec["Year"],
                     "Question": rec["Question"],
                     "Primary": sections[0],
                     "AllSections": ";".join(str(s) for s in sections),
-                    "Reason": d.get("reason", ""),
+                    "Reason": reason,
                     "PNG": rec["PNG"],
                     "AnswerPNG": rec["AnswerPNG"],
                 }

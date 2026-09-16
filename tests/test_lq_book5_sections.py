@@ -121,6 +121,47 @@ class TestBook5Classifier(unittest.TestCase):
                     run.assert_not_called()
 
 
+class TestLlmBook5Listings(unittest.TestCase):
+    def test_stubbed_llm_lists_ch25_and_three_book5_sections(self) -> None:
+        import classify_lq_llm as lq
+
+        def fake_chat_json(_system: str, user: str) -> dict:
+            if "Year 2014 Q10" in user:
+                return {"sections": [26], "reason": "dominant: activity / half-life"}
+            if "Year 2012 Q11" in user:
+                return {
+                    "sections": [27, 26, 25],
+                    "reason": "nuclear energy plus decay and activity",
+                }
+            raise AssertionError(f"unexpected prompt: {user[:80]!r}")
+
+        with mock.patch.object(lq, "chat_json", side_effect=fake_chat_json):
+            q2014 = lq.classify_one(
+                {
+                    "Year": "2014",
+                    "Question": 10,
+                    "Statement": fixture_text("2014", 10),
+                }
+            )
+            q2012 = lq.classify_one(
+                {
+                    "Year": "2012",
+                    "Question": 11,
+                    "Statement": fixture_text("2012", 11),
+                }
+            )
+
+        self.assertEqual(q2014["sections"], EXPECTED_BOOK5[("2014", 10)])
+        self.assertIn(25, q2014["sections"])
+        self.assertEqual(q2012["sections"], EXPECTED_BOOK5[("2012", 11)])
+        self.assertEqual(q2012["sections"], [27, 26, 25])
+        self.assertEqual(lq.normalize_sections([27, 26, 25]), [27, 26])
+        self.assertEqual(
+            lq.normalize_sections([27, 26, 25], limit=3),
+            [27, 26, 25],
+        )
+
+
 def _write_paper(path: Path, pages: int, *, landscape_rotated: bool = False) -> None:
     """Fake Paper 1B: page 0 is a cover, then exam pages with a page mark."""
     doc = fitz.open()

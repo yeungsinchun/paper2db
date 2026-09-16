@@ -3,8 +3,8 @@
 
 OCRs each whole page stack (cache classified/lq/ocr_cache/<year>/qN.<w>x<h>.txt,
 keyed by PNG size so a re-crop is re-read). Book 5 questions list every
-radioactivity section they test (classify_book5); other books keep the
-single-primary scoring. Writes:
+radioactivity section they test (apply_book5_listings / classify_book5);
+other books keep the single-primary scoring. Writes:
   classified/lq/classification.csv
   classified/lq/llm_classifications.json
   classified/lq/<book>/<section>/ year-qN.png (+ optional answer copy)
@@ -411,18 +411,34 @@ def classify_book5(text: str) -> tuple[list[int], str]:
     return sections, reason
 
 
+def apply_book5_listings(
+    text: str, sections: list[int], reason: str
+) -> tuple[list[int], str]:
+    """Union Book 5 listings onto AllSections after either classifier backend."""
+    if not is_book5(text.lower()):
+        return sections, reason
+    listed, book5_reason = classify_book5(text)
+    union = {sec for sec in (*listed, *sections) if 25 <= sec <= 27}
+    merged = sorted(union, reverse=True) or listed
+    if merged == list(sections):
+        return sections, reason
+    if reason:
+        return merged, f"{reason}; {book5_reason}"
+    return merged, book5_reason
+
+
 def classify_text(text: str) -> tuple[list[int], str]:
     """Classify into curriculum sections.
 
     Curriculum rule: if a question needs both Sx and Sy with x < y, primary is Sy
     (students meet the later topic later). List both only when a significant part
     is answerable with Sx alone (approximated by a strong exclusive lower-section score).
-    Book 5 (radioactivity) goes through classify_book5, which lists every
+    Book 5 (radioactivity) goes through apply_book5_listings, which lists every
     tested section rather than only the primary.
     """
     low = text.lower()
     if is_book5(low):
-        return classify_book5(text)
+        return apply_book5_listings(text, [], "")
     ranked = score_sections(text)
     if not ranked or ranked[0][1] < 2:
         if any(
@@ -468,7 +484,7 @@ def classify_text(text: str) -> tuple[list[int], str]:
         reason += f"; dual with S{sections[1]} (significant earlier part)"
     elif len(contenders) > 1:
         reason += f"; primary=max({','.join('S'+str(s) for s in sorted(contenders))})"
-    return sections, reason
+    return apply_book5_listings(text, sections, reason)
 
 
 NESTED_CSV_FIELDS = [
