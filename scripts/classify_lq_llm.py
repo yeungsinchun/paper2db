@@ -16,18 +16,14 @@ from __future__ import annotations
 
 import argparse
 import csv
-import io
 import json
 import re
 import shutil
-import subprocess
 import time
 import urllib.error
 from pathlib import Path
 
-from PIL import Image
-
-from classify_lq_keywords import apply_book5_listings
+import classify_lq_keywords as keyword_classifier
 from classify_mc_llm import (
     SECTION_BY_NUM,
     SECTIONS,
@@ -92,33 +88,11 @@ def collect_jobs(years: list[str] | None) -> list[tuple[str, Path, int]]:
     return jobs
 
 
-def ocr_png(path: Path, cache_path: Path) -> str:
-    if cache_path.exists():
-        return cache_path.read_text(encoding="utf-8")
-    # LQ crops are tall; OCR a top band first (stem), fall back to full if thin.
-    image = Image.open(path).convert("RGB")
-    w, h = image.size
-    band_h = min(h, max(900, int(h * 0.45)))
-    crop = image.crop((0, 0, w, band_h))
-    buf = io.BytesIO()
-    crop.save(buf, format="PNG")
-    result = subprocess.run(
-        ["tesseract", "stdin", "stdout", "--psm", "6"],
-        input=buf.getvalue(),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.DEVNULL,
-        check=False,
-    )
-    text = result.stdout.decode("utf-8", errors="ignore")
-    cache_path.parent.mkdir(parents=True, exist_ok=True)
-    cache_path.write_text(text, encoding="utf-8")
-    return text
-
-
 def _ocr_one(args: tuple[str, str, int]) -> dict:
     year, png_path, number = args
-    cache = OCR_CACHE / str(year) / f"q{number}.txt"
-    text = ocr_png(Path(png_path), cache)
+    png = Path(png_path)
+    cache = keyword_classifier.ocr_cache_path(png, str(year), number)
+    text = keyword_classifier.ocr_png(png, cache)
     # Drop dotted-line OCR noise.
     lines = []
     for line in text.splitlines():
@@ -130,7 +104,7 @@ def _ocr_one(args: tuple[str, str, int]) -> dict:
     return {
         "Year": year,
         "Question": number,
-        "Statement": cleaned[:2500],
+        "Statement": cleaned,
         "PNG": f"reconstructed/lq/{year}/q{number}.png",
         "AnswerPNG": f"reconstructed/lq/{year}/ans/q{number}.png",
     }
@@ -140,7 +114,9 @@ def finalize_sections(record: dict, raw_sections: object, reason: str) -> tuple[
     sections = normalize_sections(raw_sections, limit=LQ_SECTION_LIMIT)
     if not sections:
         raise ValueError(f"bad sections in {raw_sections!r}")
-    return apply_book5_listings(str(record.get("Statement") or ""), sections, reason)
+    return keyword_classifier.apply_book5_listings(
+        str(record.get("Statement") or ""), sections, reason
+    )
 
 
 def classify_one(record: dict) -> dict:

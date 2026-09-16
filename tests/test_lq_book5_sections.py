@@ -9,6 +9,7 @@ cut off). Fixtures are the tesseract text of the real Paper 1B stacks.
 from __future__ import annotations
 
 import csv
+import io
 import importlib.machinery
 import importlib.util
 import json
@@ -122,34 +123,47 @@ class TestBook5Classifier(unittest.TestCase):
 
 
 class TestLlmBook5Listings(unittest.TestCase):
-    def test_stubbed_llm_lists_ch25_and_three_book5_sections(self) -> None:
+    def test_stubbed_llm_uses_whole_stack_ocr_for_book5_sections(self) -> None:
         import classify_lq_llm as lq
+        from PIL import Image
 
         def fake_chat_json(_system: str, user: str) -> dict:
             if "Year 2014 Q10" in user:
                 return {"sections": [26], "reason": "dominant: activity / half-life"}
             if "Year 2012 Q11" in user:
                 return {
-                    "sections": [27, 26, 25],
-                    "reason": "nuclear energy plus decay and activity",
+                    "sections": [27, 25],
+                    "reason": "nuclear energy plus decay",
                 }
             raise AssertionError(f"unexpected prompt: {user[:80]!r}")
 
-        with mock.patch.object(lq, "chat_json", side_effect=fake_chat_json):
-            q2014 = lq.classify_one(
-                {
-                    "Year": "2014",
-                    "Question": 10,
-                    "Statement": fixture_text("2014", 10),
-                }
-            )
-            q2012 = lq.classify_one(
-                {
-                    "Year": "2012",
-                    "Question": 11,
-                    "Statement": fixture_text("2012", 11),
-                }
-            )
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            records = []
+            fixtures = iter((fixture_text("2014", 10), fixture_text("2012", 11)))
+
+            def fake_tesseract(*_args, **kwargs):
+                with Image.open(io.BytesIO(kwargs["input"])) as image:
+                    self.assertEqual(image.size, (30, 3000))
+                return mock.Mock(stdout=next(fixtures).encode("utf-8"))
+
+            with (
+                mock.patch.object(lq.keyword_classifier, "OCR_CACHE", root / "ocr_cache"),
+                mock.patch.object(
+                    lq.keyword_classifier.subprocess,
+                    "run",
+                    side_effect=fake_tesseract,
+                ) as run,
+            ):
+                for year, qn in (("2014", 10), ("2012", 11)):
+                    png = root / year / f"q{qn}.png"
+                    png.parent.mkdir(parents=True, exist_ok=True)
+                    Image.new("RGB", (30, 3000), "white").save(png)
+                    records.append(lq._ocr_one((year, str(png), qn)))
+
+                with mock.patch.object(lq, "chat_json", side_effect=fake_chat_json):
+                    q2014, q2012 = [lq.classify_one(record) for record in records]
+                self.assertEqual(run.call_count, 2)
 
         self.assertEqual(q2014["sections"], EXPECTED_BOOK5[("2014", 10)])
         self.assertIn(25, q2014["sections"])
