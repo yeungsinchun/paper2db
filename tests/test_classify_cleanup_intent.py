@@ -39,6 +39,10 @@ class TestGitignoreGenerated(unittest.TestCase):
             "output/2024/q1.png",
             "output/2024/combined.pdf",
             "output/2024-intermediate/anchor.pdf",
+            "reconstructed/mc/combined.pdf",
+            "reconstructed/mc/2024/q1.png",
+            "reconstructed/lq/2024/q1.png",
+            "reconstructed/lq/2024/pages/page01.png",
             "classified/mc/answer_keys.json",
             "classified/mc/ocr_cache/2024/q1.txt",
             "classified/mc/01_Heat/1_Temperature/combined.pdf",
@@ -53,6 +57,7 @@ class TestGitignoreGenerated(unittest.TestCase):
     def test_hand_tuned_inputs_not_ignored(self) -> None:
         for path in (
             "output/lq/2024/starts.json",
+            "reconstructed/lq/2024/starts.json",
             "classified/mc/llm_classifications.json",
             "classified/lq/llm_classifications.json",
             "classified/lq/candidate_performance.json",
