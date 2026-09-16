@@ -149,7 +149,7 @@ def sync_classified_question_pngs(years: list[str] | None = None) -> int:
             if years and year not in years:
                 continue
             question = row["Question"]
-            src = ROOT / "output" / "lq" / year / f"q{question}.png"
+            src = ROOT / "reconstructed" / "lq" / year / f"q{question}.png"
             if not src.is_file():
                 continue
             sections = [int(item) for item in row["AllSections"].split(";") if item]
@@ -249,7 +249,7 @@ def main() -> None:
         help="Export missing pages/ without rewriting starts.json or qN.png",
     )
     args = parser.parse_args()
-    root = ROOT / "output" / "lq"
+    root = ROOT / "reconstructed" / "lq"
     total = 0
     selected: list[str] = []
     for year_dir in sorted(root.iterdir()):

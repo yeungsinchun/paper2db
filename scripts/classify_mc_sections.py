@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Classify output/ MC PNGs into Book 1-5 / Sections 1-27.
+"""Classify reconstructed/mc/ MC PNGs into Book 1-5 / Sections 1-27.
 
 Writes:
   classified/mc/<book>/<NN_section>/  (PNG copies; cross-topic Qs appear in each)
@@ -27,7 +27,7 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "output"
+OUTPUT = ROOT / "reconstructed" / "mc"
 CLASSIFIED = ROOT / "classified" / "mc"
 OCR_CACHE = CLASSIFIED / "ocr_cache"
 
@@ -437,7 +437,7 @@ def _ocr_one(args: tuple[str, str, int]) -> dict:
         "Question": number,
         "Question statement": statement,
         "Option": options,
-        "PNG": f"output/{year}/q{number}.png",
+        "PNG": f"reconstructed/mc/{year}/q{number}.png",
         "OCR": text,
     }
 

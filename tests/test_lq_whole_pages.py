@@ -618,7 +618,7 @@ class TestLqWholePages(unittest.TestCase):
         crop = load_module("crop_lq_from_pages", ROOT / "scripts" / "crop_lq_from_pages.py")
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            src_dir = root / "output" / "lq" / "2099"
+            src_dir = root / "reconstructed" / "lq" / "2099"
             src_dir.mkdir(parents=True)
             Image.new("RGB", (50, 80), (255, 255, 255)).save(src_dir / "q1.png")
             classified = (
@@ -633,7 +633,7 @@ class TestLqWholePages(unittest.TestCase):
             csv_path = root / "classified" / "lq" / "classification.csv"
             csv_path.write_text(
                 "Year,Question,Primary,AllSections,Reason,PNG,AnswerPNG\n"
-                "2099,1,3,3,test,output/lq/2099/q1.png,output/lq/2099/ans/q1.png\n",
+                "2099,1,3,3,test,reconstructed/lq/2099/q1.png,reconstructed/lq/2099/ans/q1.png\n",
                 encoding="utf-8",
             )
             crop.ROOT = root
@@ -645,7 +645,7 @@ class TestLqWholePages(unittest.TestCase):
                 self.assertEqual(answer.size, (20, 10))
 
 
-class TestCommittedLqWholePages(unittest.TestCase):
+class TestGeneratedLqWholePages(unittest.TestCase):
     def test_2026_pdf_offset_skips_cover(self) -> None:
         review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")
         source = review.lq_source_pdf("2026")
@@ -683,9 +683,9 @@ class TestCommittedLqWholePages(unittest.TestCase):
             document.close()
 
     def test_2026_q1_is_full_exam_page_not_part_a_ycrop(self) -> None:
-        path = ROOT / "output" / "lq" / "2026" / "q1.png"
+        path = ROOT / "reconstructed" / "lq" / "2026" / "q1.png"
         if not path.is_file():
-            self.skipTest("output/ not built (run ./pipeline)")
+            self.skipTest("reconstructed/ not built (run ./pipeline)")
         image = Image.open(path)
         width, height = image.size
         image.close()
@@ -695,18 +695,18 @@ class TestCommittedLqWholePages(unittest.TestCase):
 
     def test_2012_q9_includes_continuation_page(self) -> None:
         Image.MAX_IMAGE_PIXELS = 250_000_000
-        path = ROOT / "output" / "lq" / "2012" / "q9.png"
+        path = ROOT / "reconstructed" / "lq" / "2012" / "q9.png"
         if not path.is_file():
-            self.skipTest("output/ not built (run ./pipeline)")
+            self.skipTest("reconstructed/ not built (run ./pipeline)")
         with Image.open(path) as image:
             width, height = image.size
         # Two stacked exam pages. A single leftover page is ~1.4x width.
         self.assertGreater(height / width, 2.0)
 
     def test_2026_combined_does_not_label_cover_as_q1(self) -> None:
-        path = ROOT / "output" / "lq" / "2026" / "combined.pdf"
+        path = ROOT / "reconstructed" / "lq" / "2026" / "combined.pdf"
         if not path.is_file():
-            self.skipTest("output/ not built (run ./pipeline)")
+            self.skipTest("reconstructed/ not built (run ./pipeline)")
         document = fitz.open(path)
         try:
             self.assertNotIn("2026 Q1", document[0].get_text())
@@ -715,9 +715,9 @@ class TestCommittedLqWholePages(unittest.TestCase):
             document.close()
 
     def test_2012_questions_pdf_q9_starts_on_exam_page_not_previous(self) -> None:
-        path = ROOT / "output" / "lq" / "2012" / "questions.pdf"
+        path = ROOT / "reconstructed" / "lq" / "2012" / "questions.pdf"
         if not path.is_file():
-            self.skipTest("output/ not built (run ./pipeline)")
+            self.skipTest("reconstructed/ not built (run ./pipeline)")
         questions = fitz.open(path)
         try:
             texts = [page.get_text() for page in questions]
@@ -729,9 +729,9 @@ class TestCommittedLqWholePages(unittest.TestCase):
             questions.close()
 
     def test_2015_combined_does_not_label_cover_as_q1(self) -> None:
-        path = ROOT / "output" / "lq" / "2015" / "combined.pdf"
+        path = ROOT / "reconstructed" / "lq" / "2015" / "combined.pdf"
         if not path.is_file():
-            self.skipTest("output/ not built (run ./pipeline)")
+            self.skipTest("reconstructed/ not built (run ./pipeline)")
         document = fitz.open(path)
         try:
             texts = [page.get_text() for page in document]
@@ -745,9 +745,9 @@ class TestCommittedLqWholePages(unittest.TestCase):
             document.close()
 
     def test_2015_questions_pdf_includes_q7_to_q10(self) -> None:
-        path = ROOT / "output" / "lq" / "2015" / "questions.pdf"
+        path = ROOT / "reconstructed" / "lq" / "2015" / "questions.pdf"
         if not path.is_file():
-            self.skipTest("output/ not built (run ./pipeline)")
+            self.skipTest("reconstructed/ not built (run ./pipeline)")
         questions = fitz.open(path)
         try:
             texts = [page.get_text() for page in questions]

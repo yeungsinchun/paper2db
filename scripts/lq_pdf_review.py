@@ -23,7 +23,7 @@ from png_pdf import append_pdf_page_a4
 
 ROOT = Path(__file__).resolve().parents[1]
 PAPER_LQ = ROOT / "paper" / "lq"
-OUTPUT_LQ = ROOT / "output" / "lq"
+OUTPUT_LQ = ROOT / "reconstructed" / "lq"
 
 
 def paper_year_label(stem: str) -> str:

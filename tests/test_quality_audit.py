@@ -133,7 +133,7 @@ class TestQualityAudit(unittest.TestCase):
         audit = load_module("quality_audit", ROOT / "scripts" / "quality_audit.py")
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
-            year_dir = tmp_path / "output" / "2099"
+            year_dir = tmp_path / "reconstructed" / "mc" / "2099"
             year_dir.mkdir(parents=True)
             from PIL import Image
 

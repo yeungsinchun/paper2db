@@ -87,7 +87,7 @@ def collect_assets() -> dict:
     for page in range(1, 4):
         dest_name = f"anchor-2024-page{page:02d}.png"
         rel = resolve_sample(
-            ROOT / "output" / "2024-intermediate" / f"page{page:02d}.png",
+            ROOT / "reconstructed" / "mc" / "2024-intermediate" / f"page{page:02d}.png",
             dest_name,
         )
         if rel:
@@ -102,7 +102,7 @@ def collect_assets() -> dict:
     for year, question in (("2012", 1), ("2012", 15), ("2024", 1), ("2024", 4), ("2025", 1)):
         dest_name = f"mc-{year}-q{question}.png"
         rel = resolve_sample(
-            ROOT / "output" / year / f"q{question}.png",
+            ROOT / "reconstructed" / "mc" / year / f"q{question}.png",
             dest_name,
         )
         if rel:
@@ -122,7 +122,7 @@ def collect_assets() -> dict:
         ("2024", 10, "pages 10..11 (2-page stack)"),
         ("2025", 3, "pages 2..3 (2-page stack)"),
     ):
-        src = ROOT / "output" / "lq" / year / f"q{question}.png"
+        src = ROOT / "reconstructed" / "lq" / year / f"q{question}.png"
         dest_name = f"lq-{year}-q{question}-fit.png"
         rel = write_lq_fit_preview(src, dest_name)
         if rel:
@@ -229,9 +229,9 @@ def write_html(audit: dict, assets: dict) -> None:
     passes = summary["passes_5pct_bar"]
 
     stages = [
-        ("1. MC anchors", "mc-anchors", "Blue dots on each Paper 1A PDF → output/<year>-intermediate/anchor.pdf"),
-        ("2. MC split", "mc-split", "Crop empty qN.png + combined.pdf under output/<year>/"),
-        ("3. LQ pages", "lq-pages", "Export pages + starts.json under output/lq/<year>/"),
+        ("1. MC anchors", "mc-anchors", "Blue dots on each Paper 1A PDF → reconstructed/mc/<year>-intermediate/anchor.pdf"),
+        ("2. MC split", "mc-split", "Crop empty qN.png + combined.pdf under reconstructed/mc/<year>/"),
+        ("3. LQ pages", "lq-pages", "Export pages + starts.json under reconstructed/lq/<year>/"),
         ("4. LQ pages→PNG", "lq-crops", "Whole exam page stack per question + questions.pdf"),
         ("5. LQ answers", "lq-answers", "Marking-scheme answer crops under ans/"),
         ("6. Keys", "keys", "MC answer keys → classified/mc/answer_keys.json"),
@@ -506,19 +506,19 @@ python scripts/quality_audit.py --strict</div>
 
     <section class="block" id="anchors">
       <h2>Step A - MC anchors (intermediate)</h2>
-      <p class="lede">Sample from <code>output/2024-intermediate/</code> (regenerated for this review). Every blue dot must sit beside the question number - not on options, diagrams, or digits.</p>
+      <p class="lede">Sample from <code>reconstructed/mc/2024-intermediate/</code> (regenerated for this review). Every blue dot must sit beside the question number - not on options, diagrams, or digits.</p>
       {gallery(assets['anchors'])}
     </section>
 
     <section class="block" id="mc-crops">
       <h2>Step B - MC empty crops (final per-question)</h2>
-      <p class="lede">Clean screenshots cut from the paper: full stem + options, no neighboring bleed. Review PDF: <code>output/&lt;year&gt;/combined.pdf</code>.</p>
+      <p class="lede">Clean screenshots cut from the paper: full stem + options, no neighboring bleed. Review PDF: <code>reconstructed/mc/&lt;year&gt;/combined.pdf</code>.</p>
       {gallery(assets['mc_crops'])}
     </section>
 
     <section class="block" id="lq-crops">
       <h2>Step C - LQ whole pages (final per-question)</h2>
-      <p class="lede">Long questions are whole exam page(s) only (<code>page_from</code>..<code>page_to</code>) - no within-page crop. Samples below are multi-page stacks scaled so every page is visible (not scroll-clipped tops). Review PDF: <code>output/lq/&lt;year&gt;/questions.pdf</code>.</p>
+      <p class="lede">Long questions are whole exam page(s) only (<code>page_from</code>..<code>page_to</code>) - no within-page crop. Samples below are multi-page stacks scaled so every page is visible (not scroll-clipped tops). Review PDF: <code>reconstructed/lq/&lt;year&gt;/questions.pdf</code>.</p>
       {gallery(assets['lq_crops'], variant="lq")}
     </section>
 

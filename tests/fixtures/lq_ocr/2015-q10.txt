@@ -1,0 +1,53 @@
+10. Scientists had been experimenting controlled fusion in a nuclear reactor in which deuterium (4 H ) and tritium
+(4 H ) undergo the following nuclear fusion:
+7H +3H > 3 He + jn + energy released
+Given: mass of a deuterium nucleus = 2.014102 u
+mass of a tritium nucleus = 3.016049 u
+mass of a helium nucleus = 4.002602 u
+mass of a neutron = 1.008665 u
+*(a) Calculate the energy released, in MeV, in the above nuclear fusion. (2 marks)
+al Be ee ew ew ww oo wo ee en ee ee ee eee en a sn ee ee ee ee ec cee eee ee eee cee eee e eee ene: ss
+o
+2 “
+BI er ee Tin ener es a ete ee tne) ety: oe beer eet Ge Oates ancien 5
+& o
+2 2
+as (b) A deuterium nucleus and a tritium nucleus have to be within 10°’ m for nuclear fusion to occur and that a A
+a large amount of work done (about 0.4 MeV) is needed to bring two well separated nuclei to such a close 5
+5 distance. Ks
+<j s
+5 (i) Explain why a large amount of work done is needed and state the kind of energy this work done has eS
+5 become. (2 marks) | 2
+$b —_
+oo i)
+é
+g SCO CHORD SECURE OGRE HEE OH OR DEES SCE OEE EE SE SR SEA iS lg a ae ae CS Ey gi I Rig NE ey RO UR ROC PARE AY Eel RAND 5
+Es e
+wn
+ro PSSA Sieh ie ee by ea cea ecreme nina nine eH Oca TeR a toh A Gaui e ie coat Heat AM RA Met natin A Pesci Sieber Waa Laan Maeas eal intial rem ei NE SCAMS < estienn) atin cab thse ove Si Gey hore =|
+< <x
+Answers written in the margins will not be marked.
+2015-DSE-PHY 1B~18 18
+In the nuclear reactor, deuterium and tritium exist as plasma, which is a mixture of ions at a very high
+temperature.
+(ii) Explain why a very high temperature is needed for nuclear fusion to occur. (1 mark)
+*(iii)Estimate the order of magnitude of the minimum temperature at which fusion of deuterium and
+tritium nuclei would be possible if the plasma can be regarded as an ideal gas. (Hint: For an ideal gas,
+the gas molecules each is assumed to have an average kinetic energy Ex = — ) (2 marks)
+A
+J 3
+5 E
+0 o
+ae) =
+f= re
+2 :
+ba fern nn nner er eee ne re en ee ee ee ee ne ee ee ee ee eee eee ne eee e ewe e eee e cece eee eee eee
+5 :
+Sal
+oO
+<x
+END OF PAPER
+Sources of materials used in this paper will be acknowledged in the Examination Report and Question Papers
+published by the Hong Kong Examinations and Assessment Authority at a later stage.
+Answers written in the margins will not be marked.
+2015-DSE-PHY 1B-19 19
