@@ -176,6 +176,32 @@ class TestLlmBook5Listings(unittest.TestCase):
         )
 
 
+class TestBook5ListingsKeepCallerSections(unittest.TestCase):
+    """apply_book5_listings must not drop sections the LLM backend returned."""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.kw = load_module("classify_lq_keywords", SCRIPTS / "classify_lq_keywords.py")
+
+    def test_non_book5_primary_survives_with_book5_listed_after(self) -> None:
+        text = fixture_text("2014", 10)
+        self.assertTrue(self.kw.is_book5(text.lower()))
+        sections, reason = self.kw.apply_book5_listings(text, [21], "llm: circuit")
+        self.assertEqual(sections[0], 21)
+        self.assertEqual(sections, [21, 26, 25])
+        self.assertTrue(reason.startswith("llm: circuit; "))
+
+    def test_book5_primary_is_resorted_and_extra_section_kept(self) -> None:
+        text = fixture_text("2014", 10)
+        sections, _reason = self.kw.apply_book5_listings(text, [25, 8], "llm")
+        self.assertEqual(sections, [26, 25, 8])
+
+    def test_keyword_path_unchanged(self) -> None:
+        text = fixture_text("2014", 10)
+        self.assertEqual(self.kw.apply_book5_listings(text, [], "")[0], EXPECTED_BOOK5[("2014", 10)])
+        self.assertEqual(self.kw.classify_text(text)[0], EXPECTED_BOOK5[("2014", 10)])
+
+
 def _write_paper(path: Path, pages: int, *, landscape_rotated: bool = False) -> None:
     """Fake Paper 1B: page 0 is a cover, then exam pages with a page mark."""
     doc = fitz.open()

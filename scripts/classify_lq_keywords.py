@@ -414,13 +414,25 @@ def classify_book5(text: str) -> tuple[list[int], str]:
 def apply_book5_listings(
     text: str, sections: list[int], reason: str
 ) -> tuple[list[int], str]:
-    """Union Book 5 listings onto AllSections after either classifier backend."""
+    """Union Book 5 listings onto AllSections after either classifier backend.
+
+    The caller's sections are never dropped: a keyed run whose model filed a
+    circuit question under S21 while its text still trips is_book5 (a tracer
+    mention, say) keeps S21 as primary and gains the Book 5 listings after it.
+    Only when the primary is itself a Book 5 section are the listed sections
+    re-sorted latest-first.
+    """
     if not is_book5(text.lower()):
         return sections, reason
     listed, book5_reason = classify_book5(text)
-    union = {sec for sec in (*listed, *sections) if 25 <= sec <= 27}
-    merged = sorted(union, reverse=True) or listed
-    if merged == list(sections):
+    sections = list(sections)
+    book5 = sorted({sec for sec in (*listed, *sections) if 25 <= sec <= 27}, reverse=True)
+    others = [sec for sec in sections if not 25 <= sec <= 27]
+    if sections and not 25 <= sections[0] <= 27:
+        merged = others + book5
+    else:
+        merged = book5 + others
+    if merged == sections:
         return sections, reason
     if reason:
         return merged, f"{reason}; {book5_reason}"
