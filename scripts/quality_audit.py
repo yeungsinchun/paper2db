@@ -167,10 +167,10 @@ def audit_lq_crops() -> dict:
         "warnings": warnings,
         "height_median": statistics.median(heights) if heights else None,
         "height_max": max(heights) if heights else None,
-        "missing_questions_pdf": [
+        "missing_combined_pdf": [
             year
             for year in years
-            if not (ROOT / "reconstructed" / "lq" / year / "questions.pdf").is_file()
+            if not (ROOT / "reconstructed" / "lq" / year / "combined.pdf").is_file()
         ],
     }
 

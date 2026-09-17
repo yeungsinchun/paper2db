@@ -232,7 +232,7 @@ def write_html(audit: dict, assets: dict) -> None:
         ("1. MC anchors", "mc-anchors", "Blue dots on each Paper 1A PDF → reconstructed/mc/<year>-intermediate/anchor.pdf"),
         ("2. MC split", "mc-split", "Crop empty qN.png + combined.pdf under reconstructed/mc/<year>/"),
         ("3. LQ pages", "lq-pages", "Export pages + starts.json under reconstructed/lq/<year>/"),
-        ("4. LQ pages→PNG", "lq-crops", "Whole exam page stack per question + questions.pdf"),
+        ("4. LQ pages→PNG", "lq-crops", "Whole exam page stack per question + combined.pdf"),
         ("5. LQ answers", "lq-answers", "Marking-scheme answer crops under ans/"),
         ("6. Keys", "keys", "MC answer keys → classified/mc/answer_keys.json"),
         ("7. Classify MC", "classify-mc", "27 syllabus sections (LLM if keyed, else keywords)"),
@@ -518,7 +518,7 @@ python scripts/quality_audit.py --strict</div>
 
     <section class="block" id="lq-crops">
       <h2>Step C - LQ whole pages (final per-question)</h2>
-      <p class="lede">Long questions are whole exam page(s) only (<code>page_from</code>..<code>page_to</code>) - no within-page crop. Samples below are multi-page stacks scaled so every page is visible (not scroll-clipped tops). Review PDF: <code>reconstructed/lq/&lt;year&gt;/questions.pdf</code>.</p>
+      <p class="lede">Long questions are whole exam page(s) only (<code>page_from</code>..<code>page_to</code>) - no within-page crop. Samples below are multi-page stacks scaled so every page is visible (not scroll-clipped tops). Review PDF: <code>reconstructed/lq/&lt;year&gt;/combined.pdf</code>.</p>
       {gallery(assets['lq_crops'], variant="lq")}
     </section>
 

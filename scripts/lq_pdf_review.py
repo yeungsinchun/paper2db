@@ -221,36 +221,16 @@ def write_year_review_pdfs(year: str) -> None:
     src = fitz.open(source)
     try:
         src_len = len(src)
-        cover, _spread = starts_source_layout(year, src_len)
-        exam_count = starts_exam_count(year, src_len)
         formula_pdf = skip_formula_pdf_pages(src, meta)
         for item in questions:
             require_exam_span(
                 year, int(item["page_from"]), int(item["page_to"]), src_len
             )
-        first_q_page: dict[int, int] = {}
-        for item in questions:
-            qn = int(item["q"])
-            page_from = int(item["page_from"])
-            if page_from not in first_q_page:
-                first_q_page[page_from] = qn
+        # One review PDF per year, named like the MC per-year combined.pdf:
+        # every question's whole exam page stack in question order, first page
+        # labelled "<year> Q<n>". The booklet cover is not a question, so it is
+        # not included; the all-years reconstructed/lq/combined.pdf joins these.
         combined = fitz.open()
-        try:
-            if cover and 0 not in formula_pdf:
-                append_pdf_page_a4(combined, src, 0)
-            for exam_index in range(exam_count):
-                qn = first_q_page.get(exam_index)
-                label = f"{year} Q{qn}" if qn is not None else None
-                _append_exam_page(
-                    combined, src, year, exam_index, src_len, formula_pdf, label=label
-                )
-            dest = out_dir / "combined.pdf"
-            combined.save(dest, garbage=4, deflate=True)
-            print(f"Wrote {dest} ({combined.page_count} A4 pages from {source.name})")
-        finally:
-            combined.close()
-
-        questions_pdf = fitz.open()
         try:
             for item in sorted(questions, key=lambda item: int(item["q"])):
                 qn = int(item["q"])
@@ -260,7 +240,7 @@ def write_year_review_pdfs(year: str) -> None:
                 for exam_index in range(page_from, page_to + 1):
                     label = f"{year} Q{qn}" if first else None
                     if _append_exam_page(
-                        questions_pdf,
+                        combined,
                         src,
                         year,
                         exam_index,
@@ -269,14 +249,18 @@ def write_year_review_pdfs(year: str) -> None:
                         label=label,
                     ):
                         first = False
-            dest = out_dir / "questions.pdf"
-            questions_pdf.save(dest, garbage=4, deflate=True)
+            dest = out_dir / "combined.pdf"
+            combined.save(dest, garbage=4, deflate=True)
             print(
-                f"Wrote {dest} ({questions_pdf.page_count} A4 pages, "
-                f"{len(questions)} questions)"
+                f"Wrote {dest} ({combined.page_count} A4 pages, "
+                f"{len(questions)} questions from {source.name})"
             )
         finally:
-            questions_pdf.close()
+            combined.close()
+        legacy = out_dir / "questions.pdf"
+        if legacy.is_file():
+            legacy.unlink()
+            print(f"Removed {legacy} (renamed to combined.pdf)")
     finally:
         src.close()
 

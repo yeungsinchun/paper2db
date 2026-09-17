@@ -54,7 +54,7 @@ The only files under `reconstructed/` and `classified/` that git tracks are hand
 | `paper/ans/` | Marking schemes (`2012ans.pdf`, ...) |
 | `paper/performance/` | Candidate-performance notes (markdown; optional, not a pipeline stage) |
 | `reconstructed/mc/` | `combined.pdf` (every year's MC paper) + `<year>/` MC question PNGs with a per-year `combined.pdf` |
-| `reconstructed/lq/` | `combined.pdf` (every year's LQ paper) + `<year>/` LQ pages, `qN.png`, `ans/qN.png`, A4 review PDFs |
+| `reconstructed/lq/` | `combined.pdf` (every year's LQ questions) + `<year>/` LQ pages, `qN.png`, `ans/qN.png`, per-year `combined.pdf` |
 | `classified/mc/` | Section folders, CSVs, `answer_keys.json`, section PDFs |
 | `classified/lq/` | Same for long questions (+ optional `candidate_performance.json`) |
 | `scripts/` | Stage implementations (called by `./pipeline`) |
@@ -69,7 +69,7 @@ The only files under `reconstructed/` and `classified/` that git tracks are hand
 1. **mc-anchors** - blue dots on each MC paper; **you must review** `reconstructed/mc/<year>-intermediate/anchor.pdf`
 2. **mc-split** - crop clean `qN.png` into `reconstructed/mc/<year>/` + A4 `combined.pdf`; then joins every year into `reconstructed/mc/combined.pdf`
 3. **lq-pages** - export LQ pages + `starts.json`
-4. **lq-crops** - whole exam page stack per question (`page_from`..`page_to`); A4 `questions.pdf` from the source paper (no within-page crop; trailing data/formulae sheets excluded); then joins every year into `reconstructed/lq/combined.pdf`
+4. **lq-crops** - whole exam page stack per question (`page_from`..`page_to`); A4 `combined.pdf` of those stacks from the source paper (no cover, no within-page crop; trailing data/formulae sheets excluded); then joins every year into `reconstructed/lq/combined.pdf`
 5. **lq-answers** - marking-scheme answer crops under `ans/`
 6. **keys** - MC keys + correct-% → `classified/mc/answer_keys.json`
 7. **classify-mc** - 27 syllabus sections (LLM if keyed, else keywords)
@@ -105,7 +105,7 @@ Captain review surface: `.lavish/pipeline-review/index.html` (step-by-step inter
 
 1. **Anchors** - every blue dot beside the question number with a clear gap (not on options or diagrams). Wrong anchors poison every later step. Use `scripts/overrides_YYYY.json` for hard pages (each counts toward the 5% budget).
 2. **Uncertain MC** - skim `classified/mc/uncertain.csv` and spot-check a few section folders.
-3. **LQ pages** - skim `reconstructed/lq/<year>/questions.pdf` if a question's page range looks wrong (`starts.json`). The last question should stop before any trailing data/formulae sheet or blank "do not write" insert.
+3. **LQ pages** - skim `reconstructed/lq/<year>/combined.pdf` if a question's page range looks wrong (`starts.json`). The last question should stop before any trailing data/formulae sheet or blank "do not write" insert.
 4. Trust the section review PDFs under `classified/*/.../combined.pdf` rather than browsing PNG lists. Those PDFs are portrait A4 with year and question labels.
 5. Skim `.lavish/pipeline-review/` for the measured rates before accepting a new year.
 

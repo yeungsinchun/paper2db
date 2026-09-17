@@ -342,10 +342,10 @@ def stage_lq_crops(years: list[str] | None, *, force: bool, yes: bool) -> None:
     run_script("combine_reconstructed.py", "--kind", "lq")
     pause(
         "LQ PAGE REVIEW (optional but recommended)\n\n"
-        "Skim reconstructed/lq/<year>/questions.pdf. Each qN.png is whole exam page(s)\n"
+        "Skim reconstructed/lq/<year>/combined.pdf. Each qN.png is whole exam page(s)\n"
         "(page_from..page_to) - no within-page crop. Fix starts.json and re-run\n"
         "lq-pages / lq-crops if a question's page range is wrong.\n\n"
-        + "\n".join(f"  reconstructed/lq/{y}/questions.pdf" for y in need),
+        + "\n".join(f"  reconstructed/lq/{y}/combined.pdf" for y in need),
         yes=yes,
     )
 
