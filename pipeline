@@ -2,8 +2,10 @@
 """HKDSE Physics paper2db - single entry point for the full pipeline.
 
 Reads PDFs under paper/{mc,lq,ans}/ and writes:
-  output/<year>/          MC question crops + combined.pdf
-  output/lq/<year>/       LQ pages, whole-page qN.png, answer crops, A4 review PDFs
+  reconstructed/mc/<year>/  MC question crops + per-year combined.pdf
+  reconstructed/mc/combined.pdf  every year's MC paper, one A4 PDF
+  reconstructed/lq/<year>/  LQ pages, whole-page qN.png, answer crops, A4 review PDFs
+  reconstructed/lq/combined.pdf  every year's LQ paper, one A4 PDF
   classified/mc/          MC section folders, CSVs, section PDFs, answer keys
   classified/lq/          LQ section folders, CSVs, section PDFs
   .lavish/pipeline-review/        step-by-step HTML (intermediates + finals)
@@ -125,8 +127,18 @@ def discover_answer_pdfs(years: list[str] | None) -> list[tuple[Path, str]]:
     return papers
 
 
+def mc_dir() -> Path:
+    """reconstructed/mc/ - MC crops per year plus the all-years combined.pdf."""
+    return ROOT / "reconstructed" / "mc"
+
+
+def lq_dir() -> Path:
+    """reconstructed/lq/ - LQ pages per year plus the all-years combined.pdf."""
+    return ROOT / "reconstructed" / "lq"
+
+
 def mc_output_ready(year: str) -> bool:
-    year_dir = ROOT / "output" / year
+    year_dir = mc_dir() / year
     if not year_dir.is_dir():
         return False
     pngs = list(year_dir.glob("q*.png"))
@@ -134,7 +146,7 @@ def mc_output_ready(year: str) -> bool:
 
 
 def lq_pages_ready(year: str) -> bool:
-    year_dir = ROOT / "output" / "lq" / year
+    year_dir = lq_dir() / year
     pages = year_dir / "pages"
     return (
         (year_dir / "starts.json").is_file()
@@ -175,7 +187,7 @@ def lq_crops_ready(year: str) -> bool:
 
     Leftover within-page y-crops (or qN.png with no pages/ export) are not ready.
     """
-    year_dir = ROOT / "output" / "lq" / year
+    year_dir = lq_dir() / year
     meta_path = year_dir / "starts.json"
     pages_dir = year_dir / "pages"
     if not meta_path.is_file() or not pages_dir.is_dir():
@@ -203,12 +215,12 @@ def lq_crops_ready(year: str) -> bool:
 
 
 def lq_answers_ready(year: str) -> bool:
-    ans_dir = ROOT / "output" / "lq" / year / "ans"
+    ans_dir = lq_dir() / year / "ans"
     return ans_dir.is_dir() and len(list(ans_dir.glob("q*.png"))) >= 8
 
 
 def intermediate_dir(year: str) -> Path:
-    return ROOT / "output" / f"{year}-intermediate"
+    return mc_dir() / f"{year}-intermediate"
 
 
 def pause(message: str, *, yes: bool) -> None:
@@ -243,7 +255,7 @@ def stage_mc_anchors(years: list[str] | None, *, force: bool, yes: bool) -> list
     reviewed: list[str] = []
     for pdf, year in papers:
         if mc_output_ready(year) and not force:
-            print(f"skip mc-anchors {year}: output/{year}/ already has crops (use --force)")
+            print(f"skip mc-anchors {year}: reconstructed/mc/{year}/ already has crops (use --force)")
             continue
         inter = intermediate_dir(year)
         print(f"\n=== MC anchors: {year} ({pdf.name}) ===")
@@ -277,7 +289,7 @@ def stage_mc_anchors(years: list[str] | None, *, force: bool, yes: bool) -> list
 def stage_mc_split(years: list[str] | None, *, force: bool) -> None:
     papers = discover_mc_papers(years)
     for pdf, year in papers:
-        out = ROOT / "output" / year
+        out = mc_dir() / year
         if mc_output_ready(year) and not force:
             print(f"skip mc-split {year}: already ready")
             continue
@@ -298,12 +310,13 @@ def stage_mc_split(years: list[str] | None, *, force: bool) -> None:
             "--intermediate",
             str(inter),
         )
+    run_script("combine_reconstructed.py", "--kind", "mc")
 
 
 def stage_lq_pages(years: list[str] | None, *, force: bool) -> None:
     papers = discover_lq_papers(years)
     for pdf, year in papers:
-        out = ROOT / "output" / "lq" / year
+        out = lq_dir() / year
         if lq_pages_ready(year) and not force:
             print(f"skip lq-pages {year}: starts.json and pages/ already present")
             continue
@@ -323,14 +336,16 @@ def stage_lq_crops(years: list[str] | None, *, force: bool, yes: bool) -> None:
     need = [year for _, year in papers if force or not lq_crops_ready(year)]
     if not need:
         print("skip lq-crops: all selected years already have whole-page PNGs")
+        run_script("combine_reconstructed.py", "--kind", "lq")
         return
     run_script("crop_lq_from_pages.py", "--years", *need)
+    run_script("combine_reconstructed.py", "--kind", "lq")
     pause(
         "LQ PAGE REVIEW (optional but recommended)\n\n"
-        "Skim output/lq/<year>/questions.pdf. Each qN.png is whole exam page(s)\n"
+        "Skim reconstructed/lq/<year>/combined.pdf. Each qN.png is whole exam page(s)\n"
         "(page_from..page_to) - no within-page crop. Fix starts.json and re-run\n"
         "lq-pages / lq-crops if a question's page range is wrong.\n\n"
-        + "\n".join(f"  output/lq/{y}/questions.pdf" for y in need),
+        + "\n".join(f"  reconstructed/lq/{y}/combined.pdf" for y in need),
         yes=yes,
     )
 
@@ -341,14 +356,14 @@ def stage_lq_answers(years: list[str] | None, *, force: bool) -> None:
         print("No answer PDFs found under paper/ans.")
         return
     for pdf, year in answers:
-        out = ROOT / "output" / "lq" / year / "ans"
+        out = lq_dir() / year / "ans"
         if lq_answers_ready(year) and not force:
             print(f"skip lq-answers {year}: ans/ already present")
             continue
         # Only crop answers when we have an LQ paper for that year (or force).
-        lq_dir = ROOT / "output" / "lq" / year
-        if not lq_dir.is_dir() and not force:
-            print(f"skip lq-answers {year}: no output/lq/{year}/ yet")
+        year_lq = lq_dir() / year
+        if not year_lq.is_dir() and not force:
+            print(f"skip lq-answers {year}: no reconstructed/lq/{year}/ yet")
             continue
         print(f"\n=== LQ answers: {year} ({pdf.name}) ===")
         out.mkdir(parents=True, exist_ok=True)
@@ -569,8 +584,10 @@ def main() -> None:
 
     print("\nDone.")
     print("Review PDFs:")
+    print("  MC papers:   reconstructed/mc/combined.pdf (per year: reconstructed/mc/<year>/combined.pdf)")
+    print("  LQ papers:   reconstructed/lq/combined.pdf (per year: reconstructed/lq/<year>/combined.pdf)")
     print("  MC sections: classified/mc/<book>/<section>/combined.pdf")
-    print("  LQ sections: classified/lq/<book>/<section>/questions.pdf")
+    print("  LQ sections: classified/lq/<book>/<section>/combined.pdf")
     print("Lavish HTML (if lavish stage ran):")
     print("  Pipeline walkthrough: .lavish/pipeline-review/")
     print("  MC banks:             .lavish/classified-review/")

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Classify LQ (Paper 1B) questions into the same 27 sections as MC.
 
-Reads crops from output/lq/<year>/qN.png, writes nested LQ outputs only:
+Reads crops from reconstructed/lq/<year>/qN.png, writes nested LQ outputs only:
   classified/lq/llm_classifications.json
   classified/lq/classification.csv
   classified/lq/<book>/<section>/ year-qN.png (+ optional answer copy)
@@ -16,17 +16,14 @@ from __future__ import annotations
 
 import argparse
 import csv
-import io
 import json
 import re
 import shutil
-import subprocess
 import time
 import urllib.error
 from pathlib import Path
 
-from PIL import Image
-
+import classify_lq_keywords as keyword_classifier
 from classify_mc_llm import (
     SECTION_BY_NUM,
     SECTIONS,
@@ -37,8 +34,10 @@ from classify_mc_llm import (
     year_key,
 )
 
+LQ_SECTION_LIMIT = 3
+
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_LQ = ROOT / "output" / "lq"
+OUTPUT_LQ = ROOT / "reconstructed" / "lq"
 CLASSIFIED_LQ = ROOT / "classified" / "lq"
 OCR_CACHE = CLASSIFIED_LQ / "ocr_cache"
 
@@ -89,33 +88,11 @@ def collect_jobs(years: list[str] | None) -> list[tuple[str, Path, int]]:
     return jobs
 
 
-def ocr_png(path: Path, cache_path: Path) -> str:
-    if cache_path.exists():
-        return cache_path.read_text(encoding="utf-8")
-    # LQ crops are tall; OCR a top band first (stem), fall back to full if thin.
-    image = Image.open(path).convert("RGB")
-    w, h = image.size
-    band_h = min(h, max(900, int(h * 0.45)))
-    crop = image.crop((0, 0, w, band_h))
-    buf = io.BytesIO()
-    crop.save(buf, format="PNG")
-    result = subprocess.run(
-        ["tesseract", "stdin", "stdout", "--psm", "6"],
-        input=buf.getvalue(),
-        stdout=subprocess.PIPE,
-        stderr=subprocess.DEVNULL,
-        check=False,
-    )
-    text = result.stdout.decode("utf-8", errors="ignore")
-    cache_path.parent.mkdir(parents=True, exist_ok=True)
-    cache_path.write_text(text, encoding="utf-8")
-    return text
-
-
 def _ocr_one(args: tuple[str, str, int]) -> dict:
     year, png_path, number = args
-    cache = OCR_CACHE / str(year) / f"q{number}.txt"
-    text = ocr_png(Path(png_path), cache)
+    png = Path(png_path)
+    cache = keyword_classifier.ocr_cache_path(png, str(year), number)
+    text = keyword_classifier.ocr_png(png, cache)
     # Drop dotted-line OCR noise.
     lines = []
     for line in text.splitlines():
@@ -127,10 +104,19 @@ def _ocr_one(args: tuple[str, str, int]) -> dict:
     return {
         "Year": year,
         "Question": number,
-        "Statement": cleaned[:2500],
-        "PNG": f"output/lq/{year}/q{number}.png",
-        "AnswerPNG": f"output/lq/{year}/ans/q{number}.png",
+        "Statement": cleaned,
+        "PNG": f"reconstructed/lq/{year}/q{number}.png",
+        "AnswerPNG": f"reconstructed/lq/{year}/ans/q{number}.png",
     }
+
+
+def finalize_sections(record: dict, raw_sections: object, reason: str) -> tuple[list[int], str]:
+    sections = normalize_sections(raw_sections, limit=LQ_SECTION_LIMIT)
+    if not sections:
+        raise ValueError(f"bad sections in {raw_sections!r}")
+    return keyword_classifier.apply_book5_listings(
+        str(record.get("Statement") or ""), sections, reason
+    )
 
 
 def classify_one(record: dict) -> dict:
@@ -140,12 +126,11 @@ def classify_one(record: dict) -> dict:
         'JSON only: {"sections":[<primary>, ...], "reason":"<one short sentence>"}'
     )
     parsed = chat_json(SYSTEM_PROMPT, user)
-    sections = normalize_sections(parsed.get("sections"))
-    if not sections:
-        raise ValueError(f"bad sections in {parsed!r}")
+    reason = str(parsed.get("reason") or "").strip()[:240]
+    sections, reason = finalize_sections(record, parsed.get("sections"), reason)
     return {
         "sections": sections,
-        "reason": str(parsed.get("reason") or "").strip()[:240],
+        "reason": reason,
     }
 
 
@@ -228,14 +213,14 @@ def main() -> None:
         for rec in records:
             key = f"{rec['Year']}-q{rec['Question']}"
             d = decisions[key]
-            sections = [int(x) for x in d["sections"]]
+            sections, reason = finalize_sections(rec, d["sections"], d.get("reason", ""))
             rows.append(
                 {
                     "Year": rec["Year"],
                     "Question": rec["Question"],
                     "Primary": sections[0],
                     "AllSections": ";".join(str(s) for s in sections),
-                    "Reason": d.get("reason", ""),
+                    "Reason": reason,
                     "PNG": rec["PNG"],
                     "AnswerPNG": rec["AnswerPNG"],
                 }

@@ -1,0 +1,52 @@
+mma aaa ot
+)
+| 10. Voyager Iis a space probe designed by NASA to operate for over ten years in space. It was equipped with a
+radioisotope thermoelectric generator (RTG) which can convert the energy released from the decay of a
+radioactive source into electrical power. Voyager I operates with a plutonium-238 radioactive source that
+| undergoes a-decay.
+(a) The plutonium-238 source is sealed inside a thin metallic casing of the RTG. The photo shows a
+NASA staff handling the RTG with his bare hands. Explain why it is fine for it to be handled by the
+staff in this way. (i mark)
+E oS ae 4 ad
+| . all | ‘eae
+/ Figure 10.1 c..DUlrti<“(a “él
+| BY
+L 3s oe cece enn ween ne cen cee eee eee ene ene een nrc enema nme en ee me ee ee RE ERLE STATI T ETS SETS TSS TTT TESST TTT
+F
+; 2
+i] O ee nec entree ence ne eee eee eee een ewan ce ene ne nena nner nen eR RRR ETSI S
+- = When Voyager I was launched, the number of plutonium-238 atoms in the source was 3.2 x 10”. =
+: a Given: half-life of plutonium-238 = 87.74 years. a
+= Take 1 year = 3.16 x 10’s. =
+| : :
+5 (b) *(i) Find the activity, in Bg, of the plutonium source at the time of launch. (3 marks) | 2
+r= - |
+sal
+5 ; S
+b <
+: < eee eeceeceaeansatanenpaienaesnnecsecsenssseneecenseceseccsnasnuenecseenceseeneenenne ene ent een pe eee e eT ee gee
+iL seeseecceeneeeceeececee cena eeet neta nn TETAS
+' Answers written in the margins will not be marked.
+2014-DSE-PHY 1B-18 18 |
+i i
+(b) (iy wren a pintoniun-238 atom decays, it releases 5.5 MeV of energy. Estimate the power, in kW,
+y the source at the time of launch. (2 marks)
+(iti) oo RTG of Voyager I is still in operation as Voyager J just left the solar system in September
+3 after it was launched 36 years ago. Estimate the corresponding power delivered by the
+plutonium source, expressed in percentage of the power delivered at the time of launch.
+(2 marks)
+3 :
+Oo fe ee ee en ee eee eee en eee - 8
+2 were ee eee en eee tenet renee: oO
+3 .
+2 ae °
+| ‘= =
+; 2
+=I
+< <
+END OF PAPER
+Sources of materials used in this paper will be acknowled i inati i
+ged in the Examination Report and Question Papers
+published by the Hong Kong Examinations and Assessment Authority at a later stage. "
+Answers written in the margins will not be marked.
+2014-DSE-PHY 1B-19 19

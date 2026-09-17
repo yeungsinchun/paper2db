@@ -22,7 +22,7 @@ def png_item_label(path: Path) -> str | None:
     """Year and question from a crop path: 2012_q36.png -> 2012 Q36.
 
     Bare qN.png takes the year from an ancestor directory named {year}|pp|sap
-    (output/lq/2013/q2.png -> 2013 Q2; output/lq/2012/ans/q1.png -> 2012 Q1).
+    (reconstructed/lq/2013/q2.png -> 2013 Q2; reconstructed/lq/2012/ans/q1.png -> 2012 Q1).
     """
     stem = path.stem
     found = YEAR_Q_PNG.fullmatch(stem)

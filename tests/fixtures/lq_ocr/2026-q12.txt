@@ -1,0 +1,54 @@
+12. (a) Bismuth-213 (Bi-213) is a radionuclide currently undergoing clinical trials for cancer treatment. It is
+prepared in liquid and injected into the human body, where it targets and destroys cancer cells. Figure 12.1
+shows a decay series of Bi-213.
+mass number
+215
+213 P  prctsp _
+Figure 12.1 a
+ew EL
+09 | aaa
+b+209
+ror OL_| | tt | enum
+81 82 83 84 85 86 87 88 gg omc number
+(i) | Write the nuclear equations corresponding to each of these two decay processes. (2 marks)
+% *(ii) The half-life of Bi-213 is 46 minutes. At time ¢=0 s, its number of undecayed nuclei is 8.0 x 10! |
+= Find its activity (in Bq) at t= 0s. (2 marks) | §
+8 3
+=| wrt rrr rt nt rt tt rt rn tr nr rt rr re rn tee nn tener errr errr re re rrr teeter en ene eeeenee ky
+E s
+a
+= B=
+*(iii) Find the percentage decrease in the activity after 200 minutes. (2 marks) <
+Answers written in the margins will not be marked.
+2026-DSE-PHY 1B-18 18
+(b) In hospital, technicians wear protective gloves to handle liquid radioactive materials, such as those
+containing Bi-213. To monitor radiation exposure, they wear a specialised ring on their finger, as shown in
+Figure 12.2(a). Each ring contains a small chip in a plastic enclosure (Figure 12.2(b)), which detects and
+records radiation doses. The rings are collected every three months to monitor the radiation exposure of the
+technicians.
+(GP aD oS GB Oe, OO
+‘ os (< . chip plastic enclosure
+Figure 12.2(a) Figure 12.2(b)
+(i) Compared to placing it in a badge worn on the chest, what is the advantage of placing the chip in the
+ring wom on the hand ? (1 mark)
+Le] od
+oO oO
+= =
+o woe o
+a Sais risis Sen SSIS TES URRY Ne HES ERERSE Sepa Re TE SAS <a eee ene See neko eee RS SSSR NN EERE Re Sen San RNR RR RNR NRE TRS RRR RRR es vr LO
+° °
+& (ii) The ring should be wom under the gloves. Explain briefly. (1 mark) | ©
+3 3
+I I
+o o
+3 S
+a =I
+oO oO
+5 5
+is (iii) Which type(s) of radiation (a, f or 7) can reach the chip of the ring ? (1 mark) | &
+S 3
+END OF PAPER
+Sources of materials used in this paper will be acknowledged in the HKDSE Question Papers booklet published by
+the Hong Kong Examinations and Assessment Authority at a later stage.
+Answers written in the margins will not be marked.
+2026-DSE-PHY 1B-19 19

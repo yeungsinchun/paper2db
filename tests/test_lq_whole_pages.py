@@ -133,7 +133,7 @@ class TestLqWholePages(unittest.TestCase):
         finally:
             src.close()
 
-    def test_year_review_labels_first_question_on_each_start_page(self) -> None:
+    def test_year_review_stacks_questions_in_order_and_labels_first_page(self) -> None:
         review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")
         with tempfile.TemporaryDirectory() as tmp:
             paper = Path(tmp) / "paper"
@@ -169,12 +169,22 @@ class TestLqWholePages(unittest.TestCase):
             document = fitz.open(out / "combined.pdf")
             try:
                 texts = [page.get_text() for page in document]
+                # Q1 [0], Q2 [0,1], Q5 [6,7], Q6 [8], Q7 [9], Q9 [4]: 8 pages in
+                # question order; a shared start page appears once per question.
+                self.assertEqual(len(texts), 8)
                 self.assertIn("2012 Q1", texts[0])
+                self.assertIn("PAGE-0", texts[0])
                 self.assertNotIn("2012 Q2", texts[0])
-                self.assertIn("2012 Q5", texts[6])
-                self.assertIn("2012 Q6", texts[8])
-                self.assertIn("2012 Q7", texts[9])
-                self.assertIn("2012 Q9", texts[4])
+                self.assertIn("2012 Q2", texts[1])
+                self.assertIn("PAGE-0", texts[1])
+                self.assertIn("PAGE-1", texts[2])
+                self.assertNotIn("2012 Q", texts[2])
+                self.assertIn("2012 Q5", texts[3])
+                self.assertIn("PAGE-6", texts[3])
+                self.assertIn("2012 Q6", texts[5])
+                self.assertIn("2012 Q7", texts[6])
+                self.assertIn("2012 Q9", texts[7])
+                self.assertIn("PAGE-4", texts[7])
             finally:
                 document.close()
 
@@ -237,24 +247,16 @@ class TestLqWholePages(unittest.TestCase):
             finally:
                 stacked.close()
 
-            questions_pdf = fitz.open(out / "questions.pdf")
-            try:
-                texts = "\n".join(page.get_text() for page in questions_pdf)
-                self.assertEqual(len(questions_pdf), 1)
-                self.assertIn("QUESTION-BODY", texts)
-                self.assertNotIn("formulae and relationships", texts.lower())
-                self.assertNotIn("SHEET-CONTINUATION", texts)
-            finally:
-                questions_pdf.close()
-
             combined = fitz.open(out / "combined.pdf")
             try:
                 texts = "\n".join(page.get_text() for page in combined)
+                self.assertEqual(len(combined), 1)
+                self.assertIn("QUESTION-BODY", texts)
                 self.assertNotIn("formulae and relationships", texts.lower())
                 self.assertNotIn("SHEET-CONTINUATION", texts)
-                self.assertIn("QUESTION-BODY", texts)
             finally:
                 combined.close()
+            self.assertFalse((out / "questions.pdf").exists())
 
             dest = tmp_path / "section-questions.pdf"
             written_section = review.write_section_questions_pdf([("2099", 1)], dest)
@@ -349,7 +351,7 @@ class TestLqWholePages(unittest.TestCase):
             finally:
                 stacked.close()
 
-            questions_pdf = fitz.open(out / "questions.pdf")
+            questions_pdf = fitz.open(out / "combined.pdf")
             try:
                 texts = "\n".join(page.get_text() for page in questions_pdf)
                 self.assertEqual(len(questions_pdf), 1)
@@ -463,7 +465,7 @@ class TestLqWholePages(unittest.TestCase):
             finally:
                 stacked.close()
 
-            questions_pdf = fitz.open(out / "questions.pdf")
+            questions_pdf = fitz.open(out / "combined.pdf")
             try:
                 texts = "\n".join(page.get_text() for page in questions_pdf)
                 self.assertEqual(len(questions_pdf), 1)
@@ -506,22 +508,16 @@ class TestLqWholePages(unittest.TestCase):
             combined = fitz.open(out / "combined.pdf")
             try:
                 texts = [page.get_text() for page in combined]
-                self.assertIn("PAGE-0", texts[0])
-                self.assertNotIn("2012 Q1", texts[0])
-                self.assertIn("2012 Q1", texts[1])
-                self.assertIn("PAGE-1", texts[1])
-                self.assertIn("2012 Q9", texts[5])
-                self.assertIn("PAGE-5", texts[5])
+                # Q1 [0], Q2 [0,1], Q9 [4,5] -> exam page i is PDF page i+1.
+                self.assertEqual(len(texts), 5)
+                self.assertIn("2012 Q1", texts[0])
+                self.assertIn("PAGE-1", texts[0])
+                self.assertIn("2012 Q9", texts[3])
+                self.assertIn("PAGE-5", texts[3])
+                self.assertNotIn("PAGE-0", "\n".join(texts), "cover must not be packed")
             finally:
                 combined.close()
-            questions = fitz.open(out / "questions.pdf")
-            try:
-                first = questions[0].get_text()
-                self.assertIn("2012 Q1", first)
-                self.assertIn("PAGE-1", first)
-                self.assertNotIn("PAGE-0", first)
-            finally:
-                questions.close()
+            self.assertFalse((out / "questions.pdf").exists(), "pre-rename file must not be written")
 
     def _write_two_up_fixture(self, review, tmp: Path, *, extra_q: dict | None = None):
         paper = tmp / "paper"
@@ -566,21 +562,6 @@ class TestLqWholePages(unittest.TestCase):
             combined = fitz.open(out / "combined.pdf")
             try:
                 texts = [page.get_text() for page in combined]
-                self.assertEqual(len(texts), 7)
-                self.assertIn("COVER-MARK", texts[0])
-                self.assertNotIn("2099 Q1", texts[0])
-                self.assertIn("2099 Q1", texts[1])
-                self.assertIn("LEFT-0", texts[1])
-                self.assertNotIn("RIGHT-0", texts[1])
-                self.assertNotIn("COVER-MARK", texts[1])
-                self.assertIn("2099 Q3", texts[5])
-                self.assertIn("LEFT-2", texts[5])
-                self.assertIn("RIGHT-2", texts[6])
-            finally:
-                combined.close()
-            questions = fitz.open(out / "questions.pdf")
-            try:
-                texts = [page.get_text() for page in questions]
                 self.assertEqual(len(texts), 4)
                 self.assertIn("2099 Q1", texts[0])
                 self.assertIn("LEFT-0", texts[0])
@@ -589,8 +570,10 @@ class TestLqWholePages(unittest.TestCase):
                 self.assertIn("2099 Q3", texts[2])
                 self.assertIn("LEFT-2", texts[2])
                 self.assertIn("RIGHT-2", texts[3])
+                self.assertNotIn("COVER-MARK", "\n".join(texts))
             finally:
-                questions.close()
+                combined.close()
+            self.assertFalse((out / "questions.pdf").exists())
             dest = Path(tmp) / "section.pdf"
             written = review.write_section_questions_pdf([("2099", 3)], dest)
             self.assertEqual(written, 2)
@@ -618,7 +601,7 @@ class TestLqWholePages(unittest.TestCase):
         crop = load_module("crop_lq_from_pages", ROOT / "scripts" / "crop_lq_from_pages.py")
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            src_dir = root / "output" / "lq" / "2099"
+            src_dir = root / "reconstructed" / "lq" / "2099"
             src_dir.mkdir(parents=True)
             Image.new("RGB", (50, 80), (255, 255, 255)).save(src_dir / "q1.png")
             classified = (
@@ -633,7 +616,7 @@ class TestLqWholePages(unittest.TestCase):
             csv_path = root / "classified" / "lq" / "classification.csv"
             csv_path.write_text(
                 "Year,Question,Primary,AllSections,Reason,PNG,AnswerPNG\n"
-                "2099,1,3,3,test,output/lq/2099/q1.png,output/lq/2099/ans/q1.png\n",
+                "2099,1,3,3,test,reconstructed/lq/2099/q1.png,reconstructed/lq/2099/ans/q1.png\n",
                 encoding="utf-8",
             )
             crop.ROOT = root
@@ -645,7 +628,7 @@ class TestLqWholePages(unittest.TestCase):
                 self.assertEqual(answer.size, (20, 10))
 
 
-class TestCommittedLqWholePages(unittest.TestCase):
+class TestGeneratedLqWholePages(unittest.TestCase):
     def test_2026_pdf_offset_skips_cover(self) -> None:
         review = load_module("lq_pdf_review", ROOT / "scripts" / "lq_pdf_review.py")
         source = review.lq_source_pdf("2026")
@@ -683,9 +666,9 @@ class TestCommittedLqWholePages(unittest.TestCase):
             document.close()
 
     def test_2026_q1_is_full_exam_page_not_part_a_ycrop(self) -> None:
-        path = ROOT / "output" / "lq" / "2026" / "q1.png"
+        path = ROOT / "reconstructed" / "lq" / "2026" / "q1.png"
         if not path.is_file():
-            self.skipTest("output/ not built (run ./pipeline)")
+            self.skipTest("reconstructed/ not built (run ./pipeline)")
         image = Image.open(path)
         width, height = image.size
         image.close()
@@ -695,29 +678,29 @@ class TestCommittedLqWholePages(unittest.TestCase):
 
     def test_2012_q9_includes_continuation_page(self) -> None:
         Image.MAX_IMAGE_PIXELS = 250_000_000
-        path = ROOT / "output" / "lq" / "2012" / "q9.png"
+        path = ROOT / "reconstructed" / "lq" / "2012" / "q9.png"
         if not path.is_file():
-            self.skipTest("output/ not built (run ./pipeline)")
+            self.skipTest("reconstructed/ not built (run ./pipeline)")
         with Image.open(path) as image:
             width, height = image.size
         # Two stacked exam pages. A single leftover page is ~1.4x width.
         self.assertGreater(height / width, 2.0)
 
-    def test_2026_combined_does_not_label_cover_as_q1(self) -> None:
-        path = ROOT / "output" / "lq" / "2026" / "combined.pdf"
+    def test_2026_combined_starts_with_q1_not_cover(self) -> None:
+        path = ROOT / "reconstructed" / "lq" / "2026" / "combined.pdf"
         if not path.is_file():
-            self.skipTest("output/ not built (run ./pipeline)")
+            self.skipTest("reconstructed/ not built (run ./pipeline)")
         document = fitz.open(path)
         try:
-            self.assertNotIn("2026 Q1", document[0].get_text())
-            self.assertIn("2026 Q1", document[1].get_text())
+            self.assertIn("2026 Q1", document[0].get_text())
+            self.assertFalse((path.parent / "questions.pdf").exists())
         finally:
             document.close()
 
-    def test_2012_questions_pdf_q9_starts_on_exam_page_not_previous(self) -> None:
-        path = ROOT / "output" / "lq" / "2012" / "questions.pdf"
+    def test_2012_combined_q9_starts_on_exam_page_not_previous(self) -> None:
+        path = ROOT / "reconstructed" / "lq" / "2012" / "combined.pdf"
         if not path.is_file():
-            self.skipTest("output/ not built (run ./pipeline)")
+            self.skipTest("reconstructed/ not built (run ./pipeline)")
         questions = fitz.open(path)
         try:
             texts = [page.get_text() for page in questions]
@@ -728,26 +711,10 @@ class TestCommittedLqWholePages(unittest.TestCase):
         finally:
             questions.close()
 
-    def test_2015_combined_does_not_label_cover_as_q1(self) -> None:
-        path = ROOT / "output" / "lq" / "2015" / "combined.pdf"
+    def test_2015_combined_includes_q1_to_q10_without_cover(self) -> None:
+        path = ROOT / "reconstructed" / "lq" / "2015" / "combined.pdf"
         if not path.is_file():
-            self.skipTest("output/ not built (run ./pipeline)")
-        document = fitz.open(path)
-        try:
-            texts = [page.get_text() for page in document]
-            self.assertGreaterEqual(len(texts), 19)
-            self.assertNotIn("2015 Q1", texts[0])
-            self.assertIn("2015 Q1", texts[1])
-            joined = "\n".join(texts)
-            self.assertIn("2015 Q7", joined)
-            self.assertIn("2015 Q10", joined)
-        finally:
-            document.close()
-
-    def test_2015_questions_pdf_includes_q7_to_q10(self) -> None:
-        path = ROOT / "output" / "lq" / "2015" / "questions.pdf"
-        if not path.is_file():
-            self.skipTest("output/ not built (run ./pipeline)")
+            self.skipTest("reconstructed/ not built (run ./pipeline)")
         questions = fitz.open(path)
         try:
             texts = [page.get_text() for page in questions]
@@ -767,7 +734,7 @@ class TestCommittedLqWholePages(unittest.TestCase):
                 / "lq"
                 / "03A_Wave_Motion"
                 / "15_Interference_and_Stationary_Wave"
-                / "questions.pdf",
+                / "combined.pdf",
                 "2015 Q7",
             ),
             (
@@ -776,7 +743,7 @@ class TestCommittedLqWholePages(unittest.TestCase):
                 / "lq"
                 / "04_Electricity_and_Magnetism"
                 / "21_Circuit_and_Power"
-                / "questions.pdf",
+                / "combined.pdf",
                 "2015 Q8",
             ),
             (
@@ -785,7 +752,7 @@ class TestCommittedLqWholePages(unittest.TestCase):
                 / "lq"
                 / "05_Radioactivity_and_Nuclear_Energy"
                 / "27_Nuclear_Energy"
-                / "questions.pdf",
+                / "combined.pdf",
                 "2015 Q10",
             ),
         )

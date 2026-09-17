@@ -3,7 +3,7 @@
 """Classify MC questions into Book 1-5 / Sections 1-27 using an LLM.
 
 Pipeline:
-  1. Reuse / refresh OCR from output/ PNGs (tesseract cache under classified/mc/ocr_cache)
+  1. Reuse / refresh OCR from reconstructed/mc/ PNGs (tesseract cache under classified/mc/ocr_cache)
   2. Call an OpenAI-compatible chat API one question (or small batch) at a time
   3. Write classified/mc/<book>/<section>/ PNG copies plus:
        classified/mc/classification.csv|json
@@ -44,7 +44,7 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "output"
+OUTPUT = ROOT / "reconstructed" / "mc"
 CLASSIFIED = ROOT / "classified" / "mc"
 OCR_CACHE = CLASSIFIED / "ocr_cache"
 
@@ -192,7 +192,13 @@ def year_key(name: str) -> tuple:
 def collect_jobs(years: list[str] | None) -> list[tuple[str, str, int]]:
     jobs: list[tuple[str, str, int]] = []
     year_dirs = sorted(
-        [p for p in OUTPUT.iterdir() if p.is_dir() and not p.name.startswith(".")],
+        [
+            p
+            for p in OUTPUT.iterdir()
+            if p.is_dir()
+            and not p.name.startswith(".")
+            and not p.name.endswith("-intermediate")
+        ],
         key=lambda p: year_key(p.name),
     )
     for year_dir in year_dirs:
@@ -258,7 +264,7 @@ def _ocr_one(args: tuple[str, str, int]) -> dict:
         "Question": number,
         "Question statement": statement,
         "Option": options,
-        "PNG": f"output/{year}/q{number}.png",
+        "PNG": f"reconstructed/mc/{year}/q{number}.png",
         "OCR": text,
     }
 
@@ -324,7 +330,7 @@ def chat_json(system: str, user: str, *, retries: int = 3) -> dict:
     raise SystemExit(f"LLM call failed after {retries} retries: {last_err}")
 
 
-def normalize_sections(raw: object) -> list[int]:
+def normalize_sections(raw: object, *, limit: int = 2) -> list[int]:
     if not isinstance(raw, list) or not raw:
         return []
     out: list[int] = []
@@ -335,7 +341,7 @@ def normalize_sections(raw: object) -> list[int]:
             continue
         if 1 <= n <= 27 and n not in out:
             out.append(n)
-        if len(out) >= 2:
+        if len(out) >= limit:
             break
     return out
 

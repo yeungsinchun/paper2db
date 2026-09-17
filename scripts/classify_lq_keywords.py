@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """Keyword-classify LQ crops into the 27 MC sections (no LLM required).
 
-Uses OCR under classified/lq/ocr_cache (or creates it). Writes:
+OCRs each whole page stack (cache classified/lq/ocr_cache/<year>/qN.<w>x<h>.txt,
+keyed by PNG size so a re-crop is re-read). Book 5 questions list every
+radioactivity section they test (apply_book5_listings / classify_book5);
+other books keep the single-primary scoring. Writes:
   classified/lq/classification.csv
   classified/lq/llm_classifications.json
   classified/lq/<book>/<section>/ year-qN.png (+ optional answer copy)
@@ -27,12 +30,140 @@ from pathlib import Path
 
 from PIL import Image
 
+Image.MAX_IMAGE_PIXELS = 250_000_000  # 2-page 4916px-wide stacks exceed the default bomb limit
+
 from classify_mc_llm import SECTION_BY_NUM, SECTIONS, BOOK_NAMES, year_key
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_LQ = ROOT / "output" / "lq"
+OUTPUT_LQ = ROOT / "reconstructed" / "lq"
 CLASSIFIED_LQ = ROOT / "classified" / "lq"
 OCR_CACHE = CLASSIFIED_LQ / "ocr_cache"
+OCR_MAX_WIDTH = 2500
+
+# Book 5 gate: any of these marks a radioactivity / nuclear question. Generic
+# words ("fusion" of ice, "activity" of a bungee jumper, "radiation" as heat
+# transfer) deliberately stay out so they cannot pull other books here.
+BOOK5_CONTEXT = (
+    "radioactiv",
+    "radioisotope",
+    "radionuclide",
+    "nuclide",
+    "isotope",
+    "half-life",
+    "half life",
+    "half-lives",
+    "decay constant",
+    "decay series",
+    "nuclear equation",
+    "nuclear reaction",
+    "nuclear fusion",
+    "nuclear fission",
+    "fission",
+    "undergoes decay",
+    "decays to",
+    "decays into",
+    "decays by",
+    "decays with",
+    "undergoes a-decay",
+    "undergoes α-decay",
+    "undergoes alpha decay",
+    "undergoes @ decay",
+    "undergoes a decay",
+    "background radiation",
+)
+
+# Book 5 cues, weighted by how strongly a phrase shows that a *part* tests the
+# section (question wording scores 3-5; passing mentions score 1-2).
+# A section is listed when its total reaches BOOK5_MIN[section].
+BOOK5_CUES: dict[int, list[tuple[str, float]]] = {
+    25: [
+        # nature of alpha/beta/gamma, decay equations, detectors, safety
+        ("nuclear equation", 4),
+        ("equation for the decay", 4),
+        ("equation to represent the decay", 4),
+        ("kind of decay", 4),
+        ("kind of radiation", 4),
+        ("type of radiation", 4),
+        ("type(s) of radiation", 4),
+        ("types of radiation", 4),
+        ("radiation emitted", 3),
+        ("are emitted", 3),
+        ("penetrating", 4),
+        ("penetration", 4),
+        ("penetrate", 4),
+        ("ionizing", 4),
+        ("ionising", 4),
+        ("ionization", 3),
+        ("ionisation", 3),
+        ("background radiation", 4),
+        ("spark counter", 4),
+        ("geiger", 4),
+        ("gm tube", 4),
+        ("cloud chamber", 4),
+        ("photographic film", 3),
+        ("detected", 2),
+        ("detects", 2),
+        ("radiation dose", 2),
+        ("radiation exposure", 2),
+        ("protective", 2),
+        ("bare hands", 3),
+        ("handled", 2),
+        ("casing", 2),
+        ("shield", 3),
+        ("shielded", 3),
+        ("shielding", 3),
+        ("stopped by", 3),
+        ("absorbed by", 3),
+        ("safe to", 3),
+        ("it is safe", 3),
+        ("decay series", 2),
+        ("decay chain", 2),
+        ("a-particle", 2),
+        ("α-particle", 2),
+        ("a particle", 2),
+        ("@ particle", 2),
+        ("α particle", 2),
+        ("alpha particle", 2),
+        ("b-particle", 2),
+        ("β-particle", 2),
+        ("f-particle", 2),
+        ("beta particle", 2),
+        ("gamma", 2),
+        ("isotope", 1),
+        ("stable", 1),
+    ],
+    26: [
+        # rate of decay and uses
+        ("half-life", 4),
+        ("half life", 4),
+        ("half-lives", 4),
+        ("decay constant", 4),
+        ("dating", 3),
+        ("age of the", 3),
+        ("count rate", 3),
+        ("undecayed", 2),
+        ("activity", 2),
+        ("bq", 2),
+        ("tracer", 3),
+    ],
+    27: [
+        # nuclear energy: fission/fusion, mass-energy
+        ("fission", 5),
+        ("fusion", 5),
+        ("binding energy", 5),
+        ("mass defect", 5),
+        ("energy released in the decay", 5),
+        ("chain reaction", 4),
+        ("nuclear reaction", 4),
+        ("nuclear energy", 3),
+        ("bombard", 3),
+        ("bombarded", 3),
+        ("bombards", 3),
+        ("energy released", 2),
+        ("mev", 2),
+    ],
+}
+BOOK5_MIN = {25: 4.0, 26: 4.0, 27: 5.0}
 
 # Weighted keyword cues per section (lowercase). Prefer distinctive phrases.
 SECTION_KEYWORDS: dict[int, list[tuple[str, float]]] = {
@@ -79,7 +210,8 @@ SECTION_KEYWORDS: dict[int, list[tuple[str, float]]] = {
         ("measure the acceleration", 3),
         ("accelerating frame", 3),
     ],
-    7: [("moment", 3), ("torque", 3), ("centre of gravity", 3), ("equilibrium", 2), ("pulley", 2), ("two forces", 1)],
+    # "moment" alone matches "at the moment shown"; keep the mechanics phrasings.
+    7: [("moment of", 3), ("moments", 3), ("turning effect", 3), ("torque", 3), ("centre of gravity", 3), ("equilibrium", 2), ("pulley", 2), ("two forces", 1)],
     8: [
         ("mechanical energy", 4),
         ("potential energy", 4),
@@ -92,11 +224,12 @@ SECTION_KEYWORDS: dict[int, list[tuple[str, float]]] = {
         ("conservation of mechanical energy", 5),
         ("stopping distance", 4),
         ("height of release", 3),
+        ("energy conversion", 3),
         ("efficiency", 2),
         ("power", 1),
     ],
     9: [("momentum", 4), ("impulse", 3), ("collision", 3), ("conservation of momentum", 4)],
-    10: [("projectile", 4), ("horizontal range", 3), ("projected", 2), ("angle of projection", 3)],
+    10: [("projectile", 4), ("horizontal range", 3), ("projected", 2), ("angle of projection", 3), ("time of flight", 3)],
     11: [("centripetal", 4), ("circular motion", 3), ("angular speed", 2), ("period of revolution", 2)],
     12: [
         ("gravitation", 3),
@@ -108,7 +241,7 @@ SECTION_KEYWORDS: dict[int, list[tuple[str, float]]] = {
         ("weightlessness", 3),
         ("newton's law of gravitation", 4),
     ],
-    13: [("wavelength", 2), ("transverse", 2), ("longitudinal", 2), ("wave speed", 2), ("amplitude", 1), ("frequency", 1)],
+    13: [("wavelength", 2), ("transverse", 2), ("longitudinal", 2), ("wave speed", 2), ("displacement-distance", 3), ("air particles", 2), ("amplitude", 1), ("frequency", 1)],
     14: [("diffraction", 4), ("refraction of water", 3), ("wavefront", 3), ("ripple tank", 3)],
     15: [("interference", 4), ("stationary wave", 4), ("standing wave", 4), ("young", 2), ("beats", 3), ("node", 2), ("antinode", 2)],
     16: [
@@ -128,42 +261,17 @@ SECTION_KEYWORDS: dict[int, list[tuple[str, float]]] = {
         ("series", 1),
         ("parallel", 1),
         ("resistance", 2),
+        ("internal resistance", 4),
         ("circuit", 1),
+        ("circuit diagram", 3),
+        ("voltage across", 2),
         ("kilowatt", 2),
         ("electrical power", 2),
     ],
     22: [("mains", 3), ("fuse", 2), ("domestic", 3), ("live wire", 3), ("neutral wire", 3), ("earth wire", 3), ("a.c.", 2)],
     23: [("electromagnet", 3), ("magnetic field", 2), ("motor effect", 3), ("force on a current", 3), ("solenoid", 2)],
     24: [("induction", 3), ("faraday", 3), ("lenz", 3), ("transformer", 3), ("induced emf", 4), ("generator", 2)],
-    25: [
-        ("alpha", 2),
-        ("beta", 2),
-        ("gamma", 2),
-        ("radioactive", 3),
-        ("ionization", 2),
-        ("geiger", 3),
-        ("a-decay", 4),
-        ("α-decay", 4),
-        ("alpha-decay", 4),
-        ("beta-decay", 4),
-        ("β-decay", 4),
-        ("nuclear equation", 3),
-    ],
-    26: [("half-life", 4), ("half life", 4), ("activity", 2), ("decay constant", 3), ("tracer", 2)],
-    27: [
-        ("fission", 4),
-        ("fusion", 3),
-        ("binding energy", 4),
-        ("mass defect", 4),
-        ("nuclear energy", 3),
-        ("energy released in the decay", 5),
-        ("energy released", 3),
-        ("nuclear equation", 4),
-        ("mev", 2),
-        ("radium", 2),
-        ("uranium", 2),
-        ("nucleus", 1),
-    ],
+    # Book 5 (25-27) is resolved by classify_book5(); see BOOK5_CUES.
 }
 
 
@@ -173,15 +281,28 @@ def parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 
+def ocr_cache_path(png: Path, year: str, qn: int) -> Path:
+    """Cache file for one whole-page stack, keyed by the PNG geometry.
+
+    A re-cropped qN.png (new page range, new DPI) changes size and therefore
+    gets a fresh OCR pass instead of silently reusing text from an older crop.
+    """
+    with Image.open(png) as image:
+        width, height = image.size
+    return OCR_CACHE / year / f"q{qn}.{width}x{height}.txt"
+
+
 def ocr_png(path: Path, cache_path: Path) -> str:
     if cache_path.exists():
         return cache_path.read_text(encoding="utf-8")
-    image = Image.open(path).convert("RGB")
+    image = Image.open(path).convert("L")
     w, h = image.size
-    # Use most of the page - LQ stems often put key terms mid-question.
-    band = image.crop((0, 0, w, min(h, max(1200, int(h * 0.7)))))
+    # OCR the whole page stack: later parts (e.g. a half-life sub-question at
+    # the end of a radioactivity LQ) decide sections just as much as the stem.
+    if w > OCR_MAX_WIDTH:
+        image = image.resize((OCR_MAX_WIDTH, int(h * OCR_MAX_WIDTH / w)))
     buf = io.BytesIO()
-    band.save(buf, format="PNG")
+    image.save(buf, format="PNG")
     result = subprocess.run(
         ["tesseract", "stdin", "stdout", "--psm", "6"],
         input=buf.getvalue(),
@@ -191,6 +312,9 @@ def ocr_png(path: Path, cache_path: Path) -> str:
     )
     text = result.stdout.decode("utf-8", errors="ignore")
     cache_path.parent.mkdir(parents=True, exist_ok=True)
+    for stale in cache_path.parent.glob(f"{cache_path.name.split('.', 1)[0]}.*txt"):
+        if stale != cache_path:
+            stale.unlink()
     cache_path.write_text(text, encoding="utf-8")
     return text
 
@@ -240,6 +364,9 @@ def score_sections(text: str) -> list[tuple[int, float]]:
         scores[5] += 4
     if "describe the motion" in low and ("car" in low or "velocity" in low):
         scores[5] += 3
+    # "air resistance" is a mechanics phrase, not a circuit cue.
+    if "air resistance" in low and scores[21]:
+        scores[21] = max(0.0, scores[21] - 2.0)
     # Molecular KE belongs to gas law, not work-energy.
     if ("gas molecule" in low or "kinetic theory" in low or "monatomic" in low) and scores[8]:
         scores[8] = max(0.0, scores[8] - 2.0)
@@ -248,14 +375,82 @@ def score_sections(text: str) -> list[tuple[int, float]]:
     return ranked
 
 
+def is_book5(text_low: str) -> bool:
+    return any(phrase_hits(text_low, p) for p in BOOK5_CONTEXT)
+
+
+def score_book5(text: str) -> dict[int, float]:
+    low = text.lower()
+    scores = {sec: 0.0 for sec in BOOK5_CUES}
+    for sec, cues in BOOK5_CUES.items():
+        for phrase, weight in cues:
+            if phrase_hits(low, phrase):
+                scores[sec] += weight
+    return scores
+
+
+def classify_book5(text: str) -> tuple[list[int], str]:
+    """Sections 25-27 for a radioactivity / nuclear question.
+
+    Every section whose cues reach BOOK5_MIN is listed (a Book 5 LQ usually
+    tests two of them, e.g. alpha penetration + activity from half-life);
+    primary is the latest listed section per the curriculum rule.
+    """
+    low = text.lower()
+    scores = score_book5(text)
+    listed = [sec for sec, sc in scores.items() if sc >= BOOK5_MIN[sec]]
+    if not listed:
+        listed = [max(scores, key=lambda sec: (scores[sec], sec))]
+    sections = sorted(listed, reverse=True)
+    primary = sections[0]
+    hits = [p for p, _w in BOOK5_CUES[primary] if phrase_hits(low, p)][:4]
+    reason = f"book5 keywords: {', '.join(hits) if hits else 'score-based'}"
+    for sec in sections[1:]:
+        extra = [p for p, _w in BOOK5_CUES[sec] if phrase_hits(low, p)][:3]
+        reason += f"; also S{sec} ({', '.join(extra)})"
+    return sections, reason
+
+
+def apply_book5_listings(
+    text: str, sections: list[int], reason: str
+) -> tuple[list[int], str]:
+    """Union Book 5 listings onto AllSections after either classifier backend.
+
+    The caller's sections are never dropped: a keyed run whose model filed a
+    circuit question under S21 while its text still trips is_book5 (a tracer
+    mention, say) keeps S21 as primary and gains the Book 5 listings after it.
+    Only when the primary is itself a Book 5 section are the listed sections
+    re-sorted latest-first.
+    """
+    if not is_book5(text.lower()):
+        return sections, reason
+    listed, book5_reason = classify_book5(text)
+    sections = list(sections)
+    book5 = sorted({sec for sec in (*listed, *sections) if 25 <= sec <= 27}, reverse=True)
+    others = [sec for sec in sections if not 25 <= sec <= 27]
+    if sections and not 25 <= sections[0] <= 27:
+        merged = others + book5
+    else:
+        merged = book5 + others
+    if merged == sections:
+        return sections, reason
+    if reason:
+        return merged, f"{reason}; {book5_reason}"
+    return merged, book5_reason
+
+
 def classify_text(text: str) -> tuple[list[int], str]:
     """Classify into curriculum sections.
 
     Curriculum rule: if a question needs both Sx and Sy with x < y, primary is Sy
     (students meet the later topic later). List both only when a significant part
     is answerable with Sx alone (approximated by a strong exclusive lower-section score).
+    Book 5 (radioactivity) goes through apply_book5_listings, which lists every
+    tested section rather than only the primary.
     """
     low = text.lower()
+    if is_book5(low):
+        return apply_book5_listings(text, [], "")
     ranked = score_sections(text)
     if not ranked or ranked[0][1] < 2:
         if any(
@@ -301,7 +496,7 @@ def classify_text(text: str) -> tuple[list[int], str]:
         reason += f"; dual with S{sections[1]} (significant earlier part)"
     elif len(contenders) > 1:
         reason += f"; primary=max({','.join('S'+str(s) for s in sorted(contenders))})"
-    return sections, reason
+    return apply_book5_listings(text, sections, reason)
 
 
 NESTED_CSV_FIELDS = [
@@ -402,16 +597,16 @@ def main() -> None:
     new_rows = []
     new_decisions = {}
     for year, png, qn in jobs:
-        text = ocr_png(png, OCR_CACHE / year / f"q{qn}.txt")
+        text = ocr_png(png, ocr_cache_path(png, year, qn))
         sections, reason = classify_text(text)
-        ans = f"output/lq/{year}/ans/q{qn}.png"
+        ans = f"reconstructed/lq/{year}/ans/q{qn}.png"
         row = {
             "Year": year,
             "Question": qn,
             "Primary": sections[0],
             "AllSections": ";".join(str(s) for s in sections),
             "Reason": reason,
-            "PNG": f"output/lq/{year}/q{qn}.png",
+            "PNG": f"reconstructed/lq/{year}/q{qn}.png",
             "AnswerPNG": ans,
         }
         new_rows.append(row)

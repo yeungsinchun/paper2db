@@ -10,5 +10,5 @@ When this project generates PNG files, also leave a single review PDF in the sam
 - Anchor review: `anchor.pdf` (already written by preprocess). Do not also stitch `pageNN.png` into `combined.pdf`.
 - MC question crops (`qN.png`): write `combined.pdf` through `scripts/png_pdf.py` (`combine_pngs_to_pdf`). Portrait A4, year/Q labels, original paper (no blue dots). Overwrite when the PNGs are regenerated. Crop the left edge at the anchor. It skips an existing output PDF unless overwrite is set.
 - LQ answer crops: same PNG-to-A4 helper (`combine_pngs_to_pdf` / `place_pngs_on_a4`).
-- LQ question reviews (`output/lq/<year>/combined.pdf`, `questions.pdf`, and classified `questions.pdf`) come from source Paper 1B pages via `scripts/lq_pdf_review.py`. Do not stitch `qN.png` into those PDFs.
+- LQ question reviews (`reconstructed/lq/<year>/combined.pdf` and classified LQ `combined.pdf`; per-question page stacks, no cover) come from source Paper 1B pages via `scripts/lq_pdf_review.py`. Do not stitch `qN.png` into those PDFs.
 - Point the user at the existing review PDF, not a list of PNGs.

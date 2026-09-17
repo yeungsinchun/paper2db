@@ -13,7 +13,7 @@ pip install -r requirements.txt
 ./pipeline
 ```
 
-That one command walks every stage from `paper/` PDFs to `classified/` section folders and review PDFs. It pauses at a few review gates (MC anchors, optional LQ crops, uncertain classifications). Pass `--yes` to print the same paths without waiting for Enter.
+That one command walks every stage from `paper/` PDFs to `reconstructed/` papers and `classified/` section folders with review PDFs. Both trees are generated and gitignored - regenerate them rather than committing them (`./pipeline --force --yes` rebuilds everything). It pauses at a few review gates (MC anchors, optional LQ crops, uncertain classifications). Pass `--yes` to print the same paths without waiting for Enter.
 
 ```bash
 ./pipeline --years 2025          # one year
@@ -34,7 +34,7 @@ export LLM_MODEL=meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
 
 When no API key is set, both MC and LQ use the keyword classifiers.
 
-## Regenerating `output/` and `classified/`
+## Regenerating `reconstructed/` and `classified/`
 
 Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.gitignore`). Rebuild them from `paper/` with:
 
@@ -43,7 +43,7 @@ Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.g
 ./pipeline --years 2025 --force --yes   # one year
 ```
 
-The only files under `output/` and `classified/` that git tracks are hand-tuned inputs the pipeline reads rather than regenerates: `output/lq/<year>/starts.json` (LQ page ranges), `classified/*/llm_classifications.json` (LLM section decisions, editable and replayable with `--from-json`) and `classified/lq/candidate_performance.json` (from `scripts/extract_lq_performance.py`). Everything else is reproducible from `paper/` with `./pipeline`, so never `git add` crops, section PDFs or `.lavish/` HTML.
+The only files under `reconstructed/` and `classified/` that git tracks are hand-tuned inputs the pipeline reads rather than regenerates: `reconstructed/lq/<year>/starts.json` (LQ page ranges), `classified/*/llm_classifications.json` (LLM section decisions, editable and replayable with `--from-json`) and `classified/lq/candidate_performance.json` (from `scripts/extract_lq_performance.py`). Everything else is reproducible from `paper/` with `./pipeline`, so never `git add` crops, section PDFs or `.lavish/` HTML.
 
 ## Layout
 
@@ -53,8 +53,8 @@ The only files under `output/` and `classified/` that git tracks are hand-tuned 
 | `paper/lq/` | Paper 1B PDFs |
 | `paper/ans/` | Marking schemes (`2012ans.pdf`, ...) |
 | `paper/performance/` | Candidate-performance notes (markdown; optional, not a pipeline stage) |
-| `output/<year>/` | MC question PNGs + A4 `combined.pdf` |
-| `output/lq/<year>/` | LQ pages, `qN.png`, `ans/qN.png`, A4 review PDFs |
+| `reconstructed/mc/` | `combined.pdf` (every year's MC paper) + `<year>/` MC question PNGs with a per-year `combined.pdf` |
+| `reconstructed/lq/` | `combined.pdf` (every year's LQ questions) + `<year>/` LQ pages, `qN.png`, `ans/qN.png`, per-year `combined.pdf` |
 | `classified/mc/` | Section folders, CSVs, `answer_keys.json`, section PDFs |
 | `classified/lq/` | Same for long questions (+ optional `candidate_performance.json`) |
 | `scripts/` | Stage implementations (called by `./pipeline`) |
@@ -66,18 +66,26 @@ The only files under `output/` and `classified/` that git tracks are hand-tuned 
 
 ## Stages
 
-1. **mc-anchors** - blue dots on each MC paper; **you must review** `output/<year>-intermediate/anchor.pdf`
-2. **mc-split** - crop clean `qN.png` into `output/<year>/` + A4 `combined.pdf`
+1. **mc-anchors** - blue dots on each MC paper; **you must review** `reconstructed/mc/<year>-intermediate/anchor.pdf`
+2. **mc-split** - crop clean `qN.png` into `reconstructed/mc/<year>/` + A4 `combined.pdf`; then joins every year into `reconstructed/mc/combined.pdf`
 3. **lq-pages** - export LQ pages + `starts.json`
-4. **lq-crops** - whole exam page stack per question (`page_from`..`page_to`); A4 `questions.pdf` from the source paper (no within-page crop; trailing data/formulae sheets excluded)
+4. **lq-crops** - whole exam page stack per question (`page_from`..`page_to`); A4 `combined.pdf` of those stacks from the source paper (no cover, no within-page crop; trailing data/formulae sheets excluded); then joins every year into `reconstructed/lq/combined.pdf`
 5. **lq-answers** - marking-scheme answer crops under `ans/`
 6. **keys** - MC keys + correct-% → `classified/mc/answer_keys.json`
 7. **classify-mc** - 27 syllabus sections (LLM if keyed, else keywords)
-8. **classify-lq** - same sections for LQ (LLM if keyed, else keywords)
-9. **section-pdfs** - per-section A4 `combined.pdf` / `questions.pdf` (+ answer PDFs)
+8. **classify-lq** - same sections for LQ (LLM if keyed, else keywords). Either backend then lists every Book 5 section a radioactivity LQ tests (e.g. 2014 Q10: ch26 activity + ch25 alpha handling; 2012 Q11 keeps 25+26+27), primary = latest section. The keyword scorer OCRs the whole page stack (cache keyed by PNG size under `classified/lq/ocr_cache/`)
+9. **section-pdfs** - per-section A4 `combined.pdf` (+ LQ `answers.pdf` / `performance.pdf`); an LQ appears in every section it is listed under, not only its primary
 10. **lavish** - quality audit + HTML reviews under `.lavish/` (pipeline walkthrough, MC banks, LQ banks)
 
 Candidate-performance extraction stays available as `python scripts/extract_lq_performance.py` when needed; it is not part of `./pipeline`.
+
+## Tests
+
+```bash
+.venv/bin/python -m unittest discover -s tests   # seconds; needs no build
+```
+
+The suite runs against fixtures (`tests/fixtures/lq_ocr/`, temp trees) and covers the Book 5 listing rule, the reconstructed layout joiner and the upright section-PDF packing. Tests that inspect generated banks (`classified/`, `reconstructed/`) skip until `./pipeline` has built them. A full rebuild takes tens of minutes (page export and OCR dominate), so when evidence is needed build one track - e.g. `./pipeline --only lq-pages,lq-crops,lq-answers,classify-lq,keys,section-pdfs --yes` for the LQ banks (`section-pdfs` needs `keys`) - or one year with `--years`, rather than everything.
 
 ## Quality bar
 
@@ -97,8 +105,8 @@ Captain review surface: `.lavish/pipeline-review/index.html` (step-by-step inter
 
 1. **Anchors** - every blue dot beside the question number with a clear gap (not on options or diagrams). Wrong anchors poison every later step. Use `scripts/overrides_YYYY.json` for hard pages (each counts toward the 5% budget).
 2. **Uncertain MC** - skim `classified/mc/uncertain.csv` and spot-check a few section folders.
-3. **LQ pages** - skim `output/lq/<year>/questions.pdf` if a question's page range looks wrong (`starts.json`). The last question should stop before any trailing data/formulae sheet or blank "do not write" insert.
-4. Trust the section review PDFs under `classified/*/.../combined.pdf` (or `questions.pdf`) rather than browsing PNG lists. Those PDFs are portrait A4 with year and question labels.
+3. **LQ pages** - skim `reconstructed/lq/<year>/combined.pdf` if a question's page range looks wrong (`starts.json`). The last question should stop before any trailing data/formulae sheet or blank "do not write" insert.
+4. Trust the section review PDFs under `classified/*/.../combined.pdf` rather than browsing PNG lists. Those PDFs are portrait A4 with year and question labels.
 5. Skim `.lavish/pipeline-review/` for the measured rates before accepting a new year.
 
 ## Low-level tools

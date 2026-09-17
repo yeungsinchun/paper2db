@@ -1,0 +1,57 @@
+9. Part of the decay series of uranium-238 (U-238) is shown below. The end product lead-206 (Pb-206) is stable.
+238 > Th 6 __s pa 5. 52% pp
+4.5x10° years 21 days
+(a) When a U-238 nucleus decays to a Pb-206 nucleus, how many a-particle(s) and -particle(s) are emitted ?
+(2 marks)
+(b) As the first decay in the above chain from U to Th has a half-life much longer than those of subsequent
+decays, the decay from U-238 to Pb-206 can be simplified to a single decay with half-life 4.5 x 10° years:
+ao}
+; o
+E 238 206 E
+I Ux, Pb
+E 2 4.5x10° years * 3
+an ie}
+3 S
+a =
+a Suppose that a uranium-bearing rock contains only U-238 and no Pb-206 at the time when it was formed 3
+. long ago by solidification of molten material. In a particular sample of the rock, it is found that the |
+= .. number of Pb-206atoms . 2 hey
+2 ratio. ———_—_—___—_——— is — at present. &
+= number of U-238atoms 3 -
+2 |
+= (i) Estimate the age of the rock. Assume that all Pb-206 atoms come from the decay of U-238 originally |.
+2 present in the sample and ignore the small number of U-238 atoms which have decayed but have not | §
+FS yet become Pb-206. (2 marks) 5
+Sa pee eb a eee eee eee eee beet ee ee een we deem ee mew m ee resend ee mena a eee ee een nee eee eie newman rene neem meee ne eee serene ters er seer rer sneer errs recor ereenns
+a a fe
+Answers written in the margins will not be marked.
+2016-DSE-PHY 1B-18 18
+(ii) State, with a reason, whether the answer in (b)(i) is an overestimate or an underestimate of the age of
+the rock if some Pb-206 atoms have actually been lost. (2 marks)
+(iii) The graph in Figure 9.1 shows how the number of U-238 atoms in the sample varies with time ¢
+subsequently while t=0 denotes the present time. On Figure 9.1, sketch a graph to show the
+variation of the number of Pb-206 atoms in the sample with time. (2 marks)
+no. of atoms
+© Figure 9.1 5
+& i oO
+28 — U-238 | r
+~ ; t S
+ie) 0 =
+is i , =
+= n
+a= &
+5) I
+ios]
+f °
+2 s
+= &
+a= 5
+S £
+= END OF PAPER 5
+3 a
+5 :
+<
+Sources of materials used in this paper will be acknowledged in the Examination Report and Question Papers
+published by the Hong Kong Examinations and Assessment Authority at a later stage.
+Answers written in the margins will not be marked.
+2016-DSE-PHY 1B-19 19
