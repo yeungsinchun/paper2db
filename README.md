@@ -13,7 +13,7 @@ pip install -r requirements.txt
 ./pipeline
 ```
 
-That one command walks every stage from `paper/` PDFs to `tests/reconstructed/` papers and `classified/` section folders with review PDFs. Both trees are generated and gitignored - regenerate them rather than committing them (`./pipeline --force --yes` rebuilds everything). It pauses at a few review gates (MC anchors, optional LQ crops, uncertain classifications). Pass `--yes` to print the same paths without waiting for Enter.
+That one command walks every stage from `paper/` PDFs to `tests/reconstructed/` papers and `classified/` section folders with review PDFs. Generated artifacts in both trees are gitignored - regenerate them rather than committing them (`./pipeline --force --yes` rebuilds everything). The tracked inputs are listed below. It pauses at a few review gates (MC anchors, optional LQ crops, uncertain classifications). Pass `--yes` to print the same paths without waiting for Enter.
 
 ```bash
 ./pipeline --years 2025          # one year
@@ -43,7 +43,7 @@ Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.g
 ./pipeline --years 2025 --force --yes   # one year
 ```
 
-The only files under `tests/reconstructed/` and `classified/` that git tracks are hand-tuned inputs the pipeline reads rather than regenerates: `tests/reconstructed/lq/<year>/starts.json` (LQ page ranges), `classified/*/llm_classifications.json` (LLM section decisions, editable and replayable with `--from-json`) and `classified/lq/candidate_performance.json` (from `scripts/extract_lq_performance.py`). Everything else is reproducible from `paper/` with `./pipeline`, so never `git add` crops, section PDFs or `.lavish/` HTML.
+The only files under `tests/reconstructed/` and `classified/` that git tracks are durable inputs or replayable decisions: `tests/reconstructed/lq/<year>/starts.json` (LQ page ranges, preserved by normal `lq-pages` runs), `classified/*/llm_classifications.json` (LLM section decisions, editable and replayable with `--from-json`) and `classified/lq/candidate_performance.json` (from `scripts/extract_lq_performance.py`). Everything else is reproducible from `paper/` with `./pipeline`, so never `git add` crops, section PDFs or `.lavish/` HTML.
 
 ## Layout
 
