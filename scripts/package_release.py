@@ -8,6 +8,8 @@ Used by .github/workflows/pipeline-release.yml after a full build:
   dist/lq-sections.zip   <book>/<section>/{combined,answers,performance}.pdf
   dist/answer_keys.json, dist/candidate_performance.json, dist/quality_audit.json
   dist/stage_timings.json (when --timings is given)
+  dist/preview-*.png     first/middle/last page of each combined.pdf and page 1
+                         of the first MC section's combined.pdf / answer.pdf
   <notes>   markdown release notes: commit, branch, stage timings, assets
 
 Exits non-zero if any expected build output is missing, so a partial build
@@ -20,6 +22,8 @@ import json
 import shutil
 import zipfile
 from pathlib import Path
+
+import pymupdf as fitz
 
 ROOT = Path(__file__).resolve().parents[1]
 RECON = ROOT / "tests" / "reconstructed"
@@ -63,6 +67,28 @@ def section_members(kind: str) -> list[tuple[Path, str]]:
     return members
 
 
+def render_previews(out: Path) -> None:
+    """Low-res PNGs of sample pages, so a release shows the output at a glance."""
+    targets: list[tuple[Path, str, bool]] = [
+        (RECON / "mc" / "combined.pdf", "mc-combined", True),
+        (RECON / "lq" / "combined.pdf", "lq-combined", True),
+    ]
+    mc_sections = sorted((SECTIONS / "mc").glob("*/*/combined.pdf"))
+    if mc_sections:
+        section = mc_sections[0].parent
+        slug = f"mc-{section.parent.name}-{section.name}"
+        targets += [
+            (section / "combined.pdf", f"{slug}-combined", False),
+            (section / "answer.pdf", f"{slug}-answer", False),
+        ]
+    for pdf, stem, spread in targets:
+        with fitz.open(_require(pdf)) as doc:
+            pages = sorted({0, len(doc) // 2, len(doc) - 1}) if spread else [0]
+            for index in pages:
+                pix = doc[index].get_pixmap(dpi=60)
+                pix.save(out / f"preview-{stem}-p{index + 1}.png")
+
+
 def build(out: Path, timings: Path | None) -> list[str]:
     if out.exists():
         shutil.rmtree(out)
@@ -79,6 +105,7 @@ def build(out: Path, timings: Path | None) -> list[str]:
         shutil.copy2(_require(src), out / src.name)
     if timings is not None:
         shutil.copy2(_require(timings), out / "stage_timings.json")
+    render_previews(out)
     return sorted(p.name for p in out.iterdir())
 
 
