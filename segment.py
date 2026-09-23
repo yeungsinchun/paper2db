@@ -7,19 +7,19 @@ For a reproducible full run over paper/{mc,lq,ans}/, use:
 
 Paper 1A (MC) two-step workflow for a single PDF:
   Step 1 - place anchors (blue dots) for review:
-    ./segment paper.pdf reconstructed/mc/2012-intermediate --step anchors
-    Review reconstructed/mc/2012-intermediate/anchor.pdf
+    ./segment.py paper.pdf intermediate/mc/2012 --step anchors
+    Review intermediate/mc/2012/anchor.pdf
   Step 2 - split into clean PNGs from the original PDF:
-    ./segment paper.pdf reconstructed/mc/2012 --step split --intermediate reconstructed/mc/2012-intermediate
+    ./segment.py paper.pdf tests/reconstructed/mc/2012 --step split --intermediate intermediate/mc/2012
 
 Paper 1B (LQ): pages-only split (pages/, starts.json, combined.pdf). Does not
 write or delete q*.png; ./pipeline runs crop_lq_from_pages afterward.
-Page renders under reconstructed/**/pages/ are gitignored.
+Page renders under tests/reconstructed/**/pages/ are gitignored.
 
 Usage:
-  ./segment paper.pdf output_dir/
-  ./segment paper.pdf output_dir/ --type mc
-  ./segment paper.pdf output_dir/ --type lq --questions 16
+  ./segment.py paper.pdf output_dir/
+  ./segment.py paper.pdf output_dir/ --type mc
+  ./segment.py paper.pdf output_dir/ --type lq --questions 16
 """
 from __future__ import annotations
 

@@ -234,7 +234,7 @@ class TestSectionPdfsIncludeEveryListedSection(unittest.TestCase):
             paper = root / "paper" / "lq"
             paper.mkdir(parents=True)
             _write_paper(paper / "2014p1b.pdf", 4)
-            lq = root / "reconstructed" / "lq" / "2014"
+            lq = root / "tests" / "reconstructed" / "lq" / "2014"
             lq.mkdir(parents=True)
             (lq / "starts.json").write_text(
                 json.dumps(
@@ -260,8 +260,8 @@ class TestSectionPdfsIncludeEveryListedSection(unittest.TestCase):
                         "Primary": 26,
                         "AllSections": "26;25",
                         "Reason": "test",
-                        "PNG": "reconstructed/lq/2014/q10.png",
-                        "AnswerPNG": "reconstructed/lq/2014/ans/q10.png",
+                        "PNG": "tests/reconstructed/lq/2014/q10.png",
+                        "AnswerPNG": "tests/reconstructed/lq/2014/ans/q10.png",
                     }
                 )
             ch27 = classified / "05_Radioactivity_and_Nuclear_Energy" / "27_Nuclear_Energy"
@@ -273,7 +273,7 @@ class TestSectionPdfsIncludeEveryListedSection(unittest.TestCase):
             (ch25 / "questions.pdf").write_bytes(b"%PDF-1.4 legacy")
 
             review.PAPER_LQ = paper
-            review.OUTPUT_LQ = root / "reconstructed" / "lq"
+            review.OUTPUT_LQ = root / "tests" / "reconstructed" / "lq"
             with (
                 mock.patch.object(combine, "ROOT", root),
                 mock.patch.object(combine, "CLASSIFIED_LQ", classified),
@@ -306,14 +306,14 @@ class TestSectionPdfsIncludeEveryListedSection(unittest.TestCase):
             paper = root / "paper" / "lq"
             paper.mkdir(parents=True)
             _write_paper(paper / "2026p1b.pdf", 4, landscape_rotated=True)
-            lq = root / "reconstructed" / "lq" / "2026"
+            lq = root / "tests" / "reconstructed" / "lq" / "2026"
             lq.mkdir(parents=True)
             (lq / "starts.json").write_text(
                 json.dumps({"pages": 3, "questions": [{"q": 12, "page_from": 1, "page_to": 2}]}),
                 encoding="utf-8",
             )
             review.PAPER_LQ = paper
-            review.OUTPUT_LQ = root / "reconstructed" / "lq"
+            review.OUTPUT_LQ = root / "tests" / "reconstructed" / "lq"
             dest = root / "questions.pdf"
             written = review.write_section_questions_pdf([("2026", 12)], dest, title="ch25 test")
             self.assertEqual(written, 2)
@@ -339,22 +339,22 @@ class TestSectionPdfsIncludeEveryListedSection(unittest.TestCase):
 
 
 def _generated_bank_is_current() -> bool:
-    """True when classified/ was produced from the reconstructed/ layout.
+    """True when classified/ was produced from the tests/reconstructed/ layout.
 
     classification.csv is generated output whose PNG column names the crop it
     was built from; rows still pointing at output/ come from an older build.
     """
     csv_path = ROOT / "classified" / "lq" / "classification.csv"
-    if not csv_path.is_file() or not (ROOT / "reconstructed" / "lq" / "2026" / "starts.json").is_file():
+    if not csv_path.is_file() or not (ROOT / "tests" / "reconstructed" / "lq" / "2026" / "starts.json").is_file():
         return False
     with csv_path.open(encoding="utf-8") as fh:
         rows = list(csv.DictReader(fh))
-    return bool(rows) and all(row["PNG"].startswith("reconstructed/") for row in rows)
+    return bool(rows) and all(row["PNG"].startswith("tests/reconstructed/") for row in rows)
 
 
 @unittest.skipUnless(
     _generated_bank_is_current(),
-    "classified/ and reconstructed/ are generated (gitignored); run ./pipeline first",
+    "classified/ and tests/reconstructed/ are generated (gitignored); run ./pipeline first",
 )
 class TestGeneratedCh25Bank(unittest.TestCase):
     """Checks the real classify-lq + section-pdfs output when it has been built."""

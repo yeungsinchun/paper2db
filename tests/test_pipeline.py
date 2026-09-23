@@ -119,7 +119,7 @@ class TestPipelineHelpers(unittest.TestCase):
             paper = tmp_path / "paper" / "mc"
             paper.mkdir(parents=True)
             (paper / "2099p1a.pdf").write_bytes(b"%PDF-1.4")
-            year_dir = tmp_path / "reconstructed" / "mc" / "2099"
+            year_dir = tmp_path / "tests" / "reconstructed" / "mc" / "2099"
             year_dir.mkdir(parents=True)
             from PIL import Image
 
@@ -155,7 +155,7 @@ class TestPipelineHelpers(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
-            year_dir = tmp_path / "reconstructed" / "lq" / "2099"
+            year_dir = tmp_path / "tests" / "reconstructed" / "lq" / "2099"
             pages = year_dir / "pages"
             pages.mkdir(parents=True)
             Image.new("RGB", (100, 200), (255, 255, 255)).save(pages / "page000.png")
@@ -186,7 +186,7 @@ class TestPipelineHelpers(unittest.TestCase):
             paper = tmp_path / "paper" / "lq"
             paper.mkdir(parents=True)
             (paper / "2099p1b.pdf").write_bytes(b"%PDF-1.4")
-            year_dir = tmp_path / "reconstructed" / "lq" / "2099"
+            year_dir = tmp_path / "tests" / "reconstructed" / "lq" / "2099"
             year_dir.mkdir(parents=True)
             starts = year_dir / "starts.json"
             original = '{"questions":[],"pages":1}\n'

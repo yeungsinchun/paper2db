@@ -35,7 +35,7 @@ Image.MAX_IMAGE_PIXELS = 250_000_000  # 2-page 4916px-wide stacks exceed the def
 from classify_mc_llm import SECTION_BY_NUM, SECTIONS, BOOK_NAMES, year_key
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_LQ = ROOT / "reconstructed" / "lq"
+OUTPUT_LQ = ROOT / "tests" / "reconstructed" / "lq"
 CLASSIFIED_LQ = ROOT / "classified" / "lq"
 OCR_CACHE = CLASSIFIED_LQ / "ocr_cache"
 OCR_MAX_WIDTH = 2500
@@ -621,14 +621,14 @@ def main() -> None:
     for year, png, qn in jobs:
         text = ocr_png(png, ocr_cache_path(png, year, qn))
         sections, reason = classify_text(text)
-        ans = f"reconstructed/lq/{year}/ans/q{qn}.png"
+        ans = f"tests/reconstructed/lq/{year}/ans/q{qn}.png"
         row = {
             "Year": year,
             "Question": qn,
             "Primary": sections[0],
             "AllSections": ";".join(str(s) for s in sections),
             "Reason": reason,
-            "PNG": f"reconstructed/lq/{year}/q{qn}.png",
+            "PNG": f"tests/reconstructed/lq/{year}/q{qn}.png",
             "AnswerPNG": ans,
         }
         new_rows.append(row)

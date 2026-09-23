@@ -601,7 +601,7 @@ class TestLqWholePages(unittest.TestCase):
         crop = load_module("crop_lq_from_pages", ROOT / "scripts" / "crop_lq_from_pages.py")
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            src_dir = root / "reconstructed" / "lq" / "2099"
+            src_dir = root / "tests" / "reconstructed" / "lq" / "2099"
             src_dir.mkdir(parents=True)
             Image.new("RGB", (50, 80), (255, 255, 255)).save(src_dir / "q1.png")
             classified = (
@@ -616,7 +616,7 @@ class TestLqWholePages(unittest.TestCase):
             csv_path = root / "classified" / "lq" / "classification.csv"
             csv_path.write_text(
                 "Year,Question,Primary,AllSections,Reason,PNG,AnswerPNG\n"
-                "2099,1,3,3,test,reconstructed/lq/2099/q1.png,reconstructed/lq/2099/ans/q1.png\n",
+                "2099,1,3,3,test,tests/reconstructed/lq/2099/q1.png,tests/reconstructed/lq/2099/ans/q1.png\n",
                 encoding="utf-8",
             )
             crop.ROOT = root
@@ -666,9 +666,9 @@ class TestGeneratedLqWholePages(unittest.TestCase):
             document.close()
 
     def test_2026_q1_is_full_exam_page_not_part_a_ycrop(self) -> None:
-        path = ROOT / "reconstructed" / "lq" / "2026" / "q1.png"
+        path = ROOT / "tests" / "reconstructed" / "lq" / "2026" / "q1.png"
         if not path.is_file():
-            self.skipTest("reconstructed/ not built (run ./pipeline)")
+            self.skipTest("tests/reconstructed/ not built (run ./pipeline)")
         image = Image.open(path)
         width, height = image.size
         image.close()
@@ -678,18 +678,18 @@ class TestGeneratedLqWholePages(unittest.TestCase):
 
     def test_2012_q9_includes_continuation_page(self) -> None:
         Image.MAX_IMAGE_PIXELS = 250_000_000
-        path = ROOT / "reconstructed" / "lq" / "2012" / "q9.png"
+        path = ROOT / "tests" / "reconstructed" / "lq" / "2012" / "q9.png"
         if not path.is_file():
-            self.skipTest("reconstructed/ not built (run ./pipeline)")
+            self.skipTest("tests/reconstructed/ not built (run ./pipeline)")
         with Image.open(path) as image:
             width, height = image.size
         # Two stacked exam pages. A single leftover page is ~1.4x width.
         self.assertGreater(height / width, 2.0)
 
     def test_2026_combined_starts_with_q1_not_cover(self) -> None:
-        path = ROOT / "reconstructed" / "lq" / "2026" / "combined.pdf"
+        path = ROOT / "tests" / "reconstructed" / "lq" / "2026" / "combined.pdf"
         if not path.is_file():
-            self.skipTest("reconstructed/ not built (run ./pipeline)")
+            self.skipTest("tests/reconstructed/ not built (run ./pipeline)")
         document = fitz.open(path)
         try:
             self.assertIn("2026 Q1", document[0].get_text())
@@ -698,9 +698,9 @@ class TestGeneratedLqWholePages(unittest.TestCase):
             document.close()
 
     def test_2012_combined_q9_starts_on_exam_page_not_previous(self) -> None:
-        path = ROOT / "reconstructed" / "lq" / "2012" / "combined.pdf"
+        path = ROOT / "tests" / "reconstructed" / "lq" / "2012" / "combined.pdf"
         if not path.is_file():
-            self.skipTest("reconstructed/ not built (run ./pipeline)")
+            self.skipTest("tests/reconstructed/ not built (run ./pipeline)")
         questions = fitz.open(path)
         try:
             texts = [page.get_text() for page in questions]
@@ -712,9 +712,9 @@ class TestGeneratedLqWholePages(unittest.TestCase):
             questions.close()
 
     def test_2015_combined_includes_q1_to_q10_without_cover(self) -> None:
-        path = ROOT / "reconstructed" / "lq" / "2015" / "combined.pdf"
+        path = ROOT / "tests" / "reconstructed" / "lq" / "2015" / "combined.pdf"
         if not path.is_file():
-            self.skipTest("reconstructed/ not built (run ./pipeline)")
+            self.skipTest("tests/reconstructed/ not built (run ./pipeline)")
         questions = fitz.open(path)
         try:
             texts = [page.get_text() for page in questions]

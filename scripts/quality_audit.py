@@ -51,15 +51,13 @@ def load_csv(path: Path) -> list[dict[str, str]]:
 
 def mc_years() -> list[str]:
     years: list[str] = []
-    mc_dir = ROOT / "reconstructed" / "mc"
+    mc_dir = ROOT / "tests" / "reconstructed" / "mc"
     if not mc_dir.is_dir():
         return years
     for directory in sorted(mc_dir.iterdir()):
         if not directory.is_dir():
             continue
         name = directory.name
-        if name.endswith("-intermediate"):
-            continue
         if (directory / "q1.png").is_file():
             years.append(name)
     return years
@@ -72,7 +70,7 @@ def audit_mc_crops() -> dict:
     crop_count = 0
     for year in mc_years():
         pngs = sorted(
-            (ROOT / "reconstructed" / "mc" / year).glob("q*.png"),
+            (ROOT / "tests" / "reconstructed" / "mc" / year).glob("q*.png"),
             key=lambda path: int(path.stem[1:]),
         )
         if len(pngs) < 30:
@@ -111,7 +109,7 @@ def audit_mc_crops() -> dict:
         "missing_combined_pdf": [
             year
             for year in mc_years()
-            if not (ROOT / "reconstructed" / "mc" / year / "combined.pdf").is_file()
+            if not (ROOT / "tests" / "reconstructed" / "mc" / year / "combined.pdf").is_file()
         ],
     }
 
@@ -122,7 +120,7 @@ def audit_lq_crops() -> dict:
     heights: list[int] = []
     crop_count = 0
     years = []
-    lq_dir = ROOT / "reconstructed" / "lq"
+    lq_dir = ROOT / "tests" / "reconstructed" / "lq"
     for year_dir in sorted(lq_dir.iterdir()) if lq_dir.is_dir() else []:
         if not year_dir.is_dir():
             continue
@@ -170,7 +168,7 @@ def audit_lq_crops() -> dict:
         "missing_combined_pdf": [
             year
             for year in years
-            if not (ROOT / "reconstructed" / "lq" / year / "combined.pdf").is_file()
+            if not (ROOT / "tests" / "reconstructed" / "lq" / year / "combined.pdf").is_file()
         ],
     }
 
