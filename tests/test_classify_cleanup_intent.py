@@ -532,10 +532,12 @@ class TestLqLlmYearsMerge(unittest.TestCase):
             root = Path(tmp)
             output_lq = root / "reconstructed" / "lq"
             classified_lq = root / "classified" / "lq"
+            metadata_lq = root / "metadata" / "lq"
             source = output_lq / "2024" / "q1.png"
             source.parent.mkdir(parents=True)
             source.write_bytes(b"NEW-2024")
             classified_lq.mkdir(parents=True)
+            metadata_lq.mkdir(parents=True)
 
             old_book, old_folder, _ = lq.SECTION_BY_NUM[5]
             kept_png = classified_lq / old_book / old_folder / "2013-q1.png"
@@ -566,7 +568,7 @@ class TestLqLlmYearsMerge(unittest.TestCase):
                 writer = csv.DictWriter(fh, fieldnames=lq.keyword_classifier.NESTED_CSV_FIELDS)
                 writer.writeheader()
                 writer.writerows(old_rows)
-            decisions_path = classified_lq / "llm_classifications.json"
+            decisions_path = metadata_lq / "llm_classifications.json"
             decisions_path.write_text(
                 json.dumps(
                     {
@@ -589,6 +591,7 @@ class TestLqLlmYearsMerge(unittest.TestCase):
                 mock.patch.object(lq, "OUTPUT_LQ", output_lq),
                 mock.patch.object(lq, "CLASSIFIED_LQ", classified_lq),
                 mock.patch.object(lq, "OCR_CACHE", classified_lq / "ocr_cache"),
+                mock.patch.object(lq, "METADATA_LQ", metadata_lq),
                 mock.patch.object(lq, "collect_jobs", return_value=[("2024", source, 1)]),
                 mock.patch.object(lq, "_ocr_one", return_value=record),
                 mock.patch.object(lq, "classify_one", return_value={"sections": [8], "reason": "new-2024"}),
@@ -622,8 +625,10 @@ class TestLqLlmYearsMerge(unittest.TestCase):
             root = Path(tmp)
             output_lq = root / "reconstructed" / "lq" / "2024"
             classified_lq = root / "classified" / "lq"
+            metadata_lq = root / "metadata" / "lq"
             output_lq.mkdir(parents=True)
             classified_lq.mkdir(parents=True)
+            metadata_lq.mkdir(parents=True)
             sources = []
             for qn in (1, 2):
                 source = output_lq / f"q{qn}.png"
@@ -653,7 +658,7 @@ class TestLqLlmYearsMerge(unittest.TestCase):
                 writer = csv.DictWriter(fh, fieldnames=fields)
                 writer.writeheader()
                 writer.writerows(old_rows)
-            decisions_path = classified_lq / "llm_classifications.json"
+            decisions_path = metadata_lq / "llm_classifications.json"
             decisions_path.write_text(
                 json.dumps(
                     {
@@ -676,6 +681,7 @@ class TestLqLlmYearsMerge(unittest.TestCase):
                 mock.patch.object(lq, "OUTPUT_LQ", output_lq.parent),
                 mock.patch.object(lq, "CLASSIFIED_LQ", classified_lq),
                 mock.patch.object(lq, "OCR_CACHE", classified_lq / "ocr_cache"),
+                mock.patch.object(lq, "METADATA_LQ", metadata_lq),
                 mock.patch.object(
                     lq,
                     "collect_jobs",
@@ -818,7 +824,7 @@ class TestLqKeywordsYearsMerge(unittest.TestCase):
             self.assertEqual(by_year["2013"]["Reason"], "old-2013")
             self.assertEqual(by_year["2024"]["Reason"], "new-2024")
             decisions = json.loads(
-                (classified_lq / "llm_classifications.json").read_text()
+                (metadata_lq / "llm_classifications.json").read_text()
             )
             self.assertNotIn("2024-q2", decisions)
 

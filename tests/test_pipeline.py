@@ -142,12 +142,51 @@ class TestPipelineHelpers(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
+            perf = tmp_path / "tests" / "sections" / "lq" / "candidate_performance.json"
+            perf.parent.mkdir(parents=True)
+            perf.write_text("{}", encoding="utf-8")
             with mock.patch.object(pipe, "ROOT", tmp_path):
                 with mock.patch.object(pipe, "has_llm_key", return_value=True):
                     with mock.patch.object(pipe, "run_script", side_effect=fake_run):
                         with mock.patch.dict("os.environ", {}, clear=False):
                             pipe.stage_classify_lq(None, force=True)
         self.assertEqual(calls, ["classify_lq_llm.py"])
+
+    def test_lq_consumers_build_missing_performance_json_first(self) -> None:
+        pipe = self.pipe
+        stages = {
+            "classify-lq": lambda: pipe.stage_classify_lq(None, force=True),
+            "section-pdfs": pipe.stage_section_pdfs,
+            "lavish": pipe.stage_lavish,
+        }
+        for name, run_stage in stages.items():
+            with self.subTest(stage=name):
+                calls: list[str] = []
+
+                def fake_run(script_name: str, *args: str) -> None:
+                    calls.append(script_name)
+
+                with tempfile.TemporaryDirectory() as tmp:
+                    tmp_path = Path(tmp)
+                    keys = tmp_path / "tests" / "sections" / "mc" / "answer_keys.json"
+                    keys.parent.mkdir(parents=True)
+                    keys.write_text("{}", encoding="utf-8")
+                    with mock.patch.object(pipe, "ROOT", tmp_path):
+                        with mock.patch.object(pipe, "has_llm_key", return_value=False):
+                            with mock.patch.object(pipe, "run_script", side_effect=fake_run):
+                                run_stage()
+                self.assertIn("extract_lq_performance.py", calls)
+                perf_index = calls.index("extract_lq_performance.py")
+                lq_consumers = {
+                    "classify_lq_keywords.py",
+                    "combine_lq_section_pdfs.py",
+                    "quality_audit.py",
+                }
+                consumer_indexes = [
+                    i for i, script in enumerate(calls) if script in lq_consumers
+                ]
+                self.assertTrue(consumer_indexes, calls)
+                self.assertLess(perf_index, min(consumer_indexes))
 
     def test_lq_crops_ready_rejects_y_crop_and_missing_pages(self) -> None:
         pipe = self.pipe

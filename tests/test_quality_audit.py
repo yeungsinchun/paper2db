@@ -154,8 +154,14 @@ class TestPipelineLavishWiring(unittest.TestCase):
         def fake_run(script_name: str, *args: str) -> None:
             calls.append(script_name)
 
-        with mock.patch.object(pipe, "run_script", side_effect=fake_run):
-            pipe.stage_lavish()
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            perf = tmp_path / "tests" / "sections" / "lq" / "candidate_performance.json"
+            perf.parent.mkdir(parents=True)
+            perf.write_text("{}", encoding="utf-8")
+            with mock.patch.object(pipe, "ROOT", tmp_path):
+                with mock.patch.object(pipe, "run_script", side_effect=fake_run):
+                    pipe.stage_lavish()
         self.assertEqual(
             calls,
             [
