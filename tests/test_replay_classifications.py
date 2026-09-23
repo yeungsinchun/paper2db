@@ -113,6 +113,25 @@ class TestMcReplay(unittest.TestCase):
             records = records[:1]
             self.assertEqual(len(mc.load_replay_decisions(path, records)), 1)
 
+    def test_invalid_replay_sections_exit_without_normalization(self) -> None:
+        import classify_mc_llm as mc
+
+        records = [{"Year": 2014, "Question": 1}]
+        invalid_sections = ([], [0], [28], [5, 6, 7], [5, 5], ["5"], None)
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "llm_classifications.json"
+            for sections in invalid_sections:
+                with self.subTest(sections=sections):
+                    path.write_text(
+                        json.dumps(
+                            [{"Year": 2014, "Question": 1, "sections": sections}]
+                        ),
+                        encoding="utf-8",
+                    )
+                    with self.assertRaises(SystemExit) as raised:
+                        mc.load_replay_decisions(path, records)
+                    self.assertIn("bad sections", str(raised.exception))
+
     def test_main_replay_never_calls_llm_or_rewrites_json(self) -> None:
         import classify_mc_llm as mc
 

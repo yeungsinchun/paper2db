@@ -542,13 +542,34 @@ def load_replay_decisions(path: Path, records: list[dict]) -> list[dict]:
     if not path.is_file():
         raise SystemExit(f"--replay: missing tracked decisions {path}")
     decisions = json.loads(path.read_text(encoding="utf-8"))
-    have = {row_key(d) for d in decisions}
+    if not isinstance(decisions, list):
+        raise SystemExit(f"--replay: expected a list of decisions in {path}")
+    try:
+        by_key = {row_key(d): d for d in decisions}
+    except (KeyError, TypeError, ValueError):
+        raise SystemExit(f"--replay: malformed decision in {path}") from None
+    if len(by_key) != len(decisions):
+        raise SystemExit(f"--replay: duplicate question decision in {path}")
+    have = set(by_key)
     missing = [f"{y} Q{q}" for y, q in (row_key(r) for r in records) if (y, q) not in have]
     if missing:
         raise SystemExit(
             f"--replay: {path} has no decision for {len(missing)} question(s): "
             + ", ".join(missing[:20])
         )
+    for record in records:
+        decision = by_key[row_key(record)]
+        sections = decision.get("sections")
+        if (
+            not isinstance(sections, list)
+            or not 1 <= len(sections) <= 2
+            or any(type(section) is not int or section not in SECTION_BY_NUM for section in sections)
+            or len(set(sections)) != len(sections)
+        ):
+            raise SystemExit(
+                f"--replay: bad sections {sections!r} for "
+                f"{record['Year']} Q{record['Question']}"
+            )
     print(f"Replaying {len(decisions)} tracked decisions from {path}")
     return decisions
 

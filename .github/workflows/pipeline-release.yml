@@ -36,6 +36,7 @@ jobs:
           # Build the branch commit itself (not the PR merge commit) so the
           # release tag points at a commit that exists on the branch.
           ref: ${{ env.SHA }}
+          persist-credentials: false
 
       - uses: actions/setup-python@v5
         with:
@@ -62,6 +63,7 @@ jobs:
 
       - name: Unit tests, including generated-bank checks
         run: |
+          set -o pipefail
           python -m unittest discover -s tests -v 2>&1 | tee unittest.log
           if grep -E "skipped .*(not built|run \./pipeline)" unittest.log; then
             echo "::error::generated-bank checks were skipped after a full build"
