@@ -75,7 +75,7 @@ class TestPipelineHelpers(unittest.TestCase):
         )
         self.assertEqual(
             self.pipe.select_stages(args),
-            ["keys", "classify-mc", "classify-lq"],
+            ["keys", "classify-mc", "lq-performance", "classify-lq"],
         )
 
     def test_keys_stage_uses_paper_ans_only(self) -> None:
@@ -90,7 +90,7 @@ class TestPipelineHelpers(unittest.TestCase):
                 encoding="utf-8",
             )
             (tmp_path / "paper" / "ans").mkdir(parents=True)
-            dest = tmp_path / "classified" / "mc" / "answer_keys.json"
+            dest = tmp_path / "tests" / "sections" / "mc" / "answer_keys.json"
             calls: list[tuple[str, tuple[str, ...]]] = []
 
             def fake_run(script_name: str, *args: str) -> None:
@@ -216,7 +216,7 @@ class TestAnswerKeyDefaults(unittest.TestCase):
         with mock.patch.object(sys, "argv", ["extract_answer_keys.py"]):
             args = eak.parse_args()
         self.assertEqual(args.answers, ROOT / "paper" / "ans")
-        self.assertEqual(args.output, ROOT / "classified" / "mc" / "answer_keys.json")
+        self.assertEqual(args.output, ROOT / "tests" / "sections" / "mc" / "answer_keys.json")
 
     def test_combine_section_pdfs_uses_classified_keys(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
@@ -226,7 +226,7 @@ class TestAnswerKeyDefaults(unittest.TestCase):
             args = csp.parse_args()
         self.assertEqual(
             args.keys.resolve(),
-            (ROOT / "classified" / "mc" / "answer_keys.json").resolve(),
+            (ROOT / "tests" / "sections" / "mc" / "answer_keys.json").resolve(),
         )
 
 

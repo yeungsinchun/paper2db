@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / "scripts"
 OUT = ROOT / ".lavish" / "pipeline-review"
 IMG = OUT / "img"
-AUDIT_JSON = ROOT / "classified" / "quality_audit.json"
+AUDIT_JSON = ROOT / "tests" / "sections" / "quality_audit.json"
 
 # Tall multi-page stacks exceed browser decode limits; raise for preview work.
 Image.MAX_IMAGE_PIXELS = 250_000_000
@@ -139,19 +139,22 @@ def collect_assets() -> dict:
 
     mc_samples = [
         ROOT
-        / "classified"
+        / "tests"
+        / "sections"
         / "mc"
         / "01_Heat_and_Gases"
         / "02_Heat_Capacity"
         / "2012_q1.png",
         ROOT
-        / "classified"
+        / "tests"
+        / "sections"
         / "mc"
         / "02_Force_and_Motion"
         / "05_Motion"
         / "2024_q4.png",
         ROOT
-        / "classified"
+        / "tests"
+        / "sections"
         / "mc"
         / "03A_Wave_Motion"
         / "13_Wave_Motion"
@@ -176,7 +179,8 @@ def collect_assets() -> dict:
     lq_samples = [
         (
             ROOT
-            / "classified"
+            / "tests"
+            / "sections"
             / "lq"
             / "01_Heat_and_Gases"
             / "03_Change_of_State"
@@ -185,7 +189,8 @@ def collect_assets() -> dict:
         ),
         (
             ROOT
-            / "classified"
+            / "tests"
+            / "sections"
             / "lq"
             / "02_Force_and_Motion"
             / "09_Momentum"
@@ -234,7 +239,7 @@ def write_html(audit: dict, assets: dict) -> None:
         ("3. LQ pages", "lq-pages", "Export pages + starts.json under tests/reconstructed/lq/<year>/"),
         ("4. LQ pages→PNG", "lq-crops", "Whole exam page stack per question + combined.pdf"),
         ("5. LQ answers", "lq-answers", "Marking-scheme answer crops under ans/"),
-        ("6. Keys", "keys", "MC answer keys → classified/mc/answer_keys.json"),
+        ("6. Keys", "keys", "MC answer keys → tests/sections/mc/answer_keys.json"),
         ("7. Classify MC", "classify-mc", "27 syllabus sections (LLM if keyed, else keywords)"),
         ("8. Classify LQ", "classify-lq", "Same sections for long questions (LLM if keyed, else keywords)"),
         ("9. Section PDFs", "section-pdfs", "Per-section combined.pdf (+ LQ answers/performance)"),
@@ -460,7 +465,7 @@ def write_html(audit: dict, assets: dict) -> None:
           <text x="629" y="80" text-anchor="middle" fill="#a89bb8" font-size="11">27 syllabus sections</text>
           <line x1="704" y1="67" x2="744" y2="67" stroke="#8ec5c0" stroke-width="2" marker-end="url(#arrow)" />
           <rect x="746" y="40" width="220" height="54" rx="12" fill="#1d1a24" stroke="#8ec5c0" />
-          <text x="856" y="72" text-anchor="middle" fill="#f3eef8" font-size="13">classified/* + .lavish/</text>
+          <text x="856" y="72" text-anchor="middle" fill="#f3eef8" font-size="13">tests/sections/* + metadata/* + .lavish/</text>
           <text x="490" y="150" text-anchor="middle" fill="#a89bb8" font-size="12">Human gates: review anchor.pdf, then uncertain.csv (usually empty)</text>
         </svg>
       </div>

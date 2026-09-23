@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 """Keyword-classify LQ crops into the 27 MC sections (no LLM required).
 
-OCRs each whole page stack (cache classified/lq/ocr_cache/<year>/qN.<w>x<h>.txt,
+OCRs each whole page stack (cache tests/sections/lq/ocr_cache/<year>/qN.<w>x<h>.txt,
 keyed by PNG size so a re-crop is re-read). Book 5 questions list every
 radioactivity section they test (apply_book5_listings / classify_book5);
 other books keep the single-primary scoring. Writes:
-  classified/lq/classification.csv
-  classified/lq/llm_classifications.json
-  classified/lq/<book>/<section>/ year-qN.png (+ optional answer copy)
-  classified/lq_classification.csv
-  classified/lq_classification.json
+  tests/sections/lq/classification.csv
+  tests/sections/lq/candidate_performance.json
+  tests/sections/lq/<book>/<section>/ year-qN.png (+ optional answer copy)
+  tests/sections/lq_classification.csv
+  tests/sections/lq_classification.json
+  metadata/lq/llm_classifications.json  (tracked classification decisions)
 
-Top-level classified/lq_classification.* is the split naming contract for LQ;
-nested classified/lq/classification.csv feeds build_lq_lavish_review.py.
+Top-level tests/sections/lq_classification.* is the split naming contract for LQ;
+nested tests/sections/lq/classification.csv feeds build_lq_lavish_review.py.
 --years merges into those existing nested/top-level rows and only replaces
 section PNG copies for the selected years.
 """
@@ -36,8 +37,12 @@ from classify_mc_llm import SECTION_BY_NUM, SECTIONS, BOOK_NAMES, year_key
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_LQ = ROOT / "tests" / "reconstructed" / "lq"
-CLASSIFIED_LQ = ROOT / "classified" / "lq"
+# Generated section bank (gitignored); CLASSIFIED_LQ kept as the attribute name
+# tests patch (mock.patch.object(module, "CLASSIFIED_LQ", ...)).
+CLASSIFIED_LQ = ROOT / "tests" / "sections" / "lq"
 OCR_CACHE = CLASSIFIED_LQ / "ocr_cache"
+# Tracked LLM/keyword decisions (survive a rebuild without paid LLM calls).
+METADATA_LQ = ROOT / "metadata" / "lq"
 OCR_MAX_WIDTH = 2500
 
 # Book 5 gate: any of these marks a radioactivity / nuclear question. Generic
@@ -604,6 +609,7 @@ def main() -> None:
     args = parse_args()
     CLASSIFIED_LQ.mkdir(parents=True, exist_ok=True)
     OCR_CACHE.mkdir(parents=True, exist_ok=True)
+    METADATA_LQ.mkdir(parents=True, exist_ok=True)
     touched_years = set(args.years) if args.years else None
     clear_section_pngs(touched_years)
 
@@ -646,7 +652,7 @@ def main() -> None:
                 shutil.copy2(ans_path, CLASSIFIED_LQ / book / folder / f"{year}-q{qn}-ans.png")
 
     csv_path = CLASSIFIED_LQ / "classification.csv"
-    decisions_path = CLASSIFIED_LQ / "llm_classifications.json"
+    decisions_path = METADATA_LQ / "llm_classifications.json"
     if touched_years is not None and csv_path.is_file():
         with csv_path.open(encoding="utf-8") as fh:
             existing_rows = list(csv.DictReader(fh))
@@ -678,9 +684,9 @@ def main() -> None:
     if perf_path.is_file():
         perf = json.loads(perf_path.read_text(encoding="utf-8"))
     detailed = build_detailed_rows(rows, perf)
-    lq_json = ROOT / "classified" / "lq_classification.json"
+    lq_json = ROOT / "tests" / "sections" / "lq_classification.json"
     lq_json.write_text(json.dumps(detailed, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    lq_csv = ROOT / "classified" / "lq_classification.csv"
+    lq_csv = ROOT / "tests" / "sections" / "lq_classification.csv"
     with lq_csv.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.DictWriter(fh, fieldnames=TOP_CSV_FIELDS)
         writer.writeheader()

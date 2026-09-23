@@ -2,7 +2,7 @@
 """Extract Paper 1B (LQ) candidate-performance notes into JSON.
 
 Reads OCR markdown under paper/performance/<year> performance.md and writes
-classified/lq/candidate_performance.json keyed by year -> question -> text.
+tests/sections/lq/candidate_performance.json keyed by year -> question -> text.
 --years merges selected years into any existing JSON; other years are kept.
 """
 from __future__ import annotations
@@ -14,7 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PERF_DIR = ROOT / "paper" / "performance"
-OUT = ROOT / "classified" / "lq" / "candidate_performance.json"
+OUT = ROOT / "tests" / "sections" / "lq" / "candidate_performance.json"
 
 SECTION_B_RE = re.compile(
     r"###\s*Section B\b.*?(?=^##\s+Paper 2\b|\Z)",

@@ -138,8 +138,8 @@ def ensure_year_pages(year_dir: Path) -> list[Image.Image]:
 
 
 def sync_classified_question_pngs(years: list[str] | None = None) -> int:
-    """Copy whole-page qN.png into classified section folders. Leave *-ans.png."""
-    csv_path = ROOT / "classified" / "lq" / "classification.csv"
+    """Copy whole-page qN.png into generated section folders. Leave *-ans.png."""
+    csv_path = ROOT / "tests" / "sections" / "lq" / "classification.csv"
     if not csv_path.is_file():
         return 0
     copied = 0
@@ -157,7 +157,8 @@ def sync_classified_question_pngs(years: list[str] | None = None) -> int:
                 book, folder, _name = SECTION_BY_NUM[section]
                 dest = (
                     ROOT
-                    / "classified"
+                    / "tests"
+                    / "sections"
                     / "lq"
                     / book
                     / folder

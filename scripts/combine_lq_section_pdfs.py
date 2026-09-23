@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build per-section LQ review PDFs under classified/lq/.
+"""Build per-section LQ review PDFs under tests/sections/lq/.
 
 For each syllabus section listed in any row's AllSections (primary or not):
   - combined.pdf   - whole source Paper 1B pages (year then Q; A4); same name
@@ -29,7 +29,7 @@ from png_pdf import place_pngs_on_a4, section_heading_title
 from lq_pdf_review import write_section_questions_pdf
 
 ROOT = Path(__file__).resolve().parents[1]
-CLASSIFIED_LQ = ROOT / "classified" / "lq"
+CLASSIFIED_LQ = ROOT / "tests" / "sections" / "lq"
 CSV_PATH = CLASSIFIED_LQ / "classification.csv"
 PERF_PATH = CLASSIFIED_LQ / "candidate_performance.json"
 
@@ -73,7 +73,7 @@ def rows_by_section(rows: list[dict]) -> dict[int, list[dict]]:
 
 
 SECTION_PDFS = ("combined.pdf", "answers.pdf", "performance.pdf")
-# Name the question PDF carried before it was aligned with classified/mc/.
+# Name the question PDF carried before it was aligned with tests/sections/mc/.
 LEGACY_SECTION_PDFS = ("questions.pdf",)
 
 

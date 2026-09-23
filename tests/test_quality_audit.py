@@ -47,14 +47,14 @@ class TestQualityAudit(unittest.TestCase):
             self.assertIn(f"Wrote {rel_out}", result.stdout)
 
     def test_report_counts_overrides_toward_five_percent(self) -> None:
-        if not (ROOT / "classified" / "mc" / "classification.csv").is_file():
-            self.skipTest("classified/ not built (run ./pipeline)")
+        if not (ROOT / "tests" / "sections" / "mc" / "classification.csv").is_file():
+            self.skipTest("tests/sections/ not built (run ./pipeline)")
         result = subprocess.run(
             [
                 sys.executable,
                 str(ROOT / "scripts" / "quality_audit.py"),
                 "--output",
-                str(ROOT / "classified" / "quality_audit.json"),
+                str(ROOT / "tests" / "sections" / "quality_audit.json"),
             ],
             cwd=ROOT,
             check=False,
@@ -63,7 +63,7 @@ class TestQualityAudit(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         report = json.loads(
-            (ROOT / "classified" / "quality_audit.json").read_text(encoding="utf-8")
+            (ROOT / "tests" / "sections" / "quality_audit.json").read_text(encoding="utf-8")
         )
         summary = report["summary"]
         overrides = summary["overrides_historical"]["total_questions"]

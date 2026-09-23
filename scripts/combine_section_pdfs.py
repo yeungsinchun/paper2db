@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write per-section question + answer PDFs under classified/mc/.
+"""Write per-section question + answer PDFs under tests/sections/mc/.
 
 For each section folder:
   - combined.pdf: question PNGs sorted by year, then question number
@@ -24,8 +24,8 @@ from png_pdf import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-CLASSIFIED = ROOT / "classified" / "mc"
-DEFAULT_KEYS = ROOT / "classified" / "mc" / "answer_keys.json"
+CLASSIFIED = ROOT / "tests" / "sections" / "mc"
+DEFAULT_KEYS = ROOT / "tests" / "sections" / "mc" / "answer_keys.json"
 
 PNG_RE = re.compile(r"^(?P<year>\d{4}|pp|sap)_q(?P<q>\d+)\.png$", re.I)
 YEAR_RANK = {

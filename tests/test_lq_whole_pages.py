@@ -606,14 +606,15 @@ class TestLqWholePages(unittest.TestCase):
             Image.new("RGB", (50, 80), (255, 255, 255)).save(src_dir / "q1.png")
             classified = (
                 root
-                / "classified"
+                / "tests"
+                / "sections"
                 / "lq"
                 / "01_Heat_and_Gases"
                 / "03_Change_of_State"
             )
             classified.mkdir(parents=True)
             Image.new("RGB", (20, 10), (0, 0, 0)).save(classified / "2099-q1-ans.png")
-            csv_path = root / "classified" / "lq" / "classification.csv"
+            csv_path = root / "tests" / "sections" / "lq" / "classification.csv"
             csv_path.write_text(
                 "Year,Question,Primary,AllSections,Reason,PNG,AnswerPNG\n"
                 "2099,1,3,3,test,tests/reconstructed/lq/2099/q1.png,tests/reconstructed/lq/2099/ans/q1.png\n",
@@ -730,7 +731,8 @@ class TestGeneratedLqWholePages(unittest.TestCase):
         cases = (
             (
                 ROOT
-                / "classified"
+                / "tests"
+                / "sections"
                 / "lq"
                 / "03A_Wave_Motion"
                 / "15_Interference_and_Stationary_Wave"
@@ -739,7 +741,8 @@ class TestGeneratedLqWholePages(unittest.TestCase):
             ),
             (
                 ROOT
-                / "classified"
+                / "tests"
+                / "sections"
                 / "lq"
                 / "04_Electricity_and_Magnetism"
                 / "21_Circuit_and_Power"
@@ -748,7 +751,8 @@ class TestGeneratedLqWholePages(unittest.TestCase):
             ),
             (
                 ROOT
-                / "classified"
+                / "tests"
+                / "sections"
                 / "lq"
                 / "05_Radioactivity_and_Nuclear_Energy"
                 / "27_Nuclear_Energy"
@@ -757,7 +761,7 @@ class TestGeneratedLqWholePages(unittest.TestCase):
             ),
         )
         if not all(path.is_file() for path, _ in cases):
-            self.skipTest("classified/ not built (run ./pipeline)")
+            self.skipTest("tests/sections/ not built (run ./pipeline)")
         for path, label in cases:
             document = fitz.open(path)
             try:

@@ -15,7 +15,7 @@ from classify_mc_llm import BOOK_NAMES, SECTIONS
 from png_pdf import combine_pngs_to_pdf
 
 ROOT = Path(__file__).resolve().parents[1]
-CLASSIFIED = ROOT / "classified" / "lq"
+CLASSIFIED = ROOT / "tests" / "sections" / "lq"
 OUTPUT_LQ = ROOT / "tests" / "reconstructed" / "lq"
 OUT = ROOT / ".lavish" / "lq-classified-review"
 IMG = OUT / "img"
