@@ -430,6 +430,10 @@ def stage_classify_mc(years: list[str] | None, *, force: bool, yes: bool) -> Non
     )
 
 
+def lq_performance_path() -> Path:
+    return ROOT / "tests" / "sections" / "lq" / "candidate_performance.json"
+
+
 def stage_lq_performance(years: list[str] | None) -> None:
     year_args: list[str] = []
     if years:
@@ -437,11 +441,17 @@ def stage_lq_performance(years: list[str] | None) -> None:
     run_script("extract_lq_performance.py", *year_args)
 
 
+def ensure_lq_performance() -> None:
+    if not lq_performance_path().is_file():
+        stage_lq_performance(None)
+
+
 def stage_classify_lq(years: list[str] | None, *, force: bool) -> None:
     classified = ROOT / "tests" / "sections" / "lq" / "classification.csv"
     if classified.is_file() and not force and not years:
         print("skip classify-lq: classification.csv exists (use --force or --years)")
         return
+    ensure_lq_performance()
     year_args: list[str] = []
     if years:
         year_args = ["--years", *years]
@@ -464,10 +474,12 @@ def stage_section_pdfs() -> None:
             "(./pipeline --only keys)."
         )
     run_script("combine_section_pdfs.py", "--keys", str(keys))
+    ensure_lq_performance()
     run_script("combine_lq_section_pdfs.py")
 
 
 def stage_lavish() -> None:
+    ensure_lq_performance()
     run_script("quality_audit.py")
     run_script("build_mc_lavish_review.py")
     run_script("build_lq_lavish_review.py")

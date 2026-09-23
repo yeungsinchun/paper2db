@@ -241,9 +241,10 @@ def write_html(audit: dict, assets: dict) -> None:
         ("5. LQ answers", "lq-answers", "Marking-scheme answer crops under ans/"),
         ("6. Keys", "keys", "MC answer keys → tests/sections/mc/answer_keys.json"),
         ("7. Classify MC", "classify-mc", "27 syllabus sections (LLM if keyed, else keywords)"),
-        ("8. Classify LQ", "classify-lq", "Same sections for long questions (LLM if keyed, else keywords)"),
-        ("9. Section PDFs", "section-pdfs", "Per-section combined.pdf (+ LQ answers/performance)"),
-        ("10. Lavish", "lavish", "HTML reviews under .lavish/"),
+        ("8. LQ performance", "lq-performance", "Examiner notes → tests/sections/lq/candidate_performance.json"),
+        ("9. Classify LQ", "classify-lq", "Same sections for long questions (LLM if keyed, else keywords)"),
+        ("10. Section PDFs", "section-pdfs", "Per-section combined.pdf (+ LQ answers/performance)"),
+        ("11. Lavish", "lavish", "HTML reviews under .lavish/"),
     ]
 
     def gallery(items: list[dict], *, variant: str = "") -> str:
