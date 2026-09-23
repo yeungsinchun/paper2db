@@ -244,7 +244,7 @@ def segment_mc(
         return split_mc(source, intermediate_dir, output_dir, questions=questions)
 
     # step == "all"
-    inter = intermediate_dir or output_dir / "intermediate"
+    inter = intermediate_dir or ROOT / "intermediate" / "mc" / output_dir.name
     anchor_mc(
         source,
         inter,
@@ -272,7 +272,7 @@ def parse_args() -> argparse.Namespace:
         "--intermediate",
         type=Path,
         default=None,
-        help="MC: folder for anchor.pdf (step 1 output / step 2 input)",
+        help="MC: folder for anchor.pdf (step 1 output / step 2 input; default for --step all: intermediate/mc/<dest name>)",
     )
     parser.add_argument(
         "--type",

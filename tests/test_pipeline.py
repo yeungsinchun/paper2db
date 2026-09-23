@@ -230,5 +230,26 @@ class TestAnswerKeyDefaults(unittest.TestCase):
         )
 
 
+class TestSegmentMcDefaults(unittest.TestCase):
+    def test_step_all_defaults_intermediate_to_top_level(self) -> None:
+        sys.path.insert(0, str(ROOT))
+        import segment
+
+        calls: list[tuple[str, Path]] = []
+        with mock.patch.object(
+            segment, "anchor_mc", side_effect=lambda _src, inter, **_kw: calls.append(("anchors", inter))
+        ), mock.patch.object(
+            segment, "split_mc", side_effect=lambda _src, inter, _out, **_kw: calls.append(("split", inter)) or 36
+        ):
+            segment.segment_mc(
+                Path("paper.pdf"),
+                ROOT / "tests" / "reconstructed" / "mc" / "2012",
+                intermediate_dir=None,
+                step="all",
+            )
+        expected = ROOT / "intermediate" / "mc" / "2012"
+        self.assertEqual(calls, [("anchors", expected), ("split", expected)])
+
+
 if __name__ == "__main__":
     unittest.main()

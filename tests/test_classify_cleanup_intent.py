@@ -39,6 +39,8 @@ class TestGitignoreGenerated(unittest.TestCase):
             "output/2024/q1.png",
             "output/2024/combined.pdf",
             "output/2024-intermediate/anchor.pdf",
+            "reconstructed/mc/2024/q1.png",
+            "reconstructed/lq/2024/starts.json",
             "tests/reconstructed/mc/combined.pdf",
             "tests/reconstructed/mc/2024/q1.png",
             "tests/reconstructed/lq/2024/q1.png",
