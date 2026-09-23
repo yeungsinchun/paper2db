@@ -611,6 +611,100 @@ class TestLqLlmYearsMerge(unittest.TestCase):
             self.assertNotIn("2024-q2", decisions)
             self.assertEqual(kept_png.read_bytes(), b"KEEP-2013")
 
+    def test_limited_year_run_preserves_unprocessed_questions(self) -> None:
+        import classify_lq_llm as lq
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            output_lq = root / "reconstructed" / "lq" / "2024"
+            classified_lq = root / "classified" / "lq"
+            output_lq.mkdir(parents=True)
+            classified_lq.mkdir(parents=True)
+            sources = []
+            for qn in (1, 2):
+                source = output_lq / f"q{qn}.png"
+                source.write_bytes(f"NEW-{qn}".encode())
+                sources.append(source)
+
+            book, folder, _ = lq.SECTION_BY_NUM[8]
+            section_dir = classified_lq / book / folder
+            section_dir.mkdir(parents=True)
+            kept_png = section_dir / "2024-q2.png"
+            kept_png.write_bytes(b"KEEP-Q2")
+            fields = lq.keyword_classifier.NESTED_CSV_FIELDS
+            old_rows = [
+                {
+                    "Year": "2024",
+                    "Question": str(qn),
+                    "Primary": "8",
+                    "AllSections": "8",
+                    "Reason": f"old-{qn}",
+                    "PNG": f"reconstructed/lq/2024/q{qn}.png",
+                    "AnswerPNG": f"reconstructed/lq/2024/ans/q{qn}.png",
+                }
+                for qn in (1, 2)
+            ]
+            csv_path = classified_lq / "classification.csv"
+            with csv_path.open("w", newline="", encoding="utf-8") as fh:
+                writer = csv.DictWriter(fh, fieldnames=fields)
+                writer.writeheader()
+                writer.writerows(old_rows)
+            decisions_path = classified_lq / "llm_classifications.json"
+            decisions_path.write_text(
+                json.dumps(
+                    {
+                        f"2024-q{qn}": {"sections": [8], "reason": f"old-{qn}"}
+                        for qn in (1, 2)
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            record = {
+                "Year": "2024",
+                "Question": 1,
+                "Statement": "kinetic energy",
+                "PNG": "reconstructed/lq/2024/q1.png",
+                "AnswerPNG": "reconstructed/lq/2024/ans/q1.png",
+            }
+            with (
+                mock.patch.object(lq, "ROOT", root),
+                mock.patch.object(lq, "OUTPUT_LQ", output_lq.parent),
+                mock.patch.object(lq, "CLASSIFIED_LQ", classified_lq),
+                mock.patch.object(lq, "OCR_CACHE", classified_lq / "ocr_cache"),
+                mock.patch.object(
+                    lq,
+                    "collect_jobs",
+                    return_value=[("2024", sources[0], 1), ("2024", sources[1], 2)],
+                ),
+                mock.patch.object(lq, "_ocr_one", return_value=record),
+                mock.patch.object(
+                    lq,
+                    "classify_one",
+                    return_value={"sections": [8], "reason": "new-1"},
+                ),
+                mock.patch.object(lq, "llm_config", return_value=("k", "http://x", "m")),
+                mock.patch.object(lq.time, "sleep"),
+                mock.patch.object(
+                    lq,
+                    "parse_args",
+                    return_value=argparse.Namespace(
+                        years=["2024"], workers=1, from_json=None, limit=1, sleep=0
+                    ),
+                ),
+            ):
+                lq.main()
+
+            with csv_path.open(encoding="utf-8") as fh:
+                rows = {int(row["Question"]): row for row in csv.DictReader(fh)}
+            self.assertEqual(rows[1]["Reason"], "new-1")
+            self.assertEqual(rows[2]["Reason"], "old-2")
+            self.assertEqual(
+                json.loads(decisions_path.read_text())["2024-q2"]["reason"],
+                "old-2",
+            )
+            self.assertEqual(kept_png.read_bytes(), b"KEEP-Q2")
+
 
 class TestLqKeywordsYearsMerge(unittest.TestCase):
     """--years must merge into existing split LQ outputs."""

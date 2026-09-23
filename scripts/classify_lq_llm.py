@@ -134,12 +134,23 @@ def classify_one(record: dict) -> dict:
     }
 
 
-def write_outputs(rows: list[dict], touched_years: set[str] | None = None) -> None:
+def write_outputs(
+    rows: list[dict],
+    touched_years: set[str] | None = None,
+    touched_keys: set[tuple[str, int]] | None = None,
+) -> None:
     # Clear previous section copies (keep ocr_cache / json).
     for _n, book, folder, _name in SECTIONS:
         folder_path = CLASSIFIED_LQ / book / folder
         for old in folder_path.glob("*.png"):
-            if touched_years is None or old.name.split("-q", 1)[0] in touched_years:
+            match = re.fullmatch(r"(.+)-q(\d+)(?:-ans)?\.png", old.name)
+            old_key = (match.group(1), int(match.group(2))) if match else None
+            if (
+                touched_keys is not None
+                and old_key in touched_keys
+                or touched_keys is None
+                and (touched_years is None or old.name.split("-q", 1)[0] in touched_years)
+            ):
                 old.unlink()
 
     csv_path = CLASSIFIED_LQ / "classification.csv"
@@ -152,19 +163,23 @@ def write_outputs(rows: list[dict], touched_years: set[str] | None = None) -> No
         }
         for r in new_rows
     }
-    if touched_years is not None and csv_path.is_file():
+    if (touched_years is not None or touched_keys is not None) and csv_path.is_file():
         with csv_path.open(encoding="utf-8") as fh:
             existing_rows = list(csv.DictReader(fh))
         existing_decisions = {}
         if decisions_path.is_file():
             existing_decisions = json.loads(decisions_path.read_text(encoding="utf-8"))
-        rows, decisions = keyword_classifier.replace_touched_years(
-            existing_rows,
-            existing_decisions,
-            new_rows,
-            new_decisions,
-            touched_years,
-        )
+        if touched_keys is not None:
+            rows = keyword_classifier.merge_nested_rows(existing_rows, new_rows)
+            decisions = {**existing_decisions, **new_decisions}
+        else:
+            rows, decisions = keyword_classifier.replace_touched_years(
+                existing_rows,
+                existing_decisions,
+                new_rows,
+                new_decisions,
+                touched_years,
+            )
     else:
         decisions = new_decisions
 
@@ -225,6 +240,12 @@ def main() -> None:
         if i % 20 == 0 or i == len(jobs):
             print(f"  ocr {i}/{len(jobs)}")
     records.sort(key=lambda r: (year_key(str(r["Year"])), int(r["Question"])))
+    touched_years = set(args.years) if args.years and args.limit is None else None
+    touched_keys = (
+        {(str(record["Year"]), int(record["Question"])) for record in records}
+        if args.limit is not None
+        else None
+    )
 
     if args.from_json:
         decisions = json.loads(args.from_json.read_text(encoding="utf-8"))
@@ -244,7 +265,7 @@ def main() -> None:
                     "AnswerPNG": rec["AnswerPNG"],
                 }
             )
-        write_outputs(rows, set(args.years) if args.years else None)
+        write_outputs(rows, touched_years, touched_keys)
         return
 
     key, base, model = llm_config()
@@ -283,7 +304,7 @@ def main() -> None:
             f"Aborting write: {len(failures)} LLM failure(s) "
             f"({len(rows)}/{len(records)} succeeded); nested LQ outputs unchanged"
         )
-    write_outputs(rows, set(args.years) if args.years else None)
+    write_outputs(rows, touched_years, touched_keys)
 
 
 if __name__ == "__main__":
