@@ -538,6 +538,27 @@ def merge_nested_rows(existing: list[dict], updates: list[dict]) -> list[dict]:
     )
 
 
+def replace_touched_years(
+    existing_rows: list[dict],
+    existing_decisions: dict,
+    new_rows: list[dict],
+    new_decisions: dict,
+    touched_years: set[str],
+) -> tuple[list[dict], dict]:
+    retained_rows = [
+        row for row in existing_rows if str(row["Year"]) not in touched_years
+    ]
+    retained_decisions = {
+        key: value
+        for key, value in existing_decisions.items()
+        if key.split("-q", 1)[0] not in touched_years
+    }
+    return (
+        merge_nested_rows(retained_rows, new_rows),
+        {**retained_decisions, **new_decisions},
+    )
+
+
 def clear_section_pngs(years: set[str] | None) -> None:
     for _n, book, folder, _name in SECTIONS:
         folder_path = CLASSIFIED_LQ / book / folder
@@ -629,11 +650,16 @@ def main() -> None:
     if touched_years is not None and csv_path.is_file():
         with csv_path.open(encoding="utf-8") as fh:
             existing_rows = list(csv.DictReader(fh))
-        rows = merge_nested_rows(existing_rows, new_rows)
         existing_decisions = {}
         if decisions_path.is_file():
             existing_decisions = json.loads(decisions_path.read_text(encoding="utf-8"))
-        decisions = {**existing_decisions, **new_decisions}
+        rows, decisions = replace_touched_years(
+            existing_rows,
+            existing_decisions,
+            new_rows,
+            new_decisions,
+            touched_years,
+        )
     else:
         rows = new_rows
         decisions = new_decisions

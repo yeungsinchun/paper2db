@@ -658,6 +658,15 @@ class TestLqKeywordsYearsMerge(unittest.TestCase):
                     "PNG": "reconstructed/lq/2024/q1.png",
                     "AnswerPNG": "reconstructed/lq/2024/ans/q1.png",
                 },
+                {
+                    "Year": "2024",
+                    "Question": "2",
+                    "Primary": "8",
+                    "AllSections": "8",
+                    "Reason": "stale-2024",
+                    "PNG": "reconstructed/lq/2024/q2.png",
+                    "AnswerPNG": "reconstructed/lq/2024/ans/q2.png",
+                },
             ]
             with (classified_lq / "classification.csv").open("w", newline="", encoding="utf-8") as fh:
                 writer = csv.DictWriter(fh, fieldnames=kw.NESTED_CSV_FIELDS)
@@ -668,6 +677,7 @@ class TestLqKeywordsYearsMerge(unittest.TestCase):
                     {
                         "2013-q1": {"sections": [5], "reason": "old-2013"},
                         "2024-q1": {"sections": [8], "reason": "old-2024"},
+                        "2024-q2": {"sections": [8], "reason": "stale-2024"},
                     },
                     indent=2,
                 )
@@ -706,6 +716,10 @@ class TestLqKeywordsYearsMerge(unittest.TestCase):
             by_year = {r["Year"]: r for r in rows}
             self.assertEqual(by_year["2013"]["Reason"], "old-2013")
             self.assertEqual(by_year["2024"]["Reason"], "new-2024")
+            decisions = json.loads(
+                (classified_lq / "llm_classifications.json").read_text()
+            )
+            self.assertNotIn("2024-q2", decisions)
 
             top = json.loads((classified / "lq_classification.json").read_text())
             self.assertEqual(len(top), 2)
