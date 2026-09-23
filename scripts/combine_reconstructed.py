@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Join every year's reconstructed paper into one PDF per paper type.
 
-  reconstructed/mc/combined.pdf  <- reconstructed/mc/<year>/combined.pdf
-  reconstructed/lq/combined.pdf  <- reconstructed/lq/<year>/combined.pdf
+  tests/reconstructed/mc/combined.pdf  <- tests/reconstructed/mc/<year>/combined.pdf
+  tests/reconstructed/lq/combined.pdf  <- tests/reconstructed/lq/<year>/combined.pdf
 
 Years are appended in syllabus order (2012.. then pp, sap); the per-year PDFs
 already carry year and question labels on portrait A4, so pages are copied
@@ -18,7 +18,7 @@ import pymupdf as fitz
 from classify_mc_llm import year_key
 
 ROOT = Path(__file__).resolve().parents[1]
-RECONSTRUCTED = ROOT / "reconstructed"
+RECONSTRUCTED = ROOT / "tests" / "reconstructed"
 KINDS = ("mc", "lq")
 
 
@@ -29,14 +29,10 @@ def parse_args() -> argparse.Namespace:
 
 
 def year_dirs(kind_dir: Path) -> list[Path]:
-    """Per-year folders under reconstructed/<kind>/ (skips *-intermediate)."""
+    """Per-year folders under tests/reconstructed/<kind>/."""
     if not kind_dir.is_dir():
         return []
-    found = [
-        path
-        for path in kind_dir.iterdir()
-        if path.is_dir() and not path.name.endswith("-intermediate")
-    ]
+    found = [path for path in kind_dir.iterdir() if path.is_dir()]
     return sorted(found, key=lambda path: year_key(path.name))
 
 

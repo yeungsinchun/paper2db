@@ -119,7 +119,7 @@ class TestPipelineHelpers(unittest.TestCase):
             paper = tmp_path / "paper" / "mc"
             paper.mkdir(parents=True)
             (paper / "2099p1a.pdf").write_bytes(b"%PDF-1.4")
-            year_dir = tmp_path / "reconstructed" / "mc" / "2099"
+            year_dir = tmp_path / "tests" / "reconstructed" / "mc" / "2099"
             year_dir.mkdir(parents=True)
             from PIL import Image
 
@@ -155,7 +155,7 @@ class TestPipelineHelpers(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
-            year_dir = tmp_path / "reconstructed" / "lq" / "2099"
+            year_dir = tmp_path / "tests" / "reconstructed" / "lq" / "2099"
             pages = year_dir / "pages"
             pages.mkdir(parents=True)
             Image.new("RGB", (100, 200), (255, 255, 255)).save(pages / "page000.png")
@@ -186,7 +186,7 @@ class TestPipelineHelpers(unittest.TestCase):
             paper = tmp_path / "paper" / "lq"
             paper.mkdir(parents=True)
             (paper / "2099p1b.pdf").write_bytes(b"%PDF-1.4")
-            year_dir = tmp_path / "reconstructed" / "lq" / "2099"
+            year_dir = tmp_path / "tests" / "reconstructed" / "lq" / "2099"
             year_dir.mkdir(parents=True)
             starts = year_dir / "starts.json"
             original = '{"questions":[],"pages":1}\n'
@@ -228,6 +228,27 @@ class TestAnswerKeyDefaults(unittest.TestCase):
             args.keys.resolve(),
             (ROOT / "classified" / "mc" / "answer_keys.json").resolve(),
         )
+
+
+class TestSegmentMcDefaults(unittest.TestCase):
+    def test_step_all_defaults_intermediate_to_top_level(self) -> None:
+        sys.path.insert(0, str(ROOT))
+        import segment
+
+        calls: list[tuple[str, Path]] = []
+        with mock.patch.object(
+            segment, "anchor_mc", side_effect=lambda _src, inter, **_kw: calls.append(("anchors", inter))
+        ), mock.patch.object(
+            segment, "split_mc", side_effect=lambda _src, inter, _out, **_kw: calls.append(("split", inter)) or 36
+        ):
+            segment.segment_mc(
+                Path("paper.pdf"),
+                ROOT / "tests" / "reconstructed" / "mc" / "2012",
+                intermediate_dir=None,
+                step="all",
+            )
+        expected = ROOT / "intermediate" / "mc" / "2012"
+        self.assertEqual(calls, [("anchors", expected), ("split", expected)])
 
 
 if __name__ == "__main__":

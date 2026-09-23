@@ -33,16 +33,19 @@ class TestGitignoreGenerated(unittest.TestCase):
     def test_generated_outputs_are_ignored(self) -> None:
         for path in (
             "output/lq/2099/pages/page01.png",
-            "reconstructed/lq/2024/q1.png",
-            "reconstructed/lq/2024/ans/q1.png",
+            "tests/reconstructed/lq/2024/q1.png",
+            "tests/reconstructed/lq/2024/ans/q1.png",
             "output/lq/2024/combined.pdf",
             "output/2024/q1.png",
             "output/2024/combined.pdf",
             "output/2024-intermediate/anchor.pdf",
-            "reconstructed/mc/combined.pdf",
             "reconstructed/mc/2024/q1.png",
-            "reconstructed/lq/2024/q1.png",
-            "reconstructed/lq/2024/pages/page01.png",
+            "reconstructed/lq/2024/starts.json",
+            "tests/reconstructed/mc/combined.pdf",
+            "tests/reconstructed/mc/2024/q1.png",
+            "tests/reconstructed/lq/2024/q1.png",
+            "tests/reconstructed/lq/2024/pages/page01.png",
+            "intermediate/mc/2024/anchor.pdf",
             "classified/mc/answer_keys.json",
             "classified/mc/ocr_cache/2024/q1.txt",
             "classified/mc/01_Heat/1_Temperature/combined.pdf",
@@ -56,7 +59,7 @@ class TestGitignoreGenerated(unittest.TestCase):
 
     def test_hand_tuned_inputs_not_ignored(self) -> None:
         for path in (
-            "reconstructed/lq/2024/starts.json",
+            "tests/reconstructed/lq/2024/starts.json",
             "classified/mc/llm_classifications.json",
             "classified/lq/llm_classifications.json",
             "classified/lq/candidate_performance.json",
@@ -478,15 +481,15 @@ class TestLqLlmAbortOnPartialFailure(unittest.TestCase):
                 "Year": "2012",
                 "Question": 1,
                 "Statement": "ok",
-                "PNG": "reconstructed/lq/2012/q1.png",
-                "AnswerPNG": "reconstructed/lq/2012/ans/q1.png",
+                "PNG": "tests/reconstructed/lq/2012/q1.png",
+                "AnswerPNG": "tests/reconstructed/lq/2012/ans/q1.png",
             },
             {
                 "Year": "2012",
                 "Question": 2,
                 "Statement": "bad",
-                "PNG": "reconstructed/lq/2012/q2.png",
-                "AnswerPNG": "reconstructed/lq/2012/ans/q2.png",
+                "PNG": "tests/reconstructed/lq/2012/q2.png",
+                "AnswerPNG": "tests/reconstructed/lq/2012/ans/q2.png",
             },
         ]
 
@@ -714,7 +717,7 @@ class TestLqKeywordsYearsMerge(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            output_lq = root / "reconstructed" / "lq"
+            output_lq = root / "tests" / "reconstructed" / "lq"
             classified_lq = root / "classified" / "lq"
             classified = root / "classified"
             classified.mkdir()
@@ -740,8 +743,8 @@ class TestLqKeywordsYearsMerge(unittest.TestCase):
                     "Primary": "5",
                     "AllSections": "5",
                     "Reason": "old-2013",
-                    "PNG": "reconstructed/lq/2013/q1.png",
-                    "AnswerPNG": "reconstructed/lq/2013/ans/q1.png",
+                    "PNG": "tests/reconstructed/lq/2013/q1.png",
+                    "AnswerPNG": "tests/reconstructed/lq/2013/ans/q1.png",
                 },
                 {
                     "Year": "2024",
@@ -749,8 +752,8 @@ class TestLqKeywordsYearsMerge(unittest.TestCase):
                     "Primary": "8",
                     "AllSections": "8",
                     "Reason": "old-2024",
-                    "PNG": "reconstructed/lq/2024/q1.png",
-                    "AnswerPNG": "reconstructed/lq/2024/ans/q1.png",
+                    "PNG": "tests/reconstructed/lq/2024/q1.png",
+                    "AnswerPNG": "tests/reconstructed/lq/2024/ans/q1.png",
                 },
                 {
                     "Year": "2024",

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Classify LQ (Paper 1B) questions into the same 27 sections as MC.
 
-Reads crops from reconstructed/lq/<year>/qN.png, writes nested LQ outputs only:
+Reads crops from tests/reconstructed/lq/<year>/qN.png, writes nested LQ outputs only:
   classified/lq/llm_classifications.json
   classified/lq/classification.csv
   classified/lq/<book>/<section>/ year-qN.png (+ optional answer copy)
@@ -37,7 +37,7 @@ from classify_mc_llm import (
 LQ_SECTION_LIMIT = 3
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_LQ = ROOT / "reconstructed" / "lq"
+OUTPUT_LQ = ROOT / "tests" / "reconstructed" / "lq"
 CLASSIFIED_LQ = ROOT / "classified" / "lq"
 OCR_CACHE = CLASSIFIED_LQ / "ocr_cache"
 
@@ -105,8 +105,8 @@ def _ocr_one(args: tuple[str, str, int]) -> dict:
         "Year": year,
         "Question": number,
         "Statement": cleaned,
-        "PNG": f"reconstructed/lq/{year}/q{number}.png",
-        "AnswerPNG": f"reconstructed/lq/{year}/ans/q{number}.png",
+        "PNG": f"tests/reconstructed/lq/{year}/q{number}.png",
+        "AnswerPNG": f"tests/reconstructed/lq/{year}/ans/q{number}.png",
     }
 
 

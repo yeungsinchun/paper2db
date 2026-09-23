@@ -23,7 +23,7 @@ from png_pdf import append_pdf_page_a4
 
 ROOT = Path(__file__).resolve().parents[1]
 PAPER_LQ = ROOT / "paper" / "lq"
-OUTPUT_LQ = ROOT / "reconstructed" / "lq"
+OUTPUT_LQ = ROOT / "tests" / "reconstructed" / "lq"
 
 
 def paper_year_label(stem: str) -> str:
@@ -229,7 +229,7 @@ def write_year_review_pdfs(year: str) -> None:
         # One review PDF per year, named like the MC per-year combined.pdf:
         # every question's whole exam page stack in question order, first page
         # labelled "<year> Q<n>". The booklet cover is not a question, so it is
-        # not included; the all-years reconstructed/lq/combined.pdf joins these.
+        # not included; the all-years tests/reconstructed/lq/combined.pdf joins these.
         combined = fitz.open()
         try:
             for item in sorted(questions, key=lambda item: int(item["q"])):

@@ -1,4 +1,4 @@
-"""reconstructed/{mc,lq}/combined.pdf join every year's paper in syllabus order."""
+"""tests/reconstructed/{mc,lq}/combined.pdf join every year's paper in syllabus order."""
 from __future__ import annotations
 
 import importlib.machinery
@@ -39,21 +39,20 @@ def _year_pdf(path: Path, label: str, pages: int) -> None:
 
 
 class TestCombineReconstructed(unittest.TestCase):
-    def test_joins_years_in_order_and_skips_intermediates(self) -> None:
+    def test_joins_years_in_order(self) -> None:
         combine = load_module("combine_reconstructed", SCRIPTS / "combine_reconstructed.py")
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            mc = root / "reconstructed" / "mc"
+            mc = root / "tests" / "reconstructed" / "mc"
             _year_pdf(mc / "pp" / "combined.pdf", "pp", 1)
             _year_pdf(mc / "2013" / "combined.pdf", "2013", 2)
             _year_pdf(mc / "2012" / "combined.pdf", "2012", 3)
-            _year_pdf(mc / "2012-intermediate" / "combined.pdf", "anchors", 9)
             (mc / "2014").mkdir()  # year without a per-year PDF -> skipped
-            lq = root / "reconstructed" / "lq"
+            lq = root / "tests" / "reconstructed" / "lq"
             _year_pdf(lq / "2012" / "combined.pdf", "lq2012", 4)
             with (
                 mock.patch.object(combine, "ROOT", root),
-                mock.patch.object(combine, "RECONSTRUCTED", root / "reconstructed"),
+                mock.patch.object(combine, "RECONSTRUCTED", root / "tests" / "reconstructed"),
                 mock.patch.object(combine, "parse_args", return_value=mock.Mock(kind=["mc", "lq"])),
             ):
                 combine.main()
@@ -64,7 +63,6 @@ class TestCombineReconstructed(unittest.TestCase):
                 self.assertIn("2012 page 0", texts[0])
                 self.assertIn("2013 page 0", texts[3])
                 self.assertIn("pp page 0", texts[5])
-                self.assertNotIn("anchors", "\n".join(texts))
             finally:
                 document.close()
             self.assertEqual(len(fitz.open(lq / "combined.pdf")), 4)

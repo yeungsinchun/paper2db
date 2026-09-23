@@ -92,7 +92,7 @@ def resolve_answer_png(row: dict) -> Path | None:
     candidates = [
         ROOT / (row.get("AnswerPNG") or ""),
         section_dir(int(row["Primary"])) / f"{year}-q{q}-ans.png",
-        ROOT / "reconstructed" / "lq" / year / "ans" / f"q{q}.png",
+        ROOT / "tests" / "reconstructed" / "lq" / year / "ans" / f"q{q}.png",
     ]
     for path in candidates:
         if path.is_file():
