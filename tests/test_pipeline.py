@@ -168,6 +168,11 @@ class TestPipelineHelpers(unittest.TestCase):
 
                 with tempfile.TemporaryDirectory() as tmp:
                     tmp_path = Path(tmp)
+                    performance = tmp_path / "paper" / "performance"
+                    performance.mkdir(parents=True)
+                    (performance / "2024 performance.md").write_text(
+                        "## Paper 1\n### Section B\n", encoding="utf-8"
+                    )
                     keys = tmp_path / "tests" / "sections" / "mc" / "answer_keys.json"
                     keys.parent.mkdir(parents=True)
                     keys.write_text("{}", encoding="utf-8")
@@ -187,6 +192,37 @@ class TestPipelineHelpers(unittest.TestCase):
                 ]
                 self.assertTrue(consumer_indexes, calls)
                 self.assertLess(perf_index, min(consumer_indexes))
+
+    def test_lq_consumers_fill_missing_performance_years(self) -> None:
+        pipe = self.pipe
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            performance = tmp_path / "paper" / "performance"
+            performance.mkdir(parents=True)
+            for year in ("2023", "2024"):
+                (performance / f"{year} performance.md").write_text(
+                    "## Paper 1\n### Section B\n", encoding="utf-8"
+                )
+            perf = tmp_path / "tests" / "sections" / "lq" / "candidate_performance.json"
+            perf.parent.mkdir(parents=True)
+            perf.write_text(json.dumps({"2023": {"1": "note"}}), encoding="utf-8")
+            calls: list[tuple[str, tuple[str, ...]]] = []
+
+            def fake_run(script_name: str, *args: str) -> None:
+                calls.append((script_name, args))
+
+            with mock.patch.object(pipe, "ROOT", tmp_path):
+                with mock.patch.object(pipe, "has_llm_key", return_value=False):
+                    with mock.patch.object(pipe, "run_script", side_effect=fake_run):
+                        pipe.stage_classify_lq(["2024"], force=True)
+
+            self.assertEqual(
+                calls,
+                [
+                    ("extract_lq_performance.py", ("--years", "2024")),
+                    ("classify_lq_keywords.py", ("--years", "2024")),
+                ],
+            )
 
     def test_lq_crops_ready_rejects_y_crop_and_missing_pages(self) -> None:
         pipe = self.pipe

@@ -441,9 +441,33 @@ def stage_lq_performance(years: list[str] | None) -> None:
     run_script("extract_lq_performance.py", *year_args)
 
 
-def ensure_lq_performance() -> None:
-    if not lq_performance_path().is_file():
+def lq_performance_source_years() -> set[str]:
+    years: set[str] = set()
+    for path in (ROOT / "paper" / "performance").glob("* performance.md"):
+        match = re.fullmatch(r"(20\d{2}) performance\.md", path.name)
+        if match:
+            years.add(match.group(1))
+    return years
+
+
+def ensure_lq_performance(years: list[str] | None = None) -> None:
+    available = lq_performance_source_years()
+    required = available if years is None else available.intersection(years)
+    if not required:
+        return
+
+    path = lq_performance_path()
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        data = None
+    if not isinstance(data, dict):
         stage_lq_performance(None)
+        return
+
+    missing = sorted(required.difference(data))
+    if missing:
+        stage_lq_performance(missing)
 
 
 def stage_classify_lq(years: list[str] | None, *, force: bool) -> None:
@@ -451,7 +475,7 @@ def stage_classify_lq(years: list[str] | None, *, force: bool) -> None:
     if classified.is_file() and not force and not years:
         print("skip classify-lq: classification.csv exists (use --force or --years)")
         return
-    ensure_lq_performance()
+    ensure_lq_performance(years)
     year_args: list[str] = []
     if years:
         year_args = ["--years", *years]
