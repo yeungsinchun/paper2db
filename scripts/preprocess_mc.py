@@ -850,6 +850,21 @@ def validate_marker_alignment(path: Path) -> None:
         document.close()
 
 
+def trailing_formula_run(flagged: list[int]) -> set[int]:
+    """Keep only the last contiguous run of formula-sheet hits.
+
+    The data/formulae sheet sits at the back of the paper. An earlier hit is a
+    question page whose instructions merely mention "a list of data, formulae
+    and relationships" (e.g. the SAP paper's first page, holding Q1-Q3).
+    """
+    run: set[int] = set()
+    for index in sorted(flagged, reverse=True):
+        if run and index != min(run) - 1:
+            break
+        run.add(index)
+    return run
+
+
 def main() -> None:
     args = parse_args()
     source = fitz.open(args.source)
@@ -857,11 +872,13 @@ def main() -> None:
     if overrides and set(overrides) == set(range(1, args.questions + 1)):
         content_pages = sorted({page_index for page_index, _x, _y in overrides.values()})
     else:
-        excluded_pages = {
-            index
-            for index in range(args.cover_pages, len(source))
-            if is_formula_sheet(source[index])
-        }
+        excluded_pages = trailing_formula_run(
+            [
+                index
+                for index in range(args.cover_pages, len(source))
+                if is_formula_sheet(source[index])
+            ]
+        )
         content_pages = [
             index for index in range(args.cover_pages, len(source)) if index not in excluded_pages
         ]

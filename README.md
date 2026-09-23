@@ -32,7 +32,7 @@ export LLM_MODEL=meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
 ./pipeline --from classify-mc --force
 ```
 
-When no API key is set, both MC and LQ use the keyword classifiers.
+When no API key is set, both MC and LQ use the keyword classifiers (which rewrite `metadata/*/llm_classifications.json`). To rebuild with the tracked, reviewed decisions instead - no LLM call, no keyword fallback, tracked JSON untouched - pass `--replay-classifications` (or set `PAPER2DB_REPLAY_CLASSIFICATIONS=1`); it fails if a tracked file is missing or lacks a built question.
 
 ## Regenerating `tests/reconstructed/` and `tests/sections/`
 
@@ -91,6 +91,10 @@ Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.g
 ```
 
 The suite runs against fixtures (`tests/fixtures/lq_ocr/`, temp trees) and covers the Book 5 listing rule, the reconstructed layout joiner and the upright section-PDF packing. Tests that inspect generated banks (`tests/sections/`, `tests/reconstructed/`) skip until `./pipeline` has built them. A full rebuild takes tens of minutes (page export and OCR dominate), so when evidence is needed build one track - e.g. `./pipeline --only lq-pages,lq-crops,lq-answers,classify-lq,keys,section-pdfs --yes` for the LQ banks (`section-pdfs` needs `keys`) - or one year with `--years`, rather than everything.
+
+## CI and releases
+
+`.github/workflows/pipeline-release.yml` runs on pushes to `main` and `fm/p2db-fix-paper2db-reconstructed-mc-lq-layout-ff`, on PRs into either, and on manual dispatch. On a clean Ubuntu runner it installs tesseract + `requirements.txt`, runs `./pipeline --yes --replay-classifications` over every year, fails if the build touched any tracked file, and runs the unit tests with generated-bank checks required (a "not built" skip fails the job). `scripts/package_release.py` then publishes a prerelease `build-<branch>-<sha7>` and moves the rolling `latest-<branch>` prerelease (skipped for fork PRs). Assets: `mc-combined.pdf`, `lq-combined.pdf`, `{mc,lq}-per-year.zip`, `{mc,lq}-sections.zip` (section `combined.pdf` + answer/performance PDFs), `answer_keys.json`, `candidate_performance.json`, `quality_audit.json`, `stage_timings.json`; release notes list commit, branch, stage timings and assets.
 
 ## Quality bar
 

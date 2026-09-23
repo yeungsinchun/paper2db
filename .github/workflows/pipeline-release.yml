@@ -1,0 +1,109 @@
+# Full ./pipeline build on a clean runner, unit tests against the built banks,
+# and a GitHub prerelease with the reconstructed papers and section banks.
+# Classification replays the tracked metadata/*/llm_classifications.json: no
+# LLM calls, no secrets.
+name: pipeline-release
+
+on:
+  push:
+    branches:
+      - main
+      - fm/p2db-fix-paper2db-reconstructed-mc-lq-layout-ff
+  pull_request:
+    branches:
+      - main
+      - fm/p2db-fix-paper2db-reconstructed-mc-lq-layout-ff
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pipeline-release-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    env:
+      BRANCH: ${{ github.head_ref || github.ref_name }}
+      SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Build the branch commit itself (not the PR merge commit) so the
+          # release tag points at a commit that exists on the branch.
+          ref: ${{ env.SHA }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install tesseract and Python deps
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends tesseract-ocr tesseract-ocr-eng
+          tesseract --version
+          python -m pip install -r requirements.txt
+
+      - name: Run full pipeline (replay tracked classifications)
+        run: |
+          ./pipeline --yes --replay-classifications \
+            --timings-json tests/sections/stage_timings.json
+
+      - name: Tracked inputs unchanged by the build
+        run: |
+          git status --porcelain
+          test -z "$(git status --porcelain)"
+
+      - name: Unit tests, including generated-bank checks
+        run: |
+          python -m unittest discover -s tests -v 2>&1 | tee unittest.log
+          if grep -E "skipped .*(not built|run \./pipeline)" unittest.log; then
+            echo "::error::generated-bank checks were skipped after a full build"
+            exit 1
+          fi
+
+      - name: Package release assets
+        run: |
+          python scripts/package_release.py \
+            --out dist \
+            --timings tests/sections/stage_timings.json \
+            --notes release-notes.md \
+            --commit "$SHA" \
+            --branch "$BRANCH" \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          cat release-notes.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish prereleases
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          slug=$(printf '%s' "$BRANCH" | tr -c 'A-Za-z0-9._-' '-')
+          short=${SHA:0:7}
+          build_tag="build-${slug}-${short}"
+          latest_tag="latest-${slug}"
+          # Per-commit release (re-runs replace it).
+          gh release delete "$build_tag" --cleanup-tag --yes 2>/dev/null || true
+          gh release create "$build_tag" dist/* --prerelease --target "$SHA" \
+            --title "Build ${BRANCH} @ ${short}" --notes-file release-notes.md
+          # Rolling per-branch release, moved to this commit.
+          gh release delete "$latest_tag" --cleanup-tag --yes 2>/dev/null || true
+          gh release create "$latest_tag" dist/* --prerelease --latest=false --target "$SHA" \
+            --title "Latest ${BRANCH}" --notes-file release-notes.md
+          echo "Release: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${build_tag}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failure-evidence
+          path: |
+            intermediate/mc/*/anchor.pdf
+            unittest.log
+          if-no-files-found: ignore

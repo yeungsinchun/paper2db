@@ -7,7 +7,12 @@ Reads crops from tests/reconstructed/lq/<year>/qN.png, writes nested LQ outputs 
   tests/sections/lq/classification.csv
   tests/sections/lq/<book>/<section>/ year-qN.png (+ optional answer copy)
 
-Top-level tests/sections/lq_classification.csv|json come from classify_lq_keywords.py.
+Also writes top-level tests/sections/lq_classification.csv|json (same builder as
+classify_lq_keywords.py).
+
+--replay applies the tracked metadata/lq/llm_classifications.json verbatim with
+no API call and without rewriting it; it fails if the file is missing or lacks
+a decision for any selected question (used by ./pipeline --replay-classifications).
 Any LLM failure aborts before write_outputs so nested outputs stay unchanged.
 
 Env: same as classify_mc_llm.py (LLM_API_KEY / OPENAI_API_KEY / TOGETHER_API_KEY).
@@ -63,6 +68,12 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--years", nargs="*", default=None)
     p.add_argument("--workers", type=int, default=4)
     p.add_argument("--from-json", type=Path, default=None)
+    p.add_argument(
+        "--replay",
+        action="store_true",
+        help="Apply tracked metadata/lq/llm_classifications.json read-only; "
+        "fail if missing or incomplete (no LLM call)",
+    )
     p.add_argument("--limit", type=int, default=None)
     p.add_argument("--sleep", type=float, default=0.2)
     return p.parse_args()
@@ -140,6 +151,8 @@ def write_outputs(
     rows: list[dict],
     touched_years: set[str] | None = None,
     touched_keys: set[tuple[str, int]] | None = None,
+    *,
+    write_decisions: bool = True,
 ) -> None:
     # Clear previous section copies (keep ocr_cache / json).
     for _n, book, folder, _name in SECTIONS:
@@ -218,11 +231,51 @@ def write_outputs(
                     )
                     shutil.copy2(ans_src, ans_dest)
 
-    decisions_path.write_text(
-        json.dumps(decisions, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    if write_decisions:
+        decisions_path.write_text(
+            json.dumps(decisions, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+    keyword_classifier.write_top_level(rows, CLASSIFIED_LQ, CLASSIFIED_LQ.parent)
     print(f"Wrote {csv_path} ({len(rows)} rows)")
+
+
+def replay_rows(records: list[dict], decisions_path: Path) -> list[dict]:
+    """Nested rows from tracked decisions, verbatim; exit (never fall back) on gaps."""
+    if not decisions_path.is_file():
+        raise SystemExit(f"--replay: missing tracked decisions {decisions_path}")
+    decisions = json.loads(decisions_path.read_text(encoding="utf-8"))
+    missing = [
+        f"{rec['Year']}-q{rec['Question']}"
+        for rec in records
+        if f"{rec['Year']}-q{rec['Question']}" not in decisions
+    ]
+    if missing:
+        raise SystemExit(
+            f"--replay: {decisions_path} has no decision for {len(missing)} question(s): "
+            + ", ".join(missing[:20])
+        )
+    print(f"Replaying tracked decisions from {decisions_path}")
+    rows = []
+    for rec in records:
+        d = decisions[f"{rec['Year']}-q{rec['Question']}"]
+        sections = [int(s) for s in d["sections"]]
+        if not sections or any(s not in SECTION_BY_NUM for s in sections):
+            raise SystemExit(
+                f"--replay: bad sections {d['sections']!r} for {rec['Year']}-q{rec['Question']}"
+            )
+        rows.append(
+            {
+                "Year": rec["Year"],
+                "Question": rec["Question"],
+                "Primary": sections[0],
+                "AllSections": ";".join(str(s) for s in sections),
+                "Reason": d.get("reason", ""),
+                "PNG": rec["PNG"],
+                "AnswerPNG": rec["AnswerPNG"],
+            }
+        )
+    return rows
 
 
 def main() -> None:
@@ -248,6 +301,15 @@ def main() -> None:
         if args.limit is not None
         else None
     )
+
+    if getattr(args, "replay", False):
+        write_outputs(
+            replay_rows(records, METADATA_LQ / "llm_classifications.json"),
+            touched_years,
+            touched_keys,
+            write_decisions=False,
+        )
+        return
 
     if args.from_json:
         decisions = json.loads(args.from_json.read_text(encoding="utf-8"))

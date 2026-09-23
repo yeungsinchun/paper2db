@@ -24,6 +24,10 @@ Env:
 
 You can also apply a precomputed JSON of LLM decisions:
   python scripts/classify_mc_llm.py --from-json metadata/mc/llm_classifications.json
+
+--replay applies the tracked metadata/mc/llm_classifications.json verbatim with
+no API call and without rewriting it; it fails if the file is missing or does
+not cover every selected question (used by CI, see ./pipeline --replay-classifications).
 """
 from __future__ import annotations
 
@@ -174,6 +178,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--skip-ocr", action="store_true")
     p.add_argument("--from-json", type=Path, default=None,
                    help="Apply precomputed LLM decisions instead of calling the API")
+    p.add_argument("--replay", action="store_true",
+                   help="Apply tracked metadata/mc/llm_classifications.json read-only; "
+                        "fail if missing or incomplete (no LLM call)")
     p.add_argument("--limit", type=int, default=None, help="Classify only first N (debug)")
     p.add_argument("--sleep", type=float, default=0.15)
     p.add_argument("--rebuild-pdfs", action="store_true",
@@ -530,6 +537,22 @@ def apply_classifications(
         print(f"S{n:02d} {name}: {merged_buckets[n]}")
 
 
+def load_replay_decisions(path: Path, records: list[dict]) -> list[dict]:
+    """Tracked decisions for --replay; exit (never fall back) if any are missing."""
+    if not path.is_file():
+        raise SystemExit(f"--replay: missing tracked decisions {path}")
+    decisions = json.loads(path.read_text(encoding="utf-8"))
+    have = {row_key(d) for d in decisions}
+    missing = [f"{y} Q{q}" for y, q in (row_key(r) for r in records) if (y, q) not in have]
+    if missing:
+        raise SystemExit(
+            f"--replay: {path} has no decision for {len(missing)} question(s): "
+            + ", ".join(missing[:20])
+        )
+    print(f"Replaying {len(decisions)} tracked decisions from {path}")
+    return decisions
+
+
 def main() -> None:
     args = parse_args()
     ensure_tree()
@@ -582,6 +605,13 @@ def main() -> None:
         work_records = work_records[: args.limit]
 
     decisions_path = METADATA_MC / "llm_classifications.json"
+    touched_keys = {row_key(r) for r in work_records} if partial_run else None
+    apply_records = work_records if partial_run else full_records
+    if args.replay:
+        decisions = load_replay_decisions(decisions_path, apply_records)
+        apply_classifications(apply_records, decisions, touched_keys=touched_keys)
+        return
+
     decisions_path.parent.mkdir(parents=True, exist_ok=True)
     existing_decisions: list[dict] = []
     if decisions_path.exists():
@@ -610,8 +640,6 @@ def main() -> None:
     decisions_path.write_text(json.dumps(decisions, indent=2, ensure_ascii=False) + "\n")
     print(f"Wrote {decisions_path} ({len(decisions)} decisions)")
 
-    touched_keys = {row_key(r) for r in work_records} if partial_run else None
-    apply_records = work_records if partial_run else full_records
     apply_classifications(apply_records, decisions, touched_keys=touched_keys)
 
     if args.rebuild_pdfs:

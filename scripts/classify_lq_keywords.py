@@ -605,6 +605,23 @@ def build_detailed_rows(rows: list[dict], perf: dict) -> list[dict]:
     return detailed
 
 
+def write_top_level(rows: list[dict], classified_lq: Path, sections_root: Path) -> tuple[Path, Path]:
+    """Write top-level lq_classification.json|csv from nested classification rows."""
+    perf: dict = {}
+    perf_path = classified_lq / "candidate_performance.json"
+    if perf_path.is_file():
+        perf = json.loads(perf_path.read_text(encoding="utf-8"))
+    detailed = build_detailed_rows(rows, perf)
+    lq_json = sections_root / "lq_classification.json"
+    lq_json.write_text(json.dumps(detailed, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    lq_csv = sections_root / "lq_classification.csv"
+    with lq_csv.open("w", newline="", encoding="utf-8") as fh:
+        writer = csv.DictWriter(fh, fieldnames=TOP_CSV_FIELDS)
+        writer.writeheader()
+        writer.writerows(detailed)
+    return lq_json, lq_csv
+
+
 def main() -> None:
     args = parse_args()
     CLASSIFIED_LQ.mkdir(parents=True, exist_ok=True)
@@ -679,18 +696,7 @@ def main() -> None:
         encoding="utf-8",
     )
 
-    perf: dict = {}
-    perf_path = CLASSIFIED_LQ / "candidate_performance.json"
-    if perf_path.is_file():
-        perf = json.loads(perf_path.read_text(encoding="utf-8"))
-    detailed = build_detailed_rows(rows, perf)
-    lq_json = ROOT / "tests" / "sections" / "lq_classification.json"
-    lq_json.write_text(json.dumps(detailed, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    lq_csv = ROOT / "tests" / "sections" / "lq_classification.csv"
-    with lq_csv.open("w", newline="", encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=TOP_CSV_FIELDS)
-        writer.writeheader()
-        writer.writerows(detailed)
+    lq_json, lq_csv = write_top_level(rows, CLASSIFIED_LQ, ROOT / "tests" / "sections")
 
     by = defaultdict(int)
     for r in rows:
