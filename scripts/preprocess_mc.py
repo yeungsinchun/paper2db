@@ -850,19 +850,22 @@ def validate_marker_alignment(path: Path) -> None:
         document.close()
 
 
-def trailing_formula_run(flagged: list[int]) -> set[int]:
-    """Keep only the last contiguous run of formula-sheet hits.
+def trailing_formula_run(flagged: list[int], page_count: int) -> set[int]:
+    """Pages from the last contiguous run of formula-sheet hits to the end.
 
     The data/formulae sheet sits at the back of the paper. An earlier hit is a
     question page whose instructions merely mention "a list of data, formulae
-    and relationships" (e.g. the SAP paper's first page, holding Q1-Q3).
+    and relationships" (e.g. the SAP paper's first page, holding Q1-Q3). Only
+    the sheet's first page carries that heading; its continuation pages (e.g.
+    2025's equation list, whose "A1."/"D4." labels OCR as question numbers)
+    follow it.
     """
     run: set[int] = set()
     for index in sorted(flagged, reverse=True):
         if run and index != min(run) - 1:
             break
         run.add(index)
-    return run
+    return set(range(min(run), page_count)) if run else set()
 
 
 def main() -> None:
@@ -877,7 +880,8 @@ def main() -> None:
                 index
                 for index in range(args.cover_pages, len(source))
                 if is_formula_sheet(source[index])
-            ]
+            ],
+            len(source),
         )
         content_pages = [
             index for index in range(args.cover_pages, len(source)) if index not in excluded_pages
