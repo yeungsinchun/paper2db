@@ -134,14 +134,35 @@ def classify_one(record: dict) -> dict:
     }
 
 
-def write_outputs(rows: list[dict]) -> None:
+def write_outputs(rows: list[dict], touched_years: set[str] | None = None) -> None:
     # Clear previous section copies (keep ocr_cache / json).
     for _n, book, folder, _name in SECTIONS:
         folder_path = CLASSIFIED_LQ / book / folder
         for old in folder_path.glob("*.png"):
-            old.unlink()
+            if touched_years is None or old.name.split("-q", 1)[0] in touched_years:
+                old.unlink()
 
     csv_path = CLASSIFIED_LQ / "classification.csv"
+    decisions_path = CLASSIFIED_LQ / "llm_classifications.json"
+    new_rows = rows
+    new_decisions = {
+        f"{r['Year']}-q{r['Question']}": {
+            "sections": [int(x) for x in r["AllSections"].split(";") if x],
+            "reason": r["Reason"],
+        }
+        for r in new_rows
+    }
+    if touched_years is not None and csv_path.is_file():
+        with csv_path.open(encoding="utf-8") as fh:
+            existing_rows = list(csv.DictReader(fh))
+        rows = keyword_classifier.merge_nested_rows(existing_rows, new_rows)
+        existing_decisions = {}
+        if decisions_path.is_file():
+            existing_decisions = json.loads(decisions_path.read_text(encoding="utf-8"))
+        decisions = {**existing_decisions, **new_decisions}
+    else:
+        decisions = new_decisions
+
     with csv_path.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.DictWriter(
             fh,
@@ -158,7 +179,7 @@ def write_outputs(rows: list[dict]) -> None:
         writer.writeheader()
         for row in rows:
             writer.writerow(row)
-            primary = int(row["Primary"])
+        for row in new_rows:
             for sec in [int(x) for x in row["AllSections"].split(";") if x]:
                 book, folder, _name = SECTION_BY_NUM[sec]
                 dest = CLASSIFIED_LQ / book / folder / f"{row['Year']}-q{row['Question']}.png"
@@ -175,14 +196,7 @@ def write_outputs(rows: list[dict]) -> None:
                     )
                     shutil.copy2(ans_src, ans_dest)
 
-    decisions = {
-        f"{r['Year']}-q{r['Question']}": {
-            "sections": [int(x) for x in r["AllSections"].split(";") if x],
-            "reason": r["Reason"],
-        }
-        for r in rows
-    }
-    (CLASSIFIED_LQ / "llm_classifications.json").write_text(
+    decisions_path.write_text(
         json.dumps(decisions, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
@@ -225,7 +239,7 @@ def main() -> None:
                     "AnswerPNG": rec["AnswerPNG"],
                 }
             )
-        write_outputs(rows)
+        write_outputs(rows, set(args.years) if args.years else None)
         return
 
     key, base, model = llm_config()
@@ -264,7 +278,7 @@ def main() -> None:
             f"Aborting write: {len(failures)} LLM failure(s) "
             f"({len(rows)}/{len(records)} succeeded); nested LQ outputs unchanged"
         )
-    write_outputs(rows)
+    write_outputs(rows, set(args.years) if args.years else None)
 
 
 if __name__ == "__main__":
