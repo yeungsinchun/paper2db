@@ -98,6 +98,13 @@ class TestBook5Classifier(unittest.TestCase):
         self.assertFalse(self.kw.is_book5(text.lower()))
         self.assertEqual(self.kw.classify_text(text)[0], [3])
 
+    def test_radioactive_source_enters_book5_classifier(self) -> None:
+        sections, _reason = self.kw.classify_text(
+            "A radioactive source emits alpha particles."
+        )
+        self.assertTrue(sections)
+        self.assertTrue(all(25 <= section <= 27 for section in sections))
+
     def test_ocr_cache_is_keyed_by_png_geometry(self) -> None:
         from PIL import Image
 

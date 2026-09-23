@@ -537,23 +537,39 @@ class TestLqLlmYearsMerge(unittest.TestCase):
             kept_png = classified_lq / old_book / old_folder / "2013-q1.png"
             kept_png.parent.mkdir(parents=True)
             kept_png.write_bytes(b"KEEP-2013")
-            old_row = {
-                "Year": "2013",
-                "Question": "1",
-                "Primary": "5",
-                "AllSections": "5",
-                "Reason": "old-2013",
-                "PNG": "reconstructed/lq/2013/q1.png",
-                "AnswerPNG": "reconstructed/lq/2013/ans/q1.png",
-            }
+            old_rows = [
+                {
+                    "Year": "2013",
+                    "Question": "1",
+                    "Primary": "5",
+                    "AllSections": "5",
+                    "Reason": "old-2013",
+                    "PNG": "reconstructed/lq/2013/q1.png",
+                    "AnswerPNG": "reconstructed/lq/2013/ans/q1.png",
+                },
+                {
+                    "Year": "2024",
+                    "Question": "2",
+                    "Primary": "8",
+                    "AllSections": "8",
+                    "Reason": "stale-2024",
+                    "PNG": "reconstructed/lq/2024/q2.png",
+                    "AnswerPNG": "reconstructed/lq/2024/ans/q2.png",
+                },
+            ]
             csv_path = classified_lq / "classification.csv"
             with csv_path.open("w", newline="", encoding="utf-8") as fh:
                 writer = csv.DictWriter(fh, fieldnames=lq.keyword_classifier.NESTED_CSV_FIELDS)
                 writer.writeheader()
-                writer.writerow(old_row)
+                writer.writerows(old_rows)
             decisions_path = classified_lq / "llm_classifications.json"
             decisions_path.write_text(
-                json.dumps({"2013-q1": {"sections": [5], "reason": "old-2013"}}),
+                json.dumps(
+                    {
+                        "2013-q1": {"sections": [5], "reason": "old-2013"},
+                        "2024-q2": {"sections": [8], "reason": "stale-2024"},
+                    }
+                ),
                 encoding="utf-8",
             )
 
@@ -586,8 +602,13 @@ class TestLqLlmYearsMerge(unittest.TestCase):
 
             with csv_path.open(encoding="utf-8") as fh:
                 rows = list(csv.DictReader(fh))
-            self.assertEqual({r["Year"] for r in rows}, {"2013", "2024"})
-            self.assertEqual(json.loads(decisions_path.read_text())["2013-q1"]["reason"], "old-2013")
+            self.assertEqual(
+                {(r["Year"], r["Question"]) for r in rows},
+                {("2013", "1"), ("2024", "1")},
+            )
+            decisions = json.loads(decisions_path.read_text())
+            self.assertEqual(decisions["2013-q1"]["reason"], "old-2013")
+            self.assertNotIn("2024-q2", decisions)
             self.assertEqual(kept_png.read_bytes(), b"KEEP-2013")
 
 

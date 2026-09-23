@@ -44,7 +44,8 @@ OCR_MAX_WIDTH = 2500
 # words ("fusion" of ice, "activity" of a bungee jumper, "radiation" as heat
 # transfer) deliberately stay out so they cannot pull other books here.
 BOOK5_CONTEXT = (
-    "radioactiv",
+    "radioactive",
+    "radioactivity",
     "radioisotope",
     "radionuclide",
     "nuclide",

@@ -154,11 +154,20 @@ def write_outputs(rows: list[dict], touched_years: set[str] | None = None) -> No
     }
     if touched_years is not None and csv_path.is_file():
         with csv_path.open(encoding="utf-8") as fh:
-            existing_rows = list(csv.DictReader(fh))
+            existing_rows = [
+                row
+                for row in csv.DictReader(fh)
+                if str(row["Year"]) not in touched_years
+            ]
         rows = keyword_classifier.merge_nested_rows(existing_rows, new_rows)
         existing_decisions = {}
         if decisions_path.is_file():
             existing_decisions = json.loads(decisions_path.read_text(encoding="utf-8"))
+            existing_decisions = {
+                key: value
+                for key, value in existing_decisions.items()
+                if key.split("-q", 1)[0] not in touched_years
+            }
         decisions = {**existing_decisions, **new_decisions}
     else:
         decisions = new_decisions
