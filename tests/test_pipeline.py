@@ -75,7 +75,7 @@ class TestPipelineHelpers(unittest.TestCase):
         )
         self.assertEqual(
             self.pipe.select_stages(args),
-            ["keys", "classify-mc", "classify-lq"],
+            ["keys", "classify-mc", "lq-performance", "classify-lq"],
         )
 
     def test_keys_stage_uses_paper_ans_only(self) -> None:
@@ -90,7 +90,7 @@ class TestPipelineHelpers(unittest.TestCase):
                 encoding="utf-8",
             )
             (tmp_path / "paper" / "ans").mkdir(parents=True)
-            dest = tmp_path / "classified" / "mc" / "answer_keys.json"
+            dest = tmp_path / "tests" / "sections" / "mc" / "answer_keys.json"
             calls: list[tuple[str, tuple[str, ...]]] = []
 
             def fake_run(script_name: str, *args: str) -> None:
@@ -142,12 +142,87 @@ class TestPipelineHelpers(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
+            perf = tmp_path / "tests" / "sections" / "lq" / "candidate_performance.json"
+            perf.parent.mkdir(parents=True)
+            perf.write_text("{}", encoding="utf-8")
             with mock.patch.object(pipe, "ROOT", tmp_path):
                 with mock.patch.object(pipe, "has_llm_key", return_value=True):
                     with mock.patch.object(pipe, "run_script", side_effect=fake_run):
                         with mock.patch.dict("os.environ", {}, clear=False):
                             pipe.stage_classify_lq(None, force=True)
         self.assertEqual(calls, ["classify_lq_llm.py"])
+
+    def test_lq_consumers_build_missing_performance_json_first(self) -> None:
+        pipe = self.pipe
+        stages = {
+            "classify-lq": lambda: pipe.stage_classify_lq(None, force=True),
+            "section-pdfs": pipe.stage_section_pdfs,
+            "lavish": pipe.stage_lavish,
+        }
+        for name, run_stage in stages.items():
+            with self.subTest(stage=name):
+                calls: list[str] = []
+
+                def fake_run(script_name: str, *args: str) -> None:
+                    calls.append(script_name)
+
+                with tempfile.TemporaryDirectory() as tmp:
+                    tmp_path = Path(tmp)
+                    performance = tmp_path / "paper" / "performance"
+                    performance.mkdir(parents=True)
+                    (performance / "2024 performance.md").write_text(
+                        "## Paper 1\n### Section B\n", encoding="utf-8"
+                    )
+                    keys = tmp_path / "tests" / "sections" / "mc" / "answer_keys.json"
+                    keys.parent.mkdir(parents=True)
+                    keys.write_text("{}", encoding="utf-8")
+                    with mock.patch.object(pipe, "ROOT", tmp_path):
+                        with mock.patch.object(pipe, "has_llm_key", return_value=False):
+                            with mock.patch.object(pipe, "run_script", side_effect=fake_run):
+                                run_stage()
+                self.assertIn("extract_lq_performance.py", calls)
+                perf_index = calls.index("extract_lq_performance.py")
+                lq_consumers = {
+                    "classify_lq_keywords.py",
+                    "combine_lq_section_pdfs.py",
+                    "quality_audit.py",
+                }
+                consumer_indexes = [
+                    i for i, script in enumerate(calls) if script in lq_consumers
+                ]
+                self.assertTrue(consumer_indexes, calls)
+                self.assertLess(perf_index, min(consumer_indexes))
+
+    def test_lq_consumers_fill_missing_performance_years(self) -> None:
+        pipe = self.pipe
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            performance = tmp_path / "paper" / "performance"
+            performance.mkdir(parents=True)
+            for year in ("2023", "2024"):
+                (performance / f"{year} performance.md").write_text(
+                    "## Paper 1\n### Section B\n", encoding="utf-8"
+                )
+            perf = tmp_path / "tests" / "sections" / "lq" / "candidate_performance.json"
+            perf.parent.mkdir(parents=True)
+            perf.write_text(json.dumps({"2023": {"1": "note"}}), encoding="utf-8")
+            calls: list[tuple[str, tuple[str, ...]]] = []
+
+            def fake_run(script_name: str, *args: str) -> None:
+                calls.append((script_name, args))
+
+            with mock.patch.object(pipe, "ROOT", tmp_path):
+                with mock.patch.object(pipe, "has_llm_key", return_value=False):
+                    with mock.patch.object(pipe, "run_script", side_effect=fake_run):
+                        pipe.stage_classify_lq(["2024"], force=True)
+
+            self.assertEqual(
+                calls,
+                [
+                    ("extract_lq_performance.py", ("--years", "2024")),
+                    ("classify_lq_keywords.py", ("--years", "2024")),
+                ],
+            )
 
     def test_lq_crops_ready_rejects_y_crop_and_missing_pages(self) -> None:
         pipe = self.pipe
@@ -216,7 +291,7 @@ class TestAnswerKeyDefaults(unittest.TestCase):
         with mock.patch.object(sys, "argv", ["extract_answer_keys.py"]):
             args = eak.parse_args()
         self.assertEqual(args.answers, ROOT / "paper" / "ans")
-        self.assertEqual(args.output, ROOT / "classified" / "mc" / "answer_keys.json")
+        self.assertEqual(args.output, ROOT / "tests" / "sections" / "mc" / "answer_keys.json")
 
     def test_combine_section_pdfs_uses_classified_keys(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
@@ -226,7 +301,7 @@ class TestAnswerKeyDefaults(unittest.TestCase):
             args = csp.parse_args()
         self.assertEqual(
             args.keys.resolve(),
-            (ROOT / "classified" / "mc" / "answer_keys.json").resolve(),
+            (ROOT / "tests" / "sections" / "mc" / "answer_keys.json").resolve(),
         )
 
 

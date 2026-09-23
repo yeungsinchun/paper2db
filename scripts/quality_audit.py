@@ -3,7 +3,7 @@
 
 Failure definitions (count toward the captain's <=5% manual-tuning budget):
   missing_crop       - classification row points at a missing question PNG
-  missing_classified - no copy under classified/{mc,lq}/.../<year>_qN.png
+  missing_classified - no copy under tests/sections/{mc,lq}/.../<year>_qN.png
   uncertain          - MC Uncertain=yes (needs human skim)
   tiny_crop          - crop width/height below usable threshold
   few_year_crops     - year folder has far fewer crops than a full paper
@@ -29,9 +29,9 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-MC_CSV = ROOT / "classified" / "mc" / "classification.csv"
-LQ_CSV = ROOT / "classified" / "lq" / "classification.csv"
-OUT_JSON = ROOT / "classified" / "quality_audit.json"
+MC_CSV = ROOT / "tests" / "sections" / "mc" / "classification.csv"
+LQ_CSV = ROOT / "tests" / "sections" / "lq" / "classification.csv"
+OUT_JSON = ROOT / "tests" / "sections" / "quality_audit.json"
 
 BOOK_ORDER = {
     "Heat and Gases": 1,
@@ -190,7 +190,7 @@ def audit_mc_classification(rows: list[dict[str, str]]) -> dict:
     missing_classified = []
     for row in rows:
         matches = list(
-            (ROOT / "classified" / "mc").rglob(f"{row['Year']}_q{row['Question']}.png")
+            (ROOT / "tests" / "sections" / "mc").rglob(f"{row['Year']}_q{row['Question']}.png")
         )
         if not matches:
             missing_classified.append({"year": row["Year"], "q": row["Question"]})
@@ -236,7 +236,7 @@ def audit_lq_classification(rows: list[dict[str, str]]) -> dict:
                 {"year": row["Year"], "q": row["Question"], "png": row.get("PNG", "")}
             )
         matches = list(
-            (ROOT / "classified" / "lq").rglob(f"{row['Year']}-q{row['Question']}.png")
+            (ROOT / "tests" / "sections" / "lq").rglob(f"{row['Year']}-q{row['Question']}.png")
         )
         if not matches:
             missing_classified.append({"year": row["Year"], "q": row["Question"]})
@@ -402,7 +402,7 @@ def parse_args() -> argparse.Namespace:
         "--output",
         type=Path,
         default=OUT_JSON,
-        help="Write JSON report here (default: classified/quality_audit.json)",
+        help="Write JSON report here (default: tests/sections/quality_audit.json)",
     )
     parser.add_argument(
         "--max-rate",

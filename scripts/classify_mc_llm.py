@@ -3,13 +3,14 @@
 """Classify MC questions into Book 1-5 / Sections 1-27 using an LLM.
 
 Pipeline:
-  1. Reuse / refresh OCR from tests/reconstructed/mc/ PNGs (tesseract cache under classified/mc/ocr_cache)
+  1. Reuse / refresh OCR from tests/reconstructed/mc/ PNGs (tesseract cache under tests/sections/mc/ocr_cache)
   2. Call an OpenAI-compatible chat API one question (or small batch) at a time
-  3. Write classified/mc/<book>/<section>/ PNG copies plus:
-       classified/mc/classification.csv|json
-       classified/mc/uncertain.csv
-       classified/mc/summary.json
-       classified/mc_classification.csv|json  (top-level split naming)
+  3. Write tests/sections/mc/<book>/<section>/ PNG copies plus:
+       tests/sections/mc/classification.csv|json
+       tests/sections/mc/uncertain.csv
+       tests/sections/mc/summary.json
+       tests/sections/mc_classification.csv|json  (top-level split naming)
+       metadata/mc/llm_classifications.json  (tracked LLM decisions)
   4. Optionally rebuild per-section combined.pdf (year order) + answer.pdf
 
 Partial --years/--limit runs merge into existing mc_ocr.* / classification.*
@@ -22,7 +23,7 @@ Env:
   LLM_MODEL     (default meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo)
 
 You can also apply a precomputed JSON of LLM decisions:
-  python scripts/classify_mc_llm.py --from-json classified/mc/llm_classifications.json
+  python scripts/classify_mc_llm.py --from-json metadata/mc/llm_classifications.json
 """
 from __future__ import annotations
 
@@ -45,12 +46,16 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "tests" / "reconstructed" / "mc"
-CLASSIFIED = ROOT / "classified" / "mc"
+# Generated section bank (gitignored) - CLASSIFIED is the historical name, kept
+# so `mock.patch.object(module, "CLASSIFIED", ...)` in tests still works.
+CLASSIFIED = ROOT / "tests" / "sections" / "mc"
 OCR_CACHE = CLASSIFIED / "ocr_cache"
+# Tracked LLM decisions (the only file that survives a rebuild without an API key).
+METADATA_MC = ROOT / "metadata" / "mc"
 
 
 def top_level_mc_paths() -> tuple[Path, Path]:
-    """Top-level mc_classification.* live beside classified/mc/ (or in CLASSIFIED when tests patch it)."""
+    """Top-level mc_classification.* live beside tests/sections/mc/ (or in CLASSIFIED when tests patch it)."""
     root = CLASSIFIED.parent if CLASSIFIED.name == "mc" else CLASSIFIED
     return root / "mc_classification.json", root / "mc_classification.csv"
 
@@ -576,7 +581,8 @@ def main() -> None:
     if args.limit:
         work_records = work_records[: args.limit]
 
-    decisions_path = CLASSIFIED / "llm_classifications.json"
+    decisions_path = METADATA_MC / "llm_classifications.json"
+    decisions_path.parent.mkdir(parents=True, exist_ok=True)
     existing_decisions: list[dict] = []
     if decisions_path.exists():
         existing_decisions = json.loads(decisions_path.read_text())

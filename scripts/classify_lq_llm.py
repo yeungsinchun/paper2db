@@ -3,11 +3,11 @@
 """Classify LQ (Paper 1B) questions into the same 27 sections as MC.
 
 Reads crops from tests/reconstructed/lq/<year>/qN.png, writes nested LQ outputs only:
-  classified/lq/llm_classifications.json
-  classified/lq/classification.csv
-  classified/lq/<book>/<section>/ year-qN.png (+ optional answer copy)
+  metadata/lq/llm_classifications.json
+  tests/sections/lq/classification.csv
+  tests/sections/lq/<book>/<section>/ year-qN.png (+ optional answer copy)
 
-Top-level classified/lq_classification.csv|json come from classify_lq_keywords.py.
+Top-level tests/sections/lq_classification.csv|json come from classify_lq_keywords.py.
 Any LLM failure aborts before write_outputs so nested outputs stay unchanged.
 
 Env: same as classify_mc_llm.py (LLM_API_KEY / OPENAI_API_KEY / TOGETHER_API_KEY).
@@ -38,8 +38,9 @@ LQ_SECTION_LIMIT = 3
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_LQ = ROOT / "tests" / "reconstructed" / "lq"
-CLASSIFIED_LQ = ROOT / "classified" / "lq"
+CLASSIFIED_LQ = ROOT / "tests" / "sections" / "lq"
 OCR_CACHE = CLASSIFIED_LQ / "ocr_cache"
+METADATA_LQ = ROOT / "metadata" / "lq"
 
 YEAR_ORDER = [
     "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020",
@@ -70,6 +71,7 @@ def parse_args() -> argparse.Namespace:
 def ensure_tree() -> None:
     CLASSIFIED_LQ.mkdir(parents=True, exist_ok=True)
     OCR_CACHE.mkdir(parents=True, exist_ok=True)
+    METADATA_LQ.mkdir(parents=True, exist_ok=True)
     for _n, book, folder, _name in SECTIONS:
         (CLASSIFIED_LQ / book / folder).mkdir(parents=True, exist_ok=True)
 
@@ -154,7 +156,7 @@ def write_outputs(
                 old.unlink()
 
     csv_path = CLASSIFIED_LQ / "classification.csv"
-    decisions_path = CLASSIFIED_LQ / "llm_classifications.json"
+    decisions_path = METADATA_LQ / "llm_classifications.json"
     new_rows = rows
     new_decisions = {
         f"{r['Year']}-q{r['Question']}": {

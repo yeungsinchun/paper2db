@@ -339,12 +339,12 @@ class TestSectionPdfsIncludeEveryListedSection(unittest.TestCase):
 
 
 def _generated_bank_is_current() -> bool:
-    """True when classified/ was produced from the tests/reconstructed/ layout.
+    """True when tests/sections/ was produced from the tests/reconstructed/ layout.
 
     classification.csv is generated output whose PNG column names the crop it
     was built from; rows still pointing at output/ come from an older build.
     """
-    csv_path = ROOT / "classified" / "lq" / "classification.csv"
+    csv_path = ROOT / "tests" / "sections" / "lq" / "classification.csv"
     if not csv_path.is_file() or not (ROOT / "tests" / "reconstructed" / "lq" / "2026" / "starts.json").is_file():
         return False
     with csv_path.open(encoding="utf-8") as fh:
@@ -354,21 +354,22 @@ def _generated_bank_is_current() -> bool:
 
 @unittest.skipUnless(
     _generated_bank_is_current(),
-    "classified/ and tests/reconstructed/ are generated (gitignored); run ./pipeline first",
+    "tests/sections/ and tests/reconstructed/ are generated (gitignored); run ./pipeline first",
 )
 class TestGeneratedCh25Bank(unittest.TestCase):
     """Checks the real classify-lq + section-pdfs output when it has been built."""
 
     CH25 = (
         ROOT
-        / "classified"
+        / "tests"
+        / "sections"
         / "lq"
         / "05_Radioactivity_and_Nuclear_Energy"
         / "25_Radiation_and_Radioactivity"
     )
 
     def _rows(self) -> dict[tuple[str, int], dict]:
-        with (ROOT / "classified" / "lq" / "classification.csv").open(encoding="utf-8") as fh:
+        with (ROOT / "tests" / "sections" / "lq" / "classification.csv").open(encoding="utf-8") as fh:
             return {(r["Year"], int(r["Question"])): r for r in csv.DictReader(fh)}
 
     def test_classification_lists_ch25_for_every_expected_problem(self) -> None:

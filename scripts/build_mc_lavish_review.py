@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rebuild MC Lavish review from classified/mc/classification.csv."""
+"""Rebuild MC Lavish review from tests/sections/mc/classification.csv."""
 from __future__ import annotations
 
 import csv
@@ -12,7 +12,7 @@ from pathlib import Path
 from classify_mc_llm import BOOK_NAMES, SECTIONS
 
 ROOT = Path(__file__).resolve().parents[1]
-CLASSIFIED = ROOT / "classified" / "mc"
+CLASSIFIED = ROOT / "tests" / "sections" / "mc"
 OUT = ROOT / ".lavish" / "classified-review"
 IMG = OUT / "img"
 
