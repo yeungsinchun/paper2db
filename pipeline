@@ -29,10 +29,10 @@ Usage:
   ./pipeline --yes --force
   ./pipeline --yes --force --replay-classifications   # CI: no LLM, tracked JSON only
 
---replay-classifications (or PAPER2DB_REPLAY_CLASSIFICATIONS=1) makes classify-mc
-and classify-lq apply metadata/{mc,lq}/llm_classifications.json verbatim - no
-LLM call, no keyword fallback, tracked JSON left untouched. It fails if a file
-is missing or lacks a decision for any built question.
+--replay-classifications makes classify-mc and classify-lq apply
+metadata/{mc,lq}/llm_classifications.json verbatim - no LLM call, no keyword
+fallback, tracked JSON left untouched. It fails if a file is missing or lacks a
+decision for any built question.
 """
 from __future__ import annotations
 
@@ -257,13 +257,6 @@ def has_llm_key() -> bool:
         or os.environ.get("OPENAI_API_KEY")
         or os.environ.get("TOGETHER_API_KEY")
     )
-
-
-REPLAY_ENV = "PAPER2DB_REPLAY_CLASSIFICATIONS"
-
-
-def replay_requested(flag: bool) -> bool:
-    return flag or os.environ.get(REPLAY_ENV, "").strip().lower() in {"1", "true", "yes"}
 
 
 def tracked_classifications(kind: str) -> Path:
@@ -620,8 +613,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--replay-classifications",
         action="store_true",
-        help=f"Apply tracked metadata/*/llm_classifications.json only (no LLM, "
-        f"no keyword fallback; also {REPLAY_ENV}=1)",
+        help="Apply tracked metadata/*/llm_classifications.json only (no LLM, "
+        "no keyword fallback)",
     )
     parser.add_argument(
         "--timings-json",
@@ -650,10 +643,12 @@ def main() -> None:
     print(f"  stages: {', '.join(stages)}")
     if years:
         print(f"  years:  {', '.join(years)}")
-    replay = replay_requested(args.replay_classifications)
+    replay = args.replay_classifications
     print(f"  force={args.force} yes={args.yes} replay_classifications={replay}")
 
     timings: dict[str, float] = {}
+    if args.timings_json:
+        args.timings_json.parent.mkdir(parents=True, exist_ok=True)
     for stage in stages:
         print(f"\n######## stage: {stage} ########")
         started = time.monotonic()

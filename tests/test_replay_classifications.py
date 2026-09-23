@@ -78,12 +78,17 @@ class TestPipelineReplay(unittest.TestCase):
                 self.assertIn("llm_classifications.json", str(raised.exception))
                 self.assertEqual(calls, [], "must not fall back to another classifier")
 
-    def test_replay_env_var(self) -> None:
-        with mock.patch.dict("os.environ", {self.pipe.REPLAY_ENV: "1"}):
-            self.assertTrue(self.pipe.replay_requested(False))
-        with mock.patch.dict("os.environ", {self.pipe.REPLAY_ENV: ""}):
-            self.assertFalse(self.pipe.replay_requested(False))
-            self.assertTrue(self.pipe.replay_requested(True))
+    def test_timings_json_creates_missing_parent(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "tests" / "sections" / "stage_timings.json"
+            argv = ["pipeline", "--only", "keys", "--yes", "--timings-json", str(out)]
+            with (
+                mock.patch.object(sys, "argv", argv),
+                mock.patch.object(self.pipe, "stage_keys") as stage_keys,
+            ):
+                self.pipe.main()
+            stage_keys.assert_called_once()
+            self.assertEqual(list(json.loads(out.read_text(encoding="utf-8"))), ["keys"])
 
 
 class TestMcReplay(unittest.TestCase):

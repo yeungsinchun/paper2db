@@ -32,7 +32,7 @@ export LLM_MODEL=meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
 ./pipeline --from classify-mc --force
 ```
 
-When no API key is set, both MC and LQ use the keyword classifiers (which rewrite `metadata/*/llm_classifications.json`). To rebuild with the tracked, reviewed decisions instead - no LLM call, no keyword fallback, tracked JSON untouched - pass `--replay-classifications` (or set `PAPER2DB_REPLAY_CLASSIFICATIONS=1`); it fails if a tracked file is missing or lacks a built question.
+When no API key is set, both MC and LQ use the keyword classifiers (which rewrite `metadata/*/llm_classifications.json`). To rebuild with the tracked, reviewed decisions instead - no LLM call, no keyword fallback, tracked JSON untouched - pass `--replay-classifications`; it fails if a tracked file is missing or lacks a built question.
 
 ## Regenerating `tests/reconstructed/` and `tests/sections/`
 
