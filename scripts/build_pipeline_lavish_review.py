@@ -441,10 +441,10 @@ def write_html(audit: dict, assets: dict) -> None:
 
     <section class="block" id="flow">
       <h2>Pipeline flow</h2>
-      <p class="lede">Day-to-day entry is <code>./pipeline</code>. Scripts under <code>scripts/</code> and <code>segment</code> are internals.</p>
+      <p class="lede">Day-to-day entry is <code>./pipeline</code>. Scripts under <code>scripts/</code> and <code>segment.py</code> are internals.</p>
       <div class="flow" aria-label="pipeline stages diagram">
         <svg viewBox="0 0 980 170" width="100%" role="img" id="pipeline-flow">
-          <title>PDF papers flow through ten stages into classified crops and Lavish reviews</title>
+          <title>PDF papers flow through eleven stages into section banks and Lavish reviews</title>
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="#8ec5c0" />
