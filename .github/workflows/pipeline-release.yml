@@ -30,6 +30,9 @@ jobs:
       BRANCH: ${{ github.head_ref || github.ref_name }}
       SHA: ${{ github.event.pull_request.head.sha || github.sha }}
       PYTHONUNBUFFERED: "1"
+      # Ubuntu's tesseract is OpenMP-built; with the pipeline's parallel OCR
+      # workers the threads oversubscribe the runner (~14x slower, job timeout).
+      OMP_THREAD_LIMIT: "1"
     steps:
       - uses: actions/checkout@v4
         with:
