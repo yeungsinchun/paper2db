@@ -27,7 +27,7 @@ You can also apply a precomputed JSON of LLM decisions:
 
 --replay applies the tracked metadata/mc/llm_classifications.json verbatim with
 no API call and without rewriting it; it fails if the file is missing or does
-not cover every selected question (used by CI, see ./pipeline --replay-classifications).
+not cover every selected question (used by CI, see ./pipeline.py --replay-classifications).
 """
 from __future__ import annotations
 

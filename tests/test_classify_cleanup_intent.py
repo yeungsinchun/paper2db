@@ -79,7 +79,7 @@ class TestClassificationSplitArtifacts(unittest.TestCase):
     def test_mc_classification_list_contract(self) -> None:
         path = ROOT / "tests" / "sections" / "mc_classification.json"
         if not path.is_file():
-            self.skipTest("tests/sections/ not built (run ./pipeline)")
+            self.skipTest("tests/sections/ not built (run ./pipeline.py)")
         rows = json.loads(path.read_text(encoding="utf-8"))
         self.assertIsInstance(rows, list)
         self.assertGreater(len(rows), 100)
@@ -99,7 +99,7 @@ class TestClassificationSplitArtifacts(unittest.TestCase):
     def test_lq_classification_list_contract(self) -> None:
         path = ROOT / "tests" / "sections" / "lq_classification.json"
         if not path.is_file():
-            self.skipTest("tests/sections/ not built (run ./pipeline)")
+            self.skipTest("tests/sections/ not built (run ./pipeline.py)")
         rows = json.loads(path.read_text(encoding="utf-8"))
         self.assertIsInstance(rows, list)
         self.assertGreater(len(rows), 50)
@@ -851,7 +851,7 @@ class TestLqPerformanceYearsMerge(unittest.TestCase):
             out.parent.mkdir(parents=True)
 
             def write_year_md(year: str, note: str) -> None:
-                (perf_dir / f"{year} performance.md").write_text(
+                (perf_dir / f"{year}perf.md").write_text(
                     "\n".join(
                         [
                             "## Paper 1",

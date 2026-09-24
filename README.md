@@ -10,17 +10,17 @@ source .venv/bin/activate
 pip install -r requirements.txt
 # tesseract must be on PATH (OCR)
 
-./pipeline
+./pipeline.py
 ```
 
-That one command walks every stage from `paper/` PDFs to `tests/reconstructed/` papers and `tests/sections/` curriculum-section folders with review PDFs. Generated artifacts in both trees are gitignored - regenerate them rather than committing them (`./pipeline --force --yes` rebuilds everything). The tracked inputs are listed below. It pauses at a few review gates (MC anchors, optional LQ crops, uncertain classifications). Pass `--yes` to print the same paths without waiting for Enter.
+That one command walks every stage from `paper/` PDFs to `tests/reconstructed/` papers and `tests/sections/` curriculum-section folders with review PDFs. Generated artifacts in both trees are gitignored - regenerate them rather than committing them (`./pipeline.py --force --yes` rebuilds everything). The tracked inputs are listed below. It pauses at a few review gates (MC anchors, optional LQ crops, uncertain classifications). Pass `--yes` to print the same paths without waiting for Enter.
 
 ```bash
-./pipeline --years 2025          # one year
-./pipeline --from classify-mc    # resume mid-pipeline
-./pipeline --only keys,section-pdfs
-./pipeline --force --yes         # rebuild everything, no prompts
-./pipeline --list-stages
+./pipeline.py --years 2025          # one year
+./pipeline.py --from classify-mc    # resume mid-pipeline
+./pipeline.py --only keys,section-pdfs
+./pipeline.py --force --yes         # rebuild everything, no prompts
+./pipeline.py --list-stages
 ```
 
 Optional LLM for MC and LQ classification (better than keywords when available):
@@ -29,7 +29,7 @@ Optional LLM for MC and LQ classification (better than keywords when available):
 export LLM_API_KEY=...           # or OPENAI_API_KEY / TOGETHER_API_KEY
 export LLM_BASE_URL=https://api.together.xyz/v1   # optional
 export LLM_MODEL=meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
-./pipeline --from classify-mc --force
+./pipeline.py --from classify-mc --force
 ```
 
 When no API key is set, both MC and LQ use the keyword classifiers (which rewrite `metadata/*/llm_classifications.json`). To rebuild with the tracked, reviewed decisions instead - no LLM call, no keyword fallback, tracked JSON untouched - pass `--replay-classifications`; it fails if a tracked file is missing or lacks a built question.
@@ -39,11 +39,11 @@ When no API key is set, both MC and LQ use the keyword classifiers (which rewrit
 Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.gitignore`). Rebuild them from `paper/` with:
 
 ```bash
-./pipeline --force --yes      # all years, all stages, no review prompts
-./pipeline --years 2025 --force --yes   # one year
+./pipeline.py --force --yes      # all years, all stages, no review prompts
+./pipeline.py --years 2025 --force --yes   # one year
 ```
 
-`tests/sections/` is the generated curriculum-section bank (PNG copies, CSVs, section PDFs, `quality_audit.json`, OCR caches, `candidate_performance.json`) - named alongside `tests/reconstructed/` since both are pipeline output trees under `tests/`, not fixtures. The only files under `tests/reconstructed/` that git tracks are durable inputs: `tests/reconstructed/lq/<year>/starts.json` (LQ page ranges, preserved by normal `lq-pages` runs). Everything under `tests/sections/` is reproducible from `paper/` with `./pipeline`, so never `git add` crops, section PDFs or `.lavish/` HTML.
+`tests/sections/` is the generated curriculum-section bank (PNG copies, CSVs, section PDFs, `quality_audit.json`, OCR caches, `candidate_performance.json`) - named alongside `tests/reconstructed/` since both are pipeline output trees under `tests/`, not fixtures. The only files under `tests/reconstructed/` that git tracks are durable inputs: `tests/reconstructed/lq/<year>/starts.json` (LQ page ranges, preserved by normal `lq-pages` runs). Everything under `tests/sections/` is reproducible from `paper/` with `./pipeline.py`, so never `git add` crops, section PDFs or `.lavish/` HTML.
 
 `metadata/{mc,lq}/llm_classifications.json` holds the classification decisions themselves (which section(s) each question belongs to, and why) - the one output that costs paid, nondeterministic LLM calls to reproduce, so it stays tracked and is replayable with `--from-json` even when nothing else in `tests/sections/` is rebuilt.
 
@@ -62,9 +62,9 @@ Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.g
 | `tests/sections/lq/` | Same for long questions, + `candidate_performance.json` (generated) |
 | `metadata/mc/llm_classifications.json` | Tracked MC classification decisions (LLM or keyword backend) |
 | `metadata/lq/llm_classifications.json` | Tracked LQ classification decisions |
-| `scripts/` | Stage implementations (called by `./pipeline`) |
+| `scripts/` | Stage implementations (called by `./pipeline.py`) |
 | `scripts/answer_key_overrides.json` | Hand-verified MC answer-key patches where OCR is unreliable |
-| `segment.py` | Low-level single-PDF tool (prefer `./pipeline`) |
+| `segment.py` | Low-level single-PDF tool (prefer `./pipeline.py`) |
 | `.lavish/pipeline-review/` | Step-by-step HTML evidence for captain review |
 | `.lavish/classified-review/` | MC section bank HTML |
 | `.lavish/lq-classified-review/` | LQ section bank HTML |
@@ -90,18 +90,18 @@ Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.g
 .venv/bin/python -m unittest discover -s tests   # seconds; needs no build
 ```
 
-The suite runs against fixtures (`tests/fixtures/lq_ocr/`, temp trees) and covers the Book 5 listing rule, the reconstructed layout joiner and the upright section-PDF packing. Tests that inspect generated banks (`tests/sections/`, `tests/reconstructed/`) skip until `./pipeline` has built them. A full rebuild takes tens of minutes (page export and OCR dominate), so when evidence is needed build one track - e.g. `./pipeline --only lq-pages,lq-crops,lq-answers,classify-lq,keys,section-pdfs --yes` for the LQ banks (`section-pdfs` needs `keys`) - or one year with `--years`, rather than everything.
+The suite runs against fixtures (`tests/fixtures/lq_ocr/`, temp trees) and covers the Book 5 listing rule, the reconstructed layout joiner and the upright section-PDF packing. Tests that inspect generated banks (`tests/sections/`, `tests/reconstructed/`) skip until `./pipeline.py` has built them. A full rebuild takes tens of minutes (page export and OCR dominate), so when evidence is needed build one track - e.g. `./pipeline.py --only lq-pages,lq-crops,lq-answers,classify-lq,keys,section-pdfs --yes` for the LQ banks (`section-pdfs` needs `keys`) - or one year with `--years`, rather than everything.
 
 ## CI and releases
 
-`.github/workflows/pipeline-release.yml` runs on pushes to `main` and `fm/p2db-fix-paper2db-reconstructed-mc-lq-layout-ff`, on PRs into either, and on manual dispatch. On a clean Ubuntu runner it installs tesseract + `requirements.txt`, runs `./pipeline --yes --replay-classifications` over every year, fails if the build touched any tracked file, and runs the unit tests with generated-bank checks required (a "not built" skip fails the job). `scripts/package_release.py` then publishes a prerelease `build-<branch>-<sha7>` and moves the rolling `latest-<branch>` prerelease (skipped for fork PRs). Assets: `mc-combined.pdf`, `lq-combined.pdf`, `{mc,lq}-per-year.zip`, `{mc,lq}-sections.zip` (section `combined.pdf` + answer/performance PDFs), `answer_keys.json`, `candidate_performance.json`, `quality_audit.json`, `stage_timings.json`; release notes list commit, branch, stage timings and assets.
+`.github/workflows/pipeline-release.yml` runs on pushes to `main` and `fm/p2db-fix-paper2db-reconstructed-mc-lq-layout-ff`, on PRs into either, and on manual dispatch. On a clean Ubuntu runner it installs tesseract + `requirements.txt`, runs `./pipeline.py --yes --replay-classifications` over every year, fails if the build touched any tracked file, and runs the unit tests with generated-bank checks required (a "not built" skip fails the job). `scripts/package_release.py` then publishes a prerelease `build-<branch>-<sha7>` and moves the rolling `latest-<branch>` prerelease (skipped for fork PRs). Assets: `mc-combined.pdf`, `lq-combined.pdf`, `{mc,lq}-per-year.zip`, `{mc,lq}-sections.zip` (section `combined.pdf` + answer/performance PDFs), `answer_keys.json`, `candidate_performance.json`, `quality_audit.json`, `stage_timings.json`; release notes list commit, branch, stage timings and assets.
 
 ## Quality bar
 
 Target: **≤5%** of questions need human manual tuning, including every entry in `scripts/overrides_YYYY.json`.
 
 ```bash
-./pipeline --only lavish
+./pipeline.py --only lavish
 # or:
 python scripts/quality_audit.py --strict
 ```
@@ -120,4 +120,4 @@ Captain review surface: `.lavish/pipeline-review/index.html` (step-by-step inter
 
 ## Low-level tools
 
-`./segment.py` and `scripts/*.py` remain available for single-paper debugging. Day-to-day use should be `./pipeline` only.
+`./segment.py` and `scripts/*.py` remain available for single-paper debugging. Day-to-day use should be `./pipeline.py` only.

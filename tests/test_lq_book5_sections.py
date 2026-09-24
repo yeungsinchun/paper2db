@@ -354,7 +354,7 @@ def _generated_bank_is_current() -> bool:
 
 @unittest.skipUnless(
     _generated_bank_is_current(),
-    "tests/sections/ and tests/reconstructed/ are generated (gitignored); run ./pipeline first",
+    "tests/sections/ and tests/reconstructed/ are generated (gitignored); run ./pipeline.py first",
 )
 class TestGeneratedCh25Bank(unittest.TestCase):
     """Checks the real classify-lq + section-pdfs output when it has been built."""

@@ -22,12 +22,12 @@ Human gates (skipped with --yes, but paths are still printed):
   2. After classify - skim tests/sections/mc/uncertain.csv (and LQ section folders).
 
 Usage:
-  ./pipeline
-  ./pipeline --years 2024 2025
-  ./pipeline --from classify-mc
-  ./pipeline --only keys,classify-mc,section-pdfs
-  ./pipeline --yes --force
-  ./pipeline --yes --force --replay-classifications   # CI: no LLM, tracked JSON only
+  ./pipeline.py
+  ./pipeline.py --years 2024 2025
+  ./pipeline.py --from classify-mc
+  ./pipeline.py --only keys,classify-mc,section-pdfs
+  ./pipeline.py --yes --force
+  ./pipeline.py --yes --force --replay-classifications   # CI: no LLM, tracked JSON only
 
 --replay-classifications makes classify-mc and classify-lq apply
 metadata/{mc,lq}/llm_classifications.json verbatim - no LLM call, no keyword
@@ -447,7 +447,7 @@ def stage_classify_mc(
         f"  {uncertain.relative_to(ROOT) if uncertain.is_file() else '(missing)'}\n"
         "  tests/sections/mc/<book>/<section>/\n\n"
         "Fix keyword OVERRIDES or edit llm_classifications.json then:\n"
-        "  ./pipeline --only classify-mc --force\n"
+        "  ./pipeline.py --only classify-mc --force\n"
         "  # or: python scripts/classify_mc_llm.py --from-json ...",
         yes=yes,
     )
@@ -466,8 +466,8 @@ def stage_lq_performance(years: list[str] | None) -> None:
 
 def lq_performance_source_years() -> set[str]:
     years: set[str] = set()
-    for path in (ROOT / "paper" / "performance").glob("* performance.md"):
-        match = re.fullmatch(r"(20\d{2}) performance\.md", path.name)
+    for path in (ROOT / "paper" / "performance").glob("*perf.md"):
+        match = re.fullmatch(r"(20\d{2})perf\.md", path.name)
         if match:
             years.add(match.group(1))
     return years
@@ -523,7 +523,7 @@ def stage_section_pdfs() -> None:
     if not keys.is_file():
         raise SystemExit(
             f"Missing {keys}. Run keys stage first "
-            "(./pipeline --only keys)."
+            "(./pipeline.py --only keys)."
         )
     run_script("combine_section_pdfs.py", "--keys", str(keys))
     ensure_lq_performance()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Extract Paper 1B (LQ) candidate-performance notes into JSON.
 
-Reads OCR markdown under paper/performance/<year> performance.md and writes
+Reads OCR markdown under paper/performance/<year>perf.md and writes
 tests/sections/lq/candidate_performance.json keyed by year -> question -> text.
 --years merges selected years into any existing JSON; other years are kept.
 """
@@ -104,9 +104,9 @@ def main() -> None:
                 if isinstance(notes, dict)
             }
 
-    paths = sorted(PERF_DIR.glob("* performance.md"))
+    paths = sorted(PERF_DIR.glob("*perf.md"))
     for path in paths:
-        m = re.match(r"(20\d{2})", path.name)
+        m = re.fullmatch(r"(20\d{2})perf\.md", path.name)
         if not m:
             continue
         year = m.group(1)

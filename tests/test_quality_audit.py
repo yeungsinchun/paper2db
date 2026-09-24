@@ -48,7 +48,7 @@ class TestQualityAudit(unittest.TestCase):
 
     def test_report_counts_overrides_toward_five_percent(self) -> None:
         if not (ROOT / "tests" / "sections" / "mc" / "classification.csv").is_file():
-            self.skipTest("tests/sections/ not built (run ./pipeline)")
+            self.skipTest("tests/sections/ not built (run ./pipeline.py)")
         result = subprocess.run(
             [
                 sys.executable,
@@ -148,7 +148,7 @@ class TestQualityAudit(unittest.TestCase):
 
 class TestPipelineLavishWiring(unittest.TestCase):
     def test_stage_lavish_runs_quality_and_three_builders(self) -> None:
-        pipe = load_module("paper2db_pipeline", ROOT / "pipeline")
+        pipe = load_module("paper2db_pipeline", ROOT / "pipeline.py")
         calls: list[str] = []
 
         def fake_run(script_name: str, *args: str) -> None:

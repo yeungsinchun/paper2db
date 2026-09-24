@@ -68,7 +68,7 @@ class TestCombineReconstructed(unittest.TestCase):
             self.assertEqual(len(fitz.open(lq / "combined.pdf")), 4)
 
     def test_lq_crops_stage_rebuilds_top_level_combined_even_when_years_are_ready(self) -> None:
-        pipe = load_module("paper2db_pipeline", ROOT / "pipeline")
+        pipe = load_module("paper2db_pipeline", ROOT / "pipeline.py")
         calls: list[tuple[str, tuple[str, ...]]] = []
 
         def fake_run(script_name: str, *args: str) -> None:

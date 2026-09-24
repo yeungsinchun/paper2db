@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect a finished ./pipeline build into release assets + short notes.
+"""Collect a finished ./pipeline.py build into release assets + short notes.
 
 Used by .github/workflows/pipeline-release.yml after a full build:
   dist/mc-combined.pdf, dist/lq-combined.pdf   all years, one A4 PDF each

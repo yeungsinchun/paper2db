@@ -81,7 +81,7 @@ class TestPipelineReplay(unittest.TestCase):
     def test_timings_json_creates_missing_parent(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / "tests" / "sections" / "stage_timings.json"
-            argv = ["pipeline", "--only", "keys", "--yes", "--timings-json", str(out)]
+            argv = ["pipeline.py", "--only", "keys", "--yes", "--timings-json", str(out)]
             with (
                 mock.patch.object(sys, "argv", argv),
                 mock.patch.object(self.pipe, "stage_keys") as stage_keys,

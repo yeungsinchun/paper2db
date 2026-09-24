@@ -1,4 +1,4 @@
-# Full ./pipeline build on a clean runner, unit tests against the built banks,
+# Full ./pipeline.py build on a clean runner, unit tests against the built banks,
 # and a GitHub prerelease with the reconstructed papers and section banks.
 # Classification replays the tracked metadata/*/llm_classifications.json: no
 # LLM calls, no secrets.
@@ -56,7 +56,7 @@ jobs:
 
       - name: Run full pipeline (replay tracked classifications)
         run: |
-          ./pipeline --yes --replay-classifications \
+          ./pipeline.py --yes --replay-classifications \
             --timings-json tests/sections/stage_timings.json
 
       - name: Tracked inputs unchanged by the build
@@ -68,7 +68,7 @@ jobs:
         run: |
           set -o pipefail
           python -m unittest discover -s tests -v 2>&1 | tee unittest.log
-          if grep -E "skipped .*(not built|run \./pipeline)" unittest.log; then
+          if grep -E "skipped .*(not built|run \./pipeline.py)" unittest.log; then
             echo "::error::generated-bank checks were skipped after a full build"
             exit 1
           fi

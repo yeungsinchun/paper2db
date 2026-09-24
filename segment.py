@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Segment one HKDSE Physics exam PDF (low-level; prefer ./pipeline).
+"""Segment one HKDSE Physics exam PDF (low-level; prefer ./pipeline.py).
 
 For a reproducible full run over paper/{mc,lq,ans}/, use:
 
-  ./pipeline
+  ./pipeline.py
 
 Paper 1A (MC) two-step workflow for a single PDF:
   Step 1 - place anchors (blue dots) for review:
@@ -13,7 +13,7 @@ Paper 1A (MC) two-step workflow for a single PDF:
     ./segment.py paper.pdf tests/reconstructed/mc/2012 --step split --intermediate intermediate/mc/2012
 
 Paper 1B (LQ): pages-only split (pages/, starts.json, combined.pdf). Does not
-write or delete q*.png; ./pipeline runs crop_lq_from_pages afterward.
+write or delete q*.png; ./pipeline.py runs crop_lq_from_pages afterward.
 Page renders under tests/reconstructed/**/pages/ are gitignored.
 
 Usage:

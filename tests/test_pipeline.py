@@ -1,4 +1,4 @@
-"""Behavioral checks for the ./pipeline entry point."""
+"""Behavioral checks for the ./pipeline.py entry point."""
 from __future__ import annotations
 
 import importlib.machinery
@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def load_pipeline():
-    path = ROOT / "pipeline"
+    path = ROOT / "pipeline.py"
     loader = importlib.machinery.SourceFileLoader("paper2db_pipeline", str(path))
     spec = importlib.util.spec_from_loader(loader.name, loader)
     assert spec and spec.loader
@@ -28,7 +28,7 @@ def load_pipeline():
 class TestPipelineCli(unittest.TestCase):
     def test_list_stages_prints_all(self) -> None:
         result = subprocess.run(
-            [sys.executable, str(ROOT / "pipeline"), "--list-stages"],
+            [sys.executable, str(ROOT / "pipeline.py"), "--list-stages"],
             cwd=ROOT,
             check=True,
             capture_output=True,
@@ -40,7 +40,7 @@ class TestPipelineCli(unittest.TestCase):
 
     def test_unknown_only_stage_exits(self) -> None:
         result = subprocess.run(
-            [sys.executable, str(ROOT / "pipeline"), "--only", "not-a-stage"],
+            [sys.executable, str(ROOT / "pipeline.py"), "--only", "not-a-stage"],
             cwd=ROOT,
             check=False,
             capture_output=True,
@@ -170,7 +170,7 @@ class TestPipelineHelpers(unittest.TestCase):
                     tmp_path = Path(tmp)
                     performance = tmp_path / "paper" / "performance"
                     performance.mkdir(parents=True)
-                    (performance / "2024 performance.md").write_text(
+                    (performance / "2024perf.md").write_text(
                         "## Paper 1\n### Section B\n", encoding="utf-8"
                     )
                     keys = tmp_path / "tests" / "sections" / "mc" / "answer_keys.json"
@@ -200,7 +200,7 @@ class TestPipelineHelpers(unittest.TestCase):
             performance = tmp_path / "paper" / "performance"
             performance.mkdir(parents=True)
             for year in ("2023", "2024"):
-                (performance / f"{year} performance.md").write_text(
+                (performance / f"{year}perf.md").write_text(
                     "## Paper 1\n### Section B\n", encoding="utf-8"
                 )
             perf = tmp_path / "tests" / "sections" / "lq" / "candidate_performance.json"

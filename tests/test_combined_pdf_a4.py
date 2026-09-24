@@ -151,7 +151,7 @@ class TestSection25Heading(unittest.TestCase):
 
     def test_section_25_mc_and_lq_open_with_heading(self) -> None:
         if not (MC_25.is_file() and LQ_25.is_file()):
-            self.skipTest("tests/sections/ not built (run ./pipeline)")
+            self.skipTest("tests/sections/ not built (run ./pipeline.py)")
         for path in (MC_25, LQ_25):
             document = fitz.open(path)
             try:
@@ -263,7 +263,7 @@ class TestSection25Heading(unittest.TestCase):
     def test_classified_lq_answers_pdf_pages_are_a4(self) -> None:
         answers = sorted((ROOT / "tests" / "sections" / "lq").glob("*/*/answers.pdf"))
         if not answers:
-            self.skipTest("tests/sections/ not built (run ./pipeline)")
+            self.skipTest("tests/sections/ not built (run ./pipeline.py)")
         for path in answers:
             document = fitz.open(path)
             try:

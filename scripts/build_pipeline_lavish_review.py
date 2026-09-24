@@ -416,7 +416,7 @@ def write_html(audit: dict, assets: dict) -> None:
       <div class="verdict-pill {status_class}">{status_text}</div>
       <h1>paper2db pipeline evidence</h1>
       <p>
-        One command (<code>./pipeline</code>) turns HKDSE Physics PDFs into classified empty
+        One command (<code>./pipeline.py</code>) turns HKDSE Physics PDFs into classified empty
         question crops for MC and long questions. This page walks the stages with intermediate
         artifacts, final banks, and the measured manual-tuning rate.
       </p>
@@ -441,7 +441,7 @@ def write_html(audit: dict, assets: dict) -> None:
 
     <section class="block" id="flow">
       <h2>Pipeline flow</h2>
-      <p class="lede">Day-to-day entry is <code>./pipeline</code>. Scripts under <code>scripts/</code> and <code>segment.py</code> are internals.</p>
+      <p class="lede">Day-to-day entry is <code>./pipeline.py</code>. Scripts under <code>scripts/</code> and <code>segment.py</code> are internals.</p>
       <div class="flow" aria-label="pipeline stages diagram">
         <svg viewBox="0 0 980 170" width="100%" role="img" id="pipeline-flow">
           <title>PDF papers flow through eleven stages into section banks and Lavish reviews</title>
@@ -476,10 +476,10 @@ def write_html(audit: dict, assets: dict) -> None:
           <tbody>{stage_rows}</tbody>
         </table>
       </div>
-      <div class="cmd" style="margin-top:14px">./pipeline
-./pipeline --years 2024 2025
-./pipeline --from classify-mc
-./pipeline --only lavish
+      <div class="cmd" style="margin-top:14px">./pipeline.py
+./pipeline.py --years 2024 2025
+./pipeline.py --from classify-mc
+./pipeline.py --only lavish
 python scripts/quality_audit.py --strict</div>
     </section>
 

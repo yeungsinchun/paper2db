@@ -12,7 +12,7 @@ classify_lq_keywords.py).
 
 --replay applies the tracked metadata/lq/llm_classifications.json verbatim with
 no API call and without rewriting it; it fails if the file is missing or lacks
-a decision for any selected question (used by ./pipeline --replay-classifications).
+a decision for any selected question (used by ./pipeline.py --replay-classifications).
 Any LLM failure aborts before write_outputs so nested outputs stay unchanged.
 
 Env: same as classify_mc_llm.py (LLM_API_KEY / OPENAI_API_KEY / TOGETHER_API_KEY).
