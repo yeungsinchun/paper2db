@@ -2,19 +2,24 @@
 """HKDSE Physics paper2db - single entry point for the full pipeline.
 
 Reads PDFs under paper/{mc,lq,ans}/ and writes:
-  output/<year>/          MC question crops + combined.pdf
-  output/lq/<year>/       LQ pages, whole-page qN.png, answer crops, A4 review PDFs
-  classified/mc/          MC section folders, CSVs, section PDFs, answer keys
-  classified/lq/          LQ section folders, CSVs, section PDFs
+  intermediate/mc/<year>/   MC anchor review PDF + OCR meta (pre-split)
+  tests/reconstructed/mc/<year>/  MC question crops + per-year combined.pdf
+  tests/reconstructed/mc/combined.pdf  every year's MC paper, one A4 PDF
+  tests/reconstructed/lq/<year>/  LQ pages, whole-page qN.png, answer crops, A4 review PDFs
+  tests/reconstructed/lq/combined.pdf  every year's LQ paper, one A4 PDF
+  tests/sections/mc/       MC section folders, CSVs, section PDFs, answer keys
+  tests/sections/lq/       LQ section folders, CSVs, section PDFs, candidate_performance.json
+  metadata/mc/llm_classifications.json  tracked MC classification decisions
+  metadata/lq/llm_classifications.json  tracked LQ classification decisions
   .lavish/pipeline-review/        step-by-step HTML (intermediates + finals)
   .lavish/classified-review/      MC section bank HTML
   .lavish/lq-classified-review/   LQ section bank HTML
-  classified/quality_audit.json   crop/classification failure rates
+  tests/sections/quality_audit.json   crop/classification failure rates
 
 Human gates (skipped with --yes, but paths are still printed):
-  1. After MC anchors - review each intermediate/anchor.pdf (blue dot beside
-     the question number, not options or diagrams) before split.
-  2. After classify - skim classified/mc/uncertain.csv (and LQ section folders).
+  1. After MC anchors - review each intermediate/mc/<year>/anchor.pdf (blue dot
+     beside the question number, not options or diagrams) before split.
+  2. After classify - skim tests/sections/mc/uncertain.csv (and LQ section folders).
 
 Usage:
   ./pipeline
@@ -44,6 +49,7 @@ STAGES = (
     "lq-answers",
     "keys",
     "classify-mc",
+    "lq-performance",
     "classify-lq",
     "section-pdfs",
     "lavish",
@@ -74,7 +80,7 @@ def run_script(script_name: str, *args: str) -> None:
 
 
 def run_segment(*args: str) -> None:
-    cmd = [python_executable(), str(ROOT / "segment"), *args]
+    cmd = [python_executable(), str(ROOT / "segment.py"), *args]
     print(f"$ {' '.join(cmd)}")
     subprocess.run(cmd, check=True, cwd=str(ROOT))
 
@@ -125,8 +131,18 @@ def discover_answer_pdfs(years: list[str] | None) -> list[tuple[Path, str]]:
     return papers
 
 
+def mc_dir() -> Path:
+    """tests/reconstructed/mc/ - MC crops per year plus the all-years combined.pdf."""
+    return ROOT / "tests" / "reconstructed" / "mc"
+
+
+def lq_dir() -> Path:
+    """tests/reconstructed/lq/ - LQ pages per year plus the all-years combined.pdf."""
+    return ROOT / "tests" / "reconstructed" / "lq"
+
+
 def mc_output_ready(year: str) -> bool:
-    year_dir = ROOT / "output" / year
+    year_dir = mc_dir() / year
     if not year_dir.is_dir():
         return False
     pngs = list(year_dir.glob("q*.png"))
@@ -134,7 +150,7 @@ def mc_output_ready(year: str) -> bool:
 
 
 def lq_pages_ready(year: str) -> bool:
-    year_dir = ROOT / "output" / "lq" / year
+    year_dir = lq_dir() / year
     pages = year_dir / "pages"
     return (
         (year_dir / "starts.json").is_file()
@@ -175,7 +191,7 @@ def lq_crops_ready(year: str) -> bool:
 
     Leftover within-page y-crops (or qN.png with no pages/ export) are not ready.
     """
-    year_dir = ROOT / "output" / "lq" / year
+    year_dir = lq_dir() / year
     meta_path = year_dir / "starts.json"
     pages_dir = year_dir / "pages"
     if not meta_path.is_file() or not pages_dir.is_dir():
@@ -203,12 +219,13 @@ def lq_crops_ready(year: str) -> bool:
 
 
 def lq_answers_ready(year: str) -> bool:
-    ans_dir = ROOT / "output" / "lq" / year / "ans"
+    ans_dir = lq_dir() / year / "ans"
     return ans_dir.is_dir() and len(list(ans_dir.glob("q*.png"))) >= 8
 
 
 def intermediate_dir(year: str) -> Path:
-    return ROOT / "output" / f"{year}-intermediate"
+    """intermediate/mc/<year>/ - MC anchor review PDF + OCR meta, ahead of split."""
+    return ROOT / "intermediate" / "mc" / year
 
 
 def pause(message: str, *, yes: bool) -> None:
@@ -243,7 +260,7 @@ def stage_mc_anchors(years: list[str] | None, *, force: bool, yes: bool) -> list
     reviewed: list[str] = []
     for pdf, year in papers:
         if mc_output_ready(year) and not force:
-            print(f"skip mc-anchors {year}: output/{year}/ already has crops (use --force)")
+            print(f"skip mc-anchors {year}: tests/reconstructed/mc/{year}/ already has crops (use --force)")
             continue
         inter = intermediate_dir(year)
         print(f"\n=== MC anchors: {year} ({pdf.name}) ===")
@@ -277,7 +294,7 @@ def stage_mc_anchors(years: list[str] | None, *, force: bool, yes: bool) -> list
 def stage_mc_split(years: list[str] | None, *, force: bool) -> None:
     papers = discover_mc_papers(years)
     for pdf, year in papers:
-        out = ROOT / "output" / year
+        out = mc_dir() / year
         if mc_output_ready(year) and not force:
             print(f"skip mc-split {year}: already ready")
             continue
@@ -298,12 +315,13 @@ def stage_mc_split(years: list[str] | None, *, force: bool) -> None:
             "--intermediate",
             str(inter),
         )
+    run_script("combine_reconstructed.py", "--kind", "mc")
 
 
 def stage_lq_pages(years: list[str] | None, *, force: bool) -> None:
     papers = discover_lq_papers(years)
     for pdf, year in papers:
-        out = ROOT / "output" / "lq" / year
+        out = lq_dir() / year
         if lq_pages_ready(year) and not force:
             print(f"skip lq-pages {year}: starts.json and pages/ already present")
             continue
@@ -323,14 +341,16 @@ def stage_lq_crops(years: list[str] | None, *, force: bool, yes: bool) -> None:
     need = [year for _, year in papers if force or not lq_crops_ready(year)]
     if not need:
         print("skip lq-crops: all selected years already have whole-page PNGs")
+        run_script("combine_reconstructed.py", "--kind", "lq")
         return
     run_script("crop_lq_from_pages.py", "--years", *need)
+    run_script("combine_reconstructed.py", "--kind", "lq")
     pause(
         "LQ PAGE REVIEW (optional but recommended)\n\n"
-        "Skim output/lq/<year>/questions.pdf. Each qN.png is whole exam page(s)\n"
+        "Skim tests/reconstructed/lq/<year>/combined.pdf. Each qN.png is whole exam page(s)\n"
         "(page_from..page_to) - no within-page crop. Fix starts.json and re-run\n"
         "lq-pages / lq-crops if a question's page range is wrong.\n\n"
-        + "\n".join(f"  output/lq/{y}/questions.pdf" for y in need),
+        + "\n".join(f"  tests/reconstructed/lq/{y}/combined.pdf" for y in need),
         yes=yes,
     )
 
@@ -341,14 +361,14 @@ def stage_lq_answers(years: list[str] | None, *, force: bool) -> None:
         print("No answer PDFs found under paper/ans.")
         return
     for pdf, year in answers:
-        out = ROOT / "output" / "lq" / year / "ans"
+        out = lq_dir() / year / "ans"
         if lq_answers_ready(year) and not force:
             print(f"skip lq-answers {year}: ans/ already present")
             continue
         # Only crop answers when we have an LQ paper for that year (or force).
-        lq_dir = ROOT / "output" / "lq" / year
-        if not lq_dir.is_dir() and not force:
-            print(f"skip lq-answers {year}: no output/lq/{year}/ yet")
+        year_lq = lq_dir() / year
+        if not year_lq.is_dir() and not force:
+            print(f"skip lq-answers {year}: no tests/reconstructed/lq/{year}/ yet")
             continue
         print(f"\n=== LQ answers: {year} ({pdf.name}) ===")
         out.mkdir(parents=True, exist_ok=True)
@@ -356,7 +376,7 @@ def stage_lq_answers(years: list[str] | None, *, force: bool) -> None:
 
 
 def answer_keys_path() -> Path:
-    return ROOT / "classified" / "mc" / "answer_keys.json"
+    return ROOT / "tests" / "sections" / "mc" / "answer_keys.json"
 
 
 def stage_keys(*, force: bool) -> None:
@@ -377,7 +397,7 @@ def stage_keys(*, force: bool) -> None:
 
 
 def stage_classify_mc(years: list[str] | None, *, force: bool, yes: bool) -> None:
-    classified = ROOT / "classified" / "mc" / "classification.csv"
+    classified = ROOT / "tests" / "sections" / "mc" / "classification.csv"
     if classified.is_file() and not force and not years:
         print("skip classify-mc: classification.csv exists (use --force or --years)")
     else:
@@ -393,7 +413,7 @@ def stage_classify_mc(years: list[str] | None, *, force: bool, yes: bool) -> Non
                 "(set LLM_API_KEY / OPENAI_API_KEY / TOGETHER_API_KEY for LLM) ==="
             )
             run_script("classify_mc_sections.py", *year_args)
-    uncertain = ROOT / "classified" / "mc" / "uncertain.csv"
+    uncertain = ROOT / "tests" / "sections" / "mc" / "uncertain.csv"
     count = 0
     if uncertain.is_file():
         lines = uncertain.read_text(encoding="utf-8").strip().splitlines()
@@ -402,7 +422,7 @@ def stage_classify_mc(years: list[str] | None, *, force: bool, yes: bool) -> Non
         "MC CLASSIFICATION REVIEW\n\n"
         f"Uncertain rows: {count}\n"
         f"  {uncertain.relative_to(ROOT) if uncertain.is_file() else '(missing)'}\n"
-        "  classified/mc/<book>/<section>/\n\n"
+        "  tests/sections/mc/<book>/<section>/\n\n"
         "Fix keyword OVERRIDES or edit llm_classifications.json then:\n"
         "  ./pipeline --only classify-mc --force\n"
         "  # or: python scripts/classify_mc_llm.py --from-json ...",
@@ -410,11 +430,52 @@ def stage_classify_mc(years: list[str] | None, *, force: bool, yes: bool) -> Non
     )
 
 
+def lq_performance_path() -> Path:
+    return ROOT / "tests" / "sections" / "lq" / "candidate_performance.json"
+
+
+def stage_lq_performance(years: list[str] | None) -> None:
+    year_args: list[str] = []
+    if years:
+        year_args = ["--years", *years]
+    run_script("extract_lq_performance.py", *year_args)
+
+
+def lq_performance_source_years() -> set[str]:
+    years: set[str] = set()
+    for path in (ROOT / "paper" / "performance").glob("* performance.md"):
+        match = re.fullmatch(r"(20\d{2}) performance\.md", path.name)
+        if match:
+            years.add(match.group(1))
+    return years
+
+
+def ensure_lq_performance(years: list[str] | None = None) -> None:
+    available = lq_performance_source_years()
+    required = available if years is None else available.intersection(years)
+    if not required:
+        return
+
+    path = lq_performance_path()
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        data = None
+    if not isinstance(data, dict):
+        stage_lq_performance(None)
+        return
+
+    missing = sorted(required.difference(data))
+    if missing:
+        stage_lq_performance(missing)
+
+
 def stage_classify_lq(years: list[str] | None, *, force: bool) -> None:
-    classified = ROOT / "classified" / "lq" / "classification.csv"
+    classified = ROOT / "tests" / "sections" / "lq" / "classification.csv"
     if classified.is_file() and not force and not years:
         print("skip classify-lq: classification.csv exists (use --force or --years)")
         return
+    ensure_lq_performance(years)
     year_args: list[str] = []
     if years:
         year_args = ["--years", *years]
@@ -437,10 +498,12 @@ def stage_section_pdfs() -> None:
             "(./pipeline --only keys)."
         )
     run_script("combine_section_pdfs.py", "--keys", str(keys))
+    ensure_lq_performance()
     run_script("combine_lq_section_pdfs.py")
 
 
 def stage_lavish() -> None:
+    ensure_lq_performance()
     run_script("quality_audit.py")
     run_script("build_mc_lavish_review.py")
     run_script("build_lq_lavish_review.py")
@@ -558,6 +621,8 @@ def main() -> None:
             stage_keys(force=args.force)
         elif stage == "classify-mc":
             stage_classify_mc(years, force=args.force, yes=args.yes)
+        elif stage == "lq-performance":
+            stage_lq_performance(years)
         elif stage == "classify-lq":
             stage_classify_lq(years, force=args.force)
         elif stage == "section-pdfs":
@@ -569,13 +634,15 @@ def main() -> None:
 
     print("\nDone.")
     print("Review PDFs:")
-    print("  MC sections: classified/mc/<book>/<section>/combined.pdf")
-    print("  LQ sections: classified/lq/<book>/<section>/questions.pdf")
+    print("  MC papers:   tests/reconstructed/mc/combined.pdf (per year: tests/reconstructed/mc/<year>/combined.pdf)")
+    print("  LQ papers:   tests/reconstructed/lq/combined.pdf (per year: tests/reconstructed/lq/<year>/combined.pdf)")
+    print("  MC sections: tests/sections/mc/<book>/<section>/combined.pdf")
+    print("  LQ sections: tests/sections/lq/<book>/<section>/combined.pdf")
     print("Lavish HTML (if lavish stage ran):")
     print("  Pipeline walkthrough: .lavish/pipeline-review/")
     print("  MC banks:             .lavish/classified-review/")
     print("  LQ banks:             .lavish/lq-classified-review/")
-    print("  Quality audit JSON:   classified/quality_audit.json")
+    print("  Quality audit JSON:   tests/sections/quality_audit.json")
 
 
 if __name__ == "__main__":

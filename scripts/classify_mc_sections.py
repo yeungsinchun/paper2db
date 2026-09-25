@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Classify output/ MC PNGs into Book 1-5 / Sections 1-27.
+"""Classify tests/reconstructed/mc/ MC PNGs into Book 1-5 / Sections 1-27.
 
 Writes:
-  classified/mc/<book>/<NN_section>/  (PNG copies; cross-topic Qs appear in each)
-  classified/mc/uncertain.csv
-  classified/mc/classification.csv|json
-  classified/mc/summary.json
-  classified/mc_classification.csv|json  (top-level split naming)
+  tests/sections/mc/<book>/<NN_section>/  (PNG copies; cross-topic Qs appear in each)
+  tests/sections/mc/uncertain.csv
+  tests/sections/mc/classification.csv|json
+  tests/sections/mc/summary.json
+  tests/sections/mc_classification.csv|json  (top-level split naming)
 
 --years merges into existing mc_ocr.* / classification.* and only refreshes
 touched section PNGs (same shared MC paths as classify_mc_llm.py).
@@ -27,8 +27,10 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "output"
-CLASSIFIED = ROOT / "classified" / "mc"
+OUTPUT = ROOT / "tests" / "reconstructed" / "mc"
+# Generated section bank (gitignored); CLASSIFIED kept as the attribute name
+# tests patch (mock.patch.object(module, "CLASSIFIED", ...)).
+CLASSIFIED = ROOT / "tests" / "sections" / "mc"
 OCR_CACHE = CLASSIFIED / "ocr_cache"
 
 
@@ -437,7 +439,7 @@ def _ocr_one(args: tuple[str, str, int]) -> dict:
         "Question": number,
         "Question statement": statement,
         "Option": options,
-        "PNG": f"output/{year}/q{number}.png",
+        "PNG": f"tests/reconstructed/mc/{year}/q{number}.png",
         "OCR": text,
     }
 
@@ -568,7 +570,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--years", nargs="*", default=None)
     parser.add_argument("--workers", type=int, default=6)
-    parser.add_argument("--skip-ocr", action="store_true", help="Reuse classified/mc/mc_ocr.json if present")
+    parser.add_argument("--skip-ocr", action="store_true", help="Reuse tests/sections/mc/mc_ocr.json if present")
     args = parser.parse_args()
 
     ensure_tree()

@@ -33,35 +33,38 @@ class TestGitignoreGenerated(unittest.TestCase):
     def test_generated_outputs_are_ignored(self) -> None:
         for path in (
             "output/lq/2099/pages/page01.png",
-            "output/lq/2024/q1.png",
-            "output/lq/2024/ans/q1.png",
+            "tests/reconstructed/lq/2024/q1.png",
+            "tests/reconstructed/lq/2024/ans/q1.png",
             "output/lq/2024/combined.pdf",
             "output/2024/q1.png",
             "output/2024/combined.pdf",
             "output/2024-intermediate/anchor.pdf",
-            "reconstructed/mc/combined.pdf",
             "reconstructed/mc/2024/q1.png",
-            "reconstructed/lq/2024/q1.png",
-            "reconstructed/lq/2024/pages/page01.png",
-            "classified/mc/answer_keys.json",
-            "classified/mc/ocr_cache/2024/q1.txt",
-            "classified/mc/01_Heat/1_Temperature/combined.pdf",
-            "classified/lq/classification.csv",
-            "classified/lq/01_Heat/1_Temperature/questions.pdf",
-            "classified/mc_classification.json",
-            "classified/quality_audit.json",
+            "reconstructed/lq/2024/starts.json",
+            "tests/reconstructed/mc/combined.pdf",
+            "tests/reconstructed/mc/2024/q1.png",
+            "tests/reconstructed/lq/2024/q1.png",
+            "tests/reconstructed/lq/2024/pages/page01.png",
+            "intermediate/mc/2024/anchor.pdf",
+            "tests/sections/mc/answer_keys.json",
+            "tests/sections/mc/ocr_cache/2024/q1.txt",
+            "tests/sections/mc/01_Heat/1_Temperature/combined.pdf",
+            "tests/sections/lq/classification.csv",
+            "tests/sections/lq/candidate_performance.json",
+            "tests/sections/lq/01_Heat/1_Temperature/combined.pdf",
+            "tests/sections/mc_classification.json",
+            "tests/sections/quality_audit.json",
             ".lavish/lq-classified-review/index.html",
         ):
             self.assertTrue(self._ignored(path), f"{path} should be gitignored")
 
     def test_hand_tuned_inputs_not_ignored(self) -> None:
         for path in (
-            "output/lq/2024/starts.json",
-            "reconstructed/lq/2024/starts.json",
-            "classified/mc/llm_classifications.json",
-            "classified/lq/llm_classifications.json",
-            "classified/lq/candidate_performance.json",
+            "tests/reconstructed/lq/2024/starts.json",
+            "metadata/mc/llm_classifications.json",
+            "metadata/lq/llm_classifications.json",
             "scripts/overrides_2018.json",
+            "scripts/answer_key_overrides.json",
         ):
             self.assertFalse(self._ignored(path), f"{path} should not be gitignored")
 
@@ -70,13 +73,13 @@ class TestClassificationSplitArtifacts(unittest.TestCase):
     """Shipped public classification contracts after the rename split."""
 
     def test_ambiguous_top_level_names_absent(self) -> None:
-        self.assertFalse((ROOT / "classified" / "classification.csv").exists())
-        self.assertFalse((ROOT / "classified" / "classification.json").exists())
+        self.assertFalse((ROOT / "tests" / "sections" / "classification.csv").exists())
+        self.assertFalse((ROOT / "tests" / "sections" / "classification.json").exists())
 
     def test_mc_classification_list_contract(self) -> None:
-        path = ROOT / "classified" / "mc_classification.json"
+        path = ROOT / "tests" / "sections" / "mc_classification.json"
         if not path.is_file():
-            self.skipTest("classified/ not built (run ./pipeline)")
+            self.skipTest("tests/sections/ not built (run ./pipeline)")
         rows = json.loads(path.read_text(encoding="utf-8"))
         self.assertIsInstance(rows, list)
         self.assertGreater(len(rows), 100)
@@ -89,14 +92,14 @@ class TestClassificationSplitArtifacts(unittest.TestCase):
             "PNG",
         }
         self.assertTrue(required.issubset(rows[0].keys()))
-        with (ROOT / "classified" / "mc_classification.csv").open(encoding="utf-8") as fh:
+        with (ROOT / "tests" / "sections" / "mc_classification.csv").open(encoding="utf-8") as fh:
             csv_rows = list(csv.DictReader(fh))
         self.assertEqual(len(csv_rows), len(rows))
 
     def test_lq_classification_list_contract(self) -> None:
-        path = ROOT / "classified" / "lq_classification.json"
+        path = ROOT / "tests" / "sections" / "lq_classification.json"
         if not path.is_file():
-            self.skipTest("classified/ not built (run ./pipeline)")
+            self.skipTest("tests/sections/ not built (run ./pipeline)")
         rows = json.loads(path.read_text(encoding="utf-8"))
         self.assertIsInstance(rows, list)
         self.assertGreater(len(rows), 50)
@@ -109,7 +112,7 @@ class TestClassificationSplitArtifacts(unittest.TestCase):
             "AnswerPNG",
         }
         self.assertTrue(required.issubset(rows[0].keys()))
-        nested = ROOT / "classified" / "lq" / "classification.csv"
+        nested = ROOT / "tests" / "sections" / "lq" / "classification.csv"
         self.assertTrue(nested.is_file())
         with nested.open(encoding="utf-8") as fh:
             nested_rows = list(csv.DictReader(fh))
@@ -479,15 +482,15 @@ class TestLqLlmAbortOnPartialFailure(unittest.TestCase):
                 "Year": "2012",
                 "Question": 1,
                 "Statement": "ok",
-                "PNG": "output/lq/2012/q1.png",
-                "AnswerPNG": "output/lq/2012/ans/q1.png",
+                "PNG": "tests/reconstructed/lq/2012/q1.png",
+                "AnswerPNG": "tests/reconstructed/lq/2012/ans/q1.png",
             },
             {
                 "Year": "2012",
                 "Question": 2,
                 "Statement": "bad",
-                "PNG": "output/lq/2012/q2.png",
-                "AnswerPNG": "output/lq/2012/ans/q2.png",
+                "PNG": "tests/reconstructed/lq/2012/q2.png",
+                "AnswerPNG": "tests/reconstructed/lq/2012/ans/q2.png",
             },
         ]
 
@@ -519,6 +522,200 @@ class TestLqLlmAbortOnPartialFailure(unittest.TestCase):
         write_outputs.assert_not_called()
 
 
+class TestLqLlmYearsMerge(unittest.TestCase):
+    """LLM --years runs must preserve untouched nested LQ outputs."""
+
+    def test_partial_year_run_preserves_other_year_rows_decisions_and_pngs(self) -> None:
+        import classify_lq_llm as lq
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            output_lq = root / "reconstructed" / "lq"
+            classified_lq = root / "classified" / "lq"
+            metadata_lq = root / "metadata" / "lq"
+            source = output_lq / "2024" / "q1.png"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(b"NEW-2024")
+            classified_lq.mkdir(parents=True)
+            metadata_lq.mkdir(parents=True)
+
+            old_book, old_folder, _ = lq.SECTION_BY_NUM[5]
+            kept_png = classified_lq / old_book / old_folder / "2013-q1.png"
+            kept_png.parent.mkdir(parents=True)
+            kept_png.write_bytes(b"KEEP-2013")
+            old_rows = [
+                {
+                    "Year": "2013",
+                    "Question": "1",
+                    "Primary": "5",
+                    "AllSections": "5",
+                    "Reason": "old-2013",
+                    "PNG": "reconstructed/lq/2013/q1.png",
+                    "AnswerPNG": "reconstructed/lq/2013/ans/q1.png",
+                },
+                {
+                    "Year": "2024",
+                    "Question": "2",
+                    "Primary": "8",
+                    "AllSections": "8",
+                    "Reason": "stale-2024",
+                    "PNG": "reconstructed/lq/2024/q2.png",
+                    "AnswerPNG": "reconstructed/lq/2024/ans/q2.png",
+                },
+            ]
+            csv_path = classified_lq / "classification.csv"
+            with csv_path.open("w", newline="", encoding="utf-8") as fh:
+                writer = csv.DictWriter(fh, fieldnames=lq.keyword_classifier.NESTED_CSV_FIELDS)
+                writer.writeheader()
+                writer.writerows(old_rows)
+            decisions_path = metadata_lq / "llm_classifications.json"
+            decisions_path.write_text(
+                json.dumps(
+                    {
+                        "2013-q1": {"sections": [5], "reason": "old-2013"},
+                        "2024-q2": {"sections": [8], "reason": "stale-2024"},
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            record = {
+                "Year": "2024",
+                "Question": 1,
+                "Statement": "kinetic energy",
+                "PNG": "reconstructed/lq/2024/q1.png",
+                "AnswerPNG": "reconstructed/lq/2024/ans/q1.png",
+            }
+            with (
+                mock.patch.object(lq, "ROOT", root),
+                mock.patch.object(lq, "OUTPUT_LQ", output_lq),
+                mock.patch.object(lq, "CLASSIFIED_LQ", classified_lq),
+                mock.patch.object(lq, "OCR_CACHE", classified_lq / "ocr_cache"),
+                mock.patch.object(lq, "METADATA_LQ", metadata_lq),
+                mock.patch.object(lq, "collect_jobs", return_value=[("2024", source, 1)]),
+                mock.patch.object(lq, "_ocr_one", return_value=record),
+                mock.patch.object(lq, "classify_one", return_value={"sections": [8], "reason": "new-2024"}),
+                mock.patch.object(lq, "llm_config", return_value=("k", "http://x", "m")),
+                mock.patch.object(lq.time, "sleep"),
+                mock.patch.object(
+                    lq,
+                    "parse_args",
+                    return_value=argparse.Namespace(
+                        years=["2024"], workers=1, from_json=None, limit=None, sleep=0
+                    ),
+                ),
+            ):
+                lq.main()
+
+            with csv_path.open(encoding="utf-8") as fh:
+                rows = list(csv.DictReader(fh))
+            self.assertEqual(
+                {(r["Year"], r["Question"]) for r in rows},
+                {("2013", "1"), ("2024", "1")},
+            )
+            decisions = json.loads(decisions_path.read_text())
+            self.assertEqual(decisions["2013-q1"]["reason"], "old-2013")
+            self.assertNotIn("2024-q2", decisions)
+            self.assertEqual(kept_png.read_bytes(), b"KEEP-2013")
+
+    def test_limited_year_run_preserves_unprocessed_questions(self) -> None:
+        import classify_lq_llm as lq
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            output_lq = root / "reconstructed" / "lq" / "2024"
+            classified_lq = root / "classified" / "lq"
+            metadata_lq = root / "metadata" / "lq"
+            output_lq.mkdir(parents=True)
+            classified_lq.mkdir(parents=True)
+            metadata_lq.mkdir(parents=True)
+            sources = []
+            for qn in (1, 2):
+                source = output_lq / f"q{qn}.png"
+                source.write_bytes(f"NEW-{qn}".encode())
+                sources.append(source)
+
+            book, folder, _ = lq.SECTION_BY_NUM[8]
+            section_dir = classified_lq / book / folder
+            section_dir.mkdir(parents=True)
+            kept_png = section_dir / "2024-q2.png"
+            kept_png.write_bytes(b"KEEP-Q2")
+            fields = lq.keyword_classifier.NESTED_CSV_FIELDS
+            old_rows = [
+                {
+                    "Year": "2024",
+                    "Question": str(qn),
+                    "Primary": "8",
+                    "AllSections": "8",
+                    "Reason": f"old-{qn}",
+                    "PNG": f"reconstructed/lq/2024/q{qn}.png",
+                    "AnswerPNG": f"reconstructed/lq/2024/ans/q{qn}.png",
+                }
+                for qn in (1, 2)
+            ]
+            csv_path = classified_lq / "classification.csv"
+            with csv_path.open("w", newline="", encoding="utf-8") as fh:
+                writer = csv.DictWriter(fh, fieldnames=fields)
+                writer.writeheader()
+                writer.writerows(old_rows)
+            decisions_path = metadata_lq / "llm_classifications.json"
+            decisions_path.write_text(
+                json.dumps(
+                    {
+                        f"2024-q{qn}": {"sections": [8], "reason": f"old-{qn}"}
+                        for qn in (1, 2)
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            record = {
+                "Year": "2024",
+                "Question": 1,
+                "Statement": "kinetic energy",
+                "PNG": "reconstructed/lq/2024/q1.png",
+                "AnswerPNG": "reconstructed/lq/2024/ans/q1.png",
+            }
+            with (
+                mock.patch.object(lq, "ROOT", root),
+                mock.patch.object(lq, "OUTPUT_LQ", output_lq.parent),
+                mock.patch.object(lq, "CLASSIFIED_LQ", classified_lq),
+                mock.patch.object(lq, "OCR_CACHE", classified_lq / "ocr_cache"),
+                mock.patch.object(lq, "METADATA_LQ", metadata_lq),
+                mock.patch.object(
+                    lq,
+                    "collect_jobs",
+                    return_value=[("2024", sources[0], 1), ("2024", sources[1], 2)],
+                ),
+                mock.patch.object(lq, "_ocr_one", return_value=record),
+                mock.patch.object(
+                    lq,
+                    "classify_one",
+                    return_value={"sections": [8], "reason": "new-1"},
+                ),
+                mock.patch.object(lq, "llm_config", return_value=("k", "http://x", "m")),
+                mock.patch.object(lq.time, "sleep"),
+                mock.patch.object(
+                    lq,
+                    "parse_args",
+                    return_value=argparse.Namespace(
+                        years=["2024"], workers=1, from_json=None, limit=1, sleep=0
+                    ),
+                ),
+            ):
+                lq.main()
+
+            with csv_path.open(encoding="utf-8") as fh:
+                rows = {int(row["Question"]): row for row in csv.DictReader(fh)}
+            self.assertEqual(rows[1]["Reason"], "new-1")
+            self.assertEqual(rows[2]["Reason"], "old-2")
+            self.assertEqual(
+                json.loads(decisions_path.read_text())["2024-q2"]["reason"],
+                "old-2",
+            )
+            self.assertEqual(kept_png.read_bytes(), b"KEEP-Q2")
+
+
 class TestLqKeywordsYearsMerge(unittest.TestCase):
     """--years must merge into existing split LQ outputs."""
 
@@ -527,11 +724,13 @@ class TestLqKeywordsYearsMerge(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            output_lq = root / "output" / "lq"
-            classified_lq = root / "classified" / "lq"
-            classified = root / "classified"
-            classified.mkdir()
+            output_lq = root / "tests" / "reconstructed" / "lq"
+            classified_lq = root / "tests" / "sections" / "lq"
+            classified = root / "tests" / "sections"
+            metadata_lq = root / "metadata" / "lq"
+            classified.mkdir(parents=True)
             classified_lq.mkdir(parents=True)
+            metadata_lq.mkdir(parents=True)
 
             from PIL import Image
 
@@ -553,8 +752,8 @@ class TestLqKeywordsYearsMerge(unittest.TestCase):
                     "Primary": "5",
                     "AllSections": "5",
                     "Reason": "old-2013",
-                    "PNG": "output/lq/2013/q1.png",
-                    "AnswerPNG": "output/lq/2013/ans/q1.png",
+                    "PNG": "tests/reconstructed/lq/2013/q1.png",
+                    "AnswerPNG": "tests/reconstructed/lq/2013/ans/q1.png",
                 },
                 {
                     "Year": "2024",
@@ -562,19 +761,29 @@ class TestLqKeywordsYearsMerge(unittest.TestCase):
                     "Primary": "8",
                     "AllSections": "8",
                     "Reason": "old-2024",
-                    "PNG": "output/lq/2024/q1.png",
-                    "AnswerPNG": "output/lq/2024/ans/q1.png",
+                    "PNG": "tests/reconstructed/lq/2024/q1.png",
+                    "AnswerPNG": "tests/reconstructed/lq/2024/ans/q1.png",
+                },
+                {
+                    "Year": "2024",
+                    "Question": "2",
+                    "Primary": "8",
+                    "AllSections": "8",
+                    "Reason": "stale-2024",
+                    "PNG": "reconstructed/lq/2024/q2.png",
+                    "AnswerPNG": "reconstructed/lq/2024/ans/q2.png",
                 },
             ]
             with (classified_lq / "classification.csv").open("w", newline="", encoding="utf-8") as fh:
                 writer = csv.DictWriter(fh, fieldnames=kw.NESTED_CSV_FIELDS)
                 writer.writeheader()
                 writer.writerows(existing_rows)
-            (classified_lq / "llm_classifications.json").write_text(
+            (metadata_lq / "llm_classifications.json").write_text(
                 json.dumps(
                     {
                         "2013-q1": {"sections": [5], "reason": "old-2013"},
                         "2024-q1": {"sections": [8], "reason": "old-2024"},
+                        "2024-q2": {"sections": [8], "reason": "stale-2024"},
                     },
                     indent=2,
                 )
@@ -597,6 +806,7 @@ class TestLqKeywordsYearsMerge(unittest.TestCase):
                 mock.patch.object(kw, "OUTPUT_LQ", output_lq),
                 mock.patch.object(kw, "CLASSIFIED_LQ", classified_lq),
                 mock.patch.object(kw, "OCR_CACHE", classified_lq / "ocr_cache"),
+                mock.patch.object(kw, "METADATA_LQ", metadata_lq),
                 mock.patch.object(
                     kw,
                     "parse_args",
@@ -613,6 +823,10 @@ class TestLqKeywordsYearsMerge(unittest.TestCase):
             by_year = {r["Year"]: r for r in rows}
             self.assertEqual(by_year["2013"]["Reason"], "old-2013")
             self.assertEqual(by_year["2024"]["Reason"], "new-2024")
+            decisions = json.loads(
+                (metadata_lq / "llm_classifications.json").read_text()
+            )
+            self.assertNotIn("2024-q2", decisions)
 
             top = json.loads((classified / "lq_classification.json").read_text())
             self.assertEqual(len(top), 2)

@@ -123,7 +123,8 @@ class TestCombinedPdfA4(unittest.TestCase):
 SECTION_25_HEADING = "ch25 Radiation and Radioactivity"
 MC_25 = (
     ROOT
-    / "classified"
+    / "tests"
+    / "sections"
     / "mc"
     / "05_Radioactivity_and_Nuclear_Energy"
     / "25_Radiation_and_Radioactivity"
@@ -131,11 +132,12 @@ MC_25 = (
 )
 LQ_25 = (
     ROOT
-    / "classified"
+    / "tests"
+    / "sections"
     / "lq"
     / "05_Radioactivity_and_Nuclear_Energy"
     / "25_Radiation_and_Radioactivity"
-    / "questions.pdf"
+    / "combined.pdf"
 )
 
 
@@ -149,7 +151,7 @@ class TestSection25Heading(unittest.TestCase):
 
     def test_section_25_mc_and_lq_open_with_heading(self) -> None:
         if not (MC_25.is_file() and LQ_25.is_file()):
-            self.skipTest("classified/ not built (run ./pipeline)")
+            self.skipTest("tests/sections/ not built (run ./pipeline)")
         for path in (MC_25, LQ_25):
             document = fitz.open(path)
             try:
@@ -217,7 +219,7 @@ class TestSection25Heading(unittest.TestCase):
                 self._assert_label_top_right(page, "2012 Q36")
             finally:
                 document.close()
-            lq_pdf = directory / "questions.pdf"
+            lq_pdf = directory / "combined.pdf"
             lq.write_image_pdf(
                 [lq_png], lq_pdf, title="ch25 Radiation and Radioactivity"
             )
@@ -259,9 +261,9 @@ class TestSection25Heading(unittest.TestCase):
                 document.close()
 
     def test_classified_lq_answers_pdf_pages_are_a4(self) -> None:
-        answers = sorted((ROOT / "classified" / "lq").glob("*/*/answers.pdf"))
+        answers = sorted((ROOT / "tests" / "sections" / "lq").glob("*/*/answers.pdf"))
         if not answers:
-            self.skipTest("classified/ not built (run ./pipeline)")
+            self.skipTest("tests/sections/ not built (run ./pipeline)")
         for path in answers:
             document = fitz.open(path)
             try:

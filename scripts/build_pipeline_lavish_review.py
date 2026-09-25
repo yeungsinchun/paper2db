@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / "scripts"
 OUT = ROOT / ".lavish" / "pipeline-review"
 IMG = OUT / "img"
-AUDIT_JSON = ROOT / "classified" / "quality_audit.json"
+AUDIT_JSON = ROOT / "tests" / "sections" / "quality_audit.json"
 
 # Tall multi-page stacks exceed browser decode limits; raise for preview work.
 Image.MAX_IMAGE_PIXELS = 250_000_000
@@ -87,7 +87,7 @@ def collect_assets() -> dict:
     for page in range(1, 4):
         dest_name = f"anchor-2024-page{page:02d}.png"
         rel = resolve_sample(
-            ROOT / "output" / "2024-intermediate" / f"page{page:02d}.png",
+            ROOT / "intermediate" / "mc" / "2024" / f"page{page:02d}.png",
             dest_name,
         )
         if rel:
@@ -102,7 +102,7 @@ def collect_assets() -> dict:
     for year, question in (("2012", 1), ("2012", 15), ("2024", 1), ("2024", 4), ("2025", 1)):
         dest_name = f"mc-{year}-q{question}.png"
         rel = resolve_sample(
-            ROOT / "output" / year / f"q{question}.png",
+            ROOT / "tests" / "reconstructed" / "mc" / year / f"q{question}.png",
             dest_name,
         )
         if rel:
@@ -122,7 +122,7 @@ def collect_assets() -> dict:
         ("2024", 10, "pages 10..11 (2-page stack)"),
         ("2025", 3, "pages 2..3 (2-page stack)"),
     ):
-        src = ROOT / "output" / "lq" / year / f"q{question}.png"
+        src = ROOT / "tests" / "reconstructed" / "lq" / year / f"q{question}.png"
         dest_name = f"lq-{year}-q{question}-fit.png"
         rel = write_lq_fit_preview(src, dest_name)
         if rel:
@@ -139,19 +139,22 @@ def collect_assets() -> dict:
 
     mc_samples = [
         ROOT
-        / "classified"
+        / "tests"
+        / "sections"
         / "mc"
         / "01_Heat_and_Gases"
         / "02_Heat_Capacity"
         / "2012_q1.png",
         ROOT
-        / "classified"
+        / "tests"
+        / "sections"
         / "mc"
         / "02_Force_and_Motion"
         / "05_Motion"
         / "2024_q4.png",
         ROOT
-        / "classified"
+        / "tests"
+        / "sections"
         / "mc"
         / "03A_Wave_Motion"
         / "13_Wave_Motion"
@@ -176,7 +179,8 @@ def collect_assets() -> dict:
     lq_samples = [
         (
             ROOT
-            / "classified"
+            / "tests"
+            / "sections"
             / "lq"
             / "01_Heat_and_Gases"
             / "03_Change_of_State"
@@ -185,7 +189,8 @@ def collect_assets() -> dict:
         ),
         (
             ROOT
-            / "classified"
+            / "tests"
+            / "sections"
             / "lq"
             / "02_Force_and_Motion"
             / "09_Momentum"
@@ -229,16 +234,17 @@ def write_html(audit: dict, assets: dict) -> None:
     passes = summary["passes_5pct_bar"]
 
     stages = [
-        ("1. MC anchors", "mc-anchors", "Blue dots on each Paper 1A PDF → output/<year>-intermediate/anchor.pdf"),
-        ("2. MC split", "mc-split", "Crop empty qN.png + combined.pdf under output/<year>/"),
-        ("3. LQ pages", "lq-pages", "Export pages + starts.json under output/lq/<year>/"),
-        ("4. LQ pages→PNG", "lq-crops", "Whole exam page stack per question + questions.pdf"),
+        ("1. MC anchors", "mc-anchors", "Blue dots on each Paper 1A PDF → intermediate/mc/<year>/anchor.pdf"),
+        ("2. MC split", "mc-split", "Crop empty qN.png + combined.pdf under tests/reconstructed/mc/<year>/"),
+        ("3. LQ pages", "lq-pages", "Export pages + starts.json under tests/reconstructed/lq/<year>/"),
+        ("4. LQ pages→PNG", "lq-crops", "Whole exam page stack per question + combined.pdf"),
         ("5. LQ answers", "lq-answers", "Marking-scheme answer crops under ans/"),
-        ("6. Keys", "keys", "MC answer keys → classified/mc/answer_keys.json"),
+        ("6. Keys", "keys", "MC answer keys → tests/sections/mc/answer_keys.json"),
         ("7. Classify MC", "classify-mc", "27 syllabus sections (LLM if keyed, else keywords)"),
-        ("8. Classify LQ", "classify-lq", "Same sections for long questions (LLM if keyed, else keywords)"),
-        ("9. Section PDFs", "section-pdfs", "Per-section combined.pdf / questions.pdf"),
-        ("10. Lavish", "lavish", "HTML reviews under .lavish/"),
+        ("8. LQ performance", "lq-performance", "Examiner notes → tests/sections/lq/candidate_performance.json"),
+        ("9. Classify LQ", "classify-lq", "Same sections for long questions (LLM if keyed, else keywords)"),
+        ("10. Section PDFs", "section-pdfs", "Per-section combined.pdf (+ LQ answers/performance)"),
+        ("11. Lavish", "lavish", "HTML reviews under .lavish/"),
     ]
 
     def gallery(items: list[dict], *, variant: str = "") -> str:
@@ -435,10 +441,10 @@ def write_html(audit: dict, assets: dict) -> None:
 
     <section class="block" id="flow">
       <h2>Pipeline flow</h2>
-      <p class="lede">Day-to-day entry is <code>./pipeline</code>. Scripts under <code>scripts/</code> and <code>segment</code> are internals.</p>
+      <p class="lede">Day-to-day entry is <code>./pipeline</code>. Scripts under <code>scripts/</code> and <code>segment.py</code> are internals.</p>
       <div class="flow" aria-label="pipeline stages diagram">
         <svg viewBox="0 0 980 170" width="100%" role="img" id="pipeline-flow">
-          <title>PDF papers flow through ten stages into classified crops and Lavish reviews</title>
+          <title>PDF papers flow through eleven stages into section banks and Lavish reviews</title>
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="#8ec5c0" />
@@ -460,7 +466,7 @@ def write_html(audit: dict, assets: dict) -> None:
           <text x="629" y="80" text-anchor="middle" fill="#a89bb8" font-size="11">27 syllabus sections</text>
           <line x1="704" y1="67" x2="744" y2="67" stroke="#8ec5c0" stroke-width="2" marker-end="url(#arrow)" />
           <rect x="746" y="40" width="220" height="54" rx="12" fill="#1d1a24" stroke="#8ec5c0" />
-          <text x="856" y="72" text-anchor="middle" fill="#f3eef8" font-size="13">classified/* + .lavish/</text>
+          <text x="856" y="72" text-anchor="middle" fill="#f3eef8" font-size="13">tests/sections/* + metadata/* + .lavish/</text>
           <text x="490" y="150" text-anchor="middle" fill="#a89bb8" font-size="12">Human gates: review anchor.pdf, then uncertain.csv (usually empty)</text>
         </svg>
       </div>
@@ -506,19 +512,19 @@ python scripts/quality_audit.py --strict</div>
 
     <section class="block" id="anchors">
       <h2>Step A - MC anchors (intermediate)</h2>
-      <p class="lede">Sample from <code>output/2024-intermediate/</code> (regenerated for this review). Every blue dot must sit beside the question number - not on options, diagrams, or digits.</p>
+      <p class="lede">Sample from <code>intermediate/mc/2024/</code> (regenerated for this review). Every blue dot must sit beside the question number - not on options, diagrams, or digits.</p>
       {gallery(assets['anchors'])}
     </section>
 
     <section class="block" id="mc-crops">
       <h2>Step B - MC empty crops (final per-question)</h2>
-      <p class="lede">Clean screenshots cut from the paper: full stem + options, no neighboring bleed. Review PDF: <code>output/&lt;year&gt;/combined.pdf</code>.</p>
+      <p class="lede">Clean screenshots cut from the paper: full stem + options, no neighboring bleed. Review PDF: <code>tests/reconstructed/mc/&lt;year&gt;/combined.pdf</code>.</p>
       {gallery(assets['mc_crops'])}
     </section>
 
     <section class="block" id="lq-crops">
       <h2>Step C - LQ whole pages (final per-question)</h2>
-      <p class="lede">Long questions are whole exam page(s) only (<code>page_from</code>..<code>page_to</code>) - no within-page crop. Samples below are multi-page stacks scaled so every page is visible (not scroll-clipped tops). Review PDF: <code>output/lq/&lt;year&gt;/questions.pdf</code>.</p>
+      <p class="lede">Long questions are whole exam page(s) only (<code>page_from</code>..<code>page_to</code>) - no within-page crop. Samples below are multi-page stacks scaled so every page is visible (not scroll-clipped tops). Review PDF: <code>tests/reconstructed/lq/&lt;year&gt;/combined.pdf</code>.</p>
       {gallery(assets['lq_crops'], variant="lq")}
     </section>
 

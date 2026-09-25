@@ -15,8 +15,8 @@ from classify_mc_llm import BOOK_NAMES, SECTIONS
 from png_pdf import combine_pngs_to_pdf
 
 ROOT = Path(__file__).resolve().parents[1]
-CLASSIFIED = ROOT / "classified" / "lq"
-OUTPUT_LQ = ROOT / "output" / "lq"
+CLASSIFIED = ROOT / "tests" / "sections" / "lq"
+OUTPUT_LQ = ROOT / "tests" / "reconstructed" / "lq"
 OUT = ROOT / ".lavish" / "lq-classified-review"
 IMG = OUT / "img"
 PERF_JSON = CLASSIFIED / "candidate_performance.json"
@@ -105,9 +105,11 @@ def main() -> None:
         if a_src.is_file():
             shutil.copy2(a_src, IMG / a_name)
         preview = ""
-        ocr = CLASSIFIED / "ocr_cache" / str(year) / f"q{q}.txt"
-        if ocr.is_file():
-            preview = " ".join(ocr.read_text(encoding="utf-8").split())[:220]
+        # classify_lq_keywords keys the cache by PNG geometry: q{q}.{w}x{h}.txt
+        ocr_files = sorted((CLASSIFIED / "ocr_cache" / str(year)).glob(f"q{q}.*txt"))
+        if ocr_files:
+            latest = max(ocr_files, key=lambda path: path.stat().st_mtime)
+            preview = " ".join(latest.read_text(encoding="utf-8").split())[:220]
         performance = (perf.get(str(year)) or {}).get(str(q), "")
         item = {
             "year": year,

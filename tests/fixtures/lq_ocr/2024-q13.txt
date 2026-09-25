@@ -1,0 +1,58 @@
+C
+13. Radon (Rn-222) is a radioactive gas with no colour, no smell and no taste. It is released from bedrock material
+underground or from concrete composed of granite. Rn-222 decays with a half-life of 3.82 days by giving out
+@ particles.
+(a) *(i) Find the decay constant (unit: s~') of Rn-222. (2 marks)
+(ii) Inside buildings, the average activity due to radon in 1 m? of air is about 48 Bq. Estimate the average
+number of radon atoms in 1 m? of air inside buildings. (2 marks)
+oO oO
+Sl ccceseccnnntnttnnsinntntaetnenesentneetanneneneietetnenentitiseistettenntittntetintnnctntnenennmenne | Y
+=| =|
+3 a
+E 2
+H (iii) Why is indoor radon considered harmful to human although @ particles have limited penetrating 5
+a power ? (2 marks) |
+| e-|
+q a
+= =
+: :
+ee
+Answers written in the margins will not be marked.
+2024-DSE-PHY 1B-18 18
+G
+(b) Rn-222 belongs to a decay series starting from uranium-238 (U-238). It is known that U-238 undergoes
+decay in the sequence a-f-f- a to become thorium-230 (Th-230). Complete the decay series below from
+U-238 to Th-230 using arrows. (2 marks)
+mass number
+242
+oT TTT TTT
+oe
+Bt
+ma ttt et
+amt ttt tt
+20 {+1 |}
+os |. | Yim |
+oot | et | | tt
+va |_ Vt | | |
+myme{lttLiil,
+86 87 88 89 90 91 92 93 94 MOmCnUmver
+: E
+5 q
+2 END OF PAPER 3
+3 3
+R a
+E “tc ced in ti . . E
+g Sources of materials used in this paper will be acknowledged in the HKDSE Question Papers booklet published by g
+E) the Hong Kong Examinations and Assessment Authority at a later stage. Ey
+=I : . =|
+o
+5 s
+a] B=
+8 g
+2 FI
+5 5
+E E
+& q
+<
+Answers written in the margins will not be marked.
+2024-DSE-PHY 1B-19 19
