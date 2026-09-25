@@ -27,6 +27,12 @@ Usage:
   ./pipeline --from classify-mc
   ./pipeline --only keys,classify-mc,section-pdfs
   ./pipeline --yes --force
+  ./pipeline --yes --force --replay-classifications   # CI: no LLM, tracked JSON only
+
+--replay-classifications makes classify-mc and classify-lq apply
+metadata/{mc,lq}/llm_classifications.json verbatim - no LLM call, no keyword
+fallback, tracked JSON left untouched. It fails if a file is missing or lacks a
+decision for any built question.
 """
 from __future__ import annotations
 
@@ -36,6 +42,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -252,6 +259,17 @@ def has_llm_key() -> bool:
     )
 
 
+def tracked_classifications(kind: str) -> Path:
+    """metadata/<kind>/llm_classifications.json; exit if missing (replay never falls back)."""
+    path = ROOT / "metadata" / kind / "llm_classifications.json"
+    if not path.is_file():
+        raise SystemExit(
+            f"--replay-classifications: missing tracked {path.relative_to(ROOT)}; "
+            "refusing to fall back to the LLM or keyword classifier."
+        )
+    return path
+
+
 def stage_mc_anchors(years: list[str] | None, *, force: bool, yes: bool) -> list[str]:
     papers = discover_mc_papers(years)
     if not papers:
@@ -396,7 +414,9 @@ def stage_keys(*, force: bool) -> None:
     )
 
 
-def stage_classify_mc(years: list[str] | None, *, force: bool, yes: bool) -> None:
+def stage_classify_mc(
+    years: list[str] | None, *, force: bool, yes: bool, replay: bool = False
+) -> None:
     classified = ROOT / "tests" / "sections" / "mc" / "classification.csv"
     if classified.is_file() and not force and not years:
         print("skip classify-mc: classification.csv exists (use --force or --years)")
@@ -404,7 +424,10 @@ def stage_classify_mc(years: list[str] | None, *, force: bool, yes: bool) -> Non
         year_args: list[str] = []
         if years:
             year_args = ["--years", *years]
-        if has_llm_key():
+        if replay:
+            print(f"=== classify-mc: replay {tracked_classifications('mc').relative_to(ROOT)} ===")
+            run_script("classify_mc_llm.py", "--replay", *year_args)
+        elif has_llm_key():
             print("=== classify-mc: LLM ===")
             run_script("classify_mc_llm.py", *year_args)
         else:
@@ -470,7 +493,9 @@ def ensure_lq_performance(years: list[str] | None = None) -> None:
         stage_lq_performance(missing)
 
 
-def stage_classify_lq(years: list[str] | None, *, force: bool) -> None:
+def stage_classify_lq(
+    years: list[str] | None, *, force: bool, replay: bool = False
+) -> None:
     classified = ROOT / "tests" / "sections" / "lq" / "classification.csv"
     if classified.is_file() and not force and not years:
         print("skip classify-lq: classification.csv exists (use --force or --years)")
@@ -479,7 +504,10 @@ def stage_classify_lq(years: list[str] | None, *, force: bool) -> None:
     year_args: list[str] = []
     if years:
         year_args = ["--years", *years]
-    if has_llm_key():
+    if replay:
+        print(f"=== classify-lq: replay {tracked_classifications('lq').relative_to(ROOT)} ===")
+        run_script("classify_lq_llm.py", "--replay", *year_args)
+    elif has_llm_key():
         print("=== classify-lq: LLM ===")
         run_script("classify_lq_llm.py", *year_args)
     else:
@@ -583,6 +611,18 @@ def parse_args() -> argparse.Namespace:
         help="Omit the lavish HTML rebuild stage",
     )
     parser.add_argument(
+        "--replay-classifications",
+        action="store_true",
+        help="Apply tracked metadata/*/llm_classifications.json only (no LLM, "
+        "no keyword fallback)",
+    )
+    parser.add_argument(
+        "--timings-json",
+        type=Path,
+        default=None,
+        help="Write per-stage wall-clock seconds to this JSON file",
+    )
+    parser.add_argument(
         "--list-stages",
         action="store_true",
         help="Print stage names and exit",
@@ -603,10 +643,15 @@ def main() -> None:
     print(f"  stages: {', '.join(stages)}")
     if years:
         print(f"  years:  {', '.join(years)}")
-    print(f"  force={args.force} yes={args.yes}")
+    replay = args.replay_classifications
+    print(f"  force={args.force} yes={args.yes} replay_classifications={replay}")
 
+    timings: dict[str, float] = {}
+    if args.timings_json:
+        args.timings_json.parent.mkdir(parents=True, exist_ok=True)
     for stage in stages:
         print(f"\n######## stage: {stage} ########")
+        started = time.monotonic()
         if stage == "mc-anchors":
             stage_mc_anchors(years, force=args.force, yes=args.yes)
         elif stage == "mc-split":
@@ -620,18 +665,24 @@ def main() -> None:
         elif stage == "keys":
             stage_keys(force=args.force)
         elif stage == "classify-mc":
-            stage_classify_mc(years, force=args.force, yes=args.yes)
+            stage_classify_mc(years, force=args.force, yes=args.yes, replay=replay)
         elif stage == "lq-performance":
             stage_lq_performance(years)
         elif stage == "classify-lq":
-            stage_classify_lq(years, force=args.force)
+            stage_classify_lq(years, force=args.force, replay=replay)
         elif stage == "section-pdfs":
             stage_section_pdfs()
         elif stage == "lavish":
             stage_lavish()
         else:
             raise SystemExit(f"Unhandled stage: {stage}")
+        timings[stage] = round(time.monotonic() - started, 1)
+        if args.timings_json:
+            args.timings_json.write_text(json.dumps(timings, indent=2) + "\n", encoding="utf-8")
 
+    print("\nStage timings (s):")
+    for stage, seconds in timings.items():
+        print(f"  {stage:15s} {seconds:8.1f}")
     print("\nDone.")
     print("Review PDFs:")
     print("  MC papers:   tests/reconstructed/mc/combined.pdf (per year: tests/reconstructed/mc/<year>/combined.pdf)")

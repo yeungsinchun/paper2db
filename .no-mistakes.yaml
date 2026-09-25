@@ -1,6 +1,5 @@
 # Trusted default-branch config for no-mistakes.
-# This repository has no GitHub Actions workflows.
-no_ci: true
+# CI: .github/workflows/pipeline-release.yml (full ./pipeline build + release).
 
 # Unit suite (seconds, no build needed; generated-bank checks skip until
 # ./pipeline has built tests/reconstructed/ and tests/sections/). Run worktrees

@@ -21,3 +21,7 @@ tests/reconstructed/lq/*/*
 !tests/reconstructed/lq/*/starts.json
 tests/sections/
 .lavish/
+# CI release packaging (scripts/package_release.py)
+/dist/
+/release-notes.md
+/unittest.log
