@@ -21,3 +21,8 @@ tests/reconstructed/lq/*/*
 !tests/reconstructed/lq/*/starts.json
 tests/sections/
 .lavish/
+
+# QB pipeline (copyrighted DOCX/PDF/crops — gitignored per plan D3)
+qb/
+qb-pdf/
+.lavish/qb-review/

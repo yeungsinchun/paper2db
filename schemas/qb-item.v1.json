@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "paper2db.qb-item.v1",
+  "description": "One QB question-bank item extracted from DOCX + PDF crop.",
+  "type": "object",
+  "required": ["schema", "id", "bank", "book", "chapter", "seq", "type", "level", "part", "marks", "stem", "options", "subparts", "answer", "images", "sources", "warnings"],
+  "properties": {
+    "schema": {"type": "string", "const": "paper2db.qb-item.v1"},
+    "id": {"type": "string", "pattern": "^PHY1\\w+$", "description": "Globally unique code, e.g. PHY15011101"},
+    "bank": {"type": "string", "pattern": "^QB_", "description": "Bank folder, e.g. QB_501"},
+    "book": {"type": "string", "description": "Book number as string, e.g. \"5\""},
+    "chapter": {"type": "string", "pattern": "^\\d{2}$"},
+    "seq": {"type": "integer", "minimum": 1},
+    "type": {"type": "string", "enum": ["mc", "sq", "lq", "rq"]},
+    "level": {"type": "string", "enum": ["easy", "avg", "dif"]},
+    "part": {"type": "string", "enum": ["core", "ext"]},
+    "marks": {"type": "integer", "minimum": 1},
+    "stem": {
+      "type": "object",
+      "required": ["text", "ocr", "equations", "has_figure", "equation_only"],
+      "properties": {
+        "text": {"type": "string", "description": "DOCX-derived text with w:sym mapped to Unicode and [eq:N] placeholders"},
+        "ocr": {"type": "string", "description": "Tesseract --psm 1 text for the stem crop"},
+        "equations": {"type": "integer", "minimum": 0},
+        "has_figure": {"type": "boolean"},
+        "equation_only": {"type": "boolean"}
+      }
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "text"],
+        "properties": {
+          "label": {"type": "string", "enum": ["A", "B", "C", "D"]},
+          "text": {"type": "string"}
+        }
+      }
+    },
+    "subparts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "text", "marks"],
+        "properties": {
+          "label": {"type": "string"},
+          "text": {"type": "string"},
+          "marks": {"type": "integer", "minimum": 1}
+        }
+      }
+    },
+    "answer": {
+      "type": "object",
+      "required": ["status", "key", "worked", "marking", "source"],
+      "properties": {
+        "status": {"type": "string", "enum": ["present", "from-pdf", "missing", "derived"]},
+        "key": {"type": ["string", "null"], "description": "MC letter or null"},
+        "worked": {"type": "string"},
+        "marking": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["part", "point", "code"],
+            "properties": {
+              "part": {"type": "string"},
+              "point": {"type": "string"},
+              "code": {"type": "string"}
+            }
+          }
+        },
+        "source": {"type": ["string", "null"]}
+      }
+    },
+    "images": {
+      "type": "object",
+      "required": ["stem", "answer"],
+      "properties": {
+        "stem": {"type": "array", "items": {"type": "string"}},
+        "answer": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["file", "sha256", "pdf", "pages", "bbox_pt", "origin"],
+        "properties": {
+          "file": {"type": "string"},
+          "sha256": {"type": "string"},
+          "pdf": {"type": "string"},
+          "pages": {"type": "array", "items": {"type": "integer"}},
+          "bbox_pt": {"type": ["array", "null"], "items": {"type": "number"}},
+          "origin": {"type": "string", "enum": ["libreoffice", "quartz-pdf", "word-pdf"]}
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {"type": "string", "enum": ["variant_conflict", "untagged_source", "key_missing", "crop_multi_page", "zh_gloss", "from_pdf_key", "equation_heavy"]}
+    }
+  }
+}

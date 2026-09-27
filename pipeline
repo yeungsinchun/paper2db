@@ -53,6 +53,10 @@ STAGES = (
     "classify-lq",
     "section-pdfs",
     "lavish",
+    "qb-pdf",
+    "qb-ocr",
+    "qb-items",
+    "qb-audit",
 )
 
 
@@ -502,6 +506,55 @@ def stage_section_pdfs() -> None:
     run_script("combine_lq_section_pdfs.py")
 
 
+def qb_pdf_ready() -> bool:
+    qb_pdf = ROOT / "qb-pdf"
+    if not qb_pdf.is_dir():
+        return False
+    pdfs = [p for p in qb_pdf.rglob("*.pdf") if p.parent.name.startswith("QB_")]
+    return len(pdfs) >= 150
+
+
+def qb_items_ready() -> bool:
+    idx = ROOT / "qb-pdf" / "items" / "index.json"
+    if not idx.is_file():
+        return False
+    try:
+        data = json.loads(idx.read_text())
+        return data.get("total", 0) >= 3000
+    except Exception:
+        return False
+
+
+def stage_qb_pdf(*, force: bool) -> None:
+    if qb_pdf_ready() and not force:
+        print("skip qb-pdf: qb-pdf/QB_*/*.pdf already present (use --force)")
+        return
+    print("=== qb-pdf: DOCX -> PDF (LibreOffice) ===")
+    run_script("qb_convert.py", "--workers", "2" if not force else "1")
+
+
+def stage_qb_ocr(*, force: bool) -> None:
+    txts = list((ROOT / "qb-pdf").rglob("*.pdf.txt")) if (ROOT / "qb-pdf").is_dir() else []
+    if txts and not force:
+        print(f"skip qb-ocr: {len(txts)} .pdf.txt already present (use --force)")
+        return
+    print("=== qb-ocr: PDF -> OCR (tesseract --psm 1) ===")
+    run_script("qb_ocr.py", "--workers", "4")
+
+
+def stage_qb_items(*, force: bool) -> None:
+    if qb_items_ready() and not force:
+        print("skip qb-items: qb-pdf/items/index.json already present (use --force)")
+        return
+    print("=== qb-items: DOCX XML -> items JSON + crops ===")
+    run_script("qb_items.py")
+
+
+def stage_qb_audit(*, force: bool) -> None:
+    print("=== qb-audit: quality gate + Lavish board ===")
+    run_script("qb_quality.py")
+
+
 def stage_lavish() -> None:
     ensure_lq_performance()
     run_script("quality_audit.py")
@@ -627,6 +680,14 @@ def main() -> None:
             stage_classify_lq(years, force=args.force)
         elif stage == "section-pdfs":
             stage_section_pdfs()
+        elif stage == "qb-pdf":
+            stage_qb_pdf(force=args.force)
+        elif stage == "qb-ocr":
+            stage_qb_ocr(force=args.force)
+        elif stage == "qb-items":
+            stage_qb_items(force=args.force)
+        elif stage == "qb-audit":
+            stage_qb_audit(force=args.force)
         elif stage == "lavish":
             stage_lavish()
         else:
