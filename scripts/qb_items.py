@@ -234,53 +234,6 @@ def normalize_symbol_xml(xml: str) -> tuple[str, list[str]]:
 
     xml = SYM_RE.sub(sym, xml)
     xml = RUN_RE.sub(run, xml)
-    # Fallback: any remaining PUA in w:t that matches SYMBOL_MAP, map it regardless of font
-    # This catches Symbol glyphs inserted as direct PUA characters without proper Symbol font marking
-    # (seen in QB_103, QB_204 etc where F044/F071 remain as PUA after conversion)
-    def fallback_t(m: re.Match) -> str:
-        prefix, content, suffix = m.group(1), m.group(2), m.group(3)
-        # Only process if content contains PUA and is not already handled (avoid double-mangling)
-        if not any(0xF000 <= ord(c) <= 0xF0FF for c in html.unescape(content)):
-            return m.group(0)
-        out: list[str] = []
-        changed = False
-        for c in html.unescape(content):
-            u = symbol_run_char(c)
-            # Also try Wingdings for F09F/F0AB etc that are not in Symbol runs
-            if u is None and 0xF000 <= ord(c) <= 0xF0FF:
-                u = WINGDINGS_MAP.get(f"{ord(c):04X}")
-            if u is not None:
-                out.append(u)
-                if not u.isascii():
-                    # Avoid duplicate counting if already in glyphs from previous pass
-                    if u not in glyphs:
-                        glyphs.append(u)
-                changed = True
-            else:
-                out.append(c)
-        if changed:
-            return prefix + escape("".join(out)) + suffix
-        return m.group(0)
-    xml = T_RE.sub(fallback_t, xml)
-    # Final global fallback: any remaining PUA character anywhere in the XML that is in SYMBOL_MAP or WINGDINGS_MAP
-    # Replace it directly, handling cases where PUA appears outside w:t (e.g., in headers, footers, or other elements)
-    # and also cases where the DOCX uses numeric character references
-    for pua_hex, uni in SYMBOL_MAP.items():
-        pua_char = chr(int(pua_hex, 16))
-        if pua_char in xml:
-            # Only replace if the PUA is not already part of a correctly mapped w:t (avoid double)
-            # Count occurrences before and after to track
-            xml = xml.replace(pua_char, uni)
-            if uni not in glyphs and not uni.isascii():
-                glyphs.append(uni)
-    for pua_hex, uni in WINGDINGS_MAP.items():
-        pua_char = chr(int(pua_hex, 16))
-        if pua_char in xml and pua_char not in SYMBOL_MAP.values():
-            # Only for Wingdings that are not already covered by Symbol
-            if pua_hex not in SYMBOL_MAP:
-                xml = xml.replace(pua_char, uni)
-                if uni not in glyphs and not uni.isascii():
-                    glyphs.append(uni)
     return xml, glyphs
 
 
@@ -927,7 +880,22 @@ def main() -> None:
             if eq_count >= 3:
                 warnings.append("equation_heavy")
 
-            pdf_for_crop = pdf_root / bank / (best["_docx"].stem + ".pdf")
+            # Try best variant's PDF first, then other variants' PDFs if anchor not found
+            # (seen for PHY15013104: _ans PDF doesn't contain the code, but plain PDF does)
+            pdf_candidates: list[Path] = []
+            seen_stems: set[str] = set()
+            for cand in [best["_docx"]] + [v["_docx"] for v in data["_variants"]]:
+                stem = cand.stem
+                if stem in seen_stems:
+                    continue
+                seen_stems.add(stem)
+                p = pdf_root / cand.parent.name / (stem + ".pdf")
+                if p.is_file():
+                    pdf_candidates.append(p)
+            # Fallback: also try any PDF in the bank that contains the code
+            if not pdf_candidates:
+                pdf_candidates = [pdf_root / bank / (best["_docx"].stem + ".pdf")]
+            pdf_for_crop = pdf_candidates[0]
             ocr_text = ""
             ocr_path = pdf_for_crop.with_suffix(".pdf.txt")
             if ocr_path.is_file():
@@ -937,7 +905,25 @@ def main() -> None:
 
             for stale in (crop_dir / f"{code}.png", crop_dir / f"{code}.ans.png"):
                 stale.unlink(missing_ok=True)
-            stem_png, ans_png, crop_info = build_crop(pdf_for_crop, code, crop_dir, next_code)
+            stem_png: Path | None = None
+            ans_png: Path | None = None
+            crop_info: dict = {"pages": [], "bbox_pt": None, "warnings": []}
+            for pdf_cand in pdf_candidates:
+                # Use next_code from the candidate's docx order for accurate bounds
+                cand_docx = next((v["_docx"] for v in data["_variants"] if (pdf_root / v["_docx"].parent.name / (v["_docx"].stem + ".pdf")) == pdf_cand), best["_docx"])
+                cand_order = docx_order.get(cand_docx, order)
+                cand_pos = cand_order.index(code) if code in cand_order else -1
+                cand_next = cand_order[cand_pos + 1] if cand_pos >= 0 and cand_pos + 1 < len(cand_order) else next_code
+                s, a, ci = build_crop(pdf_cand, code, crop_dir, cand_next)
+                if s is not None:
+                    stem_png, ans_png, crop_info = s, a, ci
+                    pdf_for_crop = pdf_cand
+                    break
+                # Keep the last failure info for warnings
+                crop_info = ci
+            if stem_png is None:
+                # All candidates failed; keep the last attempt's info
+                pass
             if stem_png is not None:
                 crop_ok += 1
             else:

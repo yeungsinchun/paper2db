@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_IN = ROOT / "qb-pdf"
 
 
-def ocr_one(pdf: Path, out_root: Path, dpi: int = 300) -> dict:
+def ocr_one(pdf: Path, out_root: Path) -> dict:
     bank = pdf.parent.name
     stem = pdf.stem
     # Output paths (flat alongside PDF, plus pages subdir)
@@ -35,11 +35,11 @@ def ocr_one(pdf: Path, out_root: Path, dpi: int = 300) -> dict:
     # Skip if outputs newer than PDF and --force not set? Caller decides.
     start = time.time()
 
-    # 1) Render pages to PNG via pdftoppm
+    # 1) Render pages to PNG via pdftoppm (required 300 dpi per P1 spec)
     with tempfile.TemporaryDirectory() as tmp:
         tmp_p = Path(tmp)
-        # pdftoppm -r 300 -png <pdf> <tmp>/p
-        cmd_ppm = ["pdftoppm", "-r", str(dpi), "-png", str(pdf), str(tmp_p / "p")]
+        # pdftoppm -r 300 -png <pdf> <tmp>/p (P1 requires 300 dpi, not configurable)
+        cmd_ppm = ["pdftoppm", "-r", "300", "-png", str(pdf), str(tmp_p / "p")]
         r = subprocess.run(cmd_ppm, capture_output=True, text=True, timeout=120)
         if r.returncode != 0:
             return {"pdf": str(pdf), "ok": False, "error": f"pdftoppm: {r.stderr[:400]}"}
@@ -102,7 +102,6 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--in", dest="in_dir", default=str(DEFAULT_IN), help="qb-pdf dir")
     parser.add_argument("--workers", type=int, default=4)
-    parser.add_argument("--dpi", type=int, default=300)
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--only-bank", default=None)
     args = parser.parse_args()
@@ -130,7 +129,7 @@ def main() -> None:
         print(f"Skipping {len(pdfs)-len(filtered)} up-to-date, OCR for {len(filtered)}")
         pdfs = filtered
 
-    print(f"OCR {len(pdfs)} PDFs with {args.workers} workers (dpi={args.dpi}, psm=1, eng, OMP_THREAD_LIMIT=1)")
+    print(f"OCR {len(pdfs)} PDFs with {args.workers} workers (dpi=300, psm=1, eng, OMP_THREAD_LIMIT=1)")
     if not pdfs:
         print("Nothing to OCR")
         return
@@ -138,7 +137,7 @@ def main() -> None:
     results: list[dict] = []
     failed: list[dict] = []
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        futs = {pool.submit(ocr_one, pdf, in_dir, args.dpi): pdf for pdf in pdfs}
+        futs = {pool.submit(ocr_one, pdf, in_dir): pdf for pdf in pdfs}
         done = 0
         for fut in as_completed(futs):
             r = fut.result()
