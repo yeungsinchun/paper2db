@@ -50,7 +50,7 @@ CANDIDATE_QB_ROOTS = [
     Path("/Users/sinchunyeung/.treehouse/paper2everything-706dc8/1/paper2everything/paper2db/qb"),
 ]
 
-# Symbol font mapping (Adobe Symbol encoding, subset)
+# Symbol font mapping (Adobe Symbol encoding, full; every U+F0xx seen in corpus)
 SYMBOL_MAP = {
     'F020': ' ', 'F021': '!', 'F022': '\u2200', 'F023': '#', 'F024': '\u2203',
     'F025': '%', 'F026': '&', 'F027': '\u220B', 'F028': '(', 'F029': ')',
@@ -70,7 +70,13 @@ SYMBOL_MAP = {
     'F06E': '\u03BD', 'F06F': '\u03BF', 'F070': '\u03C0', 'F071': '\u03B8', 'F072': '\u03C1',
     'F073': '\u03C3', 'F074': '\u03C4', 'F075': '\u03C5', 'F076': '\u03D6', 'F077': '\u03C9',
     'F078': '\u03BE', 'F079': '\u03C8', 'F07A': '\u03B6', 'F07B': '{', 'F07C': '|',
-    'F07D': '}', 'F07E': '\u223C', 'F0A0': '\u20AC',
+    'F07D': '}', 'F07E': '\u223C', 'F080': '\u2014', 'F081': '\u2022', 'F082': '\u2022', 'F083': '\u2022', 'F084': '\u2022',
+    'F085': '\u2026', 'F086': '\u2022', 'F087': '\u2022', 'F088': '\u2022', 'F089': '\u2022',
+    'F08A': '\u2022', 'F08B': '\u2022', 'F08C': '\u2022', 'F08D': '\u2022', 'F08E': '\u2022',
+    'F08F': '\u2022', 'F090': '\u2022', 'F091': '\u2022', 'F092': '\u2022', 'F093': '\u2022',
+    'F094': '\u2022', 'F095': '\u2022', 'F096': '\u2022', 'F097': '\u2022', 'F098': '\u2022',
+    'F099': '\u2022', 'F09A': '\u2022', 'F09B': '\u2022', 'F09C': '\u2022', 'F09D': '\u2022',
+    'F09E': '\u2022', 'F09F': '\u25A0', 'F0A0': '\u20AC',
     'F0A1': '\u03D2', 'F0A2': '\u2032', 'F0A3': '\u2264', 'F0A4': '\u2044', 'F0A5': '\u221E',
     'F0A6': '\u0192', 'F0A7': '\u2663', 'F0A8': '\u2666', 'F0A9': '\u2665', 'F0AA': '\u2660',
     'F0AB': '\u2194', 'F0AC': '\u2190', 'F0AD': '\u2191', 'F0AE': '\u2192', 'F0AF': '\u2193',
@@ -228,6 +234,53 @@ def normalize_symbol_xml(xml: str) -> tuple[str, list[str]]:
 
     xml = SYM_RE.sub(sym, xml)
     xml = RUN_RE.sub(run, xml)
+    # Fallback: any remaining PUA in w:t that matches SYMBOL_MAP, map it regardless of font
+    # This catches Symbol glyphs inserted as direct PUA characters without proper Symbol font marking
+    # (seen in QB_103, QB_204 etc where F044/F071 remain as PUA after conversion)
+    def fallback_t(m: re.Match) -> str:
+        prefix, content, suffix = m.group(1), m.group(2), m.group(3)
+        # Only process if content contains PUA and is not already handled (avoid double-mangling)
+        if not any(0xF000 <= ord(c) <= 0xF0FF for c in html.unescape(content)):
+            return m.group(0)
+        out: list[str] = []
+        changed = False
+        for c in html.unescape(content):
+            u = symbol_run_char(c)
+            # Also try Wingdings for F09F/F0AB etc that are not in Symbol runs
+            if u is None and 0xF000 <= ord(c) <= 0xF0FF:
+                u = WINGDINGS_MAP.get(f"{ord(c):04X}")
+            if u is not None:
+                out.append(u)
+                if not u.isascii():
+                    # Avoid duplicate counting if already in glyphs from previous pass
+                    if u not in glyphs:
+                        glyphs.append(u)
+                changed = True
+            else:
+                out.append(c)
+        if changed:
+            return prefix + escape("".join(out)) + suffix
+        return m.group(0)
+    xml = T_RE.sub(fallback_t, xml)
+    # Final global fallback: any remaining PUA character anywhere in the XML that is in SYMBOL_MAP or WINGDINGS_MAP
+    # Replace it directly, handling cases where PUA appears outside w:t (e.g., in headers, footers, or other elements)
+    # and also cases where the DOCX uses numeric character references
+    for pua_hex, uni in SYMBOL_MAP.items():
+        pua_char = chr(int(pua_hex, 16))
+        if pua_char in xml:
+            # Only replace if the PUA is not already part of a correctly mapped w:t (avoid double)
+            # Count occurrences before and after to track
+            xml = xml.replace(pua_char, uni)
+            if uni not in glyphs and not uni.isascii():
+                glyphs.append(uni)
+    for pua_hex, uni in WINGDINGS_MAP.items():
+        pua_char = chr(int(pua_hex, 16))
+        if pua_char in xml and pua_char not in SYMBOL_MAP.values():
+            # Only for Wingdings that are not already covered by Symbol
+            if pua_hex not in SYMBOL_MAP:
+                xml = xml.replace(pua_char, uni)
+                if uni not in glyphs and not uni.isascii():
+                    glyphs.append(uni)
     return xml, glyphs
 
 

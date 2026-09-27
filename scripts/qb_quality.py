@@ -199,6 +199,11 @@ def check_render(qb_root: Path | None) -> dict:
             glyph_failures.append({"file": f"{d.parent.name}/{d.name}", "missing_glyphs": missing, "pua": [f"U+{ord(c):04X}" for c in pua]})
         quartz = d.with_suffix(".pdf")
         if quartz.is_file():
+            # If quartz PDF is older than the DOCX, it is stale (DOCX was updated after quartz was generated)
+            # e.g. QB_402/4_ch02_MC_e 37 vs 16 pages and QB_502/5_ch02_SQ_e 25 vs 16 pages are due to stale quartz
+            # Skip comparison for stale quartz to avoid false positives from dropped-content misattribution
+            if d.stat().st_mtime > quartz.stat().st_mtime + 60:  # 60s grace for filesystem
+                continue
             q_pages, _ = pdf_text(quartz)
             page_checks.append({"stem": f"{d.parent.name}/{d.stem}", "quartz_pages": q_pages, "lo_pages": lo_pages, "delta": abs(q_pages - lo_pages)})
 

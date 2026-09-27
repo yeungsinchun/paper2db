@@ -197,5 +197,44 @@ class TestOcrSlice(unittest.TestCase):
         self.assertEqual(qb_items.ocr_slice("no codes here", "PHY1A", None), "")
 
 
+class TestSymbolCoverage(unittest.TestCase):
+    def test_every_sym_code_in_corpus_is_mapped(self) -> None:
+        # Every w:sym w:char and every PUA code point that appears as Symbol-font
+        # text in the real QB corpus must have an entry in SYMBOL_MAP or WINGDINGS_MAP,
+        # otherwise normalize_symbol_xml would leave PUA in the PDF and the glyph check fails.
+        qb_root = None
+        for cand in qb_items.CANDIDATE_QB_ROOTS:
+            if cand.is_dir() and any(cand.rglob("*.docx")):
+                qb_root = cand
+                break
+        if qb_root is None:
+            self.skipTest("no QB corpus available (gitignored)")
+        import re, zipfile
+        unseen: dict[str, list[str]] = {}
+        for docx in qb_root.rglob("*.docx"):
+            if docx.name.startswith("~$"):
+                continue
+            try:
+                xml = zipfile.ZipFile(str(docx)).read("word/document.xml").decode()
+            except Exception:
+                continue
+            for m in re.finditer(r'<w:sym[^>]*w:char="([^"]*)"', xml):
+                char = m.group(1)
+                key = qb_items.symbol_key(char)
+                if key not in qb_items.SYMBOL_MAP and key not in qb_items.WINGDINGS_MAP:
+                    unseen.setdefault(key, []).append(f"{docx.parent.name}/{docx.name}")
+            # Also check PUA in Symbol-font runs via the normalizer's glyph set
+            _, glyphs = qb_items.normalize_symbol_xml(xml)
+            # Any PUA that survived normalization and is in Symbol range is unmapped
+            for c in re.findall(r'[\uF000-\uF0FF]', xml):
+                key = f"{ord(c):04X}"
+                if key not in qb_items.SYMBOL_MAP and key not in qb_items.WINGDINGS_MAP:
+                    # Only count if the DOCX actually contains that PUA as text (not just in binary)
+                    unseen.setdefault(key, []).append(f"{docx.parent.name}/{docx.name} PUA")
+        if unseen:
+            sample = ", ".join(f"{k} in {v[0]}" for k, v in sorted(unseen.items())[:5])
+            self.fail(f"Unmapped Symbol codes in corpus: {sample} (and {len(unseen)-5} more) - add to SYMBOL_MAP/WINGDINGS_MAP")
+
+
 if __name__ == "__main__":
     unittest.main()
