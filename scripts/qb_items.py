@@ -4,7 +4,7 @@
 Inputs:
   qb/**/*.docx  (or --qb-root)
   qb-pdf/<bank>/<stem>.pdf  (from qb_convert)
-  qb-pdf/<bank>/<stem>.pdf.txt + tsv  (from qb_ocr, optional -- used for ocr field)
+  qb-pdf/<bank>/<stem>.pdf.txt  (from qb_ocr, optional -- used for ocr field)
 
 Outputs:
   qb-pdf/items/<bank>.json   {bank, generated_at, tool_versions, items: [...]}
@@ -14,7 +14,8 @@ Outputs:
 
 Parsing:
   Document XML is walked in document order.  <w:t> runs give text,
-  <w:sym> gives Symbol/Wingdings glyphs mapped to Unicode,
+  <w:sym> gives Symbol/Wingdings glyphs mapped to Unicode; Symbol-font PUA
+  characters in <w:t> runs are normalized too,
   <o:OLEObject> and <m:oMath> give [eq:N] placeholders,
   <w:drawing> / <w:pict> give [fig:N] placeholders (per-item has_figure),
   paragraph ends / <w:br/> give newlines and <w:tab/> gives tabs.

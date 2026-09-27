@@ -4,7 +4,7 @@
 Inputs:  qb/**/*.docx  (canonical: /Users/sinchunyeung/github/paper2notes/qb  or  qb/ in-tree)
          plus 6 PDF-only sources that have no DOCX twin.
 Outputs: qb-pdf/<bank>/<stem>.pdf
-         qb-pdf/convert-log.json  (sha256, page count, timing, origin, converter)
+         qb-pdf/convert-log.json  (sha256, page count, timing, converter)
 
 Converter: LibreOffice soffice --headless with a per-task -env:UserInstallation
 profile.  Before conversion, Symbol-font glyphs (<w:sym w:font="Symbol">, and

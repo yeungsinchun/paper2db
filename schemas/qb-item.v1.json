@@ -19,7 +19,7 @@
       "type": "object",
       "required": ["text", "ocr", "equations", "has_figure", "equation_only"],
       "properties": {
-        "text": {"type": "string", "description": "DOCX-derived text with w:sym mapped to Unicode and [eq:N] placeholders"},
+        "text": {"type": "string", "description": "DOCX-derived text with Symbol-font glyphs mapped to Unicode and [eq:N] placeholders"},
         "ocr": {"type": "string", "description": "Tesseract --psm 1 text for the stem crop"},
         "equations": {"type": "integer", "minimum": 0},
         "has_figure": {"type": "boolean"},

@@ -13,13 +13,13 @@ pip install -r requirements.txt
 ./pipeline
 ```
 
-That one command walks every stage from `paper/` PDFs to `tests/reconstructed/` papers and `tests/sections/` curriculum-section folders with review PDFs. Generated artifacts in both trees are gitignored - regenerate them rather than committing them (`./pipeline --force --yes` rebuilds everything). The tracked inputs are listed below. It pauses at a few review gates (MC anchors, optional LQ crops, uncertain classifications). Pass `--yes` to print the same paths without waiting for Enter.
+That command builds the past-paper banks from `paper/`, then runs the QB question-bank stages when a QB DOCX source tree is available. Generated artifacts are gitignored; the tracked inputs are listed below. The past-paper stages pause at review gates (MC anchors, optional LQ crops, uncertain classifications). Pass `--yes` to print the same paths without waiting for Enter.
 
 ```bash
 ./pipeline --years 2025          # one year
 ./pipeline --from classify-mc    # resume mid-pipeline
 ./pipeline --only keys,section-pdfs
-./pipeline --force --yes         # rebuild everything, no prompts
+./pipeline --force --yes         # rebuild all available stages, no prompts
 ./pipeline --list-stages
 ```
 
@@ -39,8 +39,8 @@ When no API key is set, both MC and LQ use the keyword classifiers.
 Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.gitignore`). Rebuild them from `paper/` with:
 
 ```bash
-./pipeline --force --yes      # all years, all stages, no review prompts
-./pipeline --years 2025 --force --yes   # one year
+./pipeline --force --yes      # all years and available stages, no review prompts
+./pipeline --years 2025 --force --yes   # one past-paper year; QB stages still process the QB corpus
 ```
 
 `tests/sections/` is the generated curriculum-section bank (PNG copies, CSVs, section PDFs, `quality_audit.json`, OCR caches, `candidate_performance.json`) - named alongside `tests/reconstructed/` since both are pipeline output trees under `tests/`, not fixtures. The only files under `tests/reconstructed/` that git tracks are durable inputs: `tests/reconstructed/lq/<year>/starts.json` (LQ page ranges, preserved by normal `lq-pages` runs). Everything under `tests/sections/` is reproducible from `paper/` with `./pipeline`, so never `git add` crops, section PDFs or `.lavish/` HTML.
@@ -60,6 +60,9 @@ Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.g
 | `tests/reconstructed/lq/` | `combined.pdf` (every year's LQ questions) + `<year>/` LQ pages, `qN.png`, `ans/qN.png`, per-year `combined.pdf` |
 | `tests/sections/mc/` | Section folders, CSVs, `answer_keys.json`, section PDFs (generated) |
 | `tests/sections/lq/` | Same for long questions, + `candidate_performance.json` (generated) |
+| `qb/` | Local QB DOCX source tree, if supplied (gitignored) |
+| `qb-pdf/` | Converted QB PDFs, OCR, item JSON, crops, conversion log and quality report (generated, gitignored) |
+| `schemas/qb-item.v1.json` | `paper2db.qb-item.v1` item contract |
 | `metadata/mc/llm_classifications.json` | Tracked MC classification decisions (LLM or keyword backend) |
 | `metadata/lq/llm_classifications.json` | Tracked LQ classification decisions |
 | `scripts/` | Stage implementations (called by `./pipeline`) |
@@ -68,6 +71,7 @@ Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.g
 | `.lavish/pipeline-review/` | Step-by-step HTML evidence for captain review |
 | `.lavish/classified-review/` | MC section bank HTML |
 | `.lavish/lq-classified-review/` | LQ section bank HTML |
+| `.lavish/qb-review/` | Local QB crop review board (generated) |
 | `tests/sections/quality_audit.json` | Measured crop/classification failure rates (generated) |
 
 ## Stages
@@ -83,6 +87,12 @@ Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.g
 9. **classify-lq** - same sections for LQ (LLM if keyed, else keywords). Either backend then lists every Book 5 section a radioactivity LQ tests (e.g. 2014 Q10: ch26 activity + ch25 alpha handling; 2012 Q11 keeps 25+26+27), primary = latest section. Both backends OCR the whole page stack (cache keyed by PNG size under `tests/sections/lq/ocr_cache/`)
 10. **section-pdfs** - per-section A4 `combined.pdf` (+ LQ `answers.pdf` / `performance.pdf`); an LQ appears in every section it is listed under, not only its primary
 11. **lavish** - quality audit + HTML reviews under `.lavish/` (pipeline walkthrough, MC banks, LQ banks)
+12. **qb-pdf** - convert QB DOCX files to PDF with LibreOffice; copy PDF-only sources
+13. **qb-ocr** - OCR QB PDFs with `pdftoppm` and Tesseract
+14. **qb-items** - extract item JSON and per-item PNG crops
+15. **qb-audit** - strict QB quality gate and local crop review board
+
+The QB stages skip when no QB DOCX source tree is found. They use `qb/` in this repository or the canonical paper2notes QB tree if available. The QB source files and all generated QB outputs stay untracked. LibreOffice (`soffice`), `pdftoppm` and Tesseract must be on `PATH` to run these stages. Run only the QB track with `./pipeline --only qb-pdf,qb-ocr,qb-items,qb-audit`; `--years` applies to past papers, not QB. The QB audit writes `qb-pdf/quality.json` and `.lavish/qb-review/index.html`; it checks the exact PDF and item counts, crops, key statuses, and conversion rendering. See `scripts/qb_quality.py` for the gate definitions.
 
 ## Tests
 
@@ -90,7 +100,7 @@ Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.g
 .venv/bin/python -m unittest discover -s tests   # seconds; needs no build
 ```
 
-The suite runs against fixtures (`tests/fixtures/lq_ocr/`, temp trees) and covers the Book 5 listing rule, the reconstructed layout joiner and the upright section-PDF packing. Tests that inspect generated banks (`tests/sections/`, `tests/reconstructed/`) skip until `./pipeline` has built them. A full rebuild takes tens of minutes (page export and OCR dominate), so when evidence is needed build one track - e.g. `./pipeline --only lq-pages,lq-crops,lq-answers,classify-lq,keys,section-pdfs --yes` for the LQ banks (`section-pdfs` needs `keys`) - or one year with `--years`, rather than everything.
+The suite runs against fixtures (`tests/fixtures/lq_ocr/`, temp trees) and covers the Book 5 listing rule, the reconstructed layout joiner, the upright section-PDF packing and QB extraction. Tests that inspect generated banks (`tests/sections/`, `tests/reconstructed/`) skip until `./pipeline` has built them. A full rebuild, especially QB conversion and OCR, can take much longer than the fixture suite. For past-paper evidence, build one track - e.g. `./pipeline --only lq-pages,lq-crops,lq-answers,classify-lq,keys,section-pdfs --yes` for the LQ banks (`section-pdfs` needs `keys`) - or one year with `--years`.
 
 ## Quality bar
 

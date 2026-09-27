@@ -1,33 +1,5 @@
 #!/usr/bin/env python3
-"""HKDSE Physics paper2db - single entry point for the full pipeline.
-
-Reads PDFs under paper/{mc,lq,ans}/ and writes:
-  intermediate/mc/<year>/   MC anchor review PDF + OCR meta (pre-split)
-  tests/reconstructed/mc/<year>/  MC question crops + per-year combined.pdf
-  tests/reconstructed/mc/combined.pdf  every year's MC paper, one A4 PDF
-  tests/reconstructed/lq/<year>/  LQ pages, whole-page qN.png, answer crops, A4 review PDFs
-  tests/reconstructed/lq/combined.pdf  every year's LQ paper, one A4 PDF
-  tests/sections/mc/       MC section folders, CSVs, section PDFs, answer keys
-  tests/sections/lq/       LQ section folders, CSVs, section PDFs, candidate_performance.json
-  metadata/mc/llm_classifications.json  tracked MC classification decisions
-  metadata/lq/llm_classifications.json  tracked LQ classification decisions
-  .lavish/pipeline-review/        step-by-step HTML (intermediates + finals)
-  .lavish/classified-review/      MC section bank HTML
-  .lavish/lq-classified-review/   LQ section bank HTML
-  tests/sections/quality_audit.json   crop/classification failure rates
-
-Human gates (skipped with --yes, but paths are still printed):
-  1. After MC anchors - review each intermediate/mc/<year>/anchor.pdf (blue dot
-     beside the question number, not options or diagrams) before split.
-  2. After classify - skim tests/sections/mc/uncertain.csv (and LQ section folders).
-
-Usage:
-  ./pipeline
-  ./pipeline --years 2024 2025
-  ./pipeline --from classify-mc
-  ./pipeline --only keys,classify-mc,section-pdfs
-  ./pipeline --yes --force
-"""
+"""Run the paper and optional QB pipelines; see README.md for stages and outputs."""
 from __future__ import annotations
 
 import argparse
