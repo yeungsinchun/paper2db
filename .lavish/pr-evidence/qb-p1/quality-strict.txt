@@ -1,0 +1,42 @@
+QB quality audit
+============================================================
+QB root: /Users/sinchunyeung/github/paper2notes/qb
+
+[pdfs] 199/199 real DOCX converted, expected 199 ✓
+
+[items] total=3712 expected=3712 ✓
+        in_scope=1881 expected=1881 ✓
+        types in scope: {'mc': 1082, 'sq': 460, 'lq': 312, 'rq': 27}
+
+[crops] 3712/3712 (100.0%) ✓
+
+[keys] ✓
+  ✓ QB_201: actual {'present': 59, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 59, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_202: actual {'present': 45, 'from-pdf': 64, 'missing': 0, 'derived': 0} expected {'present': 45, 'from-pdf': 64, 'missing': 0}
+  ✓ QB_203: actual {'present': 81, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 81, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_204: actual {'present': 113, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 113, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_205: actual {'present': 61, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 61, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_206: actual {'present': 96, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 96, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_207: actual {'present': 125, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 125, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_208: actual {'present': 84, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 84, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_209: actual {'present': 77, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 77, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_210: actual {'present': 68, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 68, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_401: actual {'present': 131, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 131, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_402: actual {'present': 105, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 105, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_403: actual {'present': 61, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 61, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_404: actual {'present': 107, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 107, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_405: actual {'present': 67, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 67, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_406: actual {'present': 89, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 89, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_407: actual {'present': 121, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 121, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_408: actual {'present': 81, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 81, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_501: actual {'present': 70, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 70, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_502: actual {'present': 109, 'from-pdf': 0, 'missing': 0, 'derived': 0} expected {'present': 109, 'from-pdf': 0, 'missing': 0}
+  ✓ QB_503: actual {'present': 29, 'from-pdf': 0, 'missing': 38, 'derived': 0} expected {'present': 29, 'from-pdf': 0, 'missing': 38}
+
+[render] page count: 54 Quartz twins, 0 beyond ±3; glyphs: 199 PDFs, 0 failing ✓
+
+============================================================
+GATE PASS: 199 PDFs, 3712 items, 1881 in-scope, 100.0% crops, key-status matches §3.2, render check passing
+
+Wrote /Users/sinchunyeung/.treehouse/paper2db-41af0c/5/paper2db/qb-pdf/quality.json
+Lavish board: /Users/sinchunyeung/.treehouse/paper2db-41af0c/5/paper2db/.lavish/qb-review/index.html
