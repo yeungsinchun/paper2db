@@ -105,6 +105,15 @@ class TestQbConvertSymbols(unittest.TestCase):
             xml = f"<w:p>{run}</w:p>"
             self.assertEqual(self.items.normalize_symbol_xml(xml), (xml, []), run)
 
+    def test_symbol_chars_follow_adobe_symbol_encoding(self) -> None:
+        xml = (
+            '<w:p><w:r><w:sym w:font="Symbol" w:char="F05A"/></w:r>'
+            '<w:r><w:sym w:font="Symbol" w:char="F046"/></w:r>'
+            '<w:r><w:sym w:font="Symbol" w:char="F0C9"/></w:r>'
+            '<w:r><w:sym w:font="Symbol" w:char="F0CD"/></w:r></w:p>'
+        )
+        self.assertEqual(self.items.normalize_symbol_xml(xml)[1], ["\u0396", "\u03a6", "\u2283", "\u2286"])
+
     def test_mixed_symbol_run_maps_pua_and_keeps_font(self) -> None:
         xml = '<w:p><w:r><w:rPr><w:rFonts w:ascii="Symbol" w:hAnsi="Symbol"/></w:rPr><w:t>\uf067 a</w:t></w:r></w:p>'
         new_xml, glyphs = self.items.normalize_symbol_xml(xml)
