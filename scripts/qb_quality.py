@@ -33,8 +33,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from qb_convert import EXPECTED_REAL_DOCX, normalize_symbol_xml  # noqa: E402
-from qb_items import find_qb_root  # noqa: E402
+from qb_convert import EXPECTED_REAL_DOCX  # noqa: E402
+from qb_items import find_qb_root, normalize_symbol_xml  # noqa: E402
 
 QB_PDF = ROOT / "qb-pdf"
 ITEMS_DIR = QB_PDF / "items"

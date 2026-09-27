@@ -91,6 +91,7 @@ class TestQbConvertSymbols(unittest.TestCase):
             self.assertNotIn('w:ascii="Symbol"', xml)
             self.assertIn('w:font="Wingdings"', xml)
             self.assertEqual(self.items.extract_docx_text_and_equations(dest), "decay αβ■\n")
+            self.assertEqual(self.items.extract_docx_text_and_equations(src), "decay αβ■\n")
             self.assertEqual(self.conv.docx_symbol_glyphs(src), ["α", "β"])
 
 
@@ -102,11 +103,11 @@ class TestQbConvertSymbols(unittest.TestCase):
         ]
         for run in cases:
             xml = f"<w:p>{run}</w:p>"
-            self.assertEqual(self.conv.normalize_symbol_xml(xml), (xml, []), run)
+            self.assertEqual(self.items.normalize_symbol_xml(xml), (xml, []), run)
 
     def test_mixed_symbol_run_maps_pua_and_keeps_font(self) -> None:
         xml = '<w:p><w:r><w:rPr><w:rFonts w:ascii="Symbol" w:hAnsi="Symbol"/></w:rPr><w:t>\uf067 a</w:t></w:r></w:p>'
-        new_xml, glyphs = self.conv.normalize_symbol_xml(xml)
+        new_xml, glyphs = self.items.normalize_symbol_xml(xml)
         self.assertEqual(glyphs, ["\u03b3"])
         self.assertIn("<w:t>\u03b3 a</w:t>", new_xml)
         self.assertIn('w:ascii="Symbol"', new_xml)

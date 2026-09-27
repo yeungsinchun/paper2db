@@ -39,6 +39,7 @@ import time
 import zipfile
 from collections import Counter, defaultdict
 from pathlib import Path
+from xml.sax.saxutils import escape
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PDF = ROOT / "qb-pdf"
@@ -158,6 +159,77 @@ def sym_text(font: str, char: str) -> str:
     return SYMBOL_MAP.get(key, f"[{font}:{char}]")
 
 
+SYM_RE = re.compile(r"<w:sym\b[^>]*/>")
+RUN_RE = re.compile(r"<w:r\b[^>]*>.*?</w:r>", re.DOTALL)
+RFONTS_RE = re.compile(r"<w:rFonts\b[^>]*/>")
+T_RE = re.compile(r"(<w:t(?:\s[^>]*)?>)([^<]*)(</w:t>)")
+SYMBOL_FONT_ATTR_RE = re.compile(r'(w:(?:ascii|hAnsi)=")Symbol(")')
+REPLACEMENT_FONT = "Times New Roman"
+
+
+def symbol_run_char(c: str) -> str | None:
+    n = ord(c)
+    if 0xF000 <= n <= 0xF0FF:
+        return SYMBOL_MAP.get(f"{n:04X}")
+    return None
+
+
+def normalize_symbol_xml(xml: str) -> tuple[str, list[str]]:
+    """Rewrite Symbol-font glyphs in document.xml as Unicode text.
+
+    Returns (new_xml, glyphs) where glyphs lists every non-ASCII character
+    produced, in document order -- the reference the render check expects to
+    find in the PDF text layer.
+    """
+    glyphs: list[str] = []
+
+    def sym(m: re.Match) -> str:
+        tag = m.group(0)
+        font = re.search(r'w:font="([^"]*)"', tag)
+        char = re.search(r'w:char="([^"]*)"', tag)
+        if not (font and char and font.group(1) == "Symbol"):
+            return tag
+        u = SYMBOL_MAP.get(symbol_key(char.group(1)))
+        if u is None:
+            return tag
+        if not u.isascii():
+            glyphs.append(u)
+        return f'<w:t xml:space="preserve">{escape(u)}</w:t>'
+
+    def run(m: re.Match) -> str:
+        r = m.group(0)
+        fonts = RFONTS_RE.search(r)
+        if not (fonts and SYMBOL_FONT_ATTR_RE.search(fonts.group(0))):
+            return r
+
+        mapped = []
+        unmapped = []
+
+        def text(tm: re.Match) -> str:
+            out = []
+            for c in html.unescape(tm.group(2)):
+                u = symbol_run_char(c)
+                if u is None:
+                    unmapped.append(c)
+                else:
+                    mapped.append(u)
+                out.append(c if u is None else u)
+            return tm.group(1) + escape("".join(out)) + tm.group(3)
+
+        r = T_RE.sub(text, r)
+        if not mapped:
+            return m.group(0)
+        glyphs.extend(u for u in mapped if not u.isascii())
+        if unmapped:
+            return r
+        new_fonts = SYMBOL_FONT_ATTR_RE.sub(rf"\g<1>{REPLACEMENT_FONT}\g<2>", fonts.group(0))
+        return r.replace(fonts.group(0), new_fonts, 1)
+
+    xml = SYM_RE.sub(sym, xml)
+    xml = RUN_RE.sub(run, xml)
+    return xml, glyphs
+
+
 # Table cell / row separators emitted by the XML walker so the marking-scheme
 # parser can see the two-column layout; stripped from every output text field.
 CELL = "\x1f"
@@ -189,6 +261,7 @@ def extract_docx_text_and_equations(docx_path: Path) -> str:
             xml = z.read("word/document.xml").decode()
         except KeyError:
             return ""
+    xml = normalize_symbol_xml(xml)[0]
 
     parts: list[str] = []
     eq_idx = 0
