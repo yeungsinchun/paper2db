@@ -178,8 +178,7 @@ def main() -> None:
     if failed:
         for r in failed:
             print(f"  FAIL {r.get('pdf')}: {r.get('error','')[:200]}")
-        if len(failed) > 5:
-            raise SystemExit(f"{len(failed)} OCR failures")
+        raise SystemExit(f"{len(failed)} OCR failures")
 
 
 if __name__ == "__main__":

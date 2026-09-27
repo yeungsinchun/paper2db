@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """qb-audit: quality checks + Lavish review board for the qb pipeline.
 
-Checks (gate from plan):
-  - 199 PDFs (real DOCX count)
-  - 3,712 unique items total, 1,881 in scope (Books 2,4,5)
+Gate (plan P1, all exact):
+  - 199 PDFs: every real DOCX has qb-pdf/<bank>/<stem>.pdf
+  - 3,712 unique items total, 1,881 in scope (Books 2,4,5), per-bank counts per plan §3.2
   - 100% crops (every item has qb-pdf/crops/<id>.png)
-  - key-status table matches plan §3.2 (QB_503 MC missing, QB_202 MC from-pdf)
-  - converter render check: LibreOffice vs Quartz PDFs (page count ±1, side-by-side of 20 random pages)
+  - key-status table matches plan §3.2: per bank, `present` equals the withKey column,
+    QB_202's 64 MC are `from-pdf`, QB_503's 38 MC are `missing`
+  - converter render check: LibreOffice vs the 59 Quartz PDFs with DOCX twins
+    (page count ±1), and every Symbol-font glyph of each DOCX appears in its
+    PDF text layer with no Symbol PUA code points left
 
 Outputs:
   qb-pdf/quality.json
@@ -19,39 +22,40 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import re
 import shutil
-import subprocess
+import sys
 import time
+import zipfile
 from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from qb_convert import EXPECTED_REAL_DOCX, normalize_symbol_xml  # noqa: E402
+from qb_items import find_qb_root  # noqa: E402
+
 QB_PDF = ROOT / "qb-pdf"
 ITEMS_DIR = QB_PDF / "items"
 CROPS_DIR = QB_PDF / "crops"
 LAVISH_OUT = ROOT / ".lavish" / "qb-review"
 
-# Expected gate values from plan §3.2
-EXPECTED_REAL_DOCX = 199
 EXPECTED_TOTAL_ITEMS = 3712
 EXPECTED_IN_SCOPE = 1881
-EXPECTED_IN_SCOPE_BY_BANK = {
-    "QB_201": 59, "QB_202": 109, "QB_203": 81, "QB_204": 113, "QB_205": 61,
-    "QB_206": 96, "QB_207": 125, "QB_208": 84, "QB_209": 77, "QB_210": 68,
-    "QB_401": 131, "QB_402": 105, "QB_403": 61, "QB_404": 107, "QB_405": 67,
-    "QB_406": 89, "QB_407": 121, "QB_408": 81,
-    "QB_501": 70, "QB_502": 109, "QB_503": 67,
+# Plan §3.2 in-scope census: bank -> (items, withKey from DOCX)
+EXPECTED_BANKS = {
+    "QB_201": (59, 59), "QB_202": (109, 45), "QB_203": (81, 81), "QB_204": (113, 113),
+    "QB_205": (61, 61), "QB_206": (96, 96), "QB_207": (125, 125), "QB_208": (84, 84),
+    "QB_209": (77, 77), "QB_210": (68, 68),
+    "QB_401": (131, 131), "QB_402": (105, 105), "QB_403": (61, 61), "QB_404": (107, 107),
+    "QB_405": (67, 67), "QB_406": (89, 89), "QB_407": (121, 121), "QB_408": (81, 81),
+    "QB_501": (70, 70), "QB_502": (109, 109), "QB_503": (67, 29),
 }
-IN_SCOPE_BANKS = set(EXPECTED_IN_SCOPE_BY_BANK.keys())
-
-# Known key-status expectations (plan §3.2)
-# After qb_items extraction, QB_202 MC keys are recovered from Quartz PDFs via from-pdf,
-# so withKey becomes 107 (45 present + 62 from-pdf, 2 RQ/?? still missing).
-# QB_503 MC remain 38 missing as expected.
-EXPECTED_KEY_STATUS = {
-    "QB_202": {"withKey": 107, "with_alt": [45], "note": "45 present + 62 from-pdf (Quartz PDF); raw DOCX had 45"},
-    "QB_503": {"withKey": 29, "note": "38 MC have no key anywhere"},
-}
+IN_SCOPE_BANKS = set(EXPECTED_BANKS)
+# QB_202's 64 MC keys live only in the Quartz PDF text layer
+EXPECTED_FROM_PDF = {"QB_202": 64}
+MAX_PAGE_DELTA = 1
 
 
 def load_index() -> dict | None:
@@ -61,17 +65,27 @@ def load_index() -> dict | None:
     return json.loads(p.read_text())
 
 
-def load_convert_log() -> dict | None:
-    p = QB_PDF / "convert-log.json"
-    if not p.is_file():
-        return None
-    return json.loads(p.read_text())
+def real_docx(qb_root: Path | None) -> list[Path]:
+    if qb_root is None:
+        return []
+    return [p for p in sorted(qb_root.rglob("*.docx")) if not p.name.startswith("~$")]
 
 
-def check_pdfs() -> dict:
-    pdfs = [p for p in QB_PDF.rglob("*.pdf") if p.parent.name.startswith("QB_")]
-    by_bank: dict[str, int] = Counter(p.parent.name for p in pdfs)
-    return {"total_pdfs": len(pdfs), "by_bank": dict(by_bank), "pdfs": [str(p.relative_to(ROOT)) for p in sorted(pdfs)]}
+def lo_pdf(docx: Path) -> Path:
+    return QB_PDF / docx.parent.name / (docx.stem + ".pdf")
+
+
+def check_pdfs(qb_root: Path | None) -> dict:
+    docx = real_docx(qb_root)
+    missing = [f"{d.parent.name}/{d.stem}" for d in docx if not lo_pdf(d).is_file()]
+    converted = len(docx) - len(missing)
+    return {
+        "real_docx": len(docx),
+        "converted_pdfs": converted,
+        "expected": EXPECTED_REAL_DOCX,
+        "missing": missing[:20],
+        "ok": len(docx) == EXPECTED_REAL_DOCX and converted == EXPECTED_REAL_DOCX,
+    }
 
 
 def check_items() -> dict:
@@ -82,34 +96,24 @@ def check_items() -> dict:
     total = len(items)
     in_scope = [e for e in items if e.get("bank") in IN_SCOPE_BANKS]
     by_bank: dict[str, int] = Counter(e["bank"] for e in items)
-    # Per-bank check vs expected
-    bank_failures: list[dict] = []
-    for bank, expected in EXPECTED_IN_SCOPE_BY_BANK.items():
-        actual = by_bank.get(bank, 0)
-        if actual != expected:
-            bank_failures.append({"bank": bank, "expected": expected, "actual": actual, "kind": "count_mismatch"})
-    # Total checks
-    by_type: dict[str, int] = Counter(e.get("type", "?") for e in in_scope)
-    with_key = sum(1 for e in items if e.get("status") in ("present", "from-pdf", "derived"))
-    in_scope_with_key = sum(1 for e in in_scope if e.get("status") in ("present", "from-pdf", "derived"))
-    # Total is 3710 or 3712 depending on QB_3A02/3B06 typos; accept either
-    total_ok = total in (EXPECTED_TOTAL_ITEMS, EXPECTED_TOTAL_ITEMS - 2, 3710)
-    # In-scope withKey: plan says 1779 but with from-pdf recovery it is 1841 (QB_202)
-    with_key_ok = in_scope_with_key in (1779, 1841) or in_scope_with_key >= 1779
+    bank_failures = [
+        {"bank": bank, "expected": expected, "actual": by_bank.get(bank, 0)}
+        for bank, (expected, _) in EXPECTED_BANKS.items()
+        if by_bank.get(bank, 0) != expected
+    ]
+    total_ok = total == EXPECTED_TOTAL_ITEMS
+    in_scope_ok = len(in_scope) == EXPECTED_IN_SCOPE
     return {
         "total": total,
         "expected_total": EXPECTED_TOTAL_ITEMS,
         "total_ok": total_ok,
         "in_scope": len(in_scope),
         "expected_in_scope": EXPECTED_IN_SCOPE,
-        "in_scope_ok": len(in_scope) == EXPECTED_IN_SCOPE,
+        "in_scope_ok": in_scope_ok,
         "by_bank": dict(by_bank),
-        "by_type_in_scope": dict(by_type),
+        "by_type_in_scope": dict(Counter(e.get("type", "?") for e in in_scope)),
         "bank_failures": bank_failures,
-        "with_key": with_key,
-        "in_scope_with_key": in_scope_with_key,
-        "expected_in_scope_with_key": 1779,
-        "with_key_ok": with_key_ok,
+        "ok": total_ok and in_scope_ok and not bank_failures,
     }
 
 
@@ -118,24 +122,16 @@ def check_crops() -> dict:
     if not index:
         return {"ok": False, "error": "no index"}
     items = index.get("items", [])
-    missing: list[str] = []
-    present = 0
-    for e in items:
-        code = e["id"]
-        stem = CROPS_DIR / f"{code}.png"
-        if stem.is_file():
-            present += 1
-        else:
-            missing.append(code)
+    missing = [e["id"] for e in items if not (CROPS_DIR / f"{e['id']}.png").is_file()]
     total = len(items)
-    pct = (present / total * 100) if total else 0
+    present = total - len(missing)
     return {
         "total": total,
         "present": present,
         "missing": len(missing),
         "missing_ids": missing[:20],
-        "pct": round(pct, 2),
-        "ok": present == total,
+        "pct": round(present / total * 100, 2) if total else 0,
+        "ok": total > 0 and not missing,
     }
 
 
@@ -143,127 +139,94 @@ def check_key_status() -> dict:
     index = load_index()
     if not index:
         return {"ok": False, "error": "no index"}
-    items = index.get("items", [])
     by_bank_items: dict[str, list[dict]] = defaultdict(list)
-    for e in items:
+    for e in index.get("items", []):
         by_bank_items[e["bank"]].append(e)
 
     results = []
-    for bank, exp in EXPECTED_KEY_STATUS.items():
+    for bank, (items_n, with_key) in sorted(EXPECTED_BANKS.items()):
         entries = by_bank_items.get(bank, [])
-        with_key = sum(1 for e in entries if e.get("status") in ("present", "from-pdf", "derived"))
-        # Allow alternative expected values (e.g. QB_202 raw DOCX vs with from-pdf recovery)
-        ok = with_key == exp["withKey"] or with_key in exp.get("with_alt", [])
-        # For QB_202, accept either 45 (raw DOCX only) or 107 (with from-pdf)
-        if not ok and bank == "QB_202" and with_key in (45, 107, 106, 108):
-            ok = True
-        # Detail: for QB_503, check that MC are the missing ones
-        # Load bank JSON for finer check
-        bank_json = ITEMS_DIR / f"{bank}.json"
-        mc_missing = 0
-        mc_from_pdf = 0
-        if bank_json.is_file():
-            data = json.loads(bank_json.read_text())
-            for it in data.get("items", []):
-                if it.get("type") == "mc" and it.get("answer", {}).get("status") == "missing":
-                    mc_missing += 1
-                if it.get("answer", {}).get("status") == "from-pdf":
-                    mc_from_pdf += 1
-
-        results.append(
-            {
-                "bank": bank,
-                "expected_withKey": exp["withKey"],
-                "actual_withKey": with_key,
-                "total": len(entries),
-                "ok": ok,
-                "note": exp["note"],
-                "mc_missing": mc_missing,
-                "mc_from_pdf": mc_from_pdf,
-            }
-        )
-    overall_ok = all(r["ok"] for r in results)
-    return {"checks": results, "ok": overall_ok}
+        from_pdf = EXPECTED_FROM_PDF.get(bank, 0)
+        expected = {"present": with_key, "from-pdf": from_pdf, "missing": items_n - with_key - from_pdf}
+        actual = Counter(e.get("status") for e in entries)
+        actual_d = {k: actual.get(k, 0) for k in ("present", "from-pdf", "missing", "derived")}
+        non_mc_unkeyed = sum(1 for e in entries if e.get("status") != "present" and e.get("type") != "mc")
+        ok = all(actual_d[k] == v for k, v in expected.items()) and actual_d["derived"] == 0 and non_mc_unkeyed == 0
+        results.append({"bank": bank, "expected": expected, "actual": actual_d, "non_mc_unkeyed": non_mc_unkeyed, "ok": ok})
+    return {"checks": results, "ok": all(r["ok"] for r in results)}
 
 
-def check_render() -> dict:
-    """Compare LibreOffice PDFs vs existing Quartz PDFs (59 with DOCX twins).
+def render_reference(docx: Path) -> tuple[set[str], set[str]]:
+    """(Symbol glyphs the PDF must show, PUA chars allowed from non-Symbol w:sym fonts)."""
+    with zipfile.ZipFile(str(docx)) as z:
+        xml = z.read("word/document.xml").decode()
+    allowed_pua = set()
+    for tag in re.findall(r"<w:sym\b[^>]*/>", xml):
+        font = re.search(r'w:font="([^"]*)"', tag)
+        char = re.search(r'w:char="([^"]*)"', tag)
+        if font and char and font.group(1) != "Symbol":
+            allowed_pua.add(chr(int(char.group(1), 16) | 0xF000))
+    return set(normalize_symbol_xml(xml)[1]), allowed_pua
 
-    Check: page count ±1 and, if ImageMagick available, a pixel diff sample.
-    Quartz PDFs are those under qb-pdf that were copied from qb/ (origin quartz-pdf)
-    or the canonical 65 PDFs from paper2notes/qb.  On this worktree the Quartz
-    copies live in the canonical qb/ folder; we compare page counts.
-    """
-    log = load_convert_log()
-    # Find quartz PDFs in canonical qb
-    quartz_candidates = []
-    for cand in [Path("/Users/sinchunyeung/github/paper2notes/qb"), ROOT / "qb"]:
-        if cand.is_dir():
-            quartz_candidates = list(cand.rglob("*.pdf"))
-            if quartz_candidates:
-                break
 
-    # qb-pdf LibreOffice PDFs
-    lo_pdfs = [p for p in QB_PDF.rglob("*.pdf") if p.parent.name.startswith("QB_")]
-    lo_by_stem = {p.stem: p for p in lo_pdfs}
+def pdf_text(pdf: Path) -> tuple[int, str]:
+    import pymupdf  # type: ignore
 
-    comparisons: list[dict] = []
-    mismatched: list[dict] = []
-    for qpdf in quartz_candidates:
-        stem = qpdf.stem
-        lo = lo_by_stem.get(stem)
-        if not lo:
+    doc = pymupdf.open(str(pdf))
+    try:
+        return len(doc), "".join(page.get_text() for page in doc)
+    finally:
+        doc.close()
+
+
+def check_render(qb_root: Path | None) -> dict:
+    """LibreOffice PDFs vs Quartz twins (page count) and vs DOCX Symbol glyphs (text layer)."""
+    docx = real_docx(qb_root)
+    page_checks: list[dict] = []
+    glyph_failures: list[dict] = []
+    checked = 0
+    for d in docx:
+        lo = lo_pdf(d)
+        if not lo.is_file():
+            glyph_failures.append({"file": f"{d.parent.name}/{d.name}", "error": "pdf missing"})
             continue
-        # Only compare those where lo was actually converted (not quartz copy)
-        # Check convert log
-        is_quartz_copy = False
-        if log:
-            for r in log.get("results", []):
-                if stem in r.get("file", "") and r.get("converter", "") == "quartz-pdf":
-                    is_quartz_copy = True
-                    break
-        if is_quartz_copy:
-            continue
-        try:
-            import pymupdf  # type: ignore
+        lo_pages, text = pdf_text(lo)
+        checked += 1
+        glyphs, allowed_pua = render_reference(d)
+        missing = sorted(g for g in glyphs if g not in text)
+        pua = sorted({c for c in text if 0xE000 <= ord(c) <= 0xF8FF} - allowed_pua)
+        if missing or pua:
+            glyph_failures.append({"file": f"{d.parent.name}/{d.name}", "missing_glyphs": missing, "pua": [f"U+{ord(c):04X}" for c in pua]})
+        quartz = d.with_suffix(".pdf")
+        if quartz.is_file():
+            q_pages, _ = pdf_text(quartz)
+            page_checks.append({"stem": f"{d.parent.name}/{d.stem}", "quartz_pages": q_pages, "lo_pages": lo_pages, "delta": abs(q_pages - lo_pages)})
 
-            qdoc = pymupdf.open(str(qpdf))
-            ldoc = pymupdf.open(str(lo))
-            qp, lp = len(qdoc), len(ldoc)
-            qdoc.close()
-            ldoc.close()
-            delta = abs(qp - lp)
-            ok = delta <= 1
-            comparisons.append({"stem": stem, "quartz_pages": qp, "lo_pages": lp, "delta": delta, "ok": ok})
-            if not ok:
-                mismatched.append({"stem": stem, "quartz_pages": qp, "lo_pages": lp, "delta": delta})
-        except Exception as e:
-            comparisons.append({"stem": stem, "error": str(e)})
-
-    # Quartz PDFs may be stale (older DOCX version); mismatches with large delta
-    # are expected when DOCX was updated. Only small deltas (±1) are meaningful
-    # for the LibreOffice-vs-Quartz render check. Large deltas are flagged but
-    # do not block the gate (they indicate DOCX update, not render failure).
-    small_mismatched = [m for m in mismatched if m["delta"] <= 2]
-    large_mismatched = [m for m in mismatched if m["delta"] > 2]
-    sample = random.sample(comparisons, min(20, len(comparisons))) if comparisons else []
-    # Gate passes if at most 2 small mismatches (font/line-break variance); large deltas are DOCX staleness
-    ok = len(small_mismatched) <= 2 or len(comparisons) == 0
+    mismatched = [c for c in page_checks if c["delta"] > MAX_PAGE_DELTA]
     return {
-        "quartz_candidates": len(quartz_candidates),
-        "compared": len(comparisons),
+        "compared": len(page_checks),
         "mismatched": len(mismatched),
-        "small_mismatched": len(small_mismatched),
-        "large_mismatched": len(large_mismatched),
         "mismatched_stems": mismatched[:10],
-        "large_stems": large_mismatched[:5],
-        "sample": sample[:5],
-        "ok": ok,
-        "note": "LibreOffice page count vs Quartz PDF (expect ±1; large deltas indicate stale Quartz, not render failure)",
+        "glyph_checked": checked,
+        "glyph_failures": len(glyph_failures),
+        "glyph_failure_files": glyph_failures[:10],
+        "sample": random.sample(page_checks, min(5, len(page_checks))),
+        "ok": bool(docx) and not glyph_failures and bool(page_checks) and not mismatched,
+        "note": f"page count ±{MAX_PAGE_DELTA} vs Quartz twins; every DOCX Symbol glyph present in the PDF text layer, no Symbol PUA",
     }
 
 
-def build_lavish(index: dict | None) -> Path | None:
+def run_checks(qb_root: Path | None) -> dict:
+    return {
+        "pdfs": check_pdfs(qb_root),
+        "items": check_items(),
+        "crops": check_crops(),
+        "keys": check_key_status(),
+        "render": check_render(qb_root),
+    }
+
+
+def build_lavish(index: dict | None, checks: dict) -> Path | None:
     if not index:
         return None
     items = index.get("items", [])
@@ -309,15 +272,7 @@ table{border-collapse:collapse;width:100%} th,td{border:1px solid #ddd;padding:6
 <p><em>This board is gitignored. QB crops are copyrighted and must not appear in public PRs.</em></p>
 """)
 
-    # Gate summary
-    checks = {
-        "pdfs": check_pdfs(),
-        "items": check_items(),
-        "crops": check_crops(),
-        "keys": check_key_status(),
-        "render": check_render(),
-    }
-    gate_ok = all(v.get("ok") for v in checks.values() if "ok" in v)
+    gate_ok = all(v["ok"] for v in checks.values())
     html_parts.append(f"<h2>Gate {'<span class=pass>PASS</span>' if gate_ok else '<span class=fail>FAIL</span>'}</h2>")
     html_parts.append("<table><tr><th>Check</th><th>Result</th></tr>")
     for name, data in checks.items():
@@ -372,85 +327,57 @@ table{border-collapse:collapse;width:100%} th,td{border:1px solid #ddd;padding:6
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--strict", action="store_true", help="Exit 1 if any gate fails")
+    parser.add_argument("--qb-root", default=None)
     parser.add_argument("--output", default=str(QB_PDF / "quality.json"))
     args = parser.parse_args()
 
+    qb_root = find_qb_root(args.qb_root)
     print("QB quality audit")
     print("=" * 60)
+    print(f"QB root: {qb_root}")
 
-    results: dict = {
-        "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-    }
+    checks = run_checks(qb_root)
+    pdfs, items, crops, keys, render = (checks[k] for k in ("pdfs", "items", "crops", "keys", "render"))
 
-    # PDFs
-    pdfs = check_pdfs()
-    print(f"\n[pdfs] {pdfs['total_pdfs']} PDFs under qb-pdf/QB_*/")
-    for bank in sorted(IN_SCOPE_BANKS):
-        n = pdfs["by_bank"].get(bank, 0)
-        print(f"  {bank}: {n} pdfs")
-    results["pdfs"] = pdfs
+    def mark(ok: bool | None) -> str:
+        return "✓" if ok else "✗"
 
-    # Items
-    items = check_items()
-    print(f"\n[items] total={items.get('total','?')} expected={EXPECTED_TOTAL_ITEMS} {'✓' if items.get('total_ok') else '✗'}")
-    print(f"        in_scope={items.get('in_scope','?')} expected={EXPECTED_IN_SCOPE} {'✓' if items.get('in_scope_ok') else '✗'}")
-    if items.get("bank_failures"):
-        for f in items["bank_failures"]:
-            print(f"  FAIL {f['bank']}: expected {f['expected']} got {f['actual']}")
-    else:
-        print("  per-bank counts: ✓ all 21 banks match §3.2")
-    print(f"        in_scope_with_key={items.get('in_scope_with_key','?')} expected=1779 {'✓' if items.get('with_key_ok') else '✗'}")
+    print(f"\n[pdfs] {pdfs['converted_pdfs']}/{pdfs['real_docx']} real DOCX converted, expected {EXPECTED_REAL_DOCX} {mark(pdfs['ok'])}")
+    for m in pdfs["missing"][:5]:
+        print(f"  missing: {m}")
+
+    print(f"\n[items] total={items.get('total', '?')} expected={EXPECTED_TOTAL_ITEMS} {mark(items.get('total_ok'))}")
+    print(f"        in_scope={items.get('in_scope', '?')} expected={EXPECTED_IN_SCOPE} {mark(items.get('in_scope_ok'))}")
+    for f in items.get("bank_failures", []):
+        print(f"  FAIL {f['bank']}: expected {f['expected']} got {f['actual']}")
     if items.get("by_type_in_scope"):
         print(f"        types in scope: {items['by_type_in_scope']}")
-    results["items"] = items
 
-    # Crops
-    crops = check_crops()
-    print(f"\n[crops] {crops.get('present','?')}/{crops.get('total','?')} ({crops.get('pct','?')}%) {'✓' if crops.get('ok') else '✗'}")
+    print(f"\n[crops] {crops.get('present', '?')}/{crops.get('total', '?')} ({crops.get('pct', '?')}%) {mark(crops['ok'])}")
     if crops.get("missing"):
         print(f"  missing: {crops['missing_ids'][:5]} ... ({crops['missing']} total)")
-    results["crops"] = crops
 
-    # Key status
-    keys = check_key_status()
-    print(f"\n[keys] {'✓' if keys.get('ok') else '✗'}")
+    print(f"\n[keys] {mark(keys['ok'])}")
     for chk in keys.get("checks", []):
-        icon = "✓" if chk["ok"] else "✗"
-        print(f"  {icon} {chk['bank']}: withKey {chk['actual_withKey']}/{chk['total']} expected {chk['expected_withKey']} ({chk['note']}) mc_missing={chk['mc_missing']} from_pdf={chk['mc_from_pdf']}")
-    results["keys"] = keys
+        print(f"  {mark(chk['ok'])} {chk['bank']}: actual {chk['actual']} expected {chk['expected']}")
 
-    # Render check
-    render = check_render()
-    print(f"\n[render] compared {render.get('compared','?')} stems, mismatched {render.get('mismatched','?')} {'✓' if render.get('ok') else '✗'}")
-    if render.get("mismatched_stems"):
-        for mm in render["mismatched_stems"][:5]:
-            print(f"  mismatch: {mm}")
-    results["render"] = render
+    print(f"\n[render] page count: {render['compared']} Quartz twins, {render['mismatched']} beyond ±{MAX_PAGE_DELTA}; "
+          f"glyphs: {render['glyph_checked']} PDFs, {render['glyph_failures']} failing {mark(render['ok'])}")
+    for mm in render["mismatched_stems"][:5]:
+        print(f"  page mismatch: {mm}")
+    for gf in render["glyph_failure_files"][:5]:
+        print(f"  glyph failure: {gf}")
 
-    # Overall
-    all_ok = all(
-        results[k].get("ok", True) for k in ("items", "crops", "keys")
-    ) and not items.get("bank_failures")
-    # PDFs check: real DOCX count via convert log
-    log = load_convert_log()
-    if log:
-        real_docx = log.get("real_docx", 0)
-        converted = log.get("converted", 0)
-        # Gate: 199 PDFs - but note some banks share stems; count bank pdfs
-        pdf_ok = pdfs["total_pdfs"] >= 150  # loose: supplements etc cause fewer distinct stems
-        print(f"\n[gate] PDFs: {pdfs['total_pdfs']} (need ~199 distinct stems)")
-        print(f"       convert log: {converted}/{real_docx} converted")
-        results["gate"] = {"ok": all_ok and pdf_ok, "pdf_ok": pdf_ok, "overall_ok": all_ok}
-    else:
-        results["gate"] = {"ok": all_ok, "overall_ok": all_ok}
-
+    all_ok = all(v["ok"] for v in checks.values())
     print("\n" + "=" * 60)
-    if all_ok:
-        print("GATE PASS: 199 PDFs, 3712 items, 1881 in-scope, 100% crops, key-status as expected")
-    else:
-        print("GATE FAIL: see above")
+    summary = (
+        f"{pdfs['converted_pdfs']} PDFs, {items.get('total', 0)} items, {items.get('in_scope', 0)} in-scope, "
+        f"{crops.get('pct', 0)}% crops, key-status {'matches' if keys['ok'] else 'differs from'} §3.2, "
+        f"render check {'passing' if render['ok'] else 'failing'}"
+    )
+    print(f"GATE {'PASS' if all_ok else 'FAIL'}: {summary}")
 
-    # Write quality.json
+    results = {"generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), **checks, "gate": {"ok": all_ok}}
     out_path = Path(args.output)
     if not out_path.is_absolute():
         out_path = ROOT / out_path
@@ -458,9 +385,8 @@ def main() -> None:
     out_path.write_text(json.dumps(results, indent=2, ensure_ascii=False) + "\n")
     print(f"\nWrote {out_path}")
 
-    # Build Lavish board
     try:
-        lavish = build_lavish(load_index())
+        lavish = build_lavish(load_index(), checks)
         if lavish:
             print(f"Lavish board: {lavish}")
     except Exception as e:

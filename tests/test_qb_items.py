@@ -1,7 +1,6 @@
 """Unit tests for qb_items parsing (synthetic DOCX fixture, no copyrighted content)."""
 from __future__ import annotations
 
-import io
 import json
 import tempfile
 import unittest
@@ -10,193 +9,192 @@ from pathlib import Path
 
 from scripts import qb_items
 
+W_NS = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"'
 
-def make_docx(path: Path, blocks: list[dict]) -> None:
-    """Create a minimal DOCX with given item blocks.
 
-    Each block: {code, lvl, part, type, mark, bk, ch, content, ans_key, worked}
-    """
-    # Minimal document.xml
-    paragraphs = []
-    for b in blocks:
-        tag = f"&lt;code={b['code']}&gt;&lt;lvl={b['lvl']}&gt;&lt;part={b['part']}&gt;&lt;type={b['type']}&gt;&lt;mark={b['mark']}&gt;&lt;bk={b['bk']}&gt;&lt;ch={b['ch']}&gt;&lt;content&gt;"
-        content = b["content"]
-        ans = ""
-        if b.get("ans_key") or b.get("worked"):
-            ans = f"-- ans --\n{b.get('ans_key','')}\n{b.get('worked','')}\n-- ans end --"
-        end = "&lt;end&gt;"
-        full = tag + content + ans + end
-        # Wrap in w:p/w:r/w:t (escape handled by joining w:t)
-        paragraphs.append(f'<w:p><w:r><w:t>{full}</w:t></w:r></w:p>')
+def para(*runs: str) -> str:
+    return "<w:p>" + "".join(runs) + "</w:p>"
 
+
+def t(text: str) -> str:
+    return f'<w:r><w:t xml:space="preserve">{text}</w:t></w:r>'
+
+
+TAB = "<w:r><w:tab/></w:r>"
+
+
+def tag(code: str, typ: str, mark: int) -> list[str]:
+    return [
+        para(t(f"&lt;code={code}&gt;")),
+        para(t(f"&lt;lvl=easy&gt;&lt;part=core&gt;&lt;type={typ}&gt;&lt;mark={mark}&gt;&lt;bk=5&gt;&lt;ch=01&gt;&lt;content&gt;")),
+    ]
+
+
+def table(rows: list[list[list[str]]]) -> str:
+    """rows -> cells -> paragraphs, laid out the way Word writes a marking scheme."""
+    out = "<w:tbl>"
+    for row in rows:
+        out += "<w:tr>"
+        for cell in row:
+            out += "<w:tc>" + "".join(para(t(p)) if p else para() for p in cell) + "</w:tc>"
+        out += "</w:tr>"
+    return out + "</w:tbl>"
+
+
+def write_docx(path: Path, body: list[str]) -> None:
     document_xml = (
         '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-        '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
-        "<w:body>"
-        + "".join(paragraphs)
-        + "</w:body></w:document>"
+        f"<w:document {W_NS}><w:body>" + "".join(body) + "</w:body></w:document>"
     )
-    content_types = (
-        '<?xml version="1.0" encoding="UTF-8"?>'
-        '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
-        '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
-        '<Default Extension="xml" ContentType="application/xml"/>'
-        '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>'
-        "</Types>"
-    )
-    rels = (
-        '<?xml version="1.0" encoding="UTF-8"?>'
-        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
-        '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>'
-        "</Relationships>"
-    )
-    word_rels = (
-        '<?xml version="1.0" encoding="UTF-8"?>'
-        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"/>'
-    )
-
     with zipfile.ZipFile(str(path), "w") as z:
-        z.writestr("[Content_Types].xml", content_types)
-        z.writestr("_rels/.rels", rels)
-        z.writestr("word/_rels/document.xml.rels", word_rels)
         z.writestr("word/document.xml", document_xml)
+
+
+def mc_block(code: str, key: str | None, *, figure: bool = False, equation: bool = False) -> list[str]:
+    body = tag(code, "mc", 2)
+    stem_runs = [TAB, t("Which radiation is most ionizing?")]
+    if equation:
+        stem_runs.append('<w:r><w:object><v:shape/><o:OLEObject ProgID="Equation.3"/></w:object></w:r>')
+    body.append(para(*stem_runs))
+    if figure:
+        body.append(para('<w:r><w:drawing><wp:inline/></w:drawing></w:r>'))
+    for label, text in [("A", "alpha"), ("B", "beta"), ("C", "gamma"), ("D", "X-ray")]:
+        body.append(para(TAB, t(label), TAB, t(text)))
+    ans_cell = ["-- ans –"] + ([key, "Alpha particles carry charge."] if key else []) + ["-- ans end --"]
+    body.append(table([[ans_cell]]))
+    body.append(para(t("&lt;end&gt;")))
+    return body
+
+
+def sq_block(code: str) -> list[str]:
+    body = tag(code, "sq", 3)
+    body.append(para(TAB, t("(a)"), TAB, t("State one property of alpha particles. (1 mark)")))
+    body.append(para(TAB, t("(b)"), TAB, t("(i)"), TAB, t("Explain why they are deflected. (2 marks)")))
+    body.append(para(t("-- ans --")))
+    body.append(
+        table(
+            [
+                [["Solutions"], ["Marks"]],
+                [["(a) They carry positive charge."], ["1A"]],
+                [["(b)"], [""]],
+                [["(i) They are charged", "and massive."], ["1M", "1A"]],
+            ]
+        )
+    )
+    body.append(para(t("-- ans end --")))
+    body.append(para(t("&lt;end&gt;")))
+    return body
 
 
 def make_docx_with_sym(path: Path, sym_char: str = "F061", sym_font: str = "Symbol") -> None:
-    """Create a DOCX with a w:sym glyph between text runs."""
-    document_xml = (
-        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-        '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
-        "<w:body>"
-        '<w:p><w:r><w:t>Test </w:t></w:r>'
-        f'<w:r><w:sym w:font="{sym_font}" w:char="{sym_char}"/></w:r>'
-        '<w:r><w:t> radiation</w:t></w:r>'
-        "</w:body></w:document>"
-    )
-    content_types = (
-        '<?xml version="1.0" encoding="UTF-8"?>'
-        '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
-        '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
-        '<Default Extension="xml" ContentType="application/xml"/>'
-        '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>'
-        "</Types>"
-    )
-    rels = (
-        '<?xml version="1.0" encoding="UTF-8"?>'
-        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
-        '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>'
-        "</Relationships>"
-    )
-    word_rels = (
-        '<?xml version="1.0" encoding="UTF-8"?>'
-        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"/>'
-    )
-    with zipfile.ZipFile(str(path), "w") as z:
-        z.writestr("[Content_Types].xml", content_types)
-        z.writestr("_rels/.rels", rels)
-        z.writestr("word/_rels/document.xml.rels", word_rels)
-        z.writestr("word/document.xml", document_xml)
+    write_docx(path, [para(t("Test "), f'<w:r><w:sym w:font="{sym_font}" w:char="{sym_char}"/></w:r>', t(" radiation"))])
 
 
 class TestQbItemsParse(unittest.TestCase):
-    def test_two_items_parsed(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            tmp_path = Path(tmp)
-            docx = tmp_path / "test.docx"
-            make_docx(
-                docx,
-                [
-                    {
-                        "code": "PHY15011101",
-                        "lvl": "easy",
-                        "part": "core",
-                        "type": "mc",
-                        "mark": "2",
-                        "bk": "5",
-                        "ch": "01",
-                        "content": "Which statement is correct? A yes B no",
-                        "ans_key": "A",
-                        "worked": "Because ...",
-                    },
-                    {
-                        "code": "PHY15011201",
-                        "lvl": "avg",
-                        "part": "core",
-                        "type": "sq",
-                        "mark": "3",
-                        "bk": "5",
-                        "ch": "01",
-                        "content": "Explain alpha decay. (3 marks)",
-                        "ans_key": "",
-                        "worked": "Alpha particles 1A. Energy 1M.",
-                    },
-                ],
-            )
-            items = qb_items.parse_docx(docx, tmp_path, tmp_path / "qb-pdf")
-            self.assertEqual(len(items), 2)
-            self.assertEqual(items[0]["_code"], "PHY15011101")
-            self.assertEqual(items[0]["_type"], "mc")
-            self.assertEqual(items[0]["_answer_key"], "A")
-            self.assertEqual(items[1]["_code"], "PHY15011201")
-            self.assertEqual(items[1]["_type"], "sq")
+    def parse(self, body: list[str], name: str = "5_ch01_e.docx") -> list[dict]:
+        tmpdir = tempfile.TemporaryDirectory()
+        self.addCleanup(tmpdir.cleanup)
+        tmp = Path(tmpdir.name)
+        docx = tmp / name
+        write_docx(docx, body)
+        return qb_items.parse_docx(docx, tmp)
+
+    def test_mc_options_key_and_worked_from_word_paragraphs(self) -> None:
+        (item,) = self.parse(mc_block("PHY15011101", "A"))
+        self.assertEqual(item["_code"], "PHY15011101")
+        self.assertEqual(item["_answer_key"], "A")
+        self.assertEqual(item["_worked"], "Alpha particles carry charge.")
+        self.assertEqual(
+            item["_options"],
+            [{"label": "A", "text": "alpha"}, {"label": "B", "text": "beta"}, {"label": "C", "text": "gamma"}, {"label": "D", "text": "X-ray"}],
+        )
+        self.assertEqual(item["_stem_clean"], "Which radiation is most ionizing?")
+
+    def test_marking_rows_and_subparts_from_table(self) -> None:
+        (item,) = self.parse(sq_block("PHY15011201"))
+        self.assertEqual(
+            item["_marking"],
+            [
+                {"part": "a", "point": "They carry positive charge.", "code": "1A"},
+                {"part": "b(i)", "point": "They are charged\nand massive.", "code": "1M 1A"},
+            ],
+        )
+        self.assertEqual(
+            [(s["label"], s["marks"]) for s in item["_subparts"]],
+            [("a", 1), ("b(i)", 2)],
+        )
+        self.assertTrue(item["_ans_present"])
+        self.assertNotIn(qb_items.CELL, item["_worked"])
+        self.assertNotIn(qb_items.ROW, item["_worked"])
+
+    def test_has_figure_and_equations_are_per_item(self) -> None:
+        items = self.parse(mc_block("PHY15011101", "A", figure=True, equation=True) + mc_block("PHY15011102", "B"))
+        self.assertEqual([it["_has_figure"] for it in items], [True, False])
+        self.assertEqual(items[0]["_stem_clean"].count("[eq:"), 1)
+        self.assertEqual(items[1]["_stem_clean"].count("[eq:"), 0)
+
+    def test_code_tag_split_across_paragraphs(self) -> None:
+        body = [para(t("&lt;")), para(t("code=PHY15011103&gt;"))] + mc_block("PHY15011101", "C")[1:]
+        (item,) = self.parse(body)
+        self.assertEqual(item["_code"], "PHY15011103")
+
+    def test_missing_ans_block(self) -> None:
+        body = tag("PHY15011199", "mc", 2) + [para(t("Question without answer")), para(t("&lt;end&gt;"))]
+        (item,) = self.parse(body)
+        self.assertFalse(item["_has_ans_block"])
+        self.assertIsNone(item["_answer_key"])
 
     def test_sym_mapped_to_unicode(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            tmp_path = Path(tmp)
-            docx = tmp_path / "sym.docx"
-            make_docx_with_sym(docx, "F061", "Symbol")
-            text, eq, sym, img, has_fig = qb_items.extract_docx_text_and_equations(docx)
-            self.assertIn("\u03b1", text)
-            self.assertEqual(sym, 1)
-
-    def test_sym_beta_gamma(self) -> None:
-        for char, expected in [("F061", "\u03b1"), ("F062", "\u03b2"), ("F067", "\u03b3")]:
+        for char, expected in [("F061", "α"), ("F062", "β"), ("F067", "γ"), ("61", "α")]:
             with tempfile.TemporaryDirectory() as tmp:
-                tmp_path = Path(tmp)
-                docx = tmp_path / "sym.docx"
+                docx = Path(tmp) / "sym.docx"
                 make_docx_with_sym(docx, char, "Symbol")
-                text, *_ = qb_items.extract_docx_text_and_equations(docx)
-                self.assertIn(expected, text, f"Symbol {char} should map to {expected}")
+                self.assertEqual(qb_items.extract_docx_text_and_equations(docx), f"Test {expected} radiation\n")
 
     def test_answer_priority(self) -> None:
         self.assertGreater(qb_items.answer_priority("5_ch01_MC_e_ans.docx"), qb_items.answer_priority("5_ch01_MC_e.docx"))
-        self.assertGreater(qb_items.answer_priority("file_answer.docx"), qb_items.answer_priority("file_yes_ans.docx") - 1)
-
-    def test_tag_regex(self) -> None:
-        text = "<code=PHY15011101><lvl=easy><part=core><type=mc><mark=2><bk=5><ch=01><content>hello"
-        m = qb_items.TAG_RE.search(text)
-        self.assertIsNotNone(m)
-        self.assertEqual(m.group(1), "PHY15011101")
-
-    def test_missing_ans_block(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            tmp_path = Path(tmp)
-            docx = tmp_path / "no_ans.docx"
-            make_docx(
-                docx,
-                [
-                    {
-                        "code": "PHY15011199",
-                        "lvl": "easy",
-                        "part": "core",
-                        "type": "mc",
-                        "mark": "2",
-                        "bk": "5",
-                        "ch": "01",
-                        "content": "Question without answer",
-                    }
-                ],
-            )
-            items = qb_items.parse_docx(docx, tmp_path, tmp_path / "qb-pdf")
-            self.assertEqual(len(items), 1)
-            self.assertFalse(items[0]["_has_ans_block"])
-            self.assertIsNone(items[0]["_answer_key"])
+        self.assertGreater(qb_items.answer_priority("file_answer.docx"), qb_items.answer_priority("file_ans.docx"))
 
     def test_schema_file_exists(self) -> None:
         schema = Path(__file__).resolve().parents[1] / "schemas" / "qb-item.v1.json"
-        self.assertTrue(schema.is_file(), "schemas/qb-item.v1.json must exist")
         data = json.loads(schema.read_text())
         self.assertEqual(data["title"], "paper2db.qb-item.v1")
+
+
+class TestResolveAnswer(unittest.TestCase):
+    def variant(self, typ: str, key: str | None, present: bool, name: str) -> dict:
+        return {
+            "_type": typ,
+            "_answer_key": key,
+            "_ans_present": present,
+            "_has_ans_block": True,
+            "_worked": "w",
+            "_marking": [],
+            "_rel_file": name,
+        }
+
+    def test_mc_block_without_key_falls_through_to_keyed_variant(self) -> None:
+        variants = [self.variant("mc", None, True, "x_ans.docx"), self.variant("mc", "B", True, "x.docx")]
+        answer = qb_items.resolve_answer(variants, {}, "PHY1")
+        self.assertEqual((answer["status"], answer["key"], answer["source"]), ("present", "B", "x.docx"))
+
+    def test_mc_without_key_uses_pdf_then_missing(self) -> None:
+        variants = [self.variant("mc", None, True, "x_ans.docx")]
+        from_pdf = qb_items.resolve_answer(variants, {"PHY1": ("C", "QB_202/2_ch02_MC_e.pdf")}, "PHY1")
+        self.assertEqual((from_pdf["status"], from_pdf["key"], from_pdf["warnings"]), ("from-pdf", "C", ["from_pdf_key"]))
+        missing = qb_items.resolve_answer(variants, {}, "PHY1")
+        self.assertEqual((missing["status"], missing["key"], missing["warnings"]), ("missing", None, ["key_missing"]))
+
+    def test_empty_ans_block_is_not_present(self) -> None:
+        answer = qb_items.resolve_answer([self.variant("lq", None, False, "x_ans.docx")], {}, "PHY1")
+        self.assertEqual(answer["status"], "missing")
+
+
+class TestOcrSlice(unittest.TestCase):
+    def test_slice_stops_at_ans_and_is_empty_when_code_absent(self) -> None:
+        ocr = "header <code=PHY1A> stem A -- ans -- B worked <code=PHY1B> next"
+        self.assertEqual(qb_items.ocr_slice(ocr, "PHY1A", "PHY1B"), "PHY1A> stem A")
+        self.assertEqual(qb_items.ocr_slice("no codes here", "PHY1A", None), "")
 
 
 if __name__ == "__main__":

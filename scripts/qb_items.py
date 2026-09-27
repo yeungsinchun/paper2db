@@ -15,9 +15,9 @@ Outputs:
 Parsing:
   Document XML is walked in document order.  <w:t> runs give text,
   <w:sym> gives Symbol/Wingdings glyphs mapped to Unicode,
-  <o:OLEObject> / <w:object> gives [eq:N] placeholders,
-  <m:oMath> gives OMML equations (counted, replaced with [eq:N]),
-  figures are detected via <wp:inline>/<wp:anchor> or word/media refs.
+  <o:OLEObject> and <m:oMath> give [eq:N] placeholders,
+  <w:drawing> / <w:pict> give [fig:N] placeholders (per-item has_figure),
+  paragraph ends / <w:br/> give newlines and <w:tab/> gives tabs.
 
   Tags are HTML-escaped in the XML: &lt;code=PHY...&gt; so we unescape
   the joined w:t before regex.  But w:sym glyphs are NOT in w:t, so
@@ -41,7 +41,6 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_QB = ROOT / "qb"
 DEFAULT_PDF = ROOT / "qb-pdf"
 CANDIDATE_QB_ROOTS = [
     ROOT / "qb",
@@ -63,7 +62,7 @@ SYMBOL_MAP = {
     'F04F': '\u039F', 'F050': '\u03A0', 'F051': '\u0398', 'F052': '\u03A1', 'F053': '\u03A3',
     'F054': '\u03A4', 'F055': '\u03A5', 'F056': '\u03C2', 'F057': '\u03A9', 'F058': '\u039E',
     'F059': '\u03A8', 'F05A': '\u03A6', 'F05B': '[', 'F05C': '\u2234', 'F05D': ']', 'F05E': '\u22A5',
-    'F05F': '_', 'F060': '\uF8E5', 'F061': '\u03B1', 'F062': '\u03B2', 'F063': '\u03C7',
+    'F05F': '_', 'F060': '\u203E', 'F061': '\u03B1', 'F062': '\u03B2', 'F063': '\u03C7',
     'F064': '\u03B4', 'F065': '\u03B5', 'F066': '\u03C6', 'F067': '\u03B3', 'F068': '\u03B7',
     'F069': '\u03B9', 'F06A': '\u03D5', 'F06B': '\u03BA', 'F06C': '\u03BB', 'F06D': '\u03BC',
     'F06E': '\u03BD', 'F06F': '\u03BF', 'F070': '\u03C0', 'F071': '\u03B8', 'F072': '\u03C1',
@@ -92,7 +91,7 @@ WINGDINGS_MAP = {
 }
 
 
-def find_qb_root(explicit: str | None) -> Path:
+def find_qb_root(explicit: str | None) -> Path | None:
     if explicit:
         p = Path(explicit)
         if not p.is_dir():
@@ -101,7 +100,7 @@ def find_qb_root(explicit: str | None) -> Path:
     for cand in CANDIDATE_QB_ROOTS:
         if cand.is_dir() and any(cand.rglob("*.docx")):
             return cand
-    return DEFAULT_QB
+    return None
 
 
 def sha256_file(path: Path) -> str:
@@ -145,95 +144,165 @@ def answer_priority(filename: str) -> int:
     return 1
 
 
-def extract_docx_text_and_equations(docx_path: Path) -> tuple[str, int, int, int, bool]:
-    """Walk document.xml in order, interleaving w:t and w:sym, counting OLE/OMML.
+def symbol_key(char: str) -> str:
+    """Normalise a w:char value ("61" or "F061") to a SYMBOL_MAP key."""
+    return f"{int(char, 16) | 0xF000:04X}"
 
-    Returns (text, eq_count, sym_count, image_count, has_figure)
-    where text has w:sym mapped to Unicode and [eq:N] for each OLE/OMML.
+
+def sym_text(font: str, char: str) -> str:
+    key = symbol_key(char)
+    if font == "Symbol":
+        return SYMBOL_MAP.get(key, f"[sym:{char}]")
+    if font == "Wingdings":
+        return WINGDINGS_MAP.get(key, SYMBOL_MAP.get(key, f"[wing:{char}]"))
+    return SYMBOL_MAP.get(key, f"[{font}:{char}]")
+
+
+# Table cell / row separators emitted by the XML walker so the marking-scheme
+# parser can see the two-column layout; stripped from every output text field.
+CELL = "\x1f"
+ROW = "\x1e"
+
+TOKEN_RE = re.compile(
+    r"<w:t(?:\s[^>]*)?>([^<]*)</w:t>"
+    r"|(<w:sym\b[^>]*/>)"
+    r"|(<o:OLEObject\b|<m:oMath\b)"
+    r"|(<w:drawing\b|<w:pict\b)"
+    r"|(</w:p>|<w:br\b[^>]*/>|<w:cr\s*/>)"
+    r"|(<w:tab\s*/>)"
+    r"|(</w:tc>)"
+    r"|(</w:tr>)"
+)
+SYM_FONT_RE = re.compile(r'w:font="([^"]*)"')
+SYM_CHAR_RE = re.compile(r'w:char="([^"]*)"')
+
+
+def extract_docx_text_and_equations(docx_path: Path) -> str:
+    """Walk document.xml in order, interleaving w:t and w:sym.
+
+    Paragraph ends and <w:br/> become "\n", <w:tab/> becomes "\t", table cell
+    and row ends become CELL / ROW, each OLE/OMML equation becomes [eq:N] and
+    each drawing/picture becomes [fig:N].
     """
-    z = zipfile.ZipFile(str(docx_path))
-    try:
-        xml = z.read("word/document.xml").decode()
-    except KeyError:
-        return ("", 0, 0, 0, False)
-
-    media = [f for f in z.namelist() if f.startswith("word/media/")]
-    has_figure = len(media) > 0 or ("<wp:inline" in xml) or ("<wp:anchor" in xml)
-
-    # Count equations
-    ole_count = xml.count("o:OLEObject") + xml.count("OLEObject")
-    # More precise: count actual OLE objects
-    ole_count = len(re.findall(r'<o:OLEObject\b', xml)) + len(re.findall(r'<w:object\b', xml))
-    omml_count = len(re.findall(r'<m:oMath\b', xml))
-    eq_total = ole_count + omml_count
-
-    # We need to walk XML in order.  Use regex to find tokens in sequence:
-    #  - <w:t[^>]*>([^<]*)</w:t>  -> text run
-    #  - <w:sym[^>]*>  -> symbol
-    #  - <w:object\b or <o:OLEObject\b  -> equation
-    #  - <m:oMath\b  -> OMML equation
-    # Process by scanning XML sequentially.
-
-    # Combined pattern that captures all relevant tokens in order
-    token_pat = re.compile(
-        r'<w:t[^>]*>([^<]*)</w:t>'
-        r'|<w:sym[^>]*w:font="([^"]*)"[^>]*w:char="([^"]*)"[^>]*/>'
-        r'|<w:sym[^>]*w:char="([^"]*)"[^>]*w:font="([^"]*)"[^>]*/>'
-        r'|<w:object\b[^>]*>'
-        r'|<o:OLEObject\b[^>]*>'
-        r'|<m:oMath\b[^>]*>',
-        re.DOTALL,
-    )
+    with zipfile.ZipFile(str(docx_path)) as z:
+        try:
+            xml = z.read("word/document.xml").decode()
+        except KeyError:
+            return ""
 
     parts: list[str] = []
     eq_idx = 0
-    sym_count = 0
-
-    for m in token_pat.finditer(xml):
+    fig_idx = 0
+    for m in TOKEN_RE.finditer(xml):
         if m.group(1) is not None:
-            # w:t
             parts.append(m.group(1))
-        elif m.group(2) is not None:
-            # w:sym font then char
-            font, char = m.group(2), m.group(3)
-            sym_count += 1
-            if font == "Symbol":
-                parts.append(SYMBOL_MAP.get(char, f"[sym:{char}]"))
-            elif font == "Wingdings":
-                parts.append(WINGDINGS_MAP.get(char, SYMBOL_MAP.get(char, f"[wing:{char}]")))
-            else:
-                parts.append(SYMBOL_MAP.get(char, f"[{font}:{char}]"))
-        elif m.group(4) is not None:
-            # w:sym char then font
-            char, font = m.group(4), m.group(5)
-            sym_count += 1
-            if font == "Symbol":
-                parts.append(SYMBOL_MAP.get(char, f"[sym:{char}]"))
-            elif font == "Wingdings":
-                parts.append(WINGDINGS_MAP.get(char, SYMBOL_MAP.get(char, f"[wing:{char}]")))
-            else:
-                parts.append(SYMBOL_MAP.get(char, f"[{font}:{char}]"))
-        else:
-            # object / OLE / oMath -> equation placeholder
+        elif m.group(2):
+            font = SYM_FONT_RE.search(m.group(2))
+            char = SYM_CHAR_RE.search(m.group(2))
+            if font and char:
+                parts.append(sym_text(font.group(1), char.group(1)))
+        elif m.group(3):
             eq_idx += 1
             parts.append(f"[eq:{eq_idx}]")
+        elif m.group(4):
+            fig_idx += 1
+            parts.append(f"[fig:{fig_idx}]")
+        elif m.group(5):
+            parts.append("\n")
+        elif m.group(6):
+            parts.append("\t")
+        elif m.group(7):
+            parts.append(CELL)
+        else:
+            parts.append(ROW)
 
-    raw = "".join(parts)
-    # Unescape HTML entities (tags use &lt; &gt;)
-    text = html.unescape(raw)
-    image_count = len(media)
-    return text, eq_total, sym_count, image_count, has_figure
+    # Tags are stored HTML-escaped (&lt;code=...&gt;)
+    return html.unescape("".join(parts))
 
 
 # Regex for tag grammar after unescaping: <code=PHY1...><lvl=...><part=...><type=...><mark=...><bk=...><ch=...><content>
 # Some QB files have typos: extra spaces or missing '<' (e.g. "<type=lq> <mark=10>" or "lvl=easy>")
 TAG_RE = re.compile(
-    r"<code=(PHY1\w+)>\s*<?lvl=(\w+)>\s*<?part=(\w+)>\s*<?type=(\w+)>\s*<?mark=(\d+)>\s*<?bk=(\w+)>\s*<?ch=(\w+)>\s*<?content>"
+    r"<\s*code=(PHY1\w+)>\s*<?lvl=(\w+)>\s*<?part=(\w+)>\s*<?type=(\w+)>\s*<?mark=(\d+)>\s*<?bk=(\w+)>\s*<?ch=(\w+)>\s*<?content>"
 )
 # Answer markers: -- ans --  or  -- ans –  (en dash) and  -- ans end --
-ANS_START_PAT = re.compile(r"--\s*ans\s*[-\u2013]+\s*", re.IGNORECASE)
+ANS_START_PAT = re.compile(r"--\s*ans\s*[-–]+\s*", re.IGNORECASE)
 ANS_END_PAT = re.compile(r"--\s*ans\s*end\s*--", re.IGNORECASE)
 END_PAT = re.compile(r"<end>", re.IGNORECASE)
+MC_KEY_RE = re.compile(r"\s*([A-D])\b")
+PDF_CODE_RE = re.compile(r"<\s*code=(PHY1\w+)>")
+PDF_KEY_RE = re.compile(r"(?m)^[ \t]*([A-D])[ \t]*$")
+OPTION_RE = re.compile(r"(?m)(?:^|(?<=\t))[ \t]*([A-D])(?![A-Za-z])[ \t]*[.、]?[ \t]*")
+SUBPART_RE = re.compile(r"\((?:([a-h])\)\s*\()?([a-h]|[ivx]{1,4})\)\s*(.*?)\s*\((\d+)\s*marks?\)", re.DOTALL)
+MARK_TAIL_RE = re.compile(r"(?:\d+\s*[AM]\s*)+$")
+MARK_CODE_RE = re.compile(r"(\d+)\s*([AM])")
+PART_LABEL_RE = re.compile(r"\s*(?:\(([a-h])\))?\s*(?:\(([ivx]{1,4})\))?\s*")
+
+
+def clean_text(s: str) -> str:
+    return s.replace(CELL, "").replace(ROW, "").replace("«", "").strip()
+
+
+def parse_options(stem: str) -> tuple[str, list[dict]]:
+    """Split an MC stem into (question, options) using the last A-B-C-D label run."""
+    matches = list(OPTION_RE.finditer(stem))
+    labels = [m.group(1) for m in matches]
+    for i in range(len(matches) - 4, -1, -1):
+        if labels[i : i + 4] == ["A", "B", "C", "D"]:
+            run = matches[i : i + 4]
+            options = []
+            for j, om in enumerate(run):
+                end = run[j + 1].start() if j + 1 < len(run) else len(stem)
+                options.append({"label": om.group(1), "text": stem[om.end() : end].strip()})
+            return stem[: run[0].start()].strip(), options
+    return stem.strip(), []
+
+
+def parse_subparts(stem: str) -> list[dict]:
+    subparts: list[dict] = []
+    main = ""
+    for sm in SUBPART_RE.finditer(stem):
+        outer, label_part, sub_text, marks = sm.groups()
+        if outer:
+            main, label = outer, f"{outer}({label_part})"
+        elif re.fullmatch(r"[a-h]", label_part):
+            main, label = label_part, label_part
+        else:
+            label = f"{main}({label_part})"
+        subparts.append({"label": label, "text": sub_text.strip()[:500], "marks": int(marks)})
+    return subparts
+
+
+def parse_marking(ans_raw: str) -> list[dict]:
+    """Marking-scheme rows: table rows (point cells | mark cell) or plain lines ending in 1A/1M."""
+    rows: list[list[str]] = []
+    for chunk in ans_raw.split(ROW):
+        if CELL in chunk:
+            rows.append(chunk.split(CELL))
+        else:
+            rows.extend([line] for line in chunk.splitlines())
+
+    marking: list[dict] = []
+    main = ""
+    label = ""
+    for cells in rows:
+        cells = [clean_text(c) for c in cells]
+        while cells and not cells[-1]:
+            cells.pop()
+        if not cells:
+            continue
+        tail = MARK_TAIL_RE.search(cells[-1])
+        point = " ".join(c for c in cells[:-1] + [cells[-1][: tail.start()] if tail else cells[-1]] if c.strip())
+        lm = PART_LABEL_RE.match(point)
+        if lm.group(1):
+            main = label = lm.group(1)
+        if lm.group(2):
+            label = f"{main}({lm.group(2)})"
+        if not tail:
+            continue
+        codes = " ".join(n + t for n, t in MARK_CODE_RE.findall(tail.group(0)))
+        marking.append({"part": label, "point": point[lm.end() :].strip()[:300], "code": codes})
+    return marking
 
 
 def parse_items_from_text(
@@ -241,154 +310,58 @@ def parse_items_from_text(
     docx_path: Path,
     sha256: str,
     qb_root: Path,
-    pdf_root: Path,
 ) -> list[dict]:
     """Split text by <code= tags into items, parse each item's fields."""
     items: list[dict] = []
-    # Split on <code= while keeping it
-    # Find all code tag positions
     tag_positions = [m.start() for m in TAG_RE.finditer(text)]
-    if not tag_positions:
-        return items
+    rel_file = str(docx_path.relative_to(qb_root)) if docx_path.is_relative_to(qb_root) else str(docx_path)
 
     for idx, pos in enumerate(tag_positions):
         next_pos = tag_positions[idx + 1] if idx + 1 < len(tag_positions) else len(text)
         block = text[pos:next_pos]
 
-        m = TAG_RE.search(block)
+        m = TAG_RE.match(block)
         if not m:
             continue
         code, lvl, part, typ, mark, bk, ch = m.groups()
-        # bk and ch are numeric but keep as string
         book = bk.lstrip("0") or "0"
-        chapter = ch
 
-        # Content is between <content> and -- ans  or <end>
         content_start = m.end()
-        # Find ans start
-        ans_m = ANS_START_PAT.search(block)
-        end_m = END_PAT.search(block)
-
+        ans_m = ANS_START_PAT.search(block, content_start)
+        end_m = END_PAT.search(block, content_start)
+        has_ans_block = ans_m is not None
         if ans_m:
             stem_raw = block[content_start : ans_m.start()]
-            # Answer block is between ans start and ans end
             ans_end_m = ANS_END_PAT.search(block, ans_m.end())
             if ans_end_m:
                 ans_raw = block[ans_m.end() : ans_end_m.start()]
-                has_ans_block = True
-                # Trim ans_raw for key/worked
-                ans_block_present = len(ans_raw.strip()) > 0
+            elif end_m and end_m.start() > ans_m.end():
+                ans_raw = block[ans_m.end() : end_m.start()]
             else:
                 ans_raw = block[ans_m.end() :]
-                has_ans_block = True
-                ans_block_present = len(ans_raw.strip()) > 0
-                # Look for <end> after
-                if end_m:
-                    ans_raw = block[ans_m.end() : end_m.start()]
         else:
-            # No ans marker
-            if end_m:
-                stem_raw = block[content_start : end_m.start()]
-            else:
-                stem_raw = block[content_start:]
+            stem_raw = block[content_start : end_m.start()] if end_m else block[content_start:]
             ans_raw = ""
-            has_ans_block = False
-            ans_block_present = False
 
-        # Clean up stray « glyph
-        stem_raw = stem_raw.replace("\u00ab", "").strip()
-        ans_raw = ans_raw.replace("\u00ab", "").strip()
+        marking = parse_marking(ans_raw) if typ in ("sq", "lq", "rq") else []
+        stem_raw = clean_text(stem_raw)
+        ans_text = clean_text(ans_raw)
 
-        # Parse options for MC: A ... B ... C ... D ... (tab or space separated)
         options: list[dict] = []
         subparts: list[dict] = []
-
         if typ == "mc":
-            # Try to split stem into question stem + options
-            # Options are labeled A, B, C, D with tab or newline
-            # We keep stem as full text; options extracted separately for display
-            # Pattern: A<text> B<text> C<text> D<text>  (with tabs/newlines)
-            # Use a simple split on standalone A-D at line/tab boundaries
-            opt_pat = re.compile(r"(?:^|[\t\n])\s*([A-D])\s*[.\u3001]?\s*")
-            # Find option labels
-            opt_matches = list(opt_pat.finditer("\n" + stem_raw))
-            if len(opt_matches) >= 4:
-                # Reconstruct stem without options
-                stem_text = stem_raw[: opt_matches[0].start()].strip() if opt_matches else stem_raw.strip()
-                # Extract options
-                for oi, om in enumerate(opt_matches):
-                    label = om.group(1)
-                    start = om.end()
-                    end = opt_matches[oi + 1].start() if oi + 1 < len(opt_matches) else len("\n" + stem_raw)
-                    # Map back to stem_raw offset (we prepended \n)
-                    raw_start = start - 1
-                    raw_end = end - 1
-                    opt_text = stem_raw[raw_start:raw_end].strip()
-                    # Remove leading label
-                    opt_text = re.sub(r"^[A-D]\s*[.\u3001]?\s*", "", opt_text).strip()
-                    if label in ("A", "B", "C", "D"):
-                        options.append({"label": label, "text": opt_text})
-                # If we got 4 options, stem is question-only
-                if len(options) == 4:
-                    stem_text_clean = stem_text
-                else:
-                    stem_text_clean = stem_raw.strip()
-                    options = []
-            else:
-                stem_text_clean = stem_raw.strip()
+            stem_clean, options = parse_options(stem_raw)
         else:
-            stem_text_clean = stem_raw.strip()
-            # Parse subparts for SQ/LQ/RQ: look for (a), (b)(i), (3 marks) etc.
-            # Extract marks per subpart
-            sub_pat = re.compile(r"\(([a-z])(?:\s*\((i+)\))?\)\s*(.*?)\s*\((\d+)\s*marks?\)", re.IGNORECASE | re.DOTALL)
-            for sm in sub_pat.finditer(stem_raw):
-                label_main, sub_idx, sub_text, marks = sm.groups()
-                label = f"{label_main}" + (f"({sub_idx})" if sub_idx else "")
-                sub_text = sub_text.strip()[:500]
-                subparts.append({"label": label, "text": sub_text, "marks": int(marks)})
+            stem_clean = stem_raw
+            subparts = parse_subparts(stem_raw)
 
-        # Parse answer
         answer_key: str | None = None
-        marking: list[dict] = []
-        worked = ""
-        if has_ans_block and ans_block_present:
-            worked = ans_raw.strip()
-            # For MC, first char is key (A-D)
-            if typ == "mc":
-                # Key is first A-D letter, possibly with newline/tab
-                km = re.search(r"^\s*([A-D])\b", ans_raw)
-                if km:
-                    answer_key = km.group(1)
-                    # Worked is remainder
-                    worked = ans_raw[km.end() :].strip()
-                else:
-                    # Some files have key without clear Answer separation
-                    answer_key = None
-            # For SQ/LQ/RQ, parse marking scheme rows: look for 1A, 1M, 2A etc
-            if typ in ("sq", "lq", "rq"):
-                # Each marking point is like " ... 1A" at end of line
-                for line in ans_raw.splitlines():
-                    line = line.strip()
-                    if not line:
-                        continue
-                    # Look for trailing mark code
-                    mm = re.search(r"(\d+)\s*([AM])\s*$", line)
-                    if mm:
-                        code_marks = mm.group(0)
-                        point_text = line[: mm.start()].strip()
-                        # Extract part label if present like "(a)(i)" or "a(i)"
-                        part_m = re.match(r"\s*\(?([a-z])(?:\s*\((i+)\))?\)?", point_text, re.IGNORECASE)
-                        part_label = part_m.group(0).strip() if part_m else "a"
-                        marking.append({"part": part_label, "point": point_text[:300], "code": code_marks})
-                if not marking:
-                    # Keep worked as full answer
-                    marking = []
-
-        # Build sources entry
-        rel_file = str(docx_path.relative_to(qb_root)) if docx_path.is_relative_to(qb_root) else str(docx_path)
-        bank = docx_path.parent.name
-        pdf_path = pdf_root / bank / (docx_path.stem + ".pdf")
-        rel_pdf = str(pdf_path.relative_to(ROOT)) if pdf_path.is_relative_to(ROOT) else str(pdf_path)
+        worked = ans_text
+        if typ == "mc":
+            km = MC_KEY_RE.match(ans_text)
+            if km:
+                answer_key = km.group(1)
+                worked = ans_text[km.end() :].strip()
 
         items.append(
             {
@@ -398,12 +371,12 @@ def parse_items_from_text(
                 "_type": typ,
                 "_marks": int(mark),
                 "_bk": book,
-                "_ch": chapter,
+                "_ch": ch,
                 "_stem_raw": stem_raw,
-                "_stem_clean": stem_text_clean if typ == "mc" else stem_raw.strip(),
-                "_ans_raw": ans_raw,
+                "_stem_clean": stem_clean,
+                "_has_figure": "[fig:" in stem_raw,
                 "_has_ans_block": has_ans_block,
-                "_ans_present": ans_block_present,
+                "_ans_present": bool(ans_text),
                 "_answer_key": answer_key,
                 "_marking": marking,
                 "_worked": worked[:2000],
@@ -412,7 +385,6 @@ def parse_items_from_text(
                 "_docx": docx_path,
                 "_sha256": sha256,
                 "_rel_file": rel_file,
-                "_rel_pdf": rel_pdf,
                 "_ans_priority": answer_priority(docx_path.name),
             }
         )
@@ -420,28 +392,24 @@ def parse_items_from_text(
     return items
 
 
-def parse_docx(docx_path: Path, qb_root: Path, pdf_root: Path) -> list[dict]:
-    sha = sha256_file(docx_path)
-    text, eq_count, sym_count, img_count, has_figure = extract_docx_text_and_equations(docx_path)
-    raw_items = parse_items_from_text(text, docx_path, sha, qb_root, pdf_root)
-    for it in raw_items:
-        it["_eq_count"] = eq_count  # will be deduped later, but keep per-item estimate
-        it["_sym_count"] = sym_count
-        it["_img_count"] = img_count
-        it["_has_figure"] = has_figure
-        it["_docx_text"] = text  # for debugging
-    return raw_items
+def parse_docx(docx_path: Path, qb_root: Path) -> list[dict]:
+    text = extract_docx_text_and_equations(docx_path)
+    return parse_items_from_text(text, docx_path, sha256_file(docx_path), qb_root)
 
 
-def load_pdf_only_keys(qb_root: Path, pdf_root: Path) -> dict[str, str]:
-    """Extract keys from the 6 PDF-only sources via text layer (for QB_202 MC etc).
+def is_keyed(item: dict) -> bool:
+    """An item variant carries a usable answer: an MC letter, or a non-empty ans block."""
+    if item["_type"] == "mc":
+        return item["_answer_key"] is not None
+    return item["_ans_present"]
 
-    Uses PyMuPDF to read text; looks for answer keys near codes.
-    For QB_202 MC blank docx has no keys; the PDF has worked answers.
-    We parse the PDF text for keys as fallback.
+
+def load_pdf_only_keys(qb_root: Path, pdf_root: Path) -> dict[str, tuple[str, str]]:
+    """Extract MC keys from the 6 PDF-only sources via their text layer.
+
+    Returns code -> (key, source pdf).  QB_202 MC keys exist only here.
     """
-    keys: dict[str, str] = {}
-    # Only the 6 known PDF-only files
+    keys: dict[str, tuple[str, str]] = {}
     pdf_only_candidates = [
         qb_root / "QB_201/2_ch01_MC_e.pdf",
         qb_root / "QB_202/2_ch02_MC_e.pdf",
@@ -450,7 +418,6 @@ def load_pdf_only_keys(qb_root: Path, pdf_root: Path) -> dict[str, str]:
         qb_root / "QB_208/2_ch08_MC_e.pdf",
         qb_root / "QB_208/2_ch08_MC_e_blank.pdf",
     ]
-    # Also check qb-pdf copies
     for pdf_path in pdf_only_candidates:
         if not pdf_path.is_file():
             alt = pdf_root / pdf_path.parent.name / pdf_path.name
@@ -458,35 +425,26 @@ def load_pdf_only_keys(qb_root: Path, pdf_root: Path) -> dict[str, str]:
                 pdf_path = alt
             else:
                 continue
+        rel = f"{pdf_path.parent.name}/{pdf_path.name}"
         try:
             import pymupdf  # type: ignore
 
             doc = pymupdf.open(str(pdf_path))
-            full_text = ""
-            for page in doc:
-                full_text += page.get_text() + "\n"
+            full_text = "\n".join(page.get_text() for page in doc)
             doc.close()
-            # Look for pattern: <code=PHY...> then ans key nearby
-            # In PDF, structure is similar: code tag, content, then answer
-            # Keys appear as single letter A-D after ans marker
-            # We reuse TAG_RE but on PDF text (which has <code= decoded correctly)
-            tag_positions = [m.start() for m in TAG_RE.finditer(full_text)]
-            for idx, pos in enumerate(tag_positions):
-                next_pos = tag_positions[idx + 1] if idx + 1 < len(tag_positions) else len(full_text)
-                block = full_text[pos:next_pos]
-                m = TAG_RE.search(block)
-                if not m:
-                    continue
-                code = m.group(1)
-                if code in keys:
+            codes = list(PDF_CODE_RE.finditer(full_text))
+            for idx, m in enumerate(codes):
+                next_pos = codes[idx + 1].start() if idx + 1 < len(codes) else len(full_text)
+                block = full_text[m.end() : next_pos]
+                if m.group(1) in keys:
                     continue
                 ans_m = ANS_START_PAT.search(block)
                 if ans_m:
                     ans_end_m = ANS_END_PAT.search(block, ans_m.end())
                     ans_raw = block[ans_m.end() : ans_end_m.start()] if ans_end_m else block[ans_m.end() :]
-                    km = re.search(r"^\s*([A-D])\b", ans_raw.strip())
+                    km = PDF_KEY_RE.search(ans_raw)
                     if km:
-                        keys[code] = km.group(1)
+                        keys[m.group(1)] = (km.group(1), rel)
         except Exception as e:
             print(f"  PDF-only key extraction failed for {pdf_path}: {e}", file=sys.stderr)
     return keys
@@ -541,41 +499,33 @@ def build_crop(pdf_path: Path, code: str, crop_dir: Path, next_code: str | None 
         info["warnings"].append("anchor not found")
         return None, None, info
 
-    # Find ans marker on or after anchor page
-    for pno in range(anchor_page, len(doc)):
-        page = doc[pno]
-        # Look for -- ans or en dash variant
-        for needle in ("-- ans", "\u2013 ans"):
-            rects = page.search_for(needle)
-            if rects:
-                # Take first rect that is below anchor if same page, else first
-                for r in rects:
-                    if pno == anchor_page and r.y0 < anchor_rect[1]:
-                        continue
-                    ans_rect = (r.x0, r.y0, r.x1, r.y1)
-                    ans_page = pno
-                    break
-                if ans_rect:
-                    break
-        if ans_rect:
-            break
-
-    # Find next code anchor
+    # Find next code anchor (next item in this PDF's own order)
     if next_code:
         search_next = f"<code={next_code}>"
         for pno in range(anchor_page, len(doc)):
-            page = doc[pno]
-            rects = page.search_for(search_next)
-            if rects:
-                # Must be after anchor
-                for r in rects:
-                    if pno == anchor_page and r.y0 <= anchor_rect[1]:
-                        continue
-                    next_rect = (r.x0, r.y0, r.x1, r.y1)
-                    next_rect_page = pno
-                    break
-                if next_rect:
-                    break
+            for r in doc[pno].search_for(search_next):
+                if pno == anchor_page and r.y0 <= anchor_rect[1]:
+                    continue
+                next_rect = (r.x0, r.y0, r.x1, r.y1)
+                next_rect_page = pno
+                break
+            if next_rect:
+                break
+    next_pos = (next_rect_page, next_rect[1]) if next_rect is not None else None
+
+    # Find this item's ans marker: after the anchor and before the next item
+    for pno in range(anchor_page, len(doc) if next_pos is None else next_pos[0] + 1):
+        hits = [r for needle in ("-- ans", "\u2013 ans") for r in doc[pno].search_for(needle)]
+        for r in sorted(hits, key=lambda r: r.y0):
+            if pno == anchor_page and r.y0 < anchor_rect[1]:
+                continue
+            if next_pos is not None and (pno, r.y0) >= next_pos:
+                break
+            ans_rect = (r.x0, r.y0, r.x1, r.y1)
+            ans_page = pno
+            break
+        if ans_rect:
+            break
 
     # Determine crop rectangles
     # We crop at 2x scale for readability (144 dpi equivalent)
@@ -688,6 +638,40 @@ def build_crop(pdf_path: Path, code: str, crop_dir: Path, next_code: str | None 
         return None, None, info
 
 
+def ocr_slice(full_ocr: str, code: str, next_code: str | None) -> str:
+    """OCR text from this item's code up to its ans marker or the next item's code."""
+    start = full_ocr.find(code)
+    if start < 0:
+        return ""
+    end = len(full_ocr)
+    if next_code:
+        n = full_ocr.find(next_code, start + len(code))
+        if n >= 0:
+            end = n
+    ans = re.search(r"--\s*ans", full_ocr[start:end], re.IGNORECASE)
+    if ans:
+        end = start + ans.start()
+    return full_ocr[start:end].strip()
+
+
+def resolve_answer(variants_sorted: list[dict], pdf_only_keys: dict[str, tuple[str, str]], code: str) -> dict:
+    """Answer precedence: keyed DOCX variant (by priority) > PDF-only text layer > missing."""
+    for v in variants_sorted:
+        if is_keyed(v):
+            return {
+                "status": "present",
+                "key": v["_answer_key"],
+                "worked": v["_worked"],
+                "marking": v["_marking"],
+                "source": v["_rel_file"],
+                "warnings": [],
+            }
+    if code in pdf_only_keys:
+        key, source = pdf_only_keys[code]
+        return {"status": "from-pdf", "key": key, "worked": "", "marking": [], "source": source, "warnings": ["from_pdf_key"]}
+    return {"status": "missing", "key": None, "worked": "", "marking": [], "source": None, "warnings": ["key_missing"]}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--qb-root", default=None)
@@ -695,10 +679,11 @@ def main() -> None:
     parser.add_argument("--out", default=str(DEFAULT_PDF / "items"))
     parser.add_argument("--crop-dir", default=str(DEFAULT_PDF / "crops"))
     parser.add_argument("--only-bank", default=None)
-    parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
 
     qb_root = find_qb_root(args.qb_root)
+    if qb_root is None:
+        raise SystemExit("No qb/ found. Pass --qb-root /path/to/qb  (tried: " + ", ".join(str(c) for c in CANDIDATE_QB_ROOTS) + ")")
     pdf_root = Path(args.pdf_root)
     if not pdf_root.is_absolute():
         pdf_root = ROOT / pdf_root
@@ -712,7 +697,6 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     crop_dir.mkdir(parents=True, exist_ok=True)
 
-    # Collect DOCX files
     all_docx = sorted(qb_root.rglob("*.docx"))
     real_docx = [p for p in all_docx if not p.name.startswith("~$")]
     if args.only_bank:
@@ -722,275 +706,134 @@ def main() -> None:
     print(f"PDF root: {pdf_root}")
     print(f"Out: {out_dir}  Crops: {crop_dir}")
 
-    # Parse all DOCX, collecting items by code
+    # Parse all DOCX once, collecting items by code and each DOCX's code order
     by_code: dict[str, list[dict]] = defaultdict(list)
-    all_banks: set[str] = set()
+    docx_order: dict[Path, list[str]] = {}
+    bank_order: dict[str, list[str]] = defaultdict(list)
     for docx in real_docx:
-        bank = docx.parent.name
-        all_banks.add(bank)
         try:
-            items = parse_docx(docx, qb_root, pdf_root)
-            for it in items:
-                by_code[it["_code"]].append(it)
+            items = parse_docx(docx, qb_root)
         except Exception as e:
             print(f"  parse failed {docx}: {e}", file=sys.stderr)
+            continue
+        docx_order[docx] = [it["_code"] for it in items]
+        for it in items:
+            by_code[it["_code"]].append(it)
+            if it["_code"] not in bank_order[docx.parent.name]:
+                bank_order[docx.parent.name].append(it["_code"])
 
     print(f"Unique codes (all banks): {len(by_code)}")
 
-    # Load PDF-only keys for fallback
     pdf_only_keys = load_pdf_only_keys(qb_root, pdf_root)
     if pdf_only_keys:
         print(f"  PDF-only keys: {len(pdf_only_keys)} from quartz PDFs")
 
-    # Merge by code: pick best variant
+    # Merge by code: pick best variant (answer priority, then longest stem)
     merged: dict[str, dict] = {}
     for code, variants in by_code.items():
-        # Sort by answer priority desc, then by stem length desc (more complete)
         variants_sorted = sorted(variants, key=lambda v: (v["_ans_priority"], len(v["_stem_clean"])), reverse=True)
-        best = variants_sorted[0]
-        # Detect variant conflict: same code, differing stems
         warnings: list[str] = []
-        if len(variants) > 1:
-            stems = set(v["_stem_clean"][:200] for v in variants)
-            if len(stems) > 1:
-                warnings.append("variant_conflict")
-        # Resolve answer: prefer variant with key, else fallback
-        answer_source = None
-        answer_status = "missing"
-        answer_key = None
-        worked = ""
-        marking: list[dict] = []
-        answer_warnings: list[str] = []
-        # Find first variant with answer key
-        for v in variants_sorted:
-            if v["_answer_key"] is not None or v["_has_ans_block"]:
-                answer_key = v["_answer_key"]
-                worked = v["_worked"]
-                marking = v["_marking"]
-                answer_source = v["_rel_file"]
-                answer_status = "present"
-                break
-        if answer_status == "missing" and code in pdf_only_keys:
-            answer_key = pdf_only_keys[code]
-            answer_status = "from-pdf"
-            # Find the PDF file that had it
-            answer_source = "qb-pdf PDF-only (quartz)"
-            answer_warnings.append("from_pdf_key")
-        if answer_key is None and answer_status in ("present", "from-pdf"):
-            # Has ans block but no single-letter key (SQ/LQ/RQ)
-            pass
-        if answer_status == "missing":
-            answer_warnings.append("key_missing")
-
+        if len({v["_stem_clean"][:200] for v in variants}) > 1:
+            warnings.append("variant_conflict")
+        answer = resolve_answer(variants_sorted, pdf_only_keys, code)
         merged[code] = {
-            "_best": best,
+            "_best": variants_sorted[0],
             "_variants": variants,
-            "_warnings": warnings + answer_warnings,
-            "_answer_key": answer_key,
-            "_answer_status": answer_status,
-            "_answer_source": answer_source,
-            "_worked": worked,
-            "_marking": marking,
+            "_warnings": warnings + answer.pop("warnings"),
+            "_answer": answer,
         }
 
-    # Group by bank for output (bank derived from code: PHY1 B CC T ...  book= B)
-    # But codes encode book: PHY1<book><ch><type><...>
-    # We also track original bank folders. Use the best variant's bank.
     by_bank: dict[str, list[str]] = defaultdict(list)
     for code, data in merged.items():
-        bank = data["_best"]["_docx"].parent.name
-        by_bank[bank].append(code)
+        by_bank[data["_best"]["_docx"].parent.name].append(code)
 
-    # For cropping we need ordered codes per PDF to find "next" anchor.
-    # Order items as they appear in the PDF (by code search order), but we don't
-    # have PDF order easily.  Use docx appearance order per bank instead.
-    # Build per-bank ordered list from parsing sequence.
-    bank_order: dict[str, list[str]] = defaultdict(list)
-    for docx in real_docx:
-        try:
-            items = parse_docx(docx, qb_root, pdf_root)
-            for it in items:
-                code = it["_code"]
-                bank = docx.parent.name
-                if code not in bank_order[bank]:
-                    bank_order[bank].append(code)
-        except Exception:
-            pass
-
-    # Now build final JSON items per bank
     versions = tool_versions()
-    # Load OCR text for stem.ocr field if available
     in_scope_banks = {f"QB_{i}" for i in list(range(201, 211)) + list(range(401, 409)) + list(range(501, 504))}
+    in_scope_count = sum(len(codes) for bank, codes in by_bank.items() if bank in in_scope_banks)
+    print(f"Total unique: {len(merged)}  In-scope: {in_scope_count}")
 
-    total_items = len(merged)
-    in_scope_items = sum(1 for code in merged if any(code.startswith(f"PHY1{int(b.split('_')[1]):02d}") for b in in_scope_banks))
-    # Better: check book field
-    in_scope_count = 0
-    for code, data in merged.items():
-        bk = data["_best"]["_bk"]
-        ch = data["_best"]["_ch"]
-        # Map to bank: QB_<book><ch> -- but book can be multiple digits? For QB_503, book=5 ch=03
-        try:
-            bank_guess = f"QB_{int(bk):d}{ch}"
-            # For 2-digit book+ch combos: QB_201 etc
-            # Actually bank is like QB_501 for book 5 ch 01
-            bank_guess2 = f"QB_{bk}{ch}" if len(bk) == 1 else f"QB_{bk}{ch}"
-            # Simpler: use actual bank from best variant
-            actual_bank = data["_best"]["_docx"].parent.name
-            if actual_bank in in_scope_banks:
-                in_scope_count += 1
-        except Exception:
-            pass
-
-    print(f"Total unique: {total_items}  In-scope: {in_scope_count}")
-
-    # Build per-bank JSON + crops
     all_index: list[dict] = []
     crop_ok = 0
     crop_fail = 0
+    ocr_cache: dict[Path, str] = {}
 
     for bank in sorted(by_bank.keys()):
-        if args.only_bank and bank != args.only_bank:
-            continue
-        codes = sorted(by_bank[bank])  # sorted by code string approximates seq order
-        # But prefer document order if available
-        if bank in bank_order:
-            ordered = [c for c in bank_order[bank] if c in codes]
-            # Append any missing codes sorted
-            remaining = sorted(set(codes) - set(ordered))
-            codes = ordered + remaining
+        bank_codes = set(by_bank[bank])
+        codes = [c for c in bank_order[bank] if c in bank_codes]
 
         json_items: list[dict] = []
-        for idx, code in enumerate(codes):
+        for code in codes:
             data = merged[code]
             best = data["_best"]
-            next_code = codes[idx + 1] if idx + 1 < len(codes) else None
+            answer = data["_answer"]
+            order = docx_order[best["_docx"]]
+            pos = order.index(code)
+            next_code = order[pos + 1] if pos + 1 < len(order) else None
 
-            # Determine fields
-            bk_ch = best["_bk"]
-            # book from variant _bk (already stripped leading zeros)
-            book = bk_ch
-            chapter = best["_ch"]
-            seq = int(code[-2:])  # last 2 digits
-            typ = best["_type"]  # mc/sq/lq/rq mapping: type digit 1-4
-            # Map type from tag: already mc/sq/lq/rq string
+            typ = best["_type"]
             level = best["_lvl"] if best["_lvl"] in ("easy", "avg", "dif") else "avg"
             part = best["_part"] if best["_part"] in ("core", "ext") else "core"
-            marks = int(best["_marks"])
             stem_text = best["_stem_clean"][:8000]
-            # Count equations in stem (approx via [eq:N] placeholders)
             eq_count = stem_text.count("[eq:")
             has_figure = bool(best["_has_figure"])
             equation_only = eq_count > 0 and len(stem_text.replace("[eq:", "").strip()) < 20
 
-            # Options / subparts
-            options = best["_options"]
-            subparts = best["_subparts"]
-
-            answer_status = data["_answer_status"]
-            answer_key = data["_answer_key"]
-            worked = data["_worked"]
-            marking = data["_marking"]
-            answer_source = data["_answer_source"]
-
             warnings = list(data["_warnings"])
-            if has_figure:
-                pass
             if eq_count >= 3:
                 warnings.append("equation_heavy")
 
-            # OCR text: try to read from qb-pdf/<bank>/<stem>.pdf.txt cropped region?
-            # For now, read the full PDF OCR and slice around code (cheap).
-            ocr_text = ""
-            # Try to load OCR from the bank's main PDF's ocr
-            bank_pdfs = list((pdf_root / bank).glob("*.pdf"))
-            # Prefer the pdf matching best's docx stem
-            best_pdf = pdf_root / bank / (best["_docx"].stem + ".pdf")
-            if best_pdf.is_file():
-                ocr_path = best_pdf.with_suffix(".pdf.txt")
-                if ocr_path.is_file():
-                    full_ocr = ocr_path.read_text(encoding="utf-8", errors="ignore")
-                    # Slice around code
-                    idx_ocr = full_ocr.find(code)
-                    if idx_ocr >= 0:
-                        ocr_text = full_ocr[max(0, idx_ocr - 500) : idx_ocr + 3000].strip()[:3000]
-                    else:
-                        ocr_text = full_ocr[:3000]
-
-            # Crop
             pdf_for_crop = pdf_root / bank / (best["_docx"].stem + ".pdf")
-            # If that stem PDF missing, try any pdf in bank
-            if not pdf_for_crop.is_file() and bank_pdfs:
-                pdf_for_crop = bank_pdfs[0]
+            ocr_text = ""
+            ocr_path = pdf_for_crop.with_suffix(".pdf.txt")
+            if ocr_path.is_file():
+                if ocr_path not in ocr_cache:
+                    ocr_cache[ocr_path] = ocr_path.read_text(encoding="utf-8", errors="ignore")
+                ocr_text = ocr_slice(ocr_cache[ocr_path], code, next_code)
 
-            stem_png: Path | None = None
-            ans_png: Path | None = None
-            crop_info: dict = {"pages": [], "bbox_pt": None, "warnings": []}
-            # Check existing crops unless force
-            existing_stem = crop_dir / f"{code}.png"
-            existing_ans = crop_dir / f"{code}.ans.png"
-            if existing_stem.is_file() and not args.force:
-                stem_png = existing_stem
-                # Still try to get crop_info from log? Skip rendering
-                crop_info["pages"] = []
+            for stale in (crop_dir / f"{code}.png", crop_dir / f"{code}.ans.png"):
+                stale.unlink(missing_ok=True)
+            stem_png, ans_png, crop_info = build_crop(pdf_for_crop, code, crop_dir, next_code)
+            if stem_png is not None:
+                crop_ok += 1
             else:
-                stem_png, ans_png, crop_info = build_crop(pdf_for_crop, code, crop_dir, next_code)
-                if stem_png is not None:
-                    crop_ok += 1
-                else:
-                    crop_fail += 1
-                if ans_png is None and answer_status != "missing":
-                    # Answer crop may be separate; not fatal
-                    pass
+                crop_fail += 1
+            for w in crop_info["warnings"]:
+                if w not in warnings:
+                    warnings.append(w)
 
-            if crop_info.get("warnings"):
-                for w in crop_info["warnings"]:
-                    if w not in warnings:
-                        warnings.append(w)
+            stem_images = [f"crops/{code}.png"] if stem_png is not None else []
+            ans_images = [f"crops/{code}.ans.png"] if ans_png is not None else []
 
-            stem_images = [f"crops/{code}.png"] if (crop_dir / f"{code}.png").is_file() else []
-            ans_images = [f"crops/{code}.ans.png"] if (crop_dir / f"{code}.ans.png").is_file() else []
-
-            # Sources: include all variants that contributed
             sources = []
+            seen_files: set[str] = set()
             for v in data["_variants"]:
+                if v["_rel_file"] in seen_files:
+                    continue
+                seen_files.add(v["_rel_file"])
                 pdf_p = pdf_root / v["_docx"].parent.name / (v["_docx"].stem + ".pdf")
-                rel_pdf = str(pdf_p.relative_to(ROOT)) if pdf_p.is_relative_to(ROOT) else str(pdf_p)
+                cropped = pdf_p == pdf_for_crop
                 sources.append(
                     {
                         "file": v["_rel_file"],
                         "sha256": v["_sha256"],
-                        "pdf": rel_pdf,
-                        "pages": crop_info.get("pages", []),
-                        "bbox_pt": crop_info.get("bbox_pt"),
-                        "origin": "libreoffice" if pdf_p.is_file() else "quartz-pdf",
+                        "pdf": str(pdf_p.relative_to(ROOT)) if pdf_p.is_relative_to(ROOT) else str(pdf_p),
+                        "pages": crop_info["pages"] if cropped else [],
+                        "bbox_pt": crop_info["bbox_pt"] if cropped else None,
+                        "origin": "libreoffice",
                     }
                 )
-            # Deduplicate sources by file
-            seen_files = set()
-            uniq_sources = []
-            for s in sources:
-                if s["file"] not in seen_files:
-                    uniq_sources.append(s)
-                    seen_files.add(s["file"])
-
-            # Fix origin for PDF-only banks
-            if pdf_for_crop.name in ("2_ch02_MC_e.pdf",) and bank == "QB_202":
-                for s in uniq_sources:
-                    if "quartz" in s["pdf"]:
-                        s["origin"] = "quartz-pdf"
 
             item = {
                 "schema": "paper2db.qb-item.v1",
                 "id": code,
                 "bank": bank,
-                "book": book,
-                "chapter": chapter,
-                "seq": seq,
+                "book": best["_bk"],
+                "chapter": best["_ch"],
+                "seq": int(code[-2:]),
                 "type": typ,
                 "level": level,
                 "part": part,
-                "marks": marks,
+                "marks": int(best["_marks"]),
                 "stem": {
                     "text": stem_text,
                     "ocr": ocr_text[:3000],
@@ -998,38 +841,30 @@ def main() -> None:
                     "has_figure": has_figure,
                     "equation_only": equation_only,
                 },
-                "options": options,
-                "subparts": subparts,
-                "answer": {
-                    "status": answer_status,
-                    "key": answer_key,
-                    "worked": worked,
-                    "marking": marking,
-                    "source": answer_source,
-                },
+                "options": best["_options"],
+                "subparts": best["_subparts"],
+                "answer": answer,
                 "images": {"stem": stem_images, "answer": ans_images},
-                "sources": uniq_sources,
+                "sources": sources,
                 "warnings": warnings,
             }
             json_items.append(item)
 
-            # Index entry
             all_index.append(
                 {
                     "id": code,
                     "bank": bank,
-                    "book": book,
-                    "chapter": chapter,
+                    "book": item["book"],
+                    "chapter": item["chapter"],
                     "type": typ,
                     "level": level,
                     "part": part,
-                    "marks": marks,
-                    "status": answer_status,
+                    "marks": item["marks"],
+                    "status": answer["status"],
                     "has_crop": bool(stem_images),
                 }
             )
 
-        # Write bank JSON
         bank_out = out_dir / f"{bank}.json"
         payload = {
             "bank": bank,
@@ -1039,9 +874,8 @@ def main() -> None:
             "items": json_items,
         }
         bank_out.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
-        print(f"  {bank}: {len(json_items)} items -> {bank_out.relative_to(ROOT)}")
+        print(f"  {bank}: {len(json_items)} items -> {bank_out}")
 
-    # Write index
     index_path = out_dir / "index.json"
     index_payload = {
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -1052,20 +886,14 @@ def main() -> None:
     index_path.write_text(json.dumps(index_payload, indent=2, ensure_ascii=False) + "\n")
     print(f"\nWrote {index_path}  total={len(all_index)}")
 
-    # Summary for gate
     in_scope_index = [e for e in all_index if e["bank"] in in_scope_banks]
-    with_crop = [e for e in all_index if e["has_crop"]]
-    print(f"Crops: {crop_ok} new, {crop_fail} failed, {len(with_crop)}/{len(all_index)} with crop on disk")
+    print(f"Crops: {crop_ok} ok, {crop_fail} failed")
     print(f"In-scope banks: {sorted(in_scope_banks)} -> {len(in_scope_index)} items")
-    # Count by status
-    status_counts = Counter(e["status"] for e in all_index)
-    print(f"Answer status: {dict(status_counts)}")
-    # Per in-scope bank breakdown
+    print(f"Answer status: {dict(Counter(e['status'] for e in all_index))}")
     for bank in sorted(in_scope_banks):
         entries = [e for e in in_scope_index if e["bank"] == bank]
         if entries:
-            sc = Counter(e["status"] for e in entries)
-            print(f"  {bank}: {len(entries)} items status={dict(sc)}")
+            print(f"  {bank}: {len(entries)} items status={dict(Counter(e['status'] for e in entries))}")
 
 
 if __name__ == "__main__":
