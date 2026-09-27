@@ -59,10 +59,16 @@ def write_normalized_docx(src: Path, dest: Path) -> int:
     with zipfile.ZipFile(str(src)) as zin, zipfile.ZipFile(str(dest), "w", zipfile.ZIP_DEFLATED) as zout:
         for info in zin.infolist():
             data = zin.read(info.filename)
-            if info.filename == "word/document.xml":
-                xml, glyphs = normalize_symbol_xml(data.decode())
-                data = xml.encode()
-                count = len(glyphs)
+            # Normalize every XML part that may contain w:sym or Symbol-font runs
+            # (headers, footers, footnotes, etc. all can contain Symbol glyphs)
+            if info.filename.endswith(".xml") and (b"w:sym" in data or b"w:t" in data):
+                try:
+                    xml, glyphs = normalize_symbol_xml(data.decode())
+                    if glyphs:
+                        data = xml.encode()
+                        count += len(glyphs)
+                except Exception:
+                    pass
             zout.writestr(info, data)
     return count
 

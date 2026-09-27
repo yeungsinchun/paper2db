@@ -620,6 +620,24 @@ def build_crop(pdf_path: Path, code: str, crop_dir: Path, next_code: str | None 
                 anchor_rect = (rects[0].x0, rects[0].y0, rects[0].x1, rects[0].y1)
                 anchor_page = pno
                 break
+    if anchor_rect is None:
+        # Fallback: use text dict blocks to locate code when search_for fails due to fragmentation
+        for pno, page in enumerate(doc):
+            d = page.get_text("dict")
+            for block in d.get("blocks", []):
+                for line in block.get("lines", []):
+                    for span in line.get("spans", []):
+                        if code in span.get("text", ""):
+                            bbox = span.get("bbox", [0,0,0,0])
+                            anchor_rect = (bbox[0], bbox[1], bbox[2], bbox[3])
+                            anchor_page = pno
+                            break
+                    if anchor_rect is not None:
+                        break
+                if anchor_rect is not None:
+                    break
+            if anchor_rect is not None:
+                break
 
     if anchor_rect is None:
         doc.close()
