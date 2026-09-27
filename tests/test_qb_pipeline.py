@@ -37,7 +37,7 @@ def write_docx(path: Path, body: str) -> None:
 SYMBOL_BODY = (
     '<w:p><w:r><w:t xml:space="preserve">decay </w:t></w:r>'
     '<w:r><w:sym w:font="Symbol" w:char="F061"/></w:r>'
-    '<w:r><w:rPr><w:rFonts w:ascii="Symbol" w:hAnsi="Symbol"/></w:rPr><w:t>b&lt;</w:t></w:r>'
+    '<w:r><w:rPr><w:rFonts w:ascii="Symbol" w:hAnsi="Symbol"/></w:rPr><w:t>\uf062</w:t></w:r>'
     '<w:r><w:sym w:font="Wingdings" w:char="F09F"/></w:r></w:p>'
 )
 
@@ -90,8 +90,26 @@ class TestQbConvertSymbols(unittest.TestCase):
             self.assertNotIn('w:font="Symbol"', xml)
             self.assertNotIn('w:ascii="Symbol"', xml)
             self.assertIn('w:font="Wingdings"', xml)
-            self.assertEqual(self.items.extract_docx_text_and_equations(dest), "decay αβ<■\n")
+            self.assertEqual(self.items.extract_docx_text_and_equations(dest), "decay αβ■\n")
             self.assertEqual(self.conv.docx_symbol_glyphs(src), ["α", "β"])
+
+
+    def test_latin_text_is_never_remapped(self) -> None:
+        cases = [
+            '<w:r><w:rPr><w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:cs="Symbol"/></w:rPr><w:t>a b</w:t></w:r>',
+            '<w:r><w:rPr><w:rFonts w:ascii="Symbol" w:hAnsi="Symbol"/></w:rPr><w:t>a b</w:t></w:r>',
+            '<w:r><w:rPr><w:rFonts w:cs="Symbol"/></w:rPr><w:t>\uf061</w:t></w:r>',
+        ]
+        for run in cases:
+            xml = f"<w:p>{run}</w:p>"
+            self.assertEqual(self.conv.normalize_symbol_xml(xml), (xml, []), run)
+
+    def test_mixed_symbol_run_maps_pua_and_keeps_font(self) -> None:
+        xml = '<w:p><w:r><w:rPr><w:rFonts w:ascii="Symbol" w:hAnsi="Symbol"/></w:rPr><w:t>\uf067 a</w:t></w:r></w:p>'
+        new_xml, glyphs = self.conv.normalize_symbol_xml(xml)
+        self.assertEqual(glyphs, ["\u03b3"])
+        self.assertIn("<w:t>\u03b3 a</w:t>", new_xml)
+        self.assertIn('w:ascii="Symbol"', new_xml)
 
 
 class TestQbQualityAudit(unittest.TestCase):

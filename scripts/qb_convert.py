@@ -8,7 +8,7 @@ Outputs: qb-pdf/<bank>/<stem>.pdf
 
 Converter: LibreOffice soffice --headless with a per-task -env:UserInstallation
 profile.  Before conversion, Symbol-font glyphs (<w:sym w:font="Symbol">, and
-Symbol-font runs holding ASCII or PUA U+F0xx characters) are rewritten to their
+PUA U+F0xx characters in runs whose Latin font is Symbol) are rewritten to their
 Unicode equivalents in a temporary copy of the DOCX, because LibreOffice
 otherwise renders them as PUA bullets instead of alpha/beta/gamma.
 
@@ -54,14 +54,14 @@ SYM_RE = re.compile(r"<w:sym\b[^>]*/>")
 RUN_RE = re.compile(r"<w:r\b[^>]*>.*?</w:r>", re.DOTALL)
 RFONTS_RE = re.compile(r"<w:rFonts\b[^>]*/>")
 T_RE = re.compile(r"(<w:t(?:\s[^>]*)?>)([^<]*)(</w:t>)")
-SYMBOL_FONT_ATTR_RE = re.compile(r'(w:(?:ascii|hAnsi|cs|eastAsia)=")Symbol(")')
+SYMBOL_FONT_ATTR_RE = re.compile(r'(w:(?:ascii|hAnsi)=")Symbol(")')
 REPLACEMENT_FONT = "Times New Roman"
 
 
 def symbol_run_char(c: str) -> str | None:
     n = ord(c)
-    if n < 0x100 or 0xF000 <= n <= 0xF0FF:
-        return SYMBOL_MAP.get(symbol_key(f"{n:X}"))
+    if 0xF000 <= n <= 0xF0FF:
+        return SYMBOL_MAP.get(f"{n:04X}")
     return None
 
 
@@ -93,16 +93,26 @@ def normalize_symbol_xml(xml: str) -> tuple[str, list[str]]:
         if not (fonts and SYMBOL_FONT_ATTR_RE.search(fonts.group(0))):
             return r
 
+        mapped = []
+        unmapped = []
+
         def text(tm: re.Match) -> str:
             out = []
             for c in html.unescape(tm.group(2)):
                 u = symbol_run_char(c)
-                if u is not None and not u.isascii():
-                    glyphs.append(u)
+                if u is None:
+                    unmapped.append(c)
+                else:
+                    mapped.append(u)
                 out.append(c if u is None else u)
             return tm.group(1) + escape("".join(out)) + tm.group(3)
 
         r = T_RE.sub(text, r)
+        if not mapped:
+            return m.group(0)
+        glyphs.extend(u for u in mapped if not u.isascii())
+        if unmapped:
+            return r
         new_fonts = SYMBOL_FONT_ATTR_RE.sub(rf"\g<1>{REPLACEMENT_FONT}\g<2>", fonts.group(0))
         return r.replace(fonts.group(0), new_fonts, 1)
 
