@@ -1,4 +1,4 @@
-"""Behavioral checks for the ./pipeline entry point."""
+"""Behavioral checks for the ./pipeline.py entry point."""
 from __future__ import annotations
 
 import importlib.machinery
@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def load_pipeline():
-    path = ROOT / "pipeline"
+    path = ROOT / "pipeline.py"
     loader = importlib.machinery.SourceFileLoader("paper2db_pipeline", str(path))
     spec = importlib.util.spec_from_loader(loader.name, loader)
     assert spec and spec.loader
@@ -28,7 +28,7 @@ def load_pipeline():
 class TestPipelineCli(unittest.TestCase):
     def test_list_stages_prints_all(self) -> None:
         result = subprocess.run(
-            [sys.executable, str(ROOT / "pipeline"), "--list-stages"],
+            [sys.executable, str(ROOT / "pipeline.py"), "--list-stages"],
             cwd=ROOT,
             check=True,
             capture_output=True,
@@ -40,7 +40,7 @@ class TestPipelineCli(unittest.TestCase):
 
     def test_unknown_only_stage_exits(self) -> None:
         result = subprocess.run(
-            [sys.executable, str(ROOT / "pipeline"), "--only", "not-a-stage"],
+            [sys.executable, str(ROOT / "pipeline.py"), "--only", "not-a-stage"],
             cwd=ROOT,
             check=False,
             capture_output=True,

@@ -17,11 +17,11 @@ Human gates (skipped with --yes, but paths are still printed):
   2. After classify - skim classified/mc/uncertain.csv (and LQ section folders).
 
 Usage:
-  ./pipeline
-  ./pipeline --years 2024 2025
-  ./pipeline --from classify-mc
-  ./pipeline --only keys,classify-mc,section-pdfs
-  ./pipeline --yes --force
+  ./pipeline.py
+  ./pipeline.py --years 2024 2025
+  ./pipeline.py --from classify-mc
+  ./pipeline.py --only keys,classify-mc,section-pdfs
+  ./pipeline.py --yes --force
 """
 from __future__ import annotations
 
@@ -74,7 +74,7 @@ def run_script(script_name: str, *args: str) -> None:
 
 
 def run_segment(*args: str) -> None:
-    cmd = [python_executable(), str(ROOT / "segment"), *args]
+    cmd = [python_executable(), str(SCRIPTS / "segment.py"), *args]
     print(f"$ {' '.join(cmd)}")
     subprocess.run(cmd, check=True, cwd=str(ROOT))
 
@@ -404,7 +404,7 @@ def stage_classify_mc(years: list[str] | None, *, force: bool, yes: bool) -> Non
         f"  {uncertain.relative_to(ROOT) if uncertain.is_file() else '(missing)'}\n"
         "  classified/mc/<book>/<section>/\n\n"
         "Fix keyword OVERRIDES or edit llm_classifications.json then:\n"
-        "  ./pipeline --only classify-mc --force\n"
+        "  ./pipeline.py --only classify-mc --force\n"
         "  # or: python scripts/classify_mc_llm.py --from-json ...",
         yes=yes,
     )

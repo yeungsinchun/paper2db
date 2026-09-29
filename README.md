@@ -10,17 +10,17 @@ source .venv/bin/activate
 pip install -r requirements.txt
 # tesseract must be on PATH (OCR)
 
-./pipeline
+./pipeline.py
 ```
 
 That one command walks every stage from `paper/` PDFs to `classified/` section folders and review PDFs. It pauses at a few review gates (MC anchors, optional LQ crops, uncertain classifications). Pass `--yes` to print the same paths without waiting for Enter.
 
 ```bash
-./pipeline --years 2025          # one year
-./pipeline --from classify-mc    # resume mid-pipeline
-./pipeline --only keys,section-pdfs
-./pipeline --force --yes         # rebuild everything, no prompts
-./pipeline --list-stages
+./pipeline.py --years 2025          # one year
+./pipeline.py --from classify-mc    # resume mid-pipeline
+./pipeline.py --only keys,section-pdfs
+./pipeline.py --force --yes         # rebuild everything, no prompts
+./pipeline.py --list-stages
 ```
 
 Optional LLM for MC and LQ classification (better than keywords when available):
@@ -29,7 +29,7 @@ Optional LLM for MC and LQ classification (better than keywords when available):
 export LLM_API_KEY=...           # or OPENAI_API_KEY / TOGETHER_API_KEY
 export LLM_BASE_URL=https://api.together.xyz/v1   # optional
 export LLM_MODEL=meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
-./pipeline --from classify-mc --force
+./pipeline.py --from classify-mc --force
 ```
 
 When no API key is set, both MC and LQ use the keyword classifiers.
@@ -39,11 +39,11 @@ When no API key is set, both MC and LQ use the keyword classifiers.
 Generated crops, section PDFs and `.lavish/` HTML are **not committed** (see `.gitignore`). Rebuild them from `paper/` with:
 
 ```bash
-./pipeline --force --yes      # all years, all stages, no review prompts
-./pipeline --years 2025 --force --yes   # one year
+./pipeline.py --force --yes      # all years, all stages, no review prompts
+./pipeline.py --years 2025 --force --yes   # one year
 ```
 
-The only files under `output/` and `classified/` that git tracks are hand-tuned inputs the pipeline reads rather than regenerates: `output/lq/<year>/starts.json` (LQ page ranges), `classified/*/llm_classifications.json` (LLM section decisions, editable and replayable with `--from-json`) and `classified/lq/candidate_performance.json` (from `scripts/extract_lq_performance.py`). Everything else is reproducible from `paper/` with `./pipeline`, so never `git add` crops, section PDFs or `.lavish/` HTML.
+The only files under `output/` and `classified/` that git tracks are hand-tuned inputs the pipeline reads rather than regenerates: `output/lq/<year>/starts.json` (LQ page ranges), `classified/*/llm_classifications.json` (LLM section decisions, editable and replayable with `--from-json`) and `classified/lq/candidate_performance.json` (from `scripts/extract_lq_performance.py`). Everything else is reproducible from `paper/` with `./pipeline.py`, so never `git add` crops, section PDFs or `.lavish/` HTML.
 
 ## Layout
 
@@ -57,8 +57,8 @@ The only files under `output/` and `classified/` that git tracks are hand-tuned 
 | `output/lq/<year>/` | LQ pages, `qN.png`, `ans/qN.png`, A4 review PDFs |
 | `classified/mc/` | Section folders, CSVs, `answer_keys.json`, section PDFs |
 | `classified/lq/` | Same for long questions (+ optional `candidate_performance.json`) |
-| `scripts/` | Stage implementations (called by `./pipeline`) |
-| `segment` | Low-level single-PDF tool (prefer `./pipeline`) |
+| `scripts/` | Stage implementations (called by `./pipeline.py`) |
+| `scripts/segment.py` | Low-level single-PDF tool (prefer `./pipeline.py`, not exposed) |
 | `.lavish/pipeline-review/` | Step-by-step HTML evidence for captain review |
 | `.lavish/classified-review/` | MC section bank HTML |
 | `.lavish/lq-classified-review/` | LQ section bank HTML |
@@ -77,14 +77,14 @@ The only files under `output/` and `classified/` that git tracks are hand-tuned 
 9. **section-pdfs** - per-section A4 `combined.pdf` / `questions.pdf` (+ answer PDFs)
 10. **lavish** - quality audit + HTML reviews under `.lavish/` (pipeline walkthrough, MC banks, LQ banks)
 
-Candidate-performance extraction stays available as `python scripts/extract_lq_performance.py` when needed; it is not part of `./pipeline`.
+Candidate-performance extraction stays available as `python scripts/extract_lq_performance.py` when needed; it is not part of `./pipeline.py`.
 
 ## Quality bar
 
 Target: **≤5%** of questions need human manual tuning, including every entry in `scripts/overrides_YYYY.json`.
 
 ```bash
-./pipeline --only lavish
+./pipeline.py --only lavish
 # or:
 python scripts/quality_audit.py --strict
 ```
@@ -103,4 +103,4 @@ Captain review surface: `.lavish/pipeline-review/index.html` (step-by-step inter
 
 ## Low-level tools
 
-`./segment` and `scripts/*.py` remain available for single-paper debugging. Day-to-day use should be `./pipeline` only.
+`scripts/segment.py` and `scripts/*.py` remain available for single-paper debugging. Day-to-day use should be `./pipeline.py` only.
